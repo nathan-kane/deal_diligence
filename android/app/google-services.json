@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "394692266013",
+    "project_id": "deal-diligence-5de73",
+    "storage_bucket": "deal-diligence-5de73.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:394692266013:android:dfbaae290896d469a51ef4",
+        "android_client_info": {
+          "package_name": "com.example.deal_diligence"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoxOwgic8wnLEzB2koLr44cOHKnDNmtOM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
