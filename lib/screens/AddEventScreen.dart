@@ -1,3 +1,9 @@
+//*********************************************
+//  Deal Diligence was designed and created by      *
+//  Nathan Kane                               *
+//  copyright 2023                            *
+//*********************************************
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
