@@ -56,7 +56,7 @@ class _AppointmentCalendarScreenState
     with TickerProviderStateMixin {
   //late final List<Events> _selectedEvents;
 
-  DateTime? _selectedDate;
+  //DateTime? _selectedDate;
 
   //Map<DateTime, List>? _selectedEventsMap;
   late StreamController<Map<DateTime, List>> _streamController;

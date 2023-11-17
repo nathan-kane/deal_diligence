@@ -15,7 +15,7 @@ class PropertyWebViewScreenContainer extends StatefulWidget {
 class _PropertyWebViewScreenContainerState
     extends State<PropertyWebViewScreenContainer> {
   //var _url;
-  final _key = UniqueKey();
+  //final _key = UniqueKey();
   late final WebViewController controller;
   //..setJavascriptMode(JavaScriptMode.disabled);
 

@@ -14,7 +14,6 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 //import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 //import 'package:deal_diligence/constants.dart';
-//import 'package:deal_diligence/screens/main_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
 //import 'package:deal_diligence/Providers/trxn_provider.dart';

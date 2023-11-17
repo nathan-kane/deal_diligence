@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 //import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:firebase_messaging/firebase_messaging.dart';
 //import 'package:deal_diligence/screens/company_screen.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:deal_diligence/screens/verify_email.dart';
-import 'package:riverpod/riverpod.dart';
+//import 'package:riverpod/riverpod.dart';
 import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 
