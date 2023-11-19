@@ -26,6 +26,8 @@ final _db = FirebaseFirestore.instance;
 class LoginScreen extends ConsumerStatefulWidget {
   static const String id = 'login_screen';
 
+  const LoginScreen({super.key});
+
   @override
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }

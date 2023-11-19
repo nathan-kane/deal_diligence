@@ -17,7 +17,7 @@ import 'package:deal_diligence/screens/company_dash_board.dart';
 // import 'package:deal_diligence/screens/trxn_home.dart';
 // import 'package:deal_diligence/screens/widgets/bottom_nav_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:deal_diligence/screens/widgets/my_appbar.dart';
+import 'package:deal_diligence/screens/chat_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -42,6 +42,7 @@ class MainScreenState extends State<MainScreen> {
     const TransactionDetailScreen(true),
     const AppointmentCalendarScreen(),
     const UserProfileScreen(),
+    const ChatScreen(),
   ];
 
   @override
@@ -70,7 +71,8 @@ class MainScreenState extends State<MainScreen> {
               icon: Icon(Icons.add_business_outlined), label: "Trxn"),
           BottomNavigationBarItem(
               icon: Icon(Icons.calendar_today), label: "Calendar"),
-          BottomNavigationBarItem(icon: Icon(Icons.people), label: "Profile"),
+          BottomNavigationBarItem(icon: Icon(Icons.people), label: "User"),
+          BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
         ],
       ),
       // BottomNav(

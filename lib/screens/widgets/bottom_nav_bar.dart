@@ -39,9 +39,15 @@ class BottomNav extends StatelessWidget {
         ),
         NavigationDestination(
           // User profile screen
+          selectedIcon: Icon(Icons.people_alt),
+          icon: Icon(Icons.people_alt_outlined),
+          label: 'Chat',
+        ),
+        NavigationDestination(
+          // User profile screen
           selectedIcon: Icon(Icons.chat),
           icon: Icon(Icons.chat_bubble),
-          label: 'User',
+          label: 'Chat',
         ),
       ],
     );
