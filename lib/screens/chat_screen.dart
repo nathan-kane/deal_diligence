@@ -52,9 +52,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       return !snapshot.hasData
                           ? Container()
                           : Text(
-                              'Last seen : ' + DateFormat('hh:mm a').format(
-                                  /*snapshot.data!['date_time'].toDate()*/
-                                  DateTime.now()),
+                              'Last seen : ${DateFormat('hh:mm a').format(
+                                  /*snapshot
+                                      .data!['datetime']
+                                      .toDate()*/
+                                  DateTime.now())}',
                               style: Styles.h1().copyWith(
                                   fontSize: 12,
                                   fontWeight: FontWeight.normal,
