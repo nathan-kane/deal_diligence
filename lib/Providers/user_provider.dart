@@ -27,6 +27,7 @@ class Users {
   String? mlsId;
   String? mls;
   String? businessType;
+  String? deviceToken;
 
   Users(
       {this.userId,
@@ -44,7 +45,8 @@ class Users {
       this.companyName,
       this.mlsId,
       this.mls,
-      this.businessType});
+      this.businessType,
+      this.deviceToken});
 
   Users copyWith({
     String? userId,
@@ -63,6 +65,7 @@ class Users {
     String? mlsId,
     String? mls,
     String? businessType,
+    String? deviceToken,
   }) {
     return Users(
       fName: fName ?? this.fName,
@@ -80,6 +83,7 @@ class Users {
       mlsId: mlsId ?? this.mlsId,
       mls: mls ?? this.mls,
       businessType: businessType ?? this.businessType,
+      deviceToken: deviceToken ?? this.deviceToken,
     );
   }
 }
@@ -108,6 +112,7 @@ class UsersNotifier extends Notifier<Users> {
   String mlsId = '';
   String mls = '';
   String businessType = '';
+  String deviceToken = '';
 
   @override
   Users build() {
@@ -129,6 +134,7 @@ class UsersNotifier extends Notifier<Users> {
       mlsId: '',
       mls: '',
       businessType: '',
+      deviceToken: '',
     );
   }
 
@@ -193,6 +199,10 @@ class UsersNotifier extends Notifier<Users> {
     state = state.copyWith(businessType: newBusinessType);
   }
 
+  void updateDeviceToken(String newDeviceToken) {
+    state = state.copyWith(deviceToken: newDeviceToken);
+  }
+
   Map<String, dynamic> toMap(Users user) {
     return {
       'cellPhone': user.cellPhone,
@@ -210,7 +220,8 @@ class UsersNotifier extends Notifier<Users> {
       'mls': user.mls,
       'mlsId': user.mlsId,
       'email': user.email,
-      'businessType': user.businessType
+      'businessType': user.businessType,
+      'deviceToken': user.deviceToken
     };
   }
 
@@ -230,7 +241,8 @@ class UsersNotifier extends Notifier<Users> {
         mls = firestore['mls'],
         mlsId = firestore['mlsId'],
         email = firestore['email'],
-        businessType = firestore['businessType'];
+        businessType = firestore['businessType'],
+        deviceToken = firestore['deviceToken'];
 
 // **************************************************
 
@@ -255,6 +267,7 @@ class UsersNotifier extends Notifier<Users> {
         companyName: user.companyName,
         email: user.email,
         businessType: user.businessType,
+        deviceToken: user.deviceToken,
       );
       firestoreService.saveUser(toMap(newUser), globals.currentUid);
       ref.read(globalsNotifierProvider.notifier).updatenewUser(false);
@@ -301,7 +314,10 @@ class UsersNotifier extends Notifier<Users> {
           mlsId: ref.read(globalsNotifierProvider).mlsId,
           mls: (state.mls != null && state.mls != "")
               ? state.mls
-              : currentuserProfile.get('mls'));
+              : currentuserProfile.get('mls'),
+          deviceToken: (state.deviceToken != null && state.deviceToken != "")
+              ? state.deviceToken
+              : currentuserProfile.get('deviceToken'));
       businessType:
       ref.read(globalsNotifierProvider).userBusinessType;
 

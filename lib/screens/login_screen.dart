@@ -16,7 +16,7 @@ import 'package:deal_diligence/screens/user_register_screen.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:deal_diligence/screens/widgets/my_appbar.dart';
-// import 'package:riverpod_generator/builder.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 final usersRef = FirebaseFirestore.instance.collection('users');
 final companyRef = FirebaseFirestore.instance.collection('company');
@@ -37,10 +37,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _auth = FirebaseAuth.instance;
   bool passwordVisible = false;
 
+  // Setup the device for push notifications
+  void setUpPushNotifications() async {
+    final fcm = FirebaseMessaging.instance;
+
+    await fcm.requestPermission();
+    final deviceToken = await fcm.getToken();
+    //print(deviceToken);
+    ref.read(usersNotifierProvider.notifier).updateDeviceToken(deviceToken!);
+  }
+
   @override
   void initState() {
     super.initState();
     passwordVisible = true;
+
+    setUpPushNotifications();
   }
 
   late String email;
