@@ -66,7 +66,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     FirebaseMessaging.instance.getInitialMessage().then(handleMessage);
     FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
-    FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
+    //FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
     FirebaseMessaging.onMessage.listen((message) {
       final notification = message.notification;
       if (notification == null) return;
@@ -94,7 +94,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     const settings = InitializationSettings(android: android);
 
     await _localNotifications.initialize(settings,
-        onDidReceiveBackgroundNotificationResponse: (payload) {
+        onDidReceiveNotificationResponse: (payload) {
       final message = RemoteMessage.fromMap(jsonDecode(payload as String));
       handleMessage(message);
     });
@@ -104,11 +104,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     await platform?.createNotificationChannel(_androidChannel);
   }
 
-  Future<void> handleBackgroundMessage(RemoteMessage message) async {
-    print('Title: ${message.notification?.title}');
-    print('Body: ${message.notification?.body}');
-    print('Payload: ${message.data}');
-  }
+  // Future<void> handleBackgroundMessage(RemoteMessage message) async {
+  //   print('Title: ${message.notification?.title}');
+  //   print('Body: ${message.notification?.body}');
+  //   print('Payload: ${message.data}');
+  // }
 
   void initNotifications() async {
     final _firebaseMessaging = FirebaseMessaging.instance;
@@ -117,6 +117,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final deviceToken = await _firebaseMessaging.getToken();
 
     ref.read(usersNotifierProvider.notifier).updateDeviceToken(deviceToken!);
+
     initPushNotifications();
     initLocalNotifications();
   }
