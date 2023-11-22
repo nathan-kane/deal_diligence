@@ -18,3 +18,17 @@ exports.myFunction = functions.firestore
         },
       });
     });
+
+exports.newUser = functions.firestore
+    .document("company/{companyId}/trxns")
+    .onCreate((snapshot, context) => {
+      const payload = {
+        notification: {
+          title: String(snapshot.title),
+          body: String(snapshot.body),
+        },
+        topic: context.params.companyId,
+      };
+      return admin.messaging().send(payload);
+    });
+

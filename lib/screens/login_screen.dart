@@ -4,6 +4,8 @@
 //  copyright 2023                            *
 //*********************************************
 
+import 'dart:convert';
+
 import 'package:deal_diligence/Providers/company_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/screens/reset_password.dart';
 import 'package:deal_diligence/screens/user_register_screen.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -37,22 +40,95 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _auth = FirebaseAuth.instance;
   bool passwordVisible = false;
 
-  // Setup the device for push notifications
-  void setUpPushNotifications() async {
-    final fcm = FirebaseMessaging.instance;
+/* =========================================================== */
 
-    await fcm.requestPermission();
-    final deviceToken = await fcm.getToken();
-    //print(deviceToken);
-    ref.read(usersNotifierProvider.notifier).updateDeviceToken(deviceToken!);
+// Use this YouTube video for guidance: https://www.youtube.com/watch?v=k0zGEbiDJcQ
+
+  // Setup the device for push notifications
+  final _androidChannel = const AndroidNotificationChannel(
+    'high importance channel',
+    'High importance notifications',
+    description: 'This channel is used for important notifications',
+    importance: Importance.defaultImportance,
+  );
+
+  final _localNotifications = FlutterLocalNotificationsPlugin();
+
+  void handleMessage(RemoteMessage? message) {
+    if (message == null) return;
   }
+
+  Future initPushNotifications() async {
+    // This line is for iOS
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+            alert: true, badge: true, sound: true);
+
+    FirebaseMessaging.instance.getInitialMessage().then(handleMessage);
+    FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
+    FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
+    FirebaseMessaging.onMessage.listen((message) {
+      final notification = message.notification;
+      if (notification == null) return;
+
+      _localNotifications.show(
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            _androidChannel.id,
+            _androidChannel.name,
+            channelDescription: _androidChannel.description,
+            icon: '@drawable/ic_launcher',
+          ),
+        ),
+        payload: jsonEncode(message.toMap()),
+      );
+    });
+  }
+
+  Future initLocalNotifications() async {
+    //const iOS = IOSInitializationSettings();
+    const android = AndroidInitializationSettings('@drawable/ic_launcher');
+    const settings = InitializationSettings(android: android);
+
+    await _localNotifications.initialize(settings,
+        onDidReceiveBackgroundNotificationResponse: (payload) {
+      final message = RemoteMessage.fromMap(jsonDecode(payload as String));
+      handleMessage(message);
+    });
+
+    final platform = _localNotifications.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+    await platform?.createNotificationChannel(_androidChannel);
+  }
+
+  Future<void> handleBackgroundMessage(RemoteMessage message) async {
+    print('Title: ${message.notification?.title}');
+    print('Body: ${message.notification?.body}');
+    print('Payload: ${message.data}');
+  }
+
+  void initNotifications() async {
+    final _firebaseMessaging = FirebaseMessaging.instance;
+
+    await _firebaseMessaging.requestPermission();
+    final deviceToken = await _firebaseMessaging.getToken();
+
+    ref.read(usersNotifierProvider.notifier).updateDeviceToken(deviceToken!);
+    initPushNotifications();
+    initLocalNotifications();
+  }
+
+/* =========================================================== */
 
   @override
   void initState() {
     super.initState();
     passwordVisible = true;
 
-    setUpPushNotifications();
+    initNotifications();
   }
 
   late String email;
