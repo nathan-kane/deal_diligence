@@ -5,7 +5,7 @@
 //*********************************************
 
 import 'package:deal_diligence/firebase_options.dart';
-import 'package:deal_diligence/screens/main_screen.dart';
+//import 'package:deal_diligence/screens/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:deal_diligence/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +27,7 @@ class DealDiligence extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: LoginScreen(),
     );

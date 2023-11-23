@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
-import 'package:deal_diligence/Providers/user_provider.dart';
+//import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:deal_diligence/constants.dart';
+//import 'package:deal_diligence/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 //import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 import 'package:deal_diligence/components/styles.dart';
 import 'package:deal_diligence/components/widgets.dart';
-import 'package:deal_diligence/screens/widgets/my_appbar.dart';
+//import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 import 'package:intl/intl.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {

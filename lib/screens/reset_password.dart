@@ -4,6 +4,8 @@
 //  copyright 2023
 //*********************************************
 
+// ignore_for_file: library_private_types_in_public_api, unused_field
+
 import 'package:flutter/material.dart';
 import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 //import 'package:tonnah/Services/firestore_service.dart';
@@ -16,6 +18,8 @@ import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   static const String id = 'reset_password_screen';
+
+  const ResetPasswordScreen({super.key});
 
   @override
   _ResetPasswordScreenState createState() => _ResetPasswordScreenState();

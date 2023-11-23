@@ -4,6 +4,8 @@
 //  copyright 2023                            *
 //*********************************************
 
+// ignore_for_file: unused_field, no_leading_underscores_for_local_identifiers, unnecessary_null_comparison, unused_local_variable
+
 import 'dart:async';
 import 'package:deal_diligence/Providers/global_provider.dart';
 //import 'package:deal_diligence/Providers/user_provider.dart';
@@ -15,7 +17,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 //import 'package:deal_diligence/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deal_diligence/Services/firestore_service.dart';
+//import 'package:deal_diligence/Services/firestore_service.dart';
 //import 'package:deal_diligence/Providers/trxn_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -193,7 +195,7 @@ class _TransactionDetailScreenState
 
   @override
   void initState() {
-    final GlobalProvider = ref.read(globalsNotifierProvider);
+    //final GlobalProvider = ref.read(globalsNotifierProvider);
     _currentCompany = ref.read(globalsNotifierProvider).companyId;
     _currentUser = ref.read(globalsNotifierProvider).currentUserId;
 
@@ -366,7 +368,7 @@ class _TransactionDetailScreenState
           await mlsRef.doc(ref.read(usersNotifierProvider).mlsId).get();
       _mlsSearchLink = _mlsId.get('mlsNbrSearch');
 
-      final trxnProvider = ref.read(trxnNotifierProvider);
+      //final trxnProvider = ref.read(trxnNotifierProvider);
       _trxnStream = _db
           .collection('company')
           .doc(ref.read(globalsNotifierProvider).companyId)
@@ -383,7 +385,7 @@ class _TransactionDetailScreenState
             .updateClientFName(clientFNameController.text);
         // existing record: Put data from database into the TextFields
         // Updates Controllers
-        DateTime _dt = DateTime.now();
+        //DateTime _dt = DateTime.now();
         clientLNameController.text = trxnSnapshot.data()?['clientLName'] ?? "";
         ref
             .read(trxnNotifierProvider.notifier)
@@ -452,7 +454,7 @@ class _TransactionDetailScreenState
         final String? contractDate = trxnSnapshot.data()?['contractDate'];
         if (contractDate != null && contractDate != "") {
           //_dt = DateTime.parse(contractDate);
-          contractDateController.text = contractDate ?? "";
+          contractDateController.text = contractDate;
           //DateFormat('EE,  MM-dd-yyyy').format(_dt) ?? "";
           ref
               .read(trxnNotifierProvider.notifier)
@@ -795,8 +797,8 @@ class _TransactionDetailScreenState
   @override
   Widget build(BuildContext context) {
     // Get the stream of transactions created in main.dart
-    final trxnProvider =
-        ref.read(trxnNotifierProvider); //Provider.of<TrxnProvider>(context);
+    // final trxnProvider =
+    //     ref.read(trxnNotifierProvider); //Provider.of<TrxnProvider>(context);
 
     DateTime _date = DateTime.now();
     DateTime _selectedDate = DateTime.now();

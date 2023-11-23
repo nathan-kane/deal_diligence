@@ -4,10 +4,10 @@
 //  copyright 2023                            *
 //*********************************************
 
-import 'package:deal_diligence/Providers/global_provider.dart';
-import 'package:deal_diligence/screens/login_screen.dart';
+//import 'package:deal_diligence/Providers/global_provider.dart';
+//import 'package:deal_diligence/screens/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
 // import 'package:deal_diligence/Providers/trxn_provider.dart';
 import 'package:deal_diligence/screens/appointment_calendar.dart';
@@ -89,6 +89,6 @@ class MainScreenState extends State<MainScreen> {
 
   // Added this for BottomNavigationBar sync
   void setIndex(int index) {
-    if (mounted) setState(() => this._pageIndex = index);
+    if (mounted) setState(() => _pageIndex = index);
   }
 }

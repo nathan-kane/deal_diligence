@@ -44,6 +44,10 @@ class FirestoreService {
     await _db.collection('company').doc(companyId).set(company);
   }
 
+  Future<void> saveUserFcmTokenId(String userId, String fcmTokenId) async {
+    await _db.collection('users').doc(userId).update({"token": fcmTokenId});
+  }
+
   // Save transaction data to database
   Future<void> saveTrxn(trxns, String companyId, String trxnId) {
     return _db
@@ -110,7 +114,7 @@ class FirestoreService {
 
   Stream<List<Device>> getDeviceToken(Ref ref) {
     return _db
-        .collection('Users')
+        .collection('users')
         .doc(ref.read(globalsNotifierProvider).currentUserId)
         .collection('device')
         .snapshots()
@@ -143,8 +147,8 @@ class FirestoreService {
   //       .toList());
   // }
 
-  Future<void> deleteUser(String? UserId) {
-    return _db.collection('Users').doc(UserId).delete();
+  Future<void> deleteUser(String? userId) {
+    return _db.collection('Users').doc(userId).delete();
   }
 
   Future<void> deleteTrxn(String trxnId, Ref ref) {
@@ -166,9 +170,9 @@ class FirestoreService {
   }
 
   /// Get the token, save it to the database for current user
-  Future<void> saveDeviceToken(WidgetRef ref) async {
+  Future<void> saveDeviceToken(String uId, String userName) async {
     // Get the current user
-    String? uid = ref.read(globalsNotifierProvider).currentUid;
+    //String? uid = ref.read(globalsNotifierProvider).currentUid;
     //User user = await _auth.currentUser();
 
     // Get the token for this device
@@ -176,16 +180,12 @@ class FirestoreService {
 
     // Save it to Firestore
     if (fcmToken != null) {
-      var tokens = _db
-          .collection('users')
-          .doc(ref.read(globalsNotifierProvider).currentUserId)
-          .collection('device')
-          .doc(uid);
+      var tokens = _db.collection('users').doc(uId);
 
-      await tokens.set({
+      await tokens.update({
         'token': fcmToken,
-        'userId': uid,
-        'UserName': ref.read(globalsNotifierProvider).currentUserName,
+        'userId': uId,
+        'UserName': userName,
         'createdAt': FieldValue.serverTimestamp(), // optional
         'platform': Platform.operatingSystem // optional
       });

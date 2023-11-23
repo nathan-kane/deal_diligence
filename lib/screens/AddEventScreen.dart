@@ -4,9 +4,11 @@
 //  copyright 2023                            *
 //*********************************************
 
-import 'dart:async';
+// ignore_for_file: must_be_immutable, no_leading_underscores_for_local_identifiers, unnecessary_null_comparison
+
+//import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:deal_diligence/Services/firestore_service.dart';
+//import 'package:deal_diligence/Services/firestore_service.dart';
 //import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:intl/intl.dart';
@@ -35,7 +37,7 @@ class AddEventScreen extends ConsumerStatefulWidget {
 }
 
 class _AddEventScreenState extends ConsumerState<AddEventScreen> {
-  final _db = FirebaseFirestore.instance;
+  //final _db = FirebaseFirestore.instance;
 
   final eventNameController = TextEditingController();
   final eventStartTimeController = TextEditingController();
@@ -107,15 +109,15 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
   @override
   Widget build(BuildContext context) {
     //final eventRead = ref.read(globalsNotifierProvider);
-    final _firestoreService = FirestoreService();
+    //final _firestoreService = FirestoreService();
     DateTime _date = DateTime.now();
-    String _time = TimeOfDay.now().toString();
-    Duration initialtimer = const Duration();
+    //String _time = TimeOfDay.now().toString();
+    //Duration initialtimer = const Duration();
     DateTime _selectedDate = DateTime.now();
     DateTime _dt = DateTime.now();
-    String _timePicked = TimeOfDay.now().toString();
+    //String _timePicked = TimeOfDay.now().toString();
 
-    DateFormat dateFormat = DateFormat("h:mm a");
+    //DateFormat dateFormat = DateFormat("h:mm a");
 
     return Scaffold(
       appBar: CustomAppBar(),
@@ -173,10 +175,10 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   onTap: () async {
                     DateTime? _datePicked = await showDatePicker(
                         context: context,
-                        initialDate: _selectedDate!,
+                        initialDate: _selectedDate,
                         firstDate: DateTime(2023),
                         lastDate: DateTime(2026));
-                    if (_date != null && _date != _datePicked) {
+                    if (_date != _datePicked) {
                       setState(() {
                         eventDateController.text =
                             DateFormat("MM/dd/yyyy").format(_datePicked!);
@@ -289,7 +291,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                       });
                     } catch (e) {
                       // todo: add better error handling
-                      print(e);
+                      //print(e);
                     }
                   },
                 ),
@@ -317,7 +319,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                             });
                           } catch (e) {
                             // todo: add better error handling
-                            print(e);
+                            //print(e);
                           }
                         },
                       )

@@ -4,6 +4,8 @@
 //  copyright 2023
 //*********************************************
 
+// ignore_for_file: use_build_context_synchronously, unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 //import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
@@ -227,79 +229,6 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                   // onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                   //     builder: (context) => VerifyEmailScreen())),
                 ),
-                // RoundedButton(
-                //   title: 'Register',
-                //   colour: Colors.blueAccent,
-                //   onPressed: () async {
-                //     setState(() {
-                //       showSpinner = true;
-                //     });
-                //     try {
-                //       final newUser =
-                //       await _auth.createUserWithEmailAndPassword(
-                //           email: email, password: password);
-                //       if (newUser != null) {
-                //         globals.currentUid = newUser.user!.uid;
-                //         globals.currentAgentId = newUser.user!.uid;
-                //         globals.currentUEmail = newUser.user!.email;
-                //         globals.newAgent = true;
-                //         globals.newAgency = true;
-                //         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                //             builder: (context) => VerifyEmailScreen()));
-                //       } else {
-                //         setState(() {
-                //           registrationFail = true;
-                //         });
-                //       };
-                //       setState(() {
-                //         showSpinner = false;
-                //       });
-                //     } on FirebaseAuthException catch (error) {
-                //       switch (error.code) {
-                //         case "ERROR_INVALID_EMAIL":
-                //         case "invalid-email":
-                //           errorMessage =
-                //           "Your email address appears to be malformed.";
-                //           break;
-                //         case "email-already-in-use":
-                //           errorMessage = "Email is already in use.";
-                //           break;
-                //         case "ERROR_WRONG_PASSWORD":
-                //         case "wrong-password":
-                //           errorMessage = "Your password is wrong.";
-                //           break;
-                //         case "weak-password":
-                //           errorMessage = "Weak password";
-                //           break;
-                //         case "ERROR_USER_NOT_FOUND":
-                //         case "user-not-found":
-                //           errorMessage = "User with this email doesn't exist.";
-                //           break;
-                //         case "ERROR_USER_DISABLED":
-                //         case "user-disabled":
-                //           errorMessage =
-                //           "User with this email has been disabled.";
-                //           break;
-                //         case "ERROR_TOO_MANY_REQUESTS":
-                //         case "too-many-requests":
-                //           errorMessage = "Too many requests. Try again later.";
-                //           break;
-                //         case "ERROR_OPERATION_NOT_ALLOWED":
-                //         case "operation-not-allowed":
-                //           errorMessage =
-                //           "Signing in with Email and Password is not enabled.";
-                //           break;
-                //         default:
-                //           errorMessage =
-                //           "An undefined Error happened. Please try again.";
-                //       }
-
-                //       if (errorMessage != null && errorMessage != "") {
-                //         ScaffoldMessenger.of(context).showSnackBar(
-                //             (SnackBar(content: Text(errorMessage))));
-                //       }
-                //     }
-                //   }),
               ],
             ),
           ),

@@ -4,6 +4,8 @@
 //  copyright 2023
 //*********************************************
 
+// ignore_for_file: use_build_context_synchronously, unnecessary_null_comparison
+
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -107,18 +109,11 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
       cityController.text = currentCompanyProfile['city'] ?? "";
       stateController.text = currentCompanyProfile['state'] ?? "";
       _currentCompanyState = currentCompanyProfile['state'] ?? "";
-      zipController.text = currentCompanyProfile['zipCode'].toString() ?? "";
+      zipController.text = currentCompanyProfile['zipCode'].toString();
       cellPhoneController.text = currentCompanyProfile['cellPhone'] ?? "";
       officePhoneController.text = currentCompanyProfile['officePhone'] ?? "";
       emailController.text = currentCompanyProfile['email'] ?? "";
       websiteController.text = currentCompanyProfile['website'] ?? "";
-
-      // Updates State - Don't know if needed
-      // Future.delayed(Duration.zero, () {
-      //   final agentProvider =
-      //       Provider.of<CompanyProvider>(context, listen: false);
-      //   agentProvider.loadValues(widget.company!);
-      // });
     }
   }
 
@@ -207,30 +202,28 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                 const SizedBox(
                   height: 8.0,
                 ),
-                Container(
-                  child: StreamBuilder(
-                      stream: _db.collection('company').snapshots(),
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        if (snapshot.data == null) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else {
-                          return DropdownButton<String>(
-                            hint: const Text("Select Company"),
-                            value: _currentCompanyName,
-                            onChanged: changedDropDownCompany,
-                            items: snapshot.data.docs
-                                .map<DropdownMenuItem<String>>((document) {
-                              return DropdownMenuItem<String>(
-                                value: document.id,
-                                child: Text(document.data()['name']),
-                              );
-                            }).toList(),
-                          );
-                        }
-                      }),
-                ),
+                StreamBuilder(
+                    stream: _db.collection('company').snapshots(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.data == null) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        return DropdownButton<String>(
+                          hint: const Text("Select Company"),
+                          value: _currentCompanyName,
+                          onChanged: changedDropDownCompany,
+                          items: snapshot.data.docs
+                              .map<DropdownMenuItem<String>>((document) {
+                            return DropdownMenuItem<String>(
+                              value: document.id,
+                              child: Text(document.data()['name']),
+                            );
+                          }).toList(),
+                        );
+                      }
+                    }),
                 RoundedButton(
                   title: 'Link to your company',
                   colour: Colors.blueAccent,
@@ -258,7 +251,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                       });
                     } catch (e) {
                       // todo: add better error handling
-                      print(e);
+                      //print(e);
                     }
                   },
                 ),

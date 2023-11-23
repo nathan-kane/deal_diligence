@@ -4,6 +4,8 @@
 //  copyright 2023                            *
 //*********************************************
 
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 //import 'dart:io';
 import 'package:deal_diligence/Providers/company_provider.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
@@ -11,7 +13,7 @@ import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 //import 'package:deal_diligence/Providers/user_provider.dart';
-import 'package:deal_diligence/Services/firestore_service.dart';
+//import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:firebase_messaging/firebase_messaging.dart';
@@ -93,11 +95,11 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   String? mls;
 
   String? _currentUserState = '';
-  String? _currentCompanyState = '';
-  String? _currentCompany = '';
+  //String? _currentCompanyState = '';
+  //String? _currentCompany = '';
   String? currentBusinessType = '';
 
-  String? _currentMlsId;
+  //String? _currentMlsId;
   String? _selectedCompany; // This is the company assigned to new user
   String? _selectedMls;
 
@@ -139,10 +141,10 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
           currentUserProfile.get('state') == null) {
         //_currentCompanyState = globals.currentAgentState;
       } else {
-        _currentCompanyState = currentUserProfile['state'] ?? "";
+        //_currentCompanyState = currentUserProfile['state'] ?? "";
       }
 
-      zipController.text = currentUserProfile['zipCode'].toString() ?? "";
+      zipController.text = currentUserProfile['zipCode'].toString();
       cellPhoneController.text = currentUserProfile['cellPhone'] ?? "";
       officePhoneController.text = currentUserProfile['officePhone'] ?? "";
       companyController.text = currentUserProfile['company'] ?? "";
@@ -257,7 +259,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
 
   void changedDropDownCompany(String? selectedCompany) {
     setState(() {
-      _currentCompany = selectedCompany;
+      //_currentCompany = selectedCompany;
       ref
           .read(globalsNotifierProvider.notifier)
           .updateselectedCompany(selectedCompany!);
@@ -269,15 +271,13 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
 
   void changedDropDownMls(String? selectedMls) {
     setState(() {
-      _currentMlsId = selectedMls;
+      //_currentMlsId = selectedMls;
       ref.read(globalsNotifierProvider.notifier).updatemlsId(selectedMls!);
     });
   }
 
   @override
   void initState() {
-    //ref.read(globalsNotifierProvider.notifier).updatenewUser(false);
-
     getCurrentUserProfile();
 
     if (ref.read(globalsNotifierProvider).currentUserState == "" ||
@@ -290,8 +290,8 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
       _selectedCompany = ref.read(globalsNotifierProvider).companyId;
     }
 
-    _currentCompanyState =
-        ref.read(globalsNotifierProvider).currentCompanyState;
+    // _currentCompanyState =
+    //     ref.read(globalsNotifierProvider).currentCompanyState;
 
     if (ref.read(usersNotifierProvider).mlsId != null &&
         ref.read(usersNotifierProvider).mlsId != "") {
@@ -305,13 +305,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Get the stream of agents created in main.dart
-    // String? currentUserState =
-    //     ref.watch(globalsNotifierProvider).currentUserState;
-
-    //final agentProvider = Provider.of<AgentProvider>(context);
-    final _firestoreService = FirestoreService();
-    //ref.read(globalsNotifierProvider).addCompany;
+    //final _firestoreService = FirestoreService();
 
     return Scaffold(
       appBar: CustomAppBar(),
@@ -605,7 +599,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                       ref
                           .read(globalsNotifierProvider.notifier)
                           .updatecurrentUserState(_currentUserState!);
-                      await _firestoreService.saveDeviceToken(ref);
+                      //await _firestoreService.saveDeviceToken(ref);
                       ref
                           .read(globalsNotifierProvider.notifier)
                           .updatetargetScreen(0);
@@ -613,12 +607,18 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                         ref
                             .read(globalsNotifierProvider.notifier)
                             .updateAddCompany(false);
+                        // ignore: use_build_context_synchronously
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => const CompanyScreen()));
                       } else {
+                        // ignore: use_build_context_synchronously
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => MainScreen()));
+                            builder: (context) => const MainScreen()));
                       }
+
+                      ref.read(usersNotifierProvider.notifier).saveFcmToken(
+                          ref.read(globalsNotifierProvider).currentUserId!,
+                          '${ref.read(usersNotifierProvider).fName} ${ref.read(usersNotifierProvider).lName!}');
 
                       setState(() {
                         showSpinner = false;
@@ -633,6 +633,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   height: 8.0,
                 ),
 
+                // ignore: unnecessary_null_comparison
                 (widget != null)
                     ? RoundedButton(
                         title: 'Delete',
@@ -650,7 +651,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MainScreen()));
+                                    builder: (context) => const MainScreen()));
                             //Navigator.pushNamed(
                             //    context, AgentDashboardScreen.id);
 
@@ -680,11 +681,14 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                 ref.read(globalsNotifierProvider).companyId,
                 ref.read(usersNotifierProvider).userId);
             ref.read(globalsNotifierProvider.notifier).updatetargetScreen(0);
-            await _firestoreService.saveDeviceToken(ref);
+            ref.read(usersNotifierProvider.notifier).saveFcmToken(
+                ref.read(globalsNotifierProvider).currentUserId!,
+                '${ref.read(usersNotifierProvider).fName} ${ref.read(usersNotifierProvider).lName!}');
+
             Navigator.push(
               context,
-              new MaterialPageRoute(
-                builder: (context) => MainScreen(),
+              MaterialPageRoute(
+                builder: (context) => const MainScreen(),
               ),
             );
             setState(() {

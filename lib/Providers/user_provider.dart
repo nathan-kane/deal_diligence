@@ -4,6 +4,8 @@
 //  copyright 2023                            *
 //*********************************************
 
+// ignore_for_file: unused_label, unnecessary_null_comparison, unused_local_variable, unused_import
+
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -246,6 +248,11 @@ class UsersNotifier extends Notifier<Users> {
 
 // **************************************************
 
+  saveFcmToken(String userId, String userName) {
+    //firestoreService.saveUserFcmTokenId(userId, fcmTokenId);
+    firestoreService.saveDeviceToken(userId, userName);
+  }
+
   saveUser(globals, user) async {
     if (ref.watch(globalsNotifierProvider).newUser == true) {
       // final DocumentSnapshot currentCompanyProfile =
@@ -321,7 +328,8 @@ class UsersNotifier extends Notifier<Users> {
       businessType:
       ref.read(globalsNotifierProvider).userBusinessType;
 
-      //firestoreService.saveUser(newUser, ref);
+      firestoreService.saveUser(
+          newUser, ref.read(globalsNotifierProvider).currentUserId!);
     }
   }
 

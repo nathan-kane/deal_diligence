@@ -4,10 +4,12 @@
 //  copyright 2023                        *
 //*********************************************
 
-import 'dart:async';
+//import 'dart:async';
+
+// ignore_for_file: non_constant_identifier_names
 
 import 'package:deal_diligence/Providers/user_provider.dart';
-import 'package:intl/intl.dart';
+//import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:deal_diligence/screens/user_profile_screen.dart';
 import 'package:deal_diligence/screens/transaction_detail_screen.dart';
@@ -20,7 +22,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
-import 'package:deal_diligence/Providers/trxn_provider.dart';
+//import 'package:deal_diligence/Providers/trxn_provider.dart';
 import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 
 final FirestoreService firestoreService = FirestoreService();
@@ -105,7 +107,7 @@ class _CompanyDashboardScreenState
                                   children: <TextSpan>[
                                     TextSpan(
                                       text:
-                                          '\nPrice: ${snapshot.data?.docs[index]['contractPrice'] == null ? 'n/a' : snapshot.data?.docs[index]['contractPrice']}\nStatus: ${snapshot.data?.docs[index]['trxnStatus'] ?? 'n/a'}',
+                                          '\nPrice: ${snapshot.data?.docs[index]['contractPrice'] ?? 'n/a'}\nStatus: ${snapshot.data?.docs[index]['trxnStatus'] ?? 'n/a'}',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.w900,
                                           color: Colors.blueGrey),

@@ -4,15 +4,17 @@
 //  copyright 2023                            *
 //*********************************************
 
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
-import 'package:riverpod/riverpod.dart';
+//import 'package:riverpod/riverpod.dart';
 
-import 'package:deal_diligence/screens/company_screen.dart';
+//import 'package:deal_diligence/screens/company_screen.dart';
 
 class VerifyEmailScreen extends ConsumerStatefulWidget {
   static const String id = 'verify_email_screen';

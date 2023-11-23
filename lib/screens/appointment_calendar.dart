@@ -4,6 +4,8 @@
 //  copyright 2023                            *
 //*********************************************
 
+// ignore_for_file: unused_element, prefer_typing_uninitialized_variables, no_leading_underscores_for_local_identifiers, dead_code
+
 import 'dart:async';
 // import 'package:async/async.dart';
 // import 'dart:math';
@@ -15,7 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:deal_diligence/Services/firestore_service.dart';
+//import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:deal_diligence/screens/AddEventScreen.dart';
 // import 'package:deal_diligence/Providers/event_provider.dart';
 import 'package:deal_diligence/Providers/trxn_provider.dart';
@@ -214,7 +216,7 @@ class _AppointmentCalendarScreenState
         if (trxns != null) {
           _getTrxnEventsForDay(day, trxns);
         }*/
-        return (kEvents.putIfAbsent(eventDateUTC, () => eventList)) ?? [];
+        return (kEvents.putIfAbsent(eventDateUTC, () => eventList));
       }
     }
     return [];
@@ -301,7 +303,7 @@ class _AppointmentCalendarScreenState
                 });
               } catch (e) {
                 // todo: add better error handling
-                print(e);
+                //print(e);
               }
             },
             child: const Text('Add Event'),
@@ -363,69 +365,67 @@ class _AppointmentCalendarScreenState
   Widget _buildEventList() {
     final _db = FirebaseFirestore.instance;
 
-    return Container(
-      child: StreamBuilder<QuerySnapshot>(
-        stream: _db
-            .collection('users')
-            .doc(ref.read(globalsNotifierProvider).currentUserId)
-            .collection('event')
-            .where('eventDate',
-                isGreaterThanOrEqualTo: DateTime(
-                    _focusedDay.year, _focusedDay.month, _focusedDay.day, 0, 0))
-            .where('eventDate',
-                isLessThan: DateTime(_focusedDay.year, _focusedDay.month,
-                    _focusedDay.day + 1, 0, 0))
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-                child: Text(
-              'Loading...',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ));
-          } else {
-            var doc = snapshot.data!.docs;
-            return ListView.builder(
-                itemCount: doc.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: ListTile(
-                      isThreeLine: true,
-                      title: Text(
-                        '${doc[index]['eventName'] ?? 'n/a'}',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w900,
-                            color: Colors.blueAccent),
-                      ),
-                      subtitle: Text.rich(TextSpan(
-                          text:
-                              '${DateFormat('EE MM-dd-yyyy').format(doc[index]['eventDate']) ?? 'n/a'}\n'
-                              '${DateFormat('h:mm a').format(doc[index]['eventStartTime']) ?? 'n/a'}, '
-                              'Duration: ${doc[index]['eventDuration'] ?? 'n/a'} minutes',
-                          children: <TextSpan>[
-                            TextSpan(
-                              text:
-                                  '\n${doc[index]['eventDescription'] ?? 'n/a'}',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  color: Colors.blueGrey),
-                            )
-                          ])),
-                      //trailing: Text('MLS#: ${_event.mlsNumber ?? 'n/a'}'),
-                      onTap: () {
-                        ref
-                            .read(globalsNotifierProvider.notifier)
-                            .updatenewEvent(false);
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => AddEventScreen()));
-                      },
+    return StreamBuilder<QuerySnapshot>(
+      stream: _db
+          .collection('users')
+          .doc(ref.read(globalsNotifierProvider).currentUserId)
+          .collection('event')
+          .where('eventDate',
+              isGreaterThanOrEqualTo: DateTime(
+                  _focusedDay.year, _focusedDay.month, _focusedDay.day, 0, 0))
+          .where('eventDate',
+              isLessThan: DateTime(_focusedDay.year, _focusedDay.month,
+                  _focusedDay.day + 1, 0, 0))
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+              child: Text(
+            'Loading...',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ));
+        } else {
+          var doc = snapshot.data!.docs;
+          return ListView.builder(
+              itemCount: doc.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: ListTile(
+                    isThreeLine: true,
+                    title: Text(
+                      '${doc[index]['eventName'] ?? 'n/a'}',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w900,
+                          color: Colors.blueAccent),
                     ),
-                  );
-                });
-          }
-        },
-      ),
+                    subtitle: Text.rich(TextSpan(
+                        text:
+                            '${DateFormat('EE MM-dd-yyyy').format(doc[index]['eventDate'])}\n'
+                            '${DateFormat('h:mm a').format(doc[index]['eventStartTime'])}, '
+                            'Duration: ${doc[index]['eventDuration'] ?? 'n/a'} minutes',
+                        children: <TextSpan>[
+                          TextSpan(
+                            text:
+                                '\n${doc[index]['eventDescription'] ?? 'n/a'}',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w900,
+                                color: Colors.blueGrey),
+                          )
+                        ])),
+                    //trailing: Text('MLS#: ${_event.mlsNumber ?? 'n/a'}'),
+                    onTap: () {
+                      ref
+                          .read(globalsNotifierProvider.notifier)
+                          .updatenewEvent(false);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => AddEventScreen()));
+                    },
+                  ),
+                );
+              });
+        }
+      },
     );
   }
 
@@ -464,5 +464,6 @@ class _AppointmentCalendarScreenState
       }
       return result;
     }
+    return null;
   }
 }

@@ -4,12 +4,13 @@
 //  copyright 2023                            *
 //*********************************************
 
+// ignore_for_file: dead_code, no_leading_underscores_for_local_identifiers, unnecessary_null_comparison, use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:deal_diligence/Providers/company_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:flutter/material.dart';
-//import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:deal_diligence/screens/main_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -116,7 +117,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     await _firebaseMessaging.requestPermission();
     final deviceToken = await _firebaseMessaging.getToken();
 
-    ref.read(usersNotifierProvider.notifier).updateDeviceToken(deviceToken!);
+    // Update the device token if it has changed.
+    if (deviceToken != ref.read(usersNotifierProvider).deviceToken) {
+      ref.read(usersNotifierProvider.notifier).updateDeviceToken(deviceToken!);
+    }
 
     initPushNotifications();
     initLocalNotifications();
@@ -185,9 +189,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           .updatefName(_currentUserProfile.get('fName'));
       ref
           .read(usersNotifierProvider.notifier)
-          .updatelName(_currentUserProfile.get('lName'));
-      ref
-          .read(usersNotifierProvider.notifier)
           .updateOfficePhone(_currentUserProfile.get('officePhone'));
       ref
           .read(usersNotifierProvider.notifier)
@@ -204,7 +205,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       ref
           .read(usersNotifierProvider.notifier)
           .updateEmail(_currentUserProfile.get('email'));
+      ref
+          .read(usersNotifierProvider.notifier)
+          .updateDeviceToken(_currentUserProfile.get('token'));
     }
+
+    // Save the device token just in case the user is using a different device
+    ref.read(usersNotifierProvider.notifier).saveFcmToken(
+        ref.read(globalsNotifierProvider).currentUserId!,
+        '${ref.read(usersNotifierProvider).fName} ${ref.read(usersNotifierProvider).lName!}');
 
     final DocumentSnapshot _currentCompanyProfile =
         await companyRef.doc(ref.read(globalsNotifierProvider).companyId).get();
@@ -346,7 +355,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         await getCurrentUserName();
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MainScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => const MainScreen()),
                         );
                       } else {
                         setState(() {
@@ -407,80 +417,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => ResetPasswordScreen())),
               ),
-              // RoundedButton(
-              //     title: 'Log In',
-              //     colour: Colors.lightBlueAccent,
-              //     onPressed: () async {
-              //       setState(() {
-              //         showSpinner = true;
-              //       });
-              //       try {
-              //         UserCredential userCredential =
-              //             await _auth.signInWithEmailAndPassword(
-              //                 email: email, password: password);
-
-              //         if (userCredential != null) {
-              //           // ref.read(globalsNotifierProvider.notifier).updatecurrentUid(_auth.currentUser!.uid);
-              //           // ref.read(globalsNotifierProvider.notifier).updatecurrentUserId(_auth.currentUser!.uid);
-              //           // ref.read(globalsNotifierProvider.notifier).updatecurrentUEmail(_auth.currentUser!.email);
-              //           // ref.read(globalsNotifierProvider.notifier).updatetargetScreen(0);
-
-              //           await getCurrentAgencyName();
-              //           Navigator.push(
-              //             context,
-              //             MaterialPageRoute(builder: (context) => MainScreen()),
-              //           );
-              //         } else {
-              //           setState(() {
-              //             loginFail = true;
-              //           });
-              //         }
-              //         setState(() {
-              //           showSpinner = false;
-              //         });
-              //       } on FirebaseAuthException catch (error) {
-              //         switch (error.code) {
-              //           case "ERROR_INVALID_EMAIL":
-              //           case "invalid-email":
-              //             errorMessage =
-              //                 "Your email address appears to be malformed.";
-              //             break;
-              //           case "email-already-in-use":
-              //             errorMessage = "Email is already in use.";
-              //             break;
-              //           case "ERROR_WRONG_PASSWORD":
-              //           case "wrong-password":
-              //             errorMessage = "Your password is wrong.";
-              //             break;
-              //           case "ERROR_USER_NOT_FOUND":
-              //           case "user-not-found":
-              //             errorMessage = "User with this email doesn't exist.";
-              //             break;
-              //           case "ERROR_USER_DISABLED":
-              //           case "user-disabled":
-              //             errorMessage =
-              //                 "User with this email has been disabled.";
-              //             break;
-              //           case "ERROR_TOO_MANY_REQUESTS":
-              //           case "too-many-requests":
-              //             errorMessage = "Too many requests. Try again later.";
-              //             break;
-              //           case "ERROR_OPERATION_NOT_ALLOWED":
-              //           case "operation-not-allowed":
-              //             errorMessage =
-              //                 "Signing in with Email and Password is not enabled.";
-              //             break;
-              //           default:
-              //             errorMessage =
-              //                 "An undefined Error happened. Please try again.";
-              //         }
-
-              //         if (errorMessage != null && errorMessage != "") {
-              //           ScaffoldMessenger.of(context).showSnackBar(
-              //               (SnackBar(content: Text(errorMessage))));
-              //         }
-              //       }
-              //     }),
               const SizedBox(
                 height: 100.0,
               ),
