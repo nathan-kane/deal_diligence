@@ -4,7 +4,7 @@
 //  copyright 2023                            *
 //*********************************************
 
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, use_key_in_widget_constructors
 
 //import 'dart:io';
 import 'package:deal_diligence/Providers/company_provider.dart';
@@ -31,9 +31,9 @@ var maskFormatter = MaskTextInputFormatter(
 class UserProfileScreen extends ConsumerStatefulWidget {
   static const String id = 'user_profile_screen';
   final Users? users;
+  final bool? isNewUser;
 
-  // ignore: use_key_in_widget_constructors
-  const UserProfileScreen([this.users]);
+  const UserProfileScreen([this.isNewUser, this.users]);
 
   @override
   ConsumerState<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -278,7 +278,9 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
 
   @override
   void initState() {
-    getCurrentUserProfile();
+    if (!widget.isNewUser!) {
+      getCurrentUserProfile();
+    }
 
     if (ref.read(globalsNotifierProvider).currentUserState == "" ||
         ref.read(globalsNotifierProvider).currentUserState == null) {

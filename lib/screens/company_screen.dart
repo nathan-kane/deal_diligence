@@ -28,8 +28,9 @@ var maskFormatter = MaskTextInputFormatter(
 
 class CompanyScreen extends ConsumerStatefulWidget {
   static const String id = 'company_screen';
+  final bool? isNewCompany;
 
-  const CompanyScreen({super.key, this.company});
+  const CompanyScreen([this.isNewCompany, this.company]);
   final Company? company;
 
   //AgencyScreen([this.agency]);
@@ -156,7 +157,9 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      getCurrentCompanyProfile();
+      if (!widget.isNewCompany!) {
+        getCurrentCompanyProfile();
+      }
     });
 
     super.initState();

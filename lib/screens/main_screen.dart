@@ -6,6 +6,8 @@
 
 //import 'package:deal_diligence/Providers/global_provider.dart';
 //import 'package:deal_diligence/screens/login_screen.dart';
+import 'package:deal_diligence/screens/company_screen.dart';
+import 'package:deal_diligence/screens/login_screen.dart';
 import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 import 'package:flutter/material.dart';
 //import 'package:cloud_firestore/cloud_firestore.dart';
@@ -45,17 +47,83 @@ class MainScreenState extends State<MainScreen> {
     const AppointmentCalendarScreen(),
     const UserProfileScreen(),
     const ChatScreen(),
+    // const CompanyScreen(),
+    // const UserProfileScreen(),
   ];
+
+  Future<void> signOut() async {
+    await auth.signOut();
+  }
+
+  // void onItemTapped(int index) {
+  //   setState(() {
+  //     _pageIndex = index;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const SideMenu(),
       appBar: CustomAppBar(),
       body: Container(child: appScreens[_pageIndex]),
-      // Container(
-      //   child: appScreens.elementAt(_pageIndex),
-      // ),
+      drawer: Drawer(
+        child: (ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const UserAccountsDrawerHeader(
+              accountName: Text('Billy Bob Baker'),
+              accountEmail: Text('billy.bob.baker@gmail.com'),
+              //   currentAccountPicture: CircleAvatar(
+              //     child: ClipOval(child: Image.asset('images/image.jpg')),
+              //   ),
+              //   decoration: const BoxDecoration(
+              //     color: Colors.blueAccent,
+              //   ),
+            ),
+            Column(
+              children: <Widget>[
+                ListTile(
+                  title: const Text('Add Company'),
+                  selected: _pageIndex == 5,
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CompanyScreen(true)));
+                  },
+                ),
+                ListTile(
+                  title: const Text('Add User'),
+                  selected: _pageIndex == 6,
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const UserProfileScreen(true)));
+                  },
+                ),
+                ListTile(
+                  title: const Text('Log Out'),
+                  selected: _pageIndex == 7,
+                  onTap: () {
+                    // Update the state of the app
+                    signOut();
+                    // Then close the drawer
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()));
+                  },
+                ),
+              ],
+            ),
+          ],
+        )),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.blueAccent,
         selectedIconTheme: const IconThemeData(color: Colors.white),
@@ -78,15 +146,6 @@ class MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
         ],
       ),
-      // BottomNav(
-      //   // Navigation Bar widget
-      //   selectedPage: _pageIndex,
-      //   onDestinationSelected: (index) {
-      //     setState(() {
-      //       _pageIndex = index;
-      //     });
-      //   },
-      // ),
     );
   }
 

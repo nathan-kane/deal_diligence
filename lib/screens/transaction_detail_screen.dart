@@ -4,7 +4,7 @@
 //  copyright 2023                            *
 //*********************************************
 
-// ignore_for_file: unused_field, no_leading_underscores_for_local_identifiers, unnecessary_null_comparison, unused_local_variable
+// ignore_for_file: unused_field, no_leading_underscores_for_local_identifiers, unnecessary_null_comparison, unused_local_variable, unused_element
 
 import 'dart:async';
 import 'package:deal_diligence/Providers/global_provider.dart';
@@ -319,7 +319,7 @@ class _TransactionDetailScreenState
     //if (widget.trxns == null) {
     if (widget.newTrxn!) {
       _companyId = ref.read(globalsNotifierProvider).companyId;
-      ref.read(globalsNotifierProvider.notifier).updatenewTrxn(false);
+      //ref.read(globalsNotifierProvider.notifier).updatenewTrxn(false);
 
       // new record: Set the textFields to blank
       clientFNameController.text = "";
