@@ -308,7 +308,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
     //final _firestoreService = FirestoreService();
 
     return Scaffold(
-      appBar: CustomAppBar(),
+      //appBar: CustomAppBar(),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(

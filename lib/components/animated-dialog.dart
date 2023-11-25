@@ -1,6 +1,8 @@
+// ignore_for_file: file_names
+
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:deal_diligence/components/widgets.dart';
 import 'package:intl/intl.dart';
@@ -95,7 +97,7 @@ class _AnimatedDialogState extends State<AnimatedDialog> {
                                           Navigator.of(context).push(
                                             MaterialPageRoute(
                                               builder: (context) {
-                                                return ChatScreen();
+                                                return const ChatScreen();
                                               },
                                             ),
                                           );

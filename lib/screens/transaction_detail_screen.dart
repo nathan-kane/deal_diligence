@@ -806,7 +806,7 @@ class _TransactionDetailScreenState
     setVisibility();
 
     return Scaffold(
-      appBar: CustomAppBar(),
+      //appBar: CustomAppBar(),
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false, // This fixes the keyboard white space
       body: SafeArea(

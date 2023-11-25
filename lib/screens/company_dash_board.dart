@@ -55,23 +55,9 @@ class _CompanyDashboardScreenState
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: CustomAppBar(),
-        drawer: Drawer(
-          child: ListView(
-            children: <Widget>[
-              ListTile(
-                title: const Text("User Profile"),
-                onTap: () {
-                  MainScreen.of(context)
-                      ?.setIndex(3); // Added this for BottomNavigationBar sync
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const UserProfileScreen()));
-                },
-              ),
-            ],
-          ),
-        ),
+        //appBar: CustomAppBar(),
         body: SafeArea(
           child: FutureBuilder<QuerySnapshot?>(
               future: FirebaseFirestore.instance

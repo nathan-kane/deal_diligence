@@ -172,7 +172,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
     final _firestoreService = FirestoreService();
 
     return Scaffold(
-      appBar: CustomAppBar(),
+      //appBar: CustomAppBar(),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(

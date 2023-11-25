@@ -34,7 +34,7 @@ class _PropertyWebViewScreenContainerState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      //appBar: CustomAppBar(),
       // AppBar(
       //   automaticallyImplyLeading: false,
       //   title: Row(

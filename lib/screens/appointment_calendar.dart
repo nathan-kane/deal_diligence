@@ -244,7 +244,7 @@ class _AppointmentCalendarScreenState
     FirebaseFirestore _db = FirebaseFirestore.instance;
 
     return Scaffold(
-      appBar: CustomAppBar(),
+      //appBar: CustomAppBar(),
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
       body: Column(

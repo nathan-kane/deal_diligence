@@ -78,7 +78,7 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(),
+      //appBar: CustomAppBar(),
       body: SafeArea(
         child: ModalProgressHUD(
           inAsyncCall: showSpinner,

@@ -120,7 +120,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
     //DateFormat dateFormat = DateFormat("h:mm a");
 
     return Scaffold(
-      appBar: CustomAppBar(),
+      //appBar: CustomAppBar(),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(

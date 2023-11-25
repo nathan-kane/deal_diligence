@@ -42,7 +42,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final firestore = FirebaseFirestore.instance;
     return Scaffold(
       backgroundColor: Colors.indigo.shade400,
-      appBar: CustomAppBar(),
+      //appBar: CustomAppBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

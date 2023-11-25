@@ -20,15 +20,16 @@ admin.initializeApp();
 //     });
 
 exports.newTrxnNotification = functions.firestore
-    .document("company/{companyId}/trxns")
+    .document("/company/{companyId}/trxns/{trxnsId}")
     .onCreate((snapshot, context) => {
       const newData = snapshot.data();
+      const company = context.params.companyId;
       const payload = {
         notification: {
           title: String(newData.title),
           body: String(newData.body),
         },
-        topic: context.params.companyId,
+        topic: company,
       };
       return admin.messaging().send(payload);
     });

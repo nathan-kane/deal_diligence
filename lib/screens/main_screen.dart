@@ -6,6 +6,7 @@
 
 //import 'package:deal_diligence/Providers/global_provider.dart';
 //import 'package:deal_diligence/screens/login_screen.dart';
+import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 import 'package:flutter/material.dart';
 //import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
@@ -18,6 +19,7 @@ import 'package:deal_diligence/screens/company_dash_board.dart';
 // import 'package:deal_diligence/screens/widgets/bottom_nav_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:deal_diligence/screens/chat_screen.dart';
+import 'package:deal_diligence/components/side_menu.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -48,8 +50,9 @@ class MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar: CustomAppBar(),
-      body: appScreens[_pageIndex],
+      drawer: const SideMenu(),
+      appBar: CustomAppBar(),
+      body: Container(child: appScreens[_pageIndex]),
       // Container(
       //   child: appScreens.elementAt(_pageIndex),
       // ),
