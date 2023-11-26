@@ -11,10 +11,8 @@
 import 'package:deal_diligence/Providers/user_provider.dart';
 //import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:deal_diligence/screens/user_profile_screen.dart';
 import 'package:deal_diligence/screens/transaction_detail_screen.dart';
 //import 'package:tonnah/screens/trxn_home.dart';
-import 'package:deal_diligence/screens/main_screen.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,7 +21,6 @@ import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 //import 'package:deal_diligence/Providers/trxn_provider.dart';
-import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 
 final FirestoreService firestoreService = FirestoreService();
 

@@ -17,7 +17,6 @@ import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/screens/user_profile_screen.dart';
-import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 // import 'company_dash_board.dart';
 // import 'package:provider/provider.dart';
 // import 'package:deal_diligence/Models/Company.dart';

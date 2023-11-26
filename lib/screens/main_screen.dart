@@ -21,7 +21,7 @@ import 'package:deal_diligence/screens/company_dash_board.dart';
 // import 'package:deal_diligence/screens/widgets/bottom_nav_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:deal_diligence/screens/chat_screen.dart';
-import 'package:deal_diligence/components/side_menu.dart';
+//import 'package:deal_diligence/components/side_menu.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

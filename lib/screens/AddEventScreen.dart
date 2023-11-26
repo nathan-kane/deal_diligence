@@ -21,7 +21,6 @@ import 'package:deal_diligence/Providers/event_provider.dart';
 import 'package:deal_diligence/screens/appointment_calendar.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 
 String? currentEventId = "";
 

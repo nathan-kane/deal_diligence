@@ -23,7 +23,6 @@ import 'package:deal_diligence/screens/AddEventScreen.dart';
 import 'package:deal_diligence/Providers/trxn_provider.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 
 // Example holidays
 final Map<DateTime, List> _holidays = {

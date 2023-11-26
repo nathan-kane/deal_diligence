@@ -18,7 +18,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:deal_diligence/screens/verify_email.dart';
 //import 'package:riverpod/riverpod.dart';
-import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 
 class UserRegisterScreen extends ConsumerStatefulWidget {

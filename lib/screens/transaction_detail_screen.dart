@@ -24,7 +24,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:deal_diligence/screens/property_webview_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:deal_diligence/constants.dart' as constants;
-import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 
 String? loggedInUid;
 String? _trxnStatus;

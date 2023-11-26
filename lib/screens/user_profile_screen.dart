@@ -21,7 +21,6 @@ import 'package:deal_diligence/screens/main_screen.dart';
 import 'package:deal_diligence/screens/company_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:deal_diligence/constants.dart' as constants;
-import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 
 final usersRef = FirebaseFirestore.instance.collection(('users'));
 final companyRef = FirebaseFirestore.instance.collection(('company'));
