@@ -23,6 +23,8 @@ import 'package:deal_diligence/Providers/user_provider.dart';
 class UserRegisterScreen extends ConsumerStatefulWidget {
   static const String id = 'registration_screen';
 
+  const UserRegisterScreen({super.key});
+
   @override
   // ignore: library_private_types_in_public_api
   ConsumerState<UserRegisterScreen> createState() => _UserRegisterScreenState();

@@ -17,10 +17,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/screens/reset_password.dart';
 import 'package:deal_diligence/screens/user_register_screen.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:deal_diligence/screens/widgets/my_appbar.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 final usersRef = FirebaseFirestore.instance.collection('users');
 final companyRef = FirebaseFirestore.instance.collection('company');
@@ -44,87 +42,63 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 /* =========================================================== */
 
 // Use this YouTube video for guidance: https://www.youtube.com/watch?v=k0zGEbiDJcQ
+// and this YouTube video: https://www.youtube.com/watch?v=-XSLZgWEAzE
 
-  // Setup the device for push notifications
-  final _androidChannel = const AndroidNotificationChannel(
-    'high importance channel',
-    'High importance notifications',
-    description: 'This channel is used for important notifications',
-    importance: Importance.defaultImportance,
-  );
+  //void initNotifications() async {
+  // final _firebaseMessaging = FirebaseMessaging.instance;
 
-  final _localNotifications = FlutterLocalNotificationsPlugin();
+  // await _firebaseMessaging.requestPermission();
+  // final deviceToken = await _firebaseMessaging.getToken();
 
-  void handleMessage(RemoteMessage? message) {
-    if (message == null) return;
-  }
-
-  Future initPushNotifications() async {
-    // This line is for iOS
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
-            alert: true, badge: true, sound: true);
-
-    FirebaseMessaging.instance.getInitialMessage().then(handleMessage);
-    FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
-    //FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
-    FirebaseMessaging.onMessage.listen((message) {
-      final notification = message.notification;
-      if (notification == null) return;
-
-      _localNotifications.show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            _androidChannel.id,
-            _androidChannel.name,
-            channelDescription: _androidChannel.description,
-            icon: '@drawable/ic_launcher',
-          ),
-        ),
-        payload: jsonEncode(message.toMap()),
-      );
-    });
-  }
-
-  Future initLocalNotifications() async {
-    //const iOS = IOSInitializationSettings();
-    const android = AndroidInitializationSettings('@drawable/ic_launcher');
-    const settings = InitializationSettings(android: android);
-
-    await _localNotifications.initialize(settings,
-        onDidReceiveNotificationResponse: (payload) {
-      final message = RemoteMessage.fromMap(jsonDecode(payload as String));
-      handleMessage(message);
-    });
-
-    final platform = _localNotifications.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
-    await platform?.createNotificationChannel(_androidChannel);
-  }
-
-  // Future<void> handleBackgroundMessage(RemoteMessage message) async {
-  //   print('Title: ${message.notification?.title}');
-  //   print('Body: ${message.notification?.body}');
-  //   print('Payload: ${message.data}');
+  // // Update the device token if it has changed.
+  // if (deviceToken != ref.read(usersNotifierProvider).deviceToken) {
+  //   ref.read(usersNotifierProvider.notifier).updateDeviceToken(deviceToken!);
   // }
 
-  void initNotifications() async {
-    final _firebaseMessaging = FirebaseMessaging.instance;
+  // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //   print('Message received when the app is in the foreground:');
+  //   print('Title: ${message.notification?.title}');
+  //   print('Body: ${message.notification?.body}');
 
-    await _firebaseMessaging.requestPermission();
-    final deviceToken = await _firebaseMessaging.getToken();
+  //   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //     RemoteNotification? notification = message.notification;
+  //     AndroidNotification? android = message.notification?.android;
 
-    // Update the device token if it has changed.
-    if (deviceToken != ref.read(usersNotifierProvider).deviceToken) {
-      ref.read(usersNotifierProvider.notifier).updateDeviceToken(deviceToken!);
-    }
+  //     // If `onMessage` is triggered with a notification, we display a dialog with the notification details.
+  //     if (notification != null && android != null) {
+  //       showDialog(
+  //         context: context,
+  //         builder: (BuildContext context) {
+  //           return AlertDialog(
+  //             title: Text(notification.title ?? ''),
+  //             content: SingleChildScrollView(
+  //               child: ListBody(
+  //                 children: [Text(notification.body ?? '')],
+  //               ),
+  //             ),
+  //             actions: [
+  //               TextButton(
+  //                 child: const Text('OK'),
+  //                 onPressed: () {
+  //                   Navigator.of(context).pop();
+  //                 },
+  //               ),
+  //             ],
+  //           );
+  //         },
+  //       );
+  //     }
+  //   });
+  // });
+  // // When the user taps on a notification and the app is opened.
+  // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+  //   // print('Message opened from system tray:');
+  //   // print('Title: ${message.notification?.title}');
+  //   // print('Body: ${message.notification?.body}');
 
-    initPushNotifications();
-    initLocalNotifications();
-  }
+  //   // Add any additional logic for handling the opened notification.
+  // });
+  //}
 
 /* =========================================================== */
 
@@ -133,7 +107,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     super.initState();
     passwordVisible = true;
 
-    initNotifications();
+    //initNotifications();
   }
 
   late String email;

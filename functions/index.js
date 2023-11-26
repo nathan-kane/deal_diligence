@@ -4,6 +4,7 @@ const admin = require("firebase-admin");
 admin.initializeApp();
 
 // Cloud Firestore triggers ref: https://firebase.google.com/docs/functions/firestore-events
+
 // exports.myFunction = functions.firestore
 //     .document("chat/{messageId}")
 //     .onCreate((snapshot, context) => {
@@ -23,13 +24,28 @@ exports.newTrxnNotification = functions.firestore
     .document("/company/{companyId}/trxns/{trxnsId}")
     .onCreate((snapshot, context) => {
       const newData = snapshot.data();
-      const company = context.params.companyId;
+      const trxn = context.params.trxnsId;
       const payload = {
         notification: {
           title: String(newData.title),
           body: String(newData.body),
         },
-        topic: company,
+        topic: trxn,
+      };
+      return admin.messaging().send(payload);
+    });
+
+exports.updateTrxnsNotification = functions.firestore
+    .document("/company/{companyId}/trxns/{trxnsId}")
+    .onUpdate((snapshot, context) => {
+      const newData = snapshot.data();
+      const trxn = context.params.trxnsId;
+      const payload = {
+        notification: {
+          title: String(newData.title),
+          body: String(newData.body),
+        },
+        topic: trxn,
       };
       return admin.messaging().send(payload);
     });

@@ -10,12 +10,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:deal_diligence/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:deal_diligence/Services/firebase_api.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FirebaseApi().initNotifications();
+
   runApp(const ProviderScope(
       child:
           DealDiligence())); // This allows the entire app to use River_Pod for state management
