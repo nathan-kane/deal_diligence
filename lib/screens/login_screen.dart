@@ -6,8 +6,6 @@
 
 // ignore_for_file: dead_code, no_leading_underscores_for_local_identifiers, unnecessary_null_comparison, use_build_context_synchronously
 
-import 'dart:convert';
-
 import 'package:deal_diligence/Providers/company_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:flutter/material.dart';

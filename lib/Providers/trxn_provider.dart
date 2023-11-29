@@ -328,6 +328,10 @@ class TrxnNotifier extends Notifier<Trxn> {
     state = state.copyWith(clientFName: newClientFName);
   }
 
+  void updateCompanyid(String newCompanyId) {
+    state = state.copyWith(companyId: newCompanyId);
+  }
+
   void updateClientLName(String newClientLName) {
     state = state.copyWith(clientLName: newClientLName);
   }
@@ -536,7 +540,7 @@ class TrxnNotifier extends Notifier<Trxn> {
 
     var newTrxn = Trxn(
         userId: ref.read(globalsNotifierProvider).currentUid,
-        companyId: ref.read(globalsNotifierProvider).companyId,
+        companyId: refTrxn.companyId,
         //trxnId: refTrxn.trxnId,
         clientFName: refTrxn.clientFName,
         clientLName: refTrxn.clientLName,

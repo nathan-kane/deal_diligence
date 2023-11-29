@@ -11,6 +11,7 @@ import 'package:deal_diligence/Providers/global_provider.dart';
 //import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/Providers/trxn_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
+import 'package:deal_diligence/screens/company_dash_board.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 //import 'package:firebase_messaging/firebase_messaging.dart';
@@ -272,7 +273,7 @@ class _TransactionDetailScreenState
         .updateselectedCompany(selectedCompany!);
   }
 
-  void changedDropDownAgent(String? selectedUser) {
+  void changedDropDownUser(String? selectedUser) {
     setState(() {
       _currentUser = selectedUser;
     });
@@ -390,9 +391,10 @@ class _TransactionDetailScreenState
             .read(trxnNotifierProvider.notifier)
             .updateClientLName(clientLNameController.text);
         clientTypeController.text = trxnSnapshot.data()?['clientType'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateClientType(clientTypeController.text);
+        _clientType = trxnSnapshot.data()?['clientType'] ?? "";
+        // ref
+        //     .read(trxnNotifierProvider.notifier)
+        //     .updateClientType(clientTypeController.text);
         clientCellPhoneController.text =
             trxnSnapshot.data()?['clientCellPhone'] ?? "";
         ref
@@ -663,9 +665,8 @@ class _TransactionDetailScreenState
     ref
         .read(trxnNotifierProvider.notifier)
         .updateClientLName(clientLNameController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateClientType(clientTypeController.text);
+    ref.read(trxnNotifierProvider.notifier).updateCompanyid(_selectedCompany!);
+    ref.read(trxnNotifierProvider.notifier).updateClientType(_clientType);
     ref
         .read(trxnNotifierProvider.notifier)
         .updateClientCellPhone(clientCellPhoneController.text);
@@ -861,9 +862,9 @@ class _TransactionDetailScreenState
                         onChanged: (companyValue) {
                           setState(() {
                             _selectedCompany = companyValue;
-                            ref
-                                .read(globalsNotifierProvider.notifier)
-                                .updatecompanyId(companyValue!);
+                            // ref
+                            //     .read(globalsNotifierProvider.notifier)
+                            //     .updatecompanyId(companyValue!);
                           });
                         },
                         items: companyItems,
@@ -918,7 +919,7 @@ class _TransactionDetailScreenState
                                   _selectedUser = userValue;
                                   ref
                                       .read(globalsNotifierProvider.notifier)
-                                      .updatecompanyId(userValue!);
+                                      .updatecurrentUserId(userValue!);
                                 });
                               },
                               items: userItems,
@@ -965,10 +966,10 @@ class _TransactionDetailScreenState
                   hint: const Text('Client Type'),
                   onChanged: (_value) {
                     setState(() {
-                      //_clientType = _value;
-                      ref
-                          .read(trxnNotifierProvider.notifier)
-                          .updateClientType(_value);
+                      _clientType = _value!;
+                      // ref
+                      //     .read(trxnNotifierProvider.notifier)
+                      //     .updateClientType(_value);
                     });
                   },
                   items: <String>['Select Client Type', 'Buyer', 'Seller']
@@ -1849,10 +1850,15 @@ class _TransactionDetailScreenState
                           ref.read(trxnNotifierProvider),
                           ref.read(globalsNotifierProvider).companyId!,
                           widget.newTrxn!);
-                      ref
-                          .read(globalsNotifierProvider.notifier)
-                          .updatetargetScreen(0);
-                      Navigator.pop(context);
+                      // ref
+                      //     .read(globalsNotifierProvider.notifier)
+                      //     .updatetargetScreen(0);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const CompanyDashboardScreen(),
+                        ),
+                      );
+                      //Navigator.pop(context);
                       setState(() {
                         showSpinner = false;
                       });

@@ -1,22 +1,22 @@
 import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
+//import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 // Use this YouTube video for guidance: https://www.youtube.com/watch?v=k0zGEbiDJcQ
 // and this YouTube video: https://www.youtube.com/watch?v=-XSLZgWEAzE
 
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
-  if (kDebugMode) {
-    print('Title: ${message.notification?.title}');
-  }
-  if (kDebugMode) {
-    print('Body: ${message.notification?.body}');
-  }
-  if (kDebugMode) {
-    print('Payload: ${message.data}');
-  }
+  // if (kDebugMode) {
+  //   print('Title: ${message.notification?.title}');
+  // }
+  // if (kDebugMode) {
+  //   print('Body: ${message.notification?.body}');
+  // }
+  // if (kDebugMode) {
+  //   print('Payload: ${message.data}');
+  // }
 }
 
 class FirebaseApi {
@@ -85,6 +85,7 @@ class FirebaseApi {
 
   Future<void> initNotifications() async {
     await firebaseMessaging.requestPermission();
+    await firebaseMessaging.subscribeToTopic('chat');
     //final fcmToken = await firebaseMessaging.getToken();
     initPushNotifications();
     initLocalNotification();
