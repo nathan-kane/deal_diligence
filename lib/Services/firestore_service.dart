@@ -151,10 +151,10 @@ class FirestoreService {
     return _db.collection('Users').doc(userId).delete();
   }
 
-  Future<void> deleteTrxn(String trxnId, Ref ref) {
-    return _db
+  Future<void> deleteTrxn(String trxnId, String companyId) async {
+    await _db
         .collection('Company')
-        .doc(ref.read(globalsNotifierProvider).companyId)
+        .doc(companyId)
         .collection('trxns')
         .doc(trxnId)
         .delete();

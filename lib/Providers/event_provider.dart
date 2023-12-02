@@ -138,7 +138,7 @@ class EventsNotifier extends Notifier<Events> {
         eventStartTime: events.eventStartTime,
         eventDuration: events.eventDuration,
         eventDate: events.eventDate,
-        eventDescription: "rrrrr", //events.eventDescription,
+        eventDescription: events.eventDescription,
         companyId: ref.read(globalsNotifierProvider).companyId,
         userId: ref.read(globalsNotifierProvider).currentUserId);
 

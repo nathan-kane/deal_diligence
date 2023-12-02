@@ -1827,7 +1827,9 @@ class _TransactionDetailScreenState
                     'Prospect',
                     'Listed',
                     'Under Contract',
-                    'Closed'
+                    'On Hold',
+                    'Closed',
+                    'Archived'
                   ].map<DropdownMenuItem<String>>((String _value) {
                     return DropdownMenuItem<String>(
                       value: _value,
@@ -1879,20 +1881,19 @@ class _TransactionDetailScreenState
                       showSpinner = true;
                     });
                     try {
-                      ref
-                          .read(trxnNotifierProvider.notifier)
-                          .deleteTrxn(trxnIdController.text);
+                      ref.read(trxnNotifierProvider.notifier).deleteTrxn(
+                          ref.read(globalsNotifierProvider).currentTrxnId!,
+                          _selectedCompany!);
                       ref
                           .read(globalsNotifierProvider.notifier)
                           .updatetargetScreen(0);
                       Navigator.pop(context);
-                      /*
-                        Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                            builder: (context) => MainScreen(),
-                          ),
-                        );*/
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CompanyDashboardScreen(),
+                        ),
+                      );
                       setState(() {
                         showSpinner = false;
                       });

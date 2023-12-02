@@ -23,6 +23,7 @@ import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 String? currentEventId = "";
+DateTime kNow = DateTime.now();
 
 class AddEventScreen extends ConsumerStatefulWidget {
   //static const String id = 'add_event_screen';
@@ -113,6 +114,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
     //String _time = TimeOfDay.now().toString();
     //Duration initialtimer = const Duration();
     DateTime _selectedDate = DateTime.now();
+    //DateTime eventDate = DateTime.now();
     DateTime _dt = DateTime.now();
     //String _timePicked = TimeOfDay.now().toString();
 
@@ -175,15 +177,18 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                     DateTime? _datePicked = await showDatePicker(
                         context: context,
                         initialDate: _selectedDate,
-                        firstDate: DateTime(2023),
-                        lastDate: DateTime(2026));
+                        firstDate:
+                            DateTime(kNow.year, kNow.month - 3, kNow.day),
+                        lastDate:
+                            DateTime(kNow.year, kNow.month + 36, kNow.day));
                     if (_date != _datePicked) {
+                      ref
+                          .read(eventsNotifierProvider.notifier)
+                          .updateEventDate(_datePicked);
                       setState(() {
                         eventDateController.text =
                             DateFormat("MM/dd/yyyy").format(_datePicked!);
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventDate(_datePicked);
+
                         _selectedDate = _datePicked;
                         //DateFormat("MM/dd/yyyy").format(_date));
                       });
@@ -212,10 +217,12 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                       initialTime: TimeOfDay.now(),
                     );
                     if (_timePicked != null) {
+                      DateTime eventDate =
+                          ref.read(eventsNotifierProvider).eventDate!;
                       _dt = DateTime(
-                        _selectedDate.year,
-                        _selectedDate.month,
-                        _selectedDate.day,
+                        eventDate.year,
+                        eventDate.month,
+                        eventDate.day,
                         _timePicked.hour,
                         _timePicked.minute,
                       );
@@ -245,11 +252,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   controller: eventDescriptionController,
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    // ref
-                    //     .read(eventsNotifierProvider.notifier)
-                    //     .updateEventDescription(value);
-                  },
+                  onChanged: (value) {},
                   decoration: const InputDecoration(
                       hintText: 'Description', labelText: 'Description'),
                 ),

@@ -12,6 +12,7 @@ import 'dart:async';
 import 'dart:collection';
 // import 'package:multiple_stream_builder/multiple_stream_builder.dart';
 import 'package:deal_diligence/Providers/event_provider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 //import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -37,11 +38,8 @@ final kNow = DateTime.now();
 final kFirstDay = DateTime(kNow.year, kNow.month - 3, kNow.day);
 final kLastDay = DateTime(kNow.year, kNow.month + 12, kNow.day);
 
-// final eventsRef = FirebaseFirestore.instance.collection('company').doc(ref.read(globalsNotifierProvider).companyId)
-//     .collection('agents').doc(globals.currentAgentId)
-//      .collection('event');
 final _db = FirebaseFirestore.instance;
-//final _firestoreService = FirestoreService();
+
 bool showSpinner = false;
 DateTime? _selectedDay;
 DateTime _focusedDay = DateTime.now();
@@ -61,11 +59,8 @@ class AppointmentCalendarScreen extends ConsumerStatefulWidget {
 class _AppointmentCalendarScreenState
     extends ConsumerState<AppointmentCalendarScreen>
     with TickerProviderStateMixin {
-  //late final List<Events> _selectedEvents;
+  late final ValueNotifier<List<Events>> _selectedEvents;
 
-  //DateTime? _selectedDate;
-
-  //Map<DateTime, List>? _selectedEventsMap;
   late StreamController<Map<DateTime, List>> _streamController;
   var eventDoc;
   var trxnDoc;
@@ -77,6 +72,8 @@ class _AppointmentCalendarScreenState
 
     _streamController = StreamController();
     _selectedDay = _focusedDay;
+
+    //_selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!, events));
   }
 
   @override
@@ -87,147 +84,143 @@ class _AppointmentCalendarScreenState
     super.dispose();
   }
 
-  List<Events>? _getTrxnEventsForDay(DateTime day, List<Trxn>? trxns) {
-    DateTime? trxnDate;
-    DateTime trxnDateUTC;
+  // List<Events>? _getTrxnEventsForDay(DateTime day, List<Trxn>? trxns) {
+  //   DateTime? trxnDate;
+  //   DateTime trxnDateUTC;
 
-    for (int i = 0; i < trxnDoc.length; i++) {
-      if (trxnDoc[i].contractDate != null && trxnDoc[i].contractDate != "") {
-        trxnDate = DateTime.tryParse(trxnDoc[i].contractDate);
-        trxnDateUTC = trxnDate!.toUtc();
-        if (day.year == trxnDate.year &&
-            day.day == trxnDate.day &&
-            day.month == trxnDate.month) {
-          List<Events> eventList = [];
-          eventList.add(trxnDoc[i].contractDate);
-          (kEvents.putIfAbsent(trxnDateUTC, () => eventList));
-        }
-      }
+  //   for (int i = 0; i < trxnDoc.length; i++) {
+  //     if (trxnDoc[i].contractDate != null && trxnDoc[i].contractDate != "") {
+  //       trxnDate = DateTime.tryParse(trxnDoc[i].contractDate);
+  //       trxnDateUTC = trxnDate!.toUtc();
+  //       if (day.year == trxnDate.year &&
+  //           day.day == trxnDate.day &&
+  //           day.month == trxnDate.month) {
+  //         List<Events> eventList = [];
+  //         eventList.add(trxnDoc[i].contractDate);
+  //         (kEvents.putIfAbsent(trxnDateUTC, () => eventList));
+  //       }
+  //     }
 
-      if (trxnDoc[i].closingDate != null && trxnDoc[i].closingDate != "") {
-        trxnDate = DateTime.tryParse(trxnDoc[i].closingDate);
-        trxnDateUTC = trxnDate!.toUtc();
-        if (day.year == trxnDate.year &&
-            day.day == trxnDate.day &&
-            day.month == trxnDate.month) {
-          List<Events> eventList = [];
-          eventList.add(trxnDoc[i].closingDate);
-          (kEvents.putIfAbsent(trxnDateUTC, () => eventList));
-        }
-      }
+  //     if (trxnDoc[i].closingDate != null && trxnDoc[i].closingDate != "") {
+  //       trxnDate = DateTime.tryParse(trxnDoc[i].closingDate);
+  //       trxnDateUTC = trxnDate!.toUtc();
+  //       if (day.year == trxnDate.year &&
+  //           day.day == trxnDate.day &&
+  //           day.month == trxnDate.month) {
+  //         List<Events> eventList = [];
+  //         eventList.add(trxnDoc[i].closingDate);
+  //         (kEvents.putIfAbsent(trxnDateUTC, () => eventList));
+  //       }
+  //     }
 
-      if (trxnDoc[i].dueDiligence24b != null &&
-          trxnDoc[i].dueDiligence24b != "") {
-        trxnDate = DateTime.tryParse(trxnDoc[i].dueDiligence24b);
-        trxnDateUTC = trxnDate!.toUtc();
-        if (day.year == trxnDate.year &&
-            day.day == trxnDate.day &&
-            day.month == trxnDate.month) {
-          List<Events> eventList = [];
-          eventList.add(trxnDoc[i].dueDiligence24b);
-          (kEvents.putIfAbsent(trxnDateUTC, () => eventList));
-        }
-      }
+  //     if (trxnDoc[i].dueDiligence24b != null &&
+  //         trxnDoc[i].dueDiligence24b != "") {
+  //       trxnDate = DateTime.tryParse(trxnDoc[i].dueDiligence24b);
+  //       trxnDateUTC = trxnDate!.toUtc();
+  //       if (day.year == trxnDate.year &&
+  //           day.day == trxnDate.day &&
+  //           day.month == trxnDate.month) {
+  //         List<Events> eventList = [];
+  //         eventList.add(trxnDoc[i].dueDiligence24b);
+  //         (kEvents.putIfAbsent(trxnDateUTC, () => eventList));
+  //       }
+  //     }
 
-      if (trxnDoc[i].financing24c != null && trxnDoc[i].financing24c != "") {
-        trxnDate = DateTime.tryParse(trxnDoc[i].financing24c);
-        trxnDateUTC = trxnDate!.toUtc();
-        if (day.year == trxnDate.year &&
-            day.day == trxnDate.day &&
-            day.month == trxnDate.month) {
-          List<Events> eventList = [];
-          eventList.add(trxnDoc[i].financing24c);
-          (kEvents.putIfAbsent(trxnDateUTC, () => eventList));
-        }
-      }
+  //     if (trxnDoc[i].financing24c != null && trxnDoc[i].financing24c != "") {
+  //       trxnDate = DateTime.tryParse(trxnDoc[i].financing24c);
+  //       trxnDateUTC = trxnDate!.toUtc();
+  //       if (day.year == trxnDate.year &&
+  //           day.day == trxnDate.day &&
+  //           day.month == trxnDate.month) {
+  //         List<Events> eventList = [];
+  //         eventList.add(trxnDoc[i].financing24c);
+  //         (kEvents.putIfAbsent(trxnDateUTC, () => eventList));
+  //       }
+  //     }
 
-      if (trxnDoc[i].inspectionDate != null &&
-          trxnDoc[i].inspectionDate != "") {
-        trxnDate = DateTime.tryParse(trxnDoc[i].inspectionDate);
-        trxnDateUTC = trxnDate!.toUtc();
-        if (day.year == trxnDate.year &&
-            day.day == trxnDate.day &&
-            day.month == trxnDate.month) {
-          List<Events> eventList = [];
-          eventList.add(trxnDoc['inspectionDate']);
-          (kEvents.putIfAbsent(trxnDateUTC, () => eventList));
-        }
-      }
+  //     if (trxnDoc[i].inspectionDate != null &&
+  //         trxnDoc[i].inspectionDate != "") {
+  //       trxnDate = DateTime.tryParse(trxnDoc[i].inspectionDate);
+  //       trxnDateUTC = trxnDate!.toUtc();
+  //       if (day.year == trxnDate.year &&
+  //           day.day == trxnDate.day &&
+  //           day.month == trxnDate.month) {
+  //         List<Events> eventList = [];
+  //         eventList.add(trxnDoc['inspectionDate']);
+  //         (kEvents.putIfAbsent(trxnDateUTC, () => eventList));
+  //       }
+  //     }
 
-      if (trxnDoc[i].appraisalDate != null && trxnDoc[i].appraisalDate != "") {
-        trxnDate = DateTime.tryParse(trxnDoc[i].appraisalDate);
-        trxnDateUTC = trxnDate!.toUtc();
-        if (day.year == trxnDate.year &&
-            day.day == trxnDate.day &&
-            day.month == trxnDate.month) {
-          List<Events> eventList = [];
-          eventList.add(trxnDoc[i].appraisalDate);
-          (kEvents.putIfAbsent(trxnDateUTC, () => eventList));
-        }
-      }
+  //     if (trxnDoc[i].appraisalDate != null && trxnDoc[i].appraisalDate != "") {
+  //       trxnDate = DateTime.tryParse(trxnDoc[i].appraisalDate);
+  //       trxnDateUTC = trxnDate!.toUtc();
+  //       if (day.year == trxnDate.year &&
+  //           day.day == trxnDate.day &&
+  //           day.month == trxnDate.month) {
+  //         List<Events> eventList = [];
+  //         eventList.add(trxnDoc[i].appraisalDate);
+  //         (kEvents.putIfAbsent(trxnDateUTC, () => eventList));
+  //       }
+  //     }
 
-      if (trxnDoc[i].sellerDisclosure24a != null &&
-          trxnDoc[i].sellerDisclosure24a != "") {
-        trxnDate = DateTime.tryParse(trxnDoc[i].sellerDisclosure24a);
-        trxnDateUTC = trxnDate!.toUtc();
-        if (day.year == trxnDate.year &&
-            day.day == trxnDate.day &&
-            day.month == trxnDate.month) {
-          List<Events> eventList = [];
-          eventList.add(trxnDoc[i].sellerDisclosure24a);
-          (kEvents.putIfAbsent(trxnDateUTC, () => eventList));
-        }
-      }
+  //     if (trxnDoc[i].sellerDisclosure24a != null &&
+  //         trxnDoc[i].sellerDisclosure24a != "") {
+  //       trxnDate = DateTime.tryParse(trxnDoc[i].sellerDisclosure24a);
+  //       trxnDateUTC = trxnDate!.toUtc();
+  //       if (day.year == trxnDate.year &&
+  //           day.day == trxnDate.day &&
+  //           day.month == trxnDate.month) {
+  //         List<Events> eventList = [];
+  //         eventList.add(trxnDoc[i].sellerDisclosure24a);
+  //         (kEvents.putIfAbsent(trxnDateUTC, () => eventList));
+  //       }
+  //     }
 
-      if (trxnDoc[i].walkThroughDate != null &&
-          trxnDoc[i].walkThroughDate != "") {
-        trxnDate = DateTime.tryParse(trxnDoc[i].walkThroughDate);
-        trxnDateUTC = trxnDate!.toUtc();
-        if (day.year == trxnDate.year &&
-            day.day == trxnDate.day &&
-            day.month == trxnDate.month) {
-          List<Events> eventList = [];
-          eventList.add(trxnDoc[i].walkThroughDate);
-          (kEvents.putIfAbsent(trxnDateUTC, () => eventList));
-        }
-      }
-      //eventList.add(trxnDoc[i]);
-      //(kEvents.putIfAbsent(trxnDateUTC, () => eventList))??[];
+  //     if (trxnDoc[i].walkThroughDate != null &&
+  //         trxnDoc[i].walkThroughDate != "") {
+  //       trxnDate = DateTime.tryParse(trxnDoc[i].walkThroughDate);
+  //       trxnDateUTC = trxnDate!.toUtc();
+  //       if (day.year == trxnDate.year &&
+  //           day.day == trxnDate.day &&
+  //           day.month == trxnDate.month) {
+  //         List<Events> eventList = [];
+  //         eventList.add(trxnDoc[i].walkThroughDate);
+  //         (kEvents.putIfAbsent(trxnDateUTC, () => eventList));
+  //       }
+  //     }
+  //     //eventList.add(trxnDoc[i]);
+  //     //(kEvents.putIfAbsent(trxnDateUTC, () => eventList))??[];
+  //   }
+
+  //   return [];
+  // }
+
+  List<Events> _getEventsForDay(DateTime day, List<Events>? events) {
+    List<Events> listDayEvents = [];
+
+    if (events == null) {
+      return listDayEvents; // Return an empty list if events is null
     }
 
-    return [];
-  }
-
-  List<Events> _getEventsForDay(DateTime day,
-      [List<Events>? events, List<Trxn>? trxns]) {
-    // kEvents is a linkedHashMap
-    // Calendar events
-    for (int i = 0; i < eventDoc.length; i++) {
-      DateTime eventDate = eventDoc[i].eventDate;
-      DateTime eventDateUTC = eventDate.toUtc();
-      if (day.year == eventDate.year &&
-          day.day == eventDate.day &&
-          day.month == eventDate.month) {
-        List<Events> eventList = [];
-        eventList.add(eventDoc[i]);
-
-        /*
-        if (trxns != null) {
-          _getTrxnEventsForDay(day, trxns);
-        }*/
-        return (kEvents.putIfAbsent(eventDateUTC, () => eventList));
+    for (Events event in events) {
+      if (event.eventDate != null &&
+          day.year == event.eventDate!.year &&
+          day.month == event.eventDate!.month &&
+          day.day == event.eventDate!.day) {
+        listDayEvents.add(event);
       }
     }
-    return [];
+    return listDayEvents;
   }
 
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+  void _onDaySelected(
+      DateTime selectedDay, DateTime focusedDay, List<Events> events) {
     if (!isSameDay(_selectedDay, selectedDay)) {
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
       });
-      //_selectedEvents.value = _getEventsForDay(selectedDay);
+      _selectedEvents = ValueNotifier(_getEventsForDay(selectedDay, events));
     }
   }
 
@@ -239,9 +232,6 @@ class _AppointmentCalendarScreenState
 
   @override
   Widget build(BuildContext context) {
-    //final eventProvider = Provider.of<EventProvider>(context);
-    FirebaseFirestore _db = FirebaseFirestore.instance;
-
     return Scaffold(
       //appBar: CustomAppBar(),
       backgroundColor: Colors.white,
@@ -316,15 +306,16 @@ class _AppointmentCalendarScreenState
 
   // Simple TableCalendar configuration (using Styles)
   Widget _buildTableCalendar([List<Events>? events, List<Trxn>? trxns]) {
+    CalendarFormat _calendarFormat = CalendarFormat.month;
     return TableCalendar(
       firstDay: kFirstDay,
       lastDay: kLastDay,
-      focusedDay: _focusedDay,
+      focusedDay: DateTime.now(),
       selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
       locale: 'en_US',
-      // eventLoader: (day) {
-      //   return events ?? _getEventsForDay(day, events, trxns);
-      // },
+      eventLoader: (day) {
+        return _getEventsForDay(day, events ?? []);
+      },
       startingDayOfWeek: StartingDayOfWeek.sunday,
       calendarStyle: CalendarStyle(
         isTodayHighlighted: true,
@@ -333,7 +324,17 @@ class _AppointmentCalendarScreenState
         markerDecoration: const BoxDecoration(color: Colors.deepPurpleAccent),
         outsideDaysVisible: false,
       ),
+      calendarFormat: _calendarFormat,
+      onFormatChanged: (format) {
+        if (format != _calendarFormat) {
+          setState(() {
+            _calendarFormat = format;
+          });
+        }
+      },
       headerStyle: HeaderStyle(
+        formatButtonVisible: false,
+        titleCentered: true,
         formatButtonTextStyle:
             const TextStyle().copyWith(color: Colors.white, fontSize: 15.0),
         formatButtonDecoration: BoxDecoration(
@@ -341,10 +342,13 @@ class _AppointmentCalendarScreenState
           borderRadius: BorderRadius.circular(16.0),
         ),
       ),
+      daysOfWeekStyle:
+          const DaysOfWeekStyle(decoration: BoxDecoration(color: Colors.amber)),
       onDaySelected: (selectedDay, focusedDay) {
         setState(() {
           _selectedDay = selectedDay;
           _focusedDay = focusedDay; // update `_focusedDay` here as well
+          //return _onDaySelected(selectedDay, focusedDay, events!);
         });
       },
       onPageChanged: (focusedDay) {

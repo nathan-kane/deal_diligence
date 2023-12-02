@@ -589,8 +589,8 @@ class TrxnNotifier extends Notifier<Trxn> {
     }
   }
 
-  deleteTrxn(String trxnId) {
-    firestoreService.deleteTrxn(trxnId, ref);
+  deleteTrxn(String trxnId, String companyId) {
+    firestoreService.deleteTrxn(trxnId, companyId);
   }
 }
 

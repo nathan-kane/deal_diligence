@@ -61,6 +61,7 @@ class _CompanyDashboardScreenState
                   .collection('company')
                   .doc(ref.read(globalsNotifierProvider).companyId)
                   .collection('trxns')
+                  .where("trxnStatus", isNotEqualTo: "Archived")
                   .get(),
               builder: (context, snapshot) {
                 return snapshot.hasData
