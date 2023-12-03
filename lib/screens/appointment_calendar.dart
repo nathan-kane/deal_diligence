@@ -12,7 +12,6 @@ import 'dart:async';
 import 'dart:collection';
 // import 'package:multiple_stream_builder/multiple_stream_builder.dart';
 import 'package:deal_diligence/Providers/event_provider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 //import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -37,6 +36,7 @@ final Map<DateTime, List> _holidays = {
 final kNow = DateTime.now();
 final kFirstDay = DateTime(kNow.year, kNow.month - 3, kNow.day);
 final kLastDay = DateTime(kNow.year, kNow.month + 12, kNow.day);
+List<Events> events = [];
 
 final _db = FirebaseFirestore.instance;
 
@@ -59,7 +59,13 @@ class AppointmentCalendarScreen extends ConsumerStatefulWidget {
 class _AppointmentCalendarScreenState
     extends ConsumerState<AppointmentCalendarScreen>
     with TickerProviderStateMixin {
-  late final ValueNotifier<List<Events>> _selectedEvents;
+  late final List<Events> _selectedEvents;
+  final CalendarFormat _calendarFormat = CalendarFormat.month;
+  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+  DateTime? _rangeStart;
+  DateTime? _rangeEnd;
 
   late StreamController<Map<DateTime, List>> _streamController;
   var eventDoc;
@@ -213,16 +219,48 @@ class _AppointmentCalendarScreenState
     return listDayEvents;
   }
 
-  void _onDaySelected(
-      DateTime selectedDay, DateTime focusedDay, List<Events> events) {
+  // List<Events> _getEventsForRange(DateTime start, DateTime end) {
+  //   // Implementation example
+  //   final days = daysInRange(start, end);
+
+  //   return [
+  //     for (final d in days) ..._getEventsForDay(d),
+  //   ];
+  // }
+
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay,
+      [List<Events>? events]) {
     if (!isSameDay(_selectedDay, selectedDay)) {
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
+        _rangeStart = null; // Important to clean those
+        _rangeEnd = null;
+        _rangeSelectionMode = RangeSelectionMode.toggledOff;
       });
-      _selectedEvents = ValueNotifier(_getEventsForDay(selectedDay, events));
+      _selectedEvents = _getEventsForDay(selectedDay, events);
     }
+    //_buildEventList();
   }
+
+  // void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
+  //   setState(() {
+  //     _selectedDay = null;
+  //     _focusedDay = focusedDay;
+  //     _rangeStart = start;
+  //     _rangeEnd = end;
+  //     _rangeSelectionMode = RangeSelectionMode.toggledOn;
+  //   });
+
+  //   // `start` or `end` could be null
+  //   if (start != null && end != null) {
+  //     _selectedEvents.value = _getEventsForRange(start, end);
+  //   } else if (start != null) {
+  //     _selectedEvents.value = _getEventsForDay(start);
+  //   } else if (end != null) {
+  //     _selectedEvents.value = _getEventsForDay(end, events);
+  //   }
+  // }
 
   void _onVisibleDaysChanged(
       DateTime first, DateTime last, CalendarFormat format) {}
@@ -240,6 +278,8 @@ class _AppointmentCalendarScreenState
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           StreamBuilder<QuerySnapshot>(
+            // Get all the events starting from current month - 3
+            // to current month + 12
             stream: _db
                 .collection('users')
                 .doc(ref.read(globalsNotifierProvider).currentUserId)
@@ -298,6 +338,7 @@ class _AppointmentCalendarScreenState
             child: const Text('Add Event'),
           ),
           const SizedBox(height: 8.0),
+          // Build the event list below the calendar if events exist
           Expanded(child: _buildEventList()),
         ],
       ),
@@ -310,7 +351,7 @@ class _AppointmentCalendarScreenState
     return TableCalendar(
       firstDay: kFirstDay,
       lastDay: kLastDay,
-      focusedDay: DateTime.now(),
+      focusedDay: _focusedDay,
       selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
       locale: 'en_US',
       eventLoader: (day) {
@@ -348,9 +389,10 @@ class _AppointmentCalendarScreenState
         setState(() {
           _selectedDay = selectedDay;
           _focusedDay = focusedDay; // update `_focusedDay` here as well
-          //return _onDaySelected(selectedDay, focusedDay, events!);
+          return _onDaySelected(selectedDay, focusedDay);
         });
       },
+      //onRangeSelected: _onRangeSelected,
       onPageChanged: (focusedDay) {
         _focusedDay = focusedDay;
       },
@@ -372,15 +414,15 @@ class _AppointmentCalendarScreenState
       stream: _db
           .collection('users')
           .doc(ref.read(globalsNotifierProvider).currentUserId)
-          .collection('event')
+          .collection('events')
           .where('eventDate',
               isGreaterThanOrEqualTo: DateTime(
-                  _focusedDay.year, _focusedDay.month, _focusedDay.day, 0, 0))
+                  _focusedDay.year, _focusedDay.month, _focusedDay.day))
           .where('eventDate',
-              isLessThan: DateTime(_focusedDay.year, _focusedDay.month,
-                  _focusedDay.day + 1, 0, 0))
+              isLessThan: DateTime(
+                  _focusedDay.year, _focusedDay.month, _focusedDay.day + 1))
           .snapshots(),
-      builder: (context, snapshot) {
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (!snapshot.hasData) {
           return const Center(
               child: Text(
@@ -404,8 +446,8 @@ class _AppointmentCalendarScreenState
                     ),
                     subtitle: Text.rich(TextSpan(
                         text:
-                            '${DateFormat('EE MM-dd-yyyy').format(doc[index]['eventDate'])}\n'
-                            '${DateFormat('h:mm a').format(doc[index]['eventStartTime'])}, '
+                            '${DateFormat('EE MM-dd-yyyy').format(doc[index]['eventDate'].toDate())}\n'
+                            '${DateFormat('h:mm a').format(doc[index]['eventStartTime'].toDate())}, '
                             'Duration: ${doc[index]['eventDuration'] ?? 'n/a'} minutes',
                         children: <TextSpan>[
                           TextSpan(
