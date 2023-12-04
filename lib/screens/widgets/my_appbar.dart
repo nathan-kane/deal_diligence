@@ -25,13 +25,19 @@ class _CustomAppBarState extends State<CustomAppBar> {
   Widget build(BuildContext context) {
     return AppBar(
       //automaticallyImplyLeading: false, // removes the back button in appbar
-      title: const Text("Deal Diligence"),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Image.asset('lib/assets/images/dd_logo_72.png',
+              fit: BoxFit.cover, height: 56),
+        ],
+      ),
       actions: [
         IconButton(
           onPressed: () {
             signOut();
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => LoginScreen()));
+                MaterialPageRoute(builder: (context) => const LoginScreen()));
           },
           icon: const Icon(Icons.logout),
         )
