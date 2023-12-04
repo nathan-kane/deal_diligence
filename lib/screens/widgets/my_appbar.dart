@@ -3,7 +3,7 @@ import 'package:deal_diligence/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
-  CustomAppBar({Key? key})
+  const CustomAppBar({Key? key})
       : preferredSize = const Size.fromHeight(kToolbarHeight),
         super(key: key);
 
@@ -24,6 +24,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: Colors.blue,
       //automaticallyImplyLeading: false, // removes the back button in appbar
       title: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -34,6 +35,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
       ),
       actions: [
         IconButton(
+          color: Colors.black,
           onPressed: () {
             signOut();
             Navigator.push(context,
@@ -45,20 +47,3 @@ class _CustomAppBarState extends State<CustomAppBar> {
     );
   }
 }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return AppBar(
-  //     title: const Text("Deal Diligence"),
-  //     actions: [
-  //       IconButton(
-  //         onPressed: () {
-  //           signOut();
-  //           Navigator.push(context,
-  //               MaterialPageRoute(builder: (context) => LoginScreen()));
-  //         },
-  //         icon: const Icon(Icons.logout),
-  //       )
-  //     ],
-  //   );
-  // }
