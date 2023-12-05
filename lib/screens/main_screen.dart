@@ -64,7 +64,7 @@ class MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: const CustomAppBar(),
       body: Container(child: appScreens[_pageIndex]),
       drawer: Drawer(
         child: (ListView(
