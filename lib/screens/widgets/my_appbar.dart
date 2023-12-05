@@ -29,10 +29,12 @@ class _CustomAppBarState extends State<CustomAppBar> {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Image.asset('lib/assets/images/dd_logo_72.png',
+          Image.asset('lib/assets/images/dd_logo_building.png',
               fit: BoxFit.cover, height: 56),
+          const Center(child: Text(' Deal Diligence')),
         ],
       ),
+      //leadingWidth: 200,
       actions: [
         IconButton(
           color: Colors.black,
