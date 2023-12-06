@@ -2,7 +2,7 @@
     <application
         android:label="deal_diligence"
         android:name="${applicationName}"
-        android:icon="@mipmap/dd_logo_building"> 
+        android:icon="@mipmap/dd_logo"> 
         <activity
             android:name=".MainActivity"
             android:exported="true"

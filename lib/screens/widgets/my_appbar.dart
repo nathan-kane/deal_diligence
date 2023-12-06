@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:deal_diligence/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   const CustomAppBar({Key? key})
@@ -29,9 +30,19 @@ class _CustomAppBarState extends State<CustomAppBar> {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Image.asset('lib/assets/images/dd_logo_building.png',
-              fit: BoxFit.cover, height: 56),
-          const Center(child: Text(' Deal Diligence')),
+          // Image.asset('lib/assets/images/dd_logo_building.png',
+          //     fit: BoxFit.cover, height: 56),
+          Center(
+            child: Text(
+              ' Deal Diligence',
+              style: GoogleFonts.lato(
+                textStyle: const TextStyle(
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
         ],
       ),
       //leadingWidth: 200,
