@@ -30,9 +30,9 @@ var maskFormatter = MaskTextInputFormatter(
 class UserProfileScreen extends ConsumerStatefulWidget {
   static const String id = 'user_profile_screen';
   final Users? users;
-  final bool? isNewUser;
+  final bool isNewUser;
 
-  const UserProfileScreen([this.isNewUser, this.users]);
+  const UserProfileScreen([this.isNewUser = true, this.users]);
 
   @override
   ConsumerState<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -41,7 +41,7 @@ class UserProfileScreen extends ConsumerStatefulWidget {
 class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   final _db = FirebaseFirestore.instance;
   bool isChecked = false;
-  bool isNewUser = false;
+  //bool isNewUser = false;
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -105,7 +105,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   getCurrentUserProfile() async {
     String currentCompanyId = ref.read(globalsNotifierProvider).companyId!;
 
-    if (isNewUser == true) {
+    if (widget.isNewUser == true) {
       // final DocumentSnapshot currentCompanyProfile = await companyRef
       //     .doc(ref.read(globalsNotifierProvider).companyId)
       //     .get();
@@ -277,7 +277,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
 
   @override
   void initState() {
-    if (!widget.isNewUser!) {
+    if (widget.isNewUser == false) {
       getCurrentUserProfile();
     }
 
