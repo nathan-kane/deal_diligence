@@ -361,6 +361,7 @@ class _AppointmentCalendarScreenState
       eventLoader: (day) {
         return _getEventsForDay(day, events ?? []);
       },
+      daysOfWeekHeight: 30,
       startingDayOfWeek: StartingDayOfWeek.sunday,
       calendarStyle: CalendarStyle(
         isTodayHighlighted: true,
@@ -371,14 +372,15 @@ class _AppointmentCalendarScreenState
       ),
       calendarFormat: _calendarFormat,
       onFormatChanged: (format) {
-        if (format != _calendarFormat) {
-          setState(() {
-            _calendarFormat = format;
-          });
-        }
+        //if (format != _calendarFormat) {
+        setState(() {
+          _calendarFormat = format;
+        });
+        //}
       },
       headerStyle: HeaderStyle(
         formatButtonVisible: false,
+        formatButtonShowsNext: false,
         titleCentered: true,
         formatButtonTextStyle:
             const TextStyle().copyWith(color: Colors.white, fontSize: 15.0),
@@ -386,9 +388,14 @@ class _AppointmentCalendarScreenState
           color: Colors.deepOrange[400],
           borderRadius: BorderRadius.circular(16.0),
         ),
+        titleTextStyle:
+            const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
       ),
-      daysOfWeekStyle:
-          const DaysOfWeekStyle(decoration: BoxDecoration(color: Colors.amber)),
+      daysOfWeekStyle: const DaysOfWeekStyle(
+        decoration: BoxDecoration(color: Colors.amber),
+        weekdayStyle: TextStyle(fontWeight: FontWeight.bold),
+      ),
+
       onDaySelected: (selectedDay, focusedDay) {
         setState(() {
           _selectedDay = selectedDay;
