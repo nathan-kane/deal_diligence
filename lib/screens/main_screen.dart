@@ -4,26 +4,22 @@
 //  copyright 2023                            *
 //*********************************************
 
-//import 'package:deal_diligence/Providers/global_provider.dart';
-//import 'package:deal_diligence/screens/login_screen.dart';
+import 'package:deal_diligence/Providers/global_provider.dart';
+import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/screens/company_screen.dart';
 import 'package:deal_diligence/screens/login_screen.dart';
+import 'package:deal_diligence/screens/mortgage_calculator.dart';
 import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 import 'package:flutter/material.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
-// import 'package:deal_diligence/Providers/trxn_provider.dart';
 import 'package:deal_diligence/screens/appointment_calendar.dart';
 import 'package:deal_diligence/screens/transaction_detail_screen.dart';
 import 'package:deal_diligence/screens/user_profile_screen.dart';
 import 'package:deal_diligence/screens/company_dash_board.dart';
-// import 'package:deal_diligence/screens/trxn_home.dart';
-// import 'package:deal_diligence/screens/widgets/bottom_nav_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:deal_diligence/screens/chat_screen.dart';
-//import 'package:deal_diligence/components/side_menu.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MainScreen extends StatefulWidget {
+class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});
 
   // Added this for BottomNavigationBar sync
@@ -34,12 +30,22 @@ class MainScreen extends StatefulWidget {
 
   @override
   //MainScreenState
-  createState() => MainScreenState();
+  ConsumerState<MainScreen> createState() => MainScreenState();
 }
 
-class MainScreenState extends State<MainScreen> {
+class MainScreenState extends ConsumerState<MainScreen> {
   final auth = FirebaseAuth.instance;
   int _pageIndex = 0;
+  String? userFName = "";
+  String? userLName = "";
+  String? userEmail = "";
+
+  @override
+  void initState() {
+    userFName = ref.read(usersNotifierProvider).fName;
+    userLName = ref.read(usersNotifierProvider).lName;
+    userEmail = ref.read(usersNotifierProvider).email;
+  }
 
   final List<Widget> appScreens = [
     const CompanyDashboardScreen(),
@@ -47,8 +53,6 @@ class MainScreenState extends State<MainScreen> {
     const AppointmentCalendarScreen(),
     const UserProfileScreen(),
     const ChatScreen(),
-    // const CompanyScreen(),
-    // const UserProfileScreen(),
   ];
 
   Future<void> signOut() async {
@@ -70,9 +74,10 @@ class MainScreenState extends State<MainScreen> {
         child: (ListView(
           padding: EdgeInsets.zero,
           children: [
-            const UserAccountsDrawerHeader(
-              accountName: Text('Billy Bob Baker'),
-              accountEmail: Text('billy.bob.baker@gmail.com'),
+            UserAccountsDrawerHeader(
+              accountName: Text("${userFName} ${userLName}"),
+              //accountEmail: Text(userEmail!),
+              accountEmail: Text(auth.currentUser!.email ?? 'No Email Found'),
               //   currentAccountPicture: CircleAvatar(
               //     child: ClipOval(child: Image.asset('images/image.jpg')),
               //   ),
@@ -83,8 +88,9 @@ class MainScreenState extends State<MainScreen> {
             Column(
               children: <Widget>[
                 ListTile(
+                  leading: const Icon(Icons.add_business),
                   title: const Text('Add Company'),
-                  selected: _pageIndex == 5,
+                  //selected: _pageIndex == 5,
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.push(
@@ -94,8 +100,9 @@ class MainScreenState extends State<MainScreen> {
                   },
                 ),
                 ListTile(
+                  leading: const Icon(Icons.person),
                   title: const Text('Add User'),
-                  selected: _pageIndex == 6,
+                  //selected: _pageIndex == 6,
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.push(
@@ -106,8 +113,22 @@ class MainScreenState extends State<MainScreen> {
                   },
                 ),
                 ListTile(
+                  leading: const Icon(Icons.calculate),
+                  title: const Text('Mortgage Calculator'),
+                  //selected: _pageIndex == 6,
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const MortgageCalculatorScreen()));
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.logout),
                   title: const Text('Log Out'),
-                  selected: _pageIndex == 7,
+                  //selected: _pageIndex == 7,
                   onTap: () {
                     // Update the state of the app
                     signOut();
@@ -135,6 +156,12 @@ class MainScreenState extends State<MainScreen> {
           setState(() {
             _pageIndex = value;
           });
+          if (value == 3) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const UserProfileScreen(false)));
+          }
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
