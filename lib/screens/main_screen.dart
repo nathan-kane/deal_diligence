@@ -4,7 +4,6 @@
 //  copyright 2023                            *
 //*********************************************
 
-import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/screens/company_screen.dart';
 import 'package:deal_diligence/screens/login_screen.dart';
@@ -42,6 +41,7 @@ class MainScreenState extends ConsumerState<MainScreen> {
 
   @override
   void initState() {
+    super.initState();
     userFName = ref.read(usersNotifierProvider).fName;
     userLName = ref.read(usersNotifierProvider).lName;
     userEmail = ref.read(usersNotifierProvider).email;

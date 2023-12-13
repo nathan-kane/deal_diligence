@@ -12,6 +12,7 @@ import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/trxn_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/screens/company_dash_board.dart';
+import 'package:deal_diligence/screens/popup_commission.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 //import 'package:firebase_messaging/firebase_messaging.dart';
@@ -59,10 +60,12 @@ class _TransactionDetailScreenState
   String? _clientHomePhoneNumber;
   String? _propertyMLSNbr;
   bool _hasMLSNumber = false;
+  bool _hasContractPrice = false;
   bool _hasCellNumber = false;
   bool _hasHomeNumber = false;
   String? _mlsSearchLink;
   String _clientType = 'Select Client Type';
+  double commission = 0.0;
   late final StreamSubscription _trxnStream;
 
   final clientFNameController = TextEditingController();
@@ -312,6 +315,13 @@ class _TransactionDetailScreenState
       _propertyMLSNbr = null;
       _hasMLSNumber = false;
     }
+
+    if (trxnProvider.contractPrice != null &&
+        trxnProvider.contractPrice != "") {
+      _hasContractPrice = true;
+    } else {
+      _hasContractPrice = false;
+    }
     //}
   }
 
@@ -464,6 +474,14 @@ class _TransactionDetailScreenState
           contractDateController.text = "";
         }
 
+        if (trxnSnapshot.data()?['contractPrice'] != null &&
+            trxnSnapshot.data()?['contractPrice'] != "") {
+          _hasContractPrice = true;
+          var strCommission = trxnSnapshot.data()?['contractPrice'];
+          commission = .03 * double.parse(strCommission);
+        } else {
+          _hasContractPrice = false;
+        }
         contractPriceController.text =
             trxnSnapshot.data()?['contractPrice'] == null
                 ? 'n/a'
@@ -1260,6 +1278,31 @@ class _TransactionDetailScreenState
                 ),
                 const SizedBox(
                   height: 8.0,
+                ),
+                Visibility(
+                  visible: _hasContractPrice,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Column(
+                        children: [
+                          TextButton(
+                            child: Text(
+                              'Commission: \$${commission}',
+                              style: const TextStyle(fontSize: 15),
+                            ),
+                            onPressed: () {
+                              CommissionCalculatorPopup
+                                  .showCommissionCalculator(context);
+                            },
+                          ),
+                          const SizedBox(
+                            height: 8.0,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
                 TextField(
                   keyboardType: TextInputType.text,
