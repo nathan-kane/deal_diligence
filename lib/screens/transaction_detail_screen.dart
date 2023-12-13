@@ -1288,12 +1288,15 @@ class _TransactionDetailScreenState
                         children: [
                           TextButton(
                             child: Text(
-                              'Commission: \$${commission}',
+                              '3% Commission: \$${commission}',
                               style: const TextStyle(fontSize: 15),
                             ),
                             onPressed: () {
                               CommissionCalculatorPopup
-                                  .showCommissionCalculator(context);
+                                  .showCommissionCalculator(
+                                      context,
+                                      double.parse(
+                                          contractPriceController.text));
                             },
                           ),
                           const SizedBox(

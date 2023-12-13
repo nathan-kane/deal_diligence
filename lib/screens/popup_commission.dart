@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
 class CommissionCalculatorPopup {
-  static void showCommissionCalculator(BuildContext context) {
+  static void showCommissionCalculator(BuildContext context, double salePrice) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return const CommissionCalculatorDialog();
+        return CommissionCalculatorDialog(salePrice: salePrice);
       },
     );
   }
 }
 
 class CommissionCalculatorDialog extends StatefulWidget {
-  const CommissionCalculatorDialog({super.key});
+  final double salePrice;
+
+  const CommissionCalculatorDialog({required this.salePrice, super.key});
 
   @override
   _CommissionCalculatorDialogState createState() =>
@@ -24,6 +26,12 @@ class _CommissionCalculatorDialogState
   TextEditingController salePriceController = TextEditingController();
   TextEditingController commissionRateController = TextEditingController();
   double commission = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    salePriceController.text = widget.salePrice.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
