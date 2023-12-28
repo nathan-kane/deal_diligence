@@ -15,8 +15,8 @@ class BottomNav extends StatelessWidget {
       onDestinationSelected: (int index) {
         onDestinationSelected(index);
       },
-      backgroundColor: Colors.blueAccent,
-      indicatorColor: Colors.amber,
+      backgroundColor: Colors.white,
+      indicatorColor: Colors.red,
       selectedIndex: selectedPage,
       destinations: const <Widget>[
         NavigationDestination(

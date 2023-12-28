@@ -671,6 +671,12 @@ class _TransactionDetailScreenState
               trxnSnapshot.data()?['clientType'] ?? 'Select Client Type';
           _selectedCompany = trxnSnapshot.data()?['companyId'] ?? "";
           _selectedUser = trxnSnapshot.data()?['userId'] ?? "";
+          if (trxnSnapshot.data()?['propertyState'] == null ||
+              trxnSnapshot.data()?['propertyState'] == "") {
+            _currentState = "AL";
+          } else {
+            _currentState = trxnSnapshot.data()?['propertyState'];
+          }
         });
       });
     }

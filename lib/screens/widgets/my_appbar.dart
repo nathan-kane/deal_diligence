@@ -25,7 +25,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.white,
+      iconTheme: const IconThemeData(color: Colors.black),
+      elevation: 0,
       //automaticallyImplyLeading: false, // removes the back button in appbar
       title: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -37,7 +39,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
               ' Deal Diligence',
               style: GoogleFonts.lato(
                 textStyle: const TextStyle(
-                    color: Color.fromARGB(255, 255, 255, 255),
+                    color: Colors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.bold),
               ),

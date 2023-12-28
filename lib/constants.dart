@@ -49,6 +49,8 @@ const List kBusinessType = [
   'Solar Sales',
 ];
 
+const List kFrequencyList = ['daily', 'weekly', 'monthly', 'yearly'];
+
 const List kStates = [
   'AL',
   'AK',

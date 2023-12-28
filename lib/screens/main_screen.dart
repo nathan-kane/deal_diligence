@@ -4,6 +4,7 @@
 //  copyright 2023                            *
 //*********************************************
 
+import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/screens/company_screen.dart';
 import 'package:deal_diligence/screens/login_screen.dart';
@@ -32,12 +33,18 @@ class MainScreen extends ConsumerStatefulWidget {
   ConsumerState<MainScreen> createState() => MainScreenState();
 }
 
+final auth = FirebaseAuth.instance;
+
+String? userFName = "";
+String? userLName = "";
+String? userEmail = "";
+
+Future<void> signOut() async {
+  await auth.signOut();
+}
+
 class MainScreenState extends ConsumerState<MainScreen> {
-  final auth = FirebaseAuth.instance;
   int _pageIndex = 0;
-  String? userFName = "";
-  String? userLName = "";
-  String? userEmail = "";
 
   @override
   void initState() {
@@ -55,10 +62,6 @@ class MainScreenState extends ConsumerState<MainScreen> {
     const ChatScreen(),
   ];
 
-  Future<void> signOut() async {
-    await auth.signOut();
-  }
-
   // void onItemTapped(int index) {
   //   setState(() {
   //     _pageIndex = index;
@@ -70,85 +73,11 @@ class MainScreenState extends ConsumerState<MainScreen> {
     return Scaffold(
       appBar: const CustomAppBar(),
       body: Container(child: appScreens[_pageIndex]),
-      drawer: Drawer(
-        child: (ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            UserAccountsDrawerHeader(
-              accountName: Text("${userFName} ${userLName}"),
-              //accountEmail: Text(userEmail!),
-              accountEmail: Text(auth.currentUser!.email ?? 'No Email Found'),
-              //   currentAccountPicture: CircleAvatar(
-              //     child: ClipOval(child: Image.asset('images/image.jpg')),
-              //   ),
-              //   decoration: const BoxDecoration(
-              //     color: Colors.blueAccent,
-              //   ),
-            ),
-            Column(
-              children: <Widget>[
-                ListTile(
-                  leading: const Icon(Icons.add_business),
-                  title: const Text('Add Company'),
-                  //selected: _pageIndex == 5,
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const CompanyScreen(true)));
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.person),
-                  title: const Text('Add User'),
-                  //selected: _pageIndex == 6,
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const UserProfileScreen(true)));
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.calculate),
-                  title: const Text('Mortgage Calculator'),
-                  //selected: _pageIndex == 6,
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const MortgageCalculatorScreen()));
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.logout),
-                  title: const Text('Log Out'),
-                  //selected: _pageIndex == 7,
-                  onTap: () {
-                    // Update the state of the app
-                    signOut();
-                    // Then close the drawer
-                    Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginScreen()));
-                  },
-                ),
-              ],
-            ),
-          ],
-        )),
-      ),
+      drawer: const SideDrawer(),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.blueAccent,
-        selectedIconTheme: const IconThemeData(color: Colors.white),
-        selectedItemColor: Colors.white,
+        backgroundColor: Colors.white,
+        selectedIconTheme: const IconThemeData(color: Colors.red),
+        selectedItemColor: Colors.red,
         unselectedItemColor: Colors.black45,
         type: BottomNavigationBarType.fixed,
         currentIndex: _pageIndex,
@@ -157,10 +86,11 @@ class MainScreenState extends ConsumerState<MainScreen> {
             _pageIndex = value;
           });
           if (value == 3) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const UserProfileScreen(false)));
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) => const UserProfileScreen(false)));
+            ref.read(globalsNotifierProvider.notifier).updatenewUser(false);
           }
         },
         items: const [
@@ -169,7 +99,8 @@ class MainScreenState extends ConsumerState<MainScreen> {
               icon: Icon(Icons.add_business_outlined), label: "Trxn"),
           BottomNavigationBarItem(
               icon: Icon(Icons.calendar_today), label: "Calendar"),
-          BottomNavigationBarItem(icon: Icon(Icons.people), label: "User"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.people), label: "User Profile"),
           BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
         ],
       ),
@@ -179,5 +110,109 @@ class MainScreenState extends ConsumerState<MainScreen> {
   // Added this for BottomNavigationBar sync
   void setIndex(int index) {
     if (mounted) setState(() => _pageIndex = index);
+  }
+}
+
+class SideDrawer extends StatelessWidget {
+  const SideDrawer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: (ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          UserAccountsDrawerHeader(
+            accountName: Text("${userFName} ${userLName}"),
+            accountEmail: Text(auth.currentUser!.email ?? 'No Email Found'),
+            //   currentAccountPicture: CircleAvatar(
+            //     child: ClipOval(child: Image.asset('images/image.jpg')),
+            //   ),
+            //   decoration: const BoxDecoration(
+            //     color: Colors.blueAccent,
+            //   ),
+          ),
+          Column(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(
+                  Icons.add_business,
+                  color: Colors.blueAccent,
+                ),
+                title: const Text('Add Company'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CompanyScreen(true)));
+                },
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.person,
+                  color: Colors.lightBlueAccent,
+                ),
+                title: const Text('Add User'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const UserProfileScreen(true)));
+                },
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.calculate,
+                  color: Colors.blueAccent,
+                ),
+                title: const Text('Mortgage Calculator'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const MortgageCalculatorScreen()));
+                },
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.calculate,
+                  color: Colors.blueAccent,
+                ),
+                title: const Text('Pricing'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const MortgageCalculatorScreen()));
+                },
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.logout,
+                  color: Colors.red,
+                ),
+                title: const Text('Log Out'),
+                onTap: () {
+                  // Update the state of the app
+                  signOut();
+                  // Then close the drawer
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginScreen()));
+                },
+              ),
+            ],
+          ),
+        ],
+      )),
+    );
   }
 }

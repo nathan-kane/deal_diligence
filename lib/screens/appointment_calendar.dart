@@ -7,19 +7,13 @@
 // ignore_for_file: unused_element, prefer_typing_uninitialized_variables, no_leading_underscores_for_local_identifiers, dead_code
 
 import 'dart:async';
-// import 'package:async/async.dart';
-// import 'dart:math';
 import 'dart:collection';
-// import 'package:multiple_stream_builder/multiple_stream_builder.dart';
 import 'package:deal_diligence/Providers/event_provider.dart';
 import 'package:flutter/material.dart';
-//import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-//import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:deal_diligence/screens/AddEventScreen.dart';
-// import 'package:deal_diligence/Providers/event_provider.dart';
 import 'package:deal_diligence/Providers/trxn_provider.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

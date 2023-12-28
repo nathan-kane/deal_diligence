@@ -105,7 +105,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   getCurrentUserProfile() async {
     String currentCompanyId = ref.read(globalsNotifierProvider).companyId!;
 
-    if (widget.isNewUser == true) {
+    if (ref.read(globalsNotifierProvider).newUser == true) {
       // final DocumentSnapshot currentCompanyProfile = await companyRef
       //     .doc(ref.read(globalsNotifierProvider).companyId)
       //     .get();
@@ -277,7 +277,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
 
   @override
   void initState() {
-    if (widget.isNewUser == false) {
+    if (ref.read(globalsNotifierProvider).newUser == false) {
       getCurrentUserProfile();
     }
 
@@ -671,41 +671,41 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          setState(() {
-            showSpinner = true;
-          });
-          try {
-            ref.read(usersNotifierProvider.notifier).saveUser(
-                //ref.read(companyNotifierProvider),
-                ref.read(globalsNotifierProvider).companyId,
-                ref.read(usersNotifierProvider).userId);
-            ref.read(globalsNotifierProvider.notifier).updatetargetScreen(0);
-            ref.read(usersNotifierProvider.notifier).saveFcmToken(
-                ref.read(globalsNotifierProvider).currentUserId!,
-                '${ref.read(usersNotifierProvider).fName} ${ref.read(usersNotifierProvider).lName!}');
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () async {
+      //     setState(() {
+      //       showSpinner = true;
+      //     });
+      //     try {
+      //       ref.read(usersNotifierProvider.notifier).saveUser(
+      //           //ref.read(companyNotifierProvider),
+      //           ref.read(globalsNotifierProvider).companyId,
+      //           ref.read(usersNotifierProvider).userId);
+      //       ref.read(globalsNotifierProvider.notifier).updatetargetScreen(0);
+      //       ref.read(usersNotifierProvider.notifier).saveFcmToken(
+      //           ref.read(globalsNotifierProvider).currentUserId!,
+      //           '${ref.read(usersNotifierProvider).fName} ${ref.read(usersNotifierProvider).lName!}');
 
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const MainScreen(),
-              ),
-            );
-            setState(() {
-              showSpinner = false;
-            });
-          } catch (e) {
-            // todo: add better error handling
-            //print(e);
-          }
-        },
-        backgroundColor: constants.kPrimaryColor,
-        child: const Icon(
-          Icons.assignment_turned_in_outlined,
-          color: Colors.blueAccent,
-        ),
-      ),
+      //       Navigator.push(
+      //         context,
+      //         MaterialPageRoute(
+      //           builder: (context) => const MainScreen(),
+      //         ),
+      //       );
+      //       setState(() {
+      //         showSpinner = false;
+      //       });
+      //     } catch (e) {
+      //       // todo: add better error handling
+      //       //print(e);
+      //     }
+      //   },
+      //   backgroundColor: constants.kPrimaryColor,
+      //   child: const Icon(
+      //     Icons.assignment_turned_in_outlined,
+      //     color: Colors.blueAccent,
+      //   ),
+      // ),
     );
   }
 }

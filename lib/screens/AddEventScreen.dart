@@ -7,20 +7,18 @@
 // ignore_for_file: must_be_immutable, no_leading_underscores_for_local_identifiers, unnecessary_null_comparison
 
 //import 'dart:async';
+import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:flutter/material.dart';
-//import 'package:deal_diligence/Services/firestore_service.dart';
-//import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:intl/intl.dart';
-//import 'package:deal_diligence/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:deal_diligence/screens/main_screen.dart';
-//import 'package:provider/provider.dart';
 import 'package:deal_diligence/Providers/event_provider.dart';
-//import 'package:deal_diligence/Models/Events.dart';
 import 'package:deal_diligence/screens/appointment_calendar.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+//import 'package:deal_diligence/screens/google_event_add.dart';
+import 'package:deal_diligence/screens/widgets/add_all_calendars.dart';
+import 'package:deal_diligence/constants.dart' as constants;
 
 String? currentEventId = "";
 DateTime kNow = DateTime.now();
@@ -44,6 +42,12 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
   final eventDurationController = TextEditingController();
   final eventDateController = TextEditingController();
   final eventDescriptionController = TextEditingController();
+  final eventLocationController = TextEditingController();
+  final eventOccurencesController = TextEditingController();
+  final eventIntervalController = TextEditingController();
+  final eventRecurrenceEndDateController = TextEditingController();
+  String? selectedFrequency = 'Select';
+  String? _currentFrequency = 'Select';
 
   @override
   void dispose() {
@@ -52,6 +56,9 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
     eventDurationController.dispose();
     eventDateController.dispose();
     eventDescriptionController.dispose();
+    eventOccurencesController.dispose();
+    eventIntervalController.dispose();
+    eventRecurrenceEndDateController.dispose();
 
     super.dispose();
   }
@@ -62,6 +69,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
   String? eventDuration;
   String? eventDate;
   String? eventDescription;
+  bool isAllDay = false;
 
   getCurrentCompanyEvents() async {
     final eventRef = FirebaseFirestore.instance
@@ -89,6 +97,8 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
       eventDateController.text = DateFormat('EE,  MM-dd-yyyy')
           .format(currentEvent['eventDate'].toDate());
       eventDescriptionController.text = currentEvent.get('eventDescription');
+      _currentFrequency = currentEvent.get('frequency');
+      isAllDay = currentEvent.get('allDay');
 
       // Updates State
       // Future.delayed(Duration.zero, () {
@@ -99,29 +109,51 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
     }
   }
 
+  void changedDropDownFrequency(String? selectedFrequency) {
+    setState(() {
+      _currentFrequency = selectedFrequency;
+      ref
+          .read(eventsNotifierProvider.notifier)
+          .updateFrequency(selectedFrequency!);
+    });
+  }
+
+  List<DropdownMenuItem<String>>? dropDownFrequency;
+
+  List<DropdownMenuItem<String>> getDropDownFrequency() {
+    List<DropdownMenuItem<String>> items = [];
+    for (String state in constants.kFrequencyList) {
+      items.add(DropdownMenuItem(
+          value: state,
+          child: Text(
+            state,
+          )));
+    }
+    return items;
+  }
+
   @override
   void initState() {
     super.initState();
+    if (widget.eventDocId == null || widget.eventDocId == "") {
+      _currentFrequency = 'Select';
+    }
     currentEventId = widget.eventDocId;
     getCurrentCompanyEvents();
+    dropDownFrequency = getDropDownFrequency();
   }
 
   @override
   Widget build(BuildContext context) {
-    //final eventRead = ref.read(globalsNotifierProvider);
-    //final _firestoreService = FirestoreService();
     DateTime _date = DateTime.now();
-    //String _time = TimeOfDay.now().toString();
-    //Duration initialtimer = const Duration();
     DateTime _selectedDate = DateTime.now();
-    //DateTime eventDate = DateTime.now();
+    DateTime _selectedRecurrenceDate = DateTime.now();
     DateTime _dt = DateTime.now();
-    //String _timePicked = TimeOfDay.now().toString();
 
-    //DateFormat dateFormat = DateFormat("h:mm a");
+    AddEventsToAllCalendars addEventsToAllCalendars = AddEventsToAllCalendars();
+    bool isChecked = true;
 
     return Scaffold(
-      //appBar: CustomAppBar(),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -130,9 +162,9 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
             child: Column(
               children: <Widget>[
                 const Text(
-                  'Event Editor',
+                  'Event',
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 20,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
@@ -150,21 +182,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                         .updateEventname(value);
                   },
                   decoration: const InputDecoration(
-                      hintText: 'Event Name', labelText: 'Event Name'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  controller: eventDurationController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(eventsNotifierProvider.notifier)
-                        .updateEventDuration(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Duration', labelText: 'Duration'),
+                      hintText: 'Event Name*', labelText: 'Event Name*'),
                 ),
                 const SizedBox(
                   height: 8.0,
@@ -197,11 +215,11 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   onChanged: (value) {
                     ref
                         .read(eventsNotifierProvider.notifier)
-                        .updateEventDate(_date);
+                        .updateEventDate(DateTime.parse(value));
                   },
                   decoration: const InputDecoration(
-                    hintText: 'Date',
-                    labelText: 'Date',
+                    hintText: 'Event Date*',
+                    labelText: 'Event Date*',
                   ),
                 ),
                 const SizedBox(
@@ -231,7 +249,8 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                             DateFormat('h:mm a').format(_dt);
                         ref
                             .read(eventsNotifierProvider.notifier)
-                            .updateeventStartTime(_dt);
+                            .updateeventStartTime(
+                                DateTime.parse(eventStartTimeController.text));
                       });
                     }
                   },
@@ -241,9 +260,24 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                         .updateeventStartTime(_dt);
                   },
                   decoration: const InputDecoration(
-                    hintText: 'Start Time',
-                    labelText: 'Start Time',
+                    hintText: 'Start Time*',
+                    labelText: 'Start Time*',
                   ),
+                ),
+                const SizedBox(
+                  height: 8.0,
+                ),
+                TextField(
+                  controller: eventDurationController,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    ref
+                        .read(eventsNotifierProvider.notifier)
+                        .updateEventDuration(value);
+                  },
+                  decoration: const InputDecoration(
+                      hintText: 'Duration (mins)*',
+                      labelText: 'Duration (mins)*'),
                 ),
                 const SizedBox(
                   height: 8.0,
@@ -255,6 +289,180 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   onChanged: (value) {},
                   decoration: const InputDecoration(
                       hintText: 'Description', labelText: 'Description'),
+                ),
+                const SizedBox(
+                  height: 8.0,
+                ),
+
+                TextField(
+                  controller: eventLocationController,
+                  keyboardType: TextInputType.text,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    ref
+                        .read(eventsNotifierProvider.notifier)
+                        .updateLocation(value);
+                  },
+                  decoration: const InputDecoration(
+                      hintText: 'Location', labelText: 'Location'),
+                ),
+                const SizedBox(
+                  height: 16.0,
+                ),
+                const Text(
+                  '---- RECURRING EVENT ----',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 8.0,
+                ),
+                DropdownButton<String>(
+                  hint: const Text('Select Frequency'),
+                  value: _currentFrequency,
+                  onChanged: (_value) {
+                    setState(() {
+                      selectedFrequency = _value;
+                      _currentFrequency = selectedFrequency;
+                      ref
+                          .read(eventsNotifierProvider.notifier)
+                          .updateFrequency(_value);
+                    });
+                  },
+                  items: <String>[
+                    'Select',
+                    'daily',
+                    'weekly',
+                    'monthly',
+                    'yearly'
+                  ].map<DropdownMenuItem<String>>((String _value) {
+                    return DropdownMenuItem<String>(
+                      value: _value,
+                      child: Text(_value),
+                    );
+                  }).toList(),
+                ),
+                TextField(
+                  controller: eventOccurencesController,
+                  keyboardType: TextInputType.text,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    ref
+                        .read(eventsNotifierProvider.notifier)
+                        .updateOccurences(int.parse(value));
+                  },
+                  decoration: const InputDecoration(
+                      hintText: 'Occurences', labelText: 'Occurences'),
+                ),
+                TextField(
+                  controller: eventRecurrenceEndDateController,
+                  keyboardType: TextInputType.datetime,
+                  textAlign: TextAlign.center,
+                  onTap: () async {
+                    DateTime? _dateRecurrencePicked = await showDatePicker(
+                        context: context,
+                        initialDate: _selectedRecurrenceDate,
+                        firstDate:
+                            DateTime(kNow.year, kNow.month - 3, kNow.day),
+                        lastDate:
+                            DateTime(kNow.year, kNow.month + 36, kNow.day));
+                    if (_date != _dateRecurrencePicked) {
+                      ref
+                          .read(eventsNotifierProvider.notifier)
+                          .updateRecurrenceEndDate(_dateRecurrencePicked);
+                      setState(() {
+                        eventRecurrenceEndDateController.text =
+                            DateFormat("MM/dd/yyyy")
+                                .format(_dateRecurrencePicked!);
+
+                        _selectedRecurrenceDate = _dateRecurrencePicked;
+                        //DateFormat("MM/dd/yyyy").format(_date));
+                      });
+                    }
+                  },
+                  onChanged: (value) {
+                    ref
+                        .read(eventsNotifierProvider.notifier)
+                        .updateRecurrenceEndDate(DateTime.parse(value));
+                  },
+                  decoration: const InputDecoration(
+                    hintText: 'Recurrence End Date*',
+                    labelText: 'Recurrence End Date*',
+                  ),
+                ),
+                TextField(
+                  controller: eventIntervalController,
+                  keyboardType: TextInputType.text,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    ref
+                        .read(eventsNotifierProvider.notifier)
+                        .updateInterval(int.parse(value));
+                  },
+                  decoration: const InputDecoration(
+                      hintText: 'Interval', labelText: 'Interval'),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.all(20.0),
+                        child: Text(
+                          'All day event? ',
+                          style: TextStyle(
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Checkbox(
+                          value: isAllDay,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isAllDay = value!;
+                              ref
+                                  .read(eventsNotifierProvider.notifier)
+                                  .updateAllDay(isAllDay);
+                            });
+                          },
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+
+                // Save the event to the user's Google calendar
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.all(20.0),
+                        child: Text(
+                          'Save to Google calendar? ',
+                          style: TextStyle(
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Checkbox(
+                          value: isChecked,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isChecked = value!;
+                            });
+                          },
+                        ),
+                      ),
+                    )
+                  ],
                 ),
                 const SizedBox(
                   height: 8.0,
@@ -283,6 +491,23 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                             ref.read(eventsNotifierProvider),
                             eventDescriptionController
                                 .text); // Create new event
+                      }
+                      if (isChecked) {
+                        DateTime endTime = ref
+                            .read(eventsNotifierProvider)
+                            .eventStartTime!
+                            .add(Duration(
+                                minutes:
+                                    int.parse(eventDurationController.text)));
+
+                        addEventsToAllCalendars
+                            .addEvent(ref.read(eventsNotifierProvider));
+
+                        // calendarClient.insert(
+                        //     ref.read(eventsNotifierProvider).eventName,
+                        //     ref.read(eventsNotifierProvider).eventDate,
+                        //     ref.read(eventsNotifierProvider).eventStartTime,
+                        //     endTime);
                       }
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) =>
