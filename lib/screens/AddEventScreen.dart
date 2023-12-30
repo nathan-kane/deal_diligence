@@ -70,6 +70,8 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
   String? eventDate;
   String? eventDescription;
   bool isAllDay = false;
+  DateTime eventStartDate = DateTime.now();
+  DateTime recurrenceEndDate = DateTime.now();
 
   getCurrentCompanyEvents() async {
     final eventRef = FirebaseFirestore.instance
@@ -192,30 +194,34 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   keyboardType: TextInputType.datetime,
                   textAlign: TextAlign.center,
                   onTap: () async {
-                    DateTime? _datePicked = await showDatePicker(
+                    DateTime? _eventDatePicked = await showDatePicker(
                         context: context,
                         initialDate: _selectedDate,
                         firstDate:
                             DateTime(kNow.year, kNow.month - 3, kNow.day),
                         lastDate:
                             DateTime(kNow.year, kNow.month + 36, kNow.day));
-                    if (_date != _datePicked) {
-                      ref
-                          .read(eventsNotifierProvider.notifier)
-                          .updateEventDate(_datePicked);
+                    if (_date != _eventDatePicked) {
+                      // Save the Date picked to the eventStartDate variable
+                      eventStartDate = DateTime(_eventDatePicked!.year,
+                          _eventDatePicked.month, _eventDatePicked.day);
+                      // ref
+                      //     .read(eventsNotifierProvider.notifier)
+                      //     .updateEventDate(eventStartDate);
                       setState(() {
                         eventDateController.text =
-                            DateFormat("MM/dd/yyyy").format(_datePicked!);
+                            DateFormat("MM/dd/yyyy").format(_eventDatePicked);
 
-                        _selectedDate = _datePicked;
+                        _selectedDate = _eventDatePicked;
                         //DateFormat("MM/dd/yyyy").format(_date));
                       });
                     }
                   },
                   onChanged: (value) {
-                    ref
-                        .read(eventsNotifierProvider.notifier)
-                        .updateEventDate(DateTime.parse(value));
+                    //eventStartDate = DateTime.parse(eventDateController.text);
+                    // ref
+                    //     .read(eventsNotifierProvider.notifier)
+                    //     .updateEventDate(DateTime.parse(value));
                   },
                   decoration: const InputDecoration(
                     hintText: 'Event Date*',
@@ -237,16 +243,23 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                     if (_timePicked != null) {
                       DateTime eventDate =
                           ref.read(eventsNotifierProvider).eventDate!;
-                      _dt = DateTime(
+                      eventStartDate = DateTime(
                         eventDate.year,
                         eventDate.month,
                         eventDate.day,
                         _timePicked.hour,
                         _timePicked.minute,
                       );
+                      // _dt = DateTime(
+                      //   eventDate.year,
+                      //   eventDate.month,
+                      //   eventDate.day,
+                      //   _timePicked.hour,
+                      //   _timePicked.minute,
+                      // );
                       setState(() {
                         eventStartTimeController.text =
-                            DateFormat('h:mm a').format(_dt);
+                            DateFormat('h:mm a').format(eventStartDate);
                         ref
                             .read(eventsNotifierProvider.notifier)
                             .updateeventStartTime(
@@ -366,9 +379,15 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                         lastDate:
                             DateTime(kNow.year, kNow.month + 36, kNow.day));
                     if (_date != _dateRecurrencePicked) {
-                      ref
-                          .read(eventsNotifierProvider.notifier)
-                          .updateRecurrenceEndDate(_dateRecurrencePicked);
+                      // Save the Date picked to recurrenceEndDate variable
+                      recurrenceEndDate = DateTime(
+                          _dateRecurrencePicked!.year,
+                          _dateRecurrencePicked.month,
+                          _dateRecurrencePicked.day);
+
+                      // ref
+                      //     .read(eventsNotifierProvider.notifier)
+                      //     .updateRecurrenceEndDate(_dateRecurrencePicked);
                       setState(() {
                         eventRecurrenceEndDateController.text =
                             DateFormat("MM/dd/yyyy")
@@ -380,9 +399,11 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                     }
                   },
                   onChanged: (value) {
-                    ref
-                        .read(eventsNotifierProvider.notifier)
-                        .updateRecurrenceEndDate(DateTime.parse(value));
+                    recurrenceEndDate =
+                        DateTime.parse(eventRecurrenceEndDateController.text);
+                    // ref
+                    //     .read(eventsNotifierProvider.notifier)
+                    //     .updateRecurrenceEndDate(DateTime.parse(value));
                   },
                   decoration: const InputDecoration(
                     hintText: 'Recurrence End Date*',
@@ -475,6 +496,13 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                       showSpinner = true;
                     });
                     try {
+                      // Save event date and end of recurrence date to state
+                      ref
+                          .read(eventsNotifierProvider.notifier)
+                          .updateEventDate(eventStartDate);
+                      ref
+                          .read(eventsNotifierProvider.notifier)
+                          .updateRecurrenceEndDate(recurrenceEndDate);
                       ref
                           .read(globalsNotifierProvider.notifier)
                           .updatenewEvent(true);
