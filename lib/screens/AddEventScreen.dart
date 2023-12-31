@@ -67,7 +67,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
   String? eventName;
   String? eventStartTime;
   String? eventDuration;
-  String? eventDate;
+  DateTime? eventDate;
   String? eventDescription;
   bool isAllDay = false;
   DateTime eventStartDate = DateTime.now();
@@ -80,12 +80,14 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
         .collection('event');
 
     if (currentEventId == null) {
+      // New event
       eventNameController.text = "";
       eventStartTimeController.text = "";
       eventDurationController.text = "";
       eventDateController.text = "";
       eventDescriptionController.text = "";
     } else {
+      // Existing event
       final DocumentSnapshot currentEvent =
           await eventRef.doc(widget.eventDocId).get();
 
@@ -203,7 +205,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                             DateTime(kNow.year, kNow.month + 36, kNow.day));
                     if (_date != _eventDatePicked) {
                       // Save the Date picked to the eventStartDate variable
-                      eventStartDate = DateTime(_eventDatePicked!.year,
+                      eventDate = DateTime(_eventDatePicked!.year,
                           _eventDatePicked.month, _eventDatePicked.day);
                       // ref
                       //     .read(eventsNotifierProvider.notifier)
@@ -241,15 +243,23 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                       initialTime: TimeOfDay.now(),
                     );
                     if (_timePicked != null) {
-                      DateTime eventDate =
-                          ref.read(eventsNotifierProvider).eventDate!;
+                      // DateTime eventDate =
+                      //     ref.read(eventsNotifierProvider).eventDate!;
+
+                      // Add the selected time to the eventStartDate variable
                       eventStartDate = DateTime(
-                        eventDate.year,
-                        eventDate.month,
-                        eventDate.day,
+                        eventDate!.year,
+                        eventDate!.month,
+                        eventDate!.day,
                         _timePicked.hour,
                         _timePicked.minute,
                       );
+
+                      // Set eventDate to have the full date and time of the event
+                      eventDate = eventStartDate;
+                      ref
+                          .read(eventsNotifierProvider.notifier)
+                          .updateEventDate(eventDate);
                       // _dt = DateTime(
                       //   eventDate.year,
                       //   eventDate.month,
@@ -260,17 +270,17 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                       setState(() {
                         eventStartTimeController.text =
                             DateFormat('h:mm a').format(eventStartDate);
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateeventStartTime(
-                                DateTime.parse(eventStartTimeController.text));
+                        // ref
+                        //     .read(eventsNotifierProvider.notifier)
+                        //     .updateeventStartTime(
+                        //         DateTime.parse(eventStartTimeController.text));
                       });
                     }
                   },
                   onChanged: (value) {
-                    ref
-                        .read(eventsNotifierProvider.notifier)
-                        .updateeventStartTime(_dt);
+                    // ref
+                    //     .read(eventsNotifierProvider.notifier)
+                    //     .updateeventStartTime(_dt);
                   },
                   decoration: const InputDecoration(
                     hintText: 'Start Time*',
@@ -385,9 +395,9 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                           _dateRecurrencePicked.month,
                           _dateRecurrencePicked.day);
 
-                      // ref
-                      //     .read(eventsNotifierProvider.notifier)
-                      //     .updateRecurrenceEndDate(_dateRecurrencePicked);
+                      ref
+                          .read(eventsNotifierProvider.notifier)
+                          .updateRecurrenceEndDate(recurrenceEndDate);
                       setState(() {
                         eventRecurrenceEndDateController.text =
                             DateFormat("MM/dd/yyyy")
@@ -398,13 +408,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                       });
                     }
                   },
-                  onChanged: (value) {
-                    recurrenceEndDate =
-                        DateTime.parse(eventRecurrenceEndDateController.text);
-                    // ref
-                    //     .read(eventsNotifierProvider.notifier)
-                    //     .updateRecurrenceEndDate(DateTime.parse(value));
-                  },
+                  onChanged: (value) {},
                   decoration: const InputDecoration(
                     hintText: 'Recurrence End Date*',
                     labelText: 'Recurrence End Date*',
@@ -530,12 +534,6 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
 
                         addEventsToAllCalendars
                             .addEvent(ref.read(eventsNotifierProvider));
-
-                        // calendarClient.insert(
-                        //     ref.read(eventsNotifierProvider).eventName,
-                        //     ref.read(eventsNotifierProvider).eventDate,
-                        //     ref.read(eventsNotifierProvider).eventStartTime,
-                        //     endTime);
                       }
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) =>

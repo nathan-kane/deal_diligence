@@ -57,7 +57,7 @@ class Events {
       companyId: doc['companyId'],
       frequency: doc['frequency'],
       occurences: doc['occurences'],
-      recurrenceEndDate: (doc['endDate'] as Timestamp).toDate(),
+      recurrenceEndDate: (doc['recurrenceEndDate'] as Timestamp).toDate(),
       interval: doc['interval'],
       rRule: doc['rRule'],
     );
@@ -76,7 +76,7 @@ class Events {
       'agencyId': companyId,
       'frequency': frequency,
       'occurences': occurences,
-      'endDate': recurrenceEndDate,
+      'recurrenceEndDate': recurrenceEndDate,
       'interval': interval,
       'rRule': rRule,
     };

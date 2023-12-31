@@ -32,7 +32,7 @@ class AddEventsToAllCalendars {
       title: event.eventName!,
       description: event.eventDescription,
       location: event.location,
-      startDate: event.eventStartTime!,
+      startDate: event.eventDate!,
       endDate: event.eventStartTime!
           .add(Duration(minutes: int.parse(event.eventDuration!))),
       allDay: event.allDay,
@@ -45,7 +45,8 @@ class AddEventsToAllCalendars {
       ),
       recurrence: Recurrence(
         frequency: freq,
-        endDate: event.eventStartTime!.add(Duration(days: eventRecurrenceDays)),
+        endDate: event.recurrenceEndDate,
+        //endDate: event.eventStartTime!.add(Duration(days: eventRecurrenceDays)),
       ),
     );
   }
