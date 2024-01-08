@@ -11,7 +11,7 @@ import 'package:deal_diligence/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:deal_diligence/Services/firebase_api.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+//import 'package:flutter_dotenv/flutter_dotenv.dart';
 //import 'package:flutter_stripe/flutter_stripe.dart';
 
 Future<void> main() async {
