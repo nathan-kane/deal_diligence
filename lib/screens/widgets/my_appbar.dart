@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:deal_diligence/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';

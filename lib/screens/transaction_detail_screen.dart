@@ -7,31 +7,40 @@
 // ignore_for_file: unused_field, no_leading_underscores_for_local_identifiers, unnecessary_null_comparison, unused_local_variable, unused_element
 
 import 'dart:async';
+import 'dart:core';
 import 'package:deal_diligence/Providers/global_provider.dart';
-//import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/Providers/trxn_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
+import 'package:deal_diligence/Providers/event_provider.dart';
 import 'package:deal_diligence/screens/company_dash_board.dart';
 import 'package:deal_diligence/screens/popup_commission.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-//import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
-//import 'package:deal_diligence/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:deal_diligence/Services/firestore_service.dart';
-//import 'package:deal_diligence/Providers/trxn_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:deal_diligence/screens/property_webview_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:deal_diligence/constants.dart' as constants;
+import 'package:deal_diligence/screens/widgets/add_all_calendars.dart';
 
 String? loggedInUid;
 String? _trxnStatus;
 String? _companyId;
 String? _selectedCompany;
 String? _selectedUser;
+
+// Variables telling if a date has been changed so it can be set on the calendar
+bool bContractDate = false;
+bool bTwofouraSellerDisclosureDeadline = false;
+bool bTwofourbDueDiligenceDeadline = false;
+bool bTwofourcFinancingAndAppraisalDeadline = false;
+bool btwofourdSettlementDeadline = false;
+bool bInspectionDate = false;
+bool bAppraisalDate = false;
+bool bClosingDate = false;
+bool bFinalWalkThrough = false;
 
 //var maskFormatter = new MaskTextInputFormatter(mask: '+# (###) ###-####', filter: { "#": RegExp(r'[0-9]') });
 var maskFormatter = MaskTextInputFormatter(
@@ -67,6 +76,7 @@ class _TransactionDetailScreenState
   String _clientType = 'Select Client Type';
   double commission = 0.0;
   late final StreamSubscription _trxnStream;
+  DateTime eventDatePicked = DateTime.now();
 
   final clientFNameController = TextEditingController();
   final clientLNameController = TextEditingController();
@@ -826,6 +836,7 @@ class _TransactionDetailScreenState
 
     DateTime _date = DateTime.now();
     DateTime _selectedDate = DateTime.now();
+    TimeOfDay _eventTime = TimeOfDay.now();
 
     setVisibility();
 
@@ -1247,6 +1258,14 @@ class _TransactionDetailScreenState
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
                     if (_date != null && _date != _datePicked) {
+                      // Add time to the calendar event
+                      TimeOfDay? _timePicked = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      );
+                      // if (_timePicked != null) {
+                      //   _eventTime = _timePicked;
+                      // }
                       setState(() {
                         contractDateController.text =
                             DateFormat("EE  MM-dd-yyyy").format(_datePicked!);
@@ -1255,6 +1274,14 @@ class _TransactionDetailScreenState
                             .updateContractDate(_datePicked.toString());
                         _selectedDate = _datePicked;
                       });
+                      bContractDate = true;
+                      eventDatePicked = DateTime(
+                        _datePicked!.year,
+                        _datePicked.month,
+                        _datePicked.day,
+                        _timePicked!.hour,
+                        _timePicked.minute,
+                      );
                     }
                   },
                   onChanged: (value) {
@@ -1323,6 +1350,10 @@ class _TransactionDetailScreenState
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
+                    TimeOfDay? _timePicked = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
                     if (_date != null && _date != _datePicked) {
                       setState(() {
                         sellerDisclosure24aController.text =
@@ -1333,8 +1364,17 @@ class _TransactionDetailScreenState
                         _selectedDate = _datePicked;
                       });
                     }
+                    bTwofouraSellerDisclosureDeadline = true;
+                    eventDatePicked = DateTime(
+                      _datePicked!.year,
+                      _datePicked.month,
+                      _datePicked.day,
+                      _timePicked!.hour,
+                      _timePicked.minute,
+                    );
                   },
                   onChanged: (value) {
+                    bTwofouraSellerDisclosureDeadline = true;
                     ref
                         .read(trxnNotifierProvider.notifier)
                         .updateSellerDisclosure24a(value);
@@ -1356,6 +1396,10 @@ class _TransactionDetailScreenState
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
+                    TimeOfDay? _timePicked = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
                     if (_date != null && _date != _datePicked) {
                       setState(() {
                         dueDiligence24bController.text =
@@ -1366,6 +1410,14 @@ class _TransactionDetailScreenState
                         _selectedDate = _datePicked;
                       });
                     }
+                    bTwofourbDueDiligenceDeadline = true;
+                    eventDatePicked = DateTime(
+                      _datePicked!.year,
+                      _datePicked.month,
+                      _datePicked.day,
+                      _timePicked!.hour,
+                      _timePicked.minute,
+                    );
                   },
                   onChanged: (value) {
                     ref
@@ -1389,6 +1441,10 @@ class _TransactionDetailScreenState
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
+                    TimeOfDay? _timePicked = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
                     if (_date != null && _date != _datePicked) {
                       setState(() {
                         financing2cController.text =
@@ -1399,8 +1455,17 @@ class _TransactionDetailScreenState
                         _selectedDate = _datePicked;
                       });
                     }
+                    bTwofourcFinancingAndAppraisalDeadline = true;
+                    eventDatePicked = DateTime(
+                      _datePicked!.year,
+                      _datePicked.month,
+                      _datePicked.day,
+                      _timePicked!.hour,
+                      _timePicked.minute,
+                    );
                   },
                   onChanged: (value) {
+                    bTwofourbDueDiligenceDeadline = true;
                     ref
                         .read(trxnNotifierProvider.notifier)
                         .updateFinancing24c(value);
@@ -1422,6 +1487,10 @@ class _TransactionDetailScreenState
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
+                    TimeOfDay? _timePicked = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
                     if (_date != null && _date != _datePicked) {
                       setState(() {
                         settlement24dController.text =
@@ -1432,8 +1501,17 @@ class _TransactionDetailScreenState
                         _selectedDate = _datePicked;
                       });
                     }
+                    btwofourdSettlementDeadline = true;
+                    eventDatePicked = DateTime(
+                      _datePicked!.year,
+                      _datePicked.month,
+                      _datePicked.day,
+                      _timePicked!.hour,
+                      _timePicked.minute,
+                    );
                   },
                   onChanged: (value) {
+                    bTwofourcFinancingAndAppraisalDeadline = true;
                     ref
                         .read(trxnNotifierProvider.notifier)
                         .updateSettlement24d(value);
@@ -1488,6 +1566,10 @@ class _TransactionDetailScreenState
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
+                    TimeOfDay? _timePicked = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
                     if (_date != null && _date != _datePicked) {
                       setState(() {
                         inspectionDateController.text =
@@ -1498,8 +1580,14 @@ class _TransactionDetailScreenState
                         _selectedDate = _datePicked;
                       });
                     }
-
-                    /*
+                    bInspectionDate = true;
+                    eventDatePicked = DateTime(
+                      _datePicked!.year,
+                      _datePicked.month,
+                      _datePicked.day,
+                      _timePicked!.hour,
+                      _timePicked.minute,
+                    ); /*
                       var date = await (showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
@@ -1512,6 +1600,7 @@ class _TransactionDetailScreenState
                       */
                   },
                   onChanged: (value) {
+                    bInspectionDate = true;
                     ref
                         .read(trxnNotifierProvider.notifier)
                         .updateInspectionDate(value);
@@ -1565,6 +1654,10 @@ class _TransactionDetailScreenState
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
+                    TimeOfDay? _timePicked = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
                     if (_date != null && _date != _datePicked) {
                       setState(() {
                         appraisalDateController.text =
@@ -1575,7 +1668,14 @@ class _TransactionDetailScreenState
                         _selectedDate = _datePicked;
                       });
                     }
-
+                    bAppraisalDate = true;
+                    eventDatePicked = DateTime(
+                      _datePicked!.year,
+                      _datePicked.month,
+                      _datePicked.day,
+                      _timePicked!.hour,
+                      _timePicked.minute,
+                    );
                     /*
                       var date = await (showDatePicker(
                           context: context,
@@ -1589,6 +1689,7 @@ class _TransactionDetailScreenState
                       */
                   },
                   onChanged: (value) {
+                    bAppraisalDate = true;
                     ref
                         .read(trxnNotifierProvider.notifier)
                         .updateAppraisalDate(value);
@@ -1609,6 +1710,10 @@ class _TransactionDetailScreenState
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
+                    TimeOfDay? _timePicked = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
                     if (_date != null && _date != _datePicked) {
                       setState(() {
                         closingDateController.text =
@@ -1619,7 +1724,14 @@ class _TransactionDetailScreenState
                         _selectedDate = _datePicked;
                       });
                     }
-
+                    bClosingDate = true;
+                    eventDatePicked = DateTime(
+                      _datePicked!.year,
+                      _datePicked.month,
+                      _datePicked.day,
+                      _timePicked!.hour,
+                      _timePicked.minute,
+                    );
                     /*
                       var date = await (showDatePicker(
                           context: context,
@@ -1633,6 +1745,7 @@ class _TransactionDetailScreenState
                       */
                   },
                   onChanged: (value) {
+                    bClosingDate = true;
                     ref
                         .read(trxnNotifierProvider.notifier)
                         .updateClosingDate(value);
@@ -1653,6 +1766,10 @@ class _TransactionDetailScreenState
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
+                    TimeOfDay? _timePicked = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
                     if (_date != null && _date != _datePicked) {
                       setState(() {
                         walkThroughDateController.text =
@@ -1663,20 +1780,17 @@ class _TransactionDetailScreenState
                         _selectedDate = _datePicked;
                       });
                     }
-
-                    /*
-                      var date = await (showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2020),
-                          lastDate: DateTime(2100)) as FutureOr<DateTime>);
-                      walkThroughDateController.text =
-                          DateFormat("MM/dd/yyyy").format(date);
-                      trxnProvider.changewalkThroughDate(
-                          DateFormat("MM/dd/yyyy").format(date));
-                      */
+                    bFinalWalkThrough = true;
+                    eventDatePicked = DateTime(
+                      _datePicked!.year,
+                      _datePicked.month,
+                      _datePicked.day,
+                      _timePicked!.hour,
+                      _timePicked.minute,
+                    );
                   },
                   onChanged: (value) {
+                    bFinalWalkThrough = true;
                     ref
                         .read(trxnNotifierProvider.notifier)
                         .updateWalkThroughDate(value);
@@ -1904,9 +2018,190 @@ class _TransactionDetailScreenState
                           ref.read(trxnNotifierProvider),
                           ref.read(globalsNotifierProvider).companyId!,
                           widget.newTrxn!);
-                      // ref
-                      //     .read(globalsNotifierProvider.notifier)
-                      //     .updatetargetScreen(0);
+
+                      // Add dates to calendar
+                      if (bContractDate) {
+                        bContractDate = false;
+                        String title =
+                            'Contract Date for ${ref.read(trxnNotifierProvider).clientLName}';
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventname(title);
+                        String? desc =
+                            '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventDescription(desc);
+                        String eventDate = DateFormat("yyyy-MM-dd HH:mm")
+                            .format(eventDatePicked);
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventDate(DateTime.parse(eventDate));
+                        AddEventsToAllCalendars.addEvent(
+                            ref.read(eventsNotifierProvider));
+                      }
+
+                      if (bTwofouraSellerDisclosureDeadline) {
+                        bTwofouraSellerDisclosureDeadline = false;
+                        String title =
+                            '24a Seller Disclosure Deadline for ${ref.read(trxnNotifierProvider).clientLName}';
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventname(title);
+                        String? desc =
+                            '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventDescription(desc);
+                        String eventDate = DateFormat("yyyy-MM-dd HH:mm")
+                            .format(eventDatePicked);
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventDate(DateTime.parse(eventDate));
+                        AddEventsToAllCalendars.addEvent(
+                            ref.read(eventsNotifierProvider));
+                      }
+                      if (bTwofourbDueDiligenceDeadline) {
+                        bTwofourbDueDiligenceDeadline = false;
+                        String title =
+                            '24b Due Diligence Deadline for ${ref.read(trxnNotifierProvider).clientLName}';
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventname(title);
+                        String? desc =
+                            '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventDescription(desc);
+                        String eventDate = DateFormat("yyyy-MM-dd HH:mm")
+                            .format(eventDatePicked);
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventDate(DateTime.parse(eventDate));
+                        AddEventsToAllCalendars.addEvent(
+                            ref.read(eventsNotifierProvider));
+                      }
+                      if (bTwofourcFinancingAndAppraisalDeadline) {
+                        bTwofourcFinancingAndAppraisalDeadline = false;
+                        String title =
+                            '24c Financing and Appraisal Deadline for ${ref.read(trxnNotifierProvider).clientLName}';
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventname(title);
+                        String? desc =
+                            '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventDescription(desc);
+                        String eventDate = DateFormat("yyyy-MM-dd HH:mm")
+                            .format(eventDatePicked);
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventDate(DateTime.parse(eventDate));
+                        AddEventsToAllCalendars.addEvent(
+                            ref.read(eventsNotifierProvider));
+                      }
+                      if (btwofourdSettlementDeadline) {
+                        btwofourdSettlementDeadline = false;
+                        String title =
+                            '24d Settlement Deadline for ${ref.read(trxnNotifierProvider).clientLName}';
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventname(title);
+                        String? desc =
+                            '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventDescription(desc);
+                        String eventDate = DateFormat("yyyy-MM-dd HH:mm")
+                            .format(eventDatePicked);
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventDate(DateTime.parse(eventDate));
+                        AddEventsToAllCalendars.addEvent(
+                            ref.read(eventsNotifierProvider));
+                      }
+                      if (bInspectionDate) {
+                        bInspectionDate = false;
+                        String title =
+                            'Inspection Date for ${ref.read(trxnNotifierProvider).clientLName}';
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventname(title);
+                        String? desc =
+                            '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventDescription(desc);
+                        String eventDate = DateFormat("yyyy-MM-dd HH:mm")
+                            .format(eventDatePicked);
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventDate(DateTime.parse(eventDate));
+                        AddEventsToAllCalendars.addEvent(
+                            ref.read(eventsNotifierProvider));
+                      }
+                      if (bAppraisalDate) {
+                        bAppraisalDate = false;
+                        String title =
+                            'Appraisal Date for ${ref.read(trxnNotifierProvider).clientLName}';
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventname(title);
+                        String? desc =
+                            '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventDescription(desc);
+                        String eventDate = DateFormat("yyyy-MM-dd HH:mm")
+                            .format(eventDatePicked);
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventDate(DateTime.parse(eventDate));
+                        AddEventsToAllCalendars.addEvent(
+                            ref.read(eventsNotifierProvider));
+                      }
+                      if (bClosingDate) {
+                        bClosingDate = false;
+                        String title =
+                            'Closing Date for ${ref.read(trxnNotifierProvider).clientLName}';
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventname(title);
+                        String? desc =
+                            '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventDescription(desc);
+                        String eventDate = DateFormat("yyyy-MM-dd HH:mm")
+                            .format(eventDatePicked);
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventDate(DateTime.parse(eventDate));
+                        AddEventsToAllCalendars.addEvent(
+                            ref.read(eventsNotifierProvider));
+                      }
+                      if (bFinalWalkThrough) {
+                        bFinalWalkThrough = false;
+                        String title =
+                            'Final Walkthrough Date for ${ref.read(trxnNotifierProvider).clientLName}';
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventname(title);
+                        String? desc =
+                            '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventDescription(desc);
+                        String eventDate = DateFormat("yyyy-MM-dd HH:mm")
+                            .format(eventDatePicked);
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventDate(DateTime.parse(eventDate));
+                        AddEventsToAllCalendars.addEvent(
+                            ref.read(eventsNotifierProvider));
+                      }
+
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => const CompanyDashboardScreen(),
@@ -1918,7 +2213,7 @@ class _TransactionDetailScreenState
                       });
                     } catch (e) {
                       // todo: add better error handling
-                      print(e);
+                      //print(e);
                     }
                   },
                 ),
@@ -1951,7 +2246,7 @@ class _TransactionDetailScreenState
                       });
                     } catch (e) {
                       // todo: add better error handling
-                      print(e);
+                      //print(e);
                     }
                   },
                 ),
@@ -1979,7 +2274,7 @@ class _TransactionDetailScreenState
                       });
                     } catch (e) {
                       // todo: add better error handling
-                      print(e);
+                      //print(e);
                     }
                   },
                 )
@@ -1989,39 +2284,39 @@ class _TransactionDetailScreenState
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          setState(() {
-            showSpinner = true;
-          });
-          try {
-            ref.read(trxnNotifierProvider.notifier).saveTrxn(
-                ref.read(trxnNotifierProvider),
-                ref.read(globalsNotifierProvider).companyId!,
-                widget.newTrxn!);
-            ref.read(globalsNotifierProvider.notifier).updatetargetScreen(0);
-            Navigator.pop(context);
-/*
-            Navigator.push(
-              context,
-              new MaterialPageRoute(
-                builder: (context) => MainScreen(),
-              ),
-            );*/
-            setState(() {
-              showSpinner = false;
-            });
-          } catch (e) {
-            // todo: add better error handling
-            print(e);
-          }
-        },
-        backgroundColor: constants.kPrimaryColor,
-        child: const Icon(
-          Icons.assignment_turned_in_outlined,
-          color: Colors.blueAccent,
-        ),
-      ),
+//       floatingActionButton: FloatingActionButton(
+//         onPressed: () async {
+//           setState(() {
+//             showSpinner = true;
+//           });
+//           try {
+//             ref.read(trxnNotifierProvider.notifier).saveTrxn(
+//                 ref.read(trxnNotifierProvider),
+//                 ref.read(globalsNotifierProvider).companyId!,
+//                 widget.newTrxn!);
+//             ref.read(globalsNotifierProvider.notifier).updatetargetScreen(0);
+//             Navigator.pop(context);
+// /*
+//             Navigator.push(
+//               context,
+//               new MaterialPageRoute(
+//                 builder: (context) => MainScreen(),
+//               ),
+//             );*/
+//             setState(() {
+//               showSpinner = false;
+//             });
+//           } catch (e) {
+//             // todo: add better error handling
+//             //print(e);
+//           }
+//         },
+//         backgroundColor: constants.kPrimaryColor,
+//         child: const Icon(
+//           Icons.assignment_turned_in_outlined,
+//           color: Colors.blueAccent,
+//         ),
+//       ),
     );
   }
 }

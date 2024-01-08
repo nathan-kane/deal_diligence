@@ -7,7 +7,7 @@
 // ignore_for_file: must_be_immutable, no_leading_underscores_for_local_identifiers, unnecessary_null_comparison
 
 //import 'dart:async';
-import 'package:add_2_calendar/add_2_calendar.dart';
+//import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:intl/intl.dart';
@@ -36,6 +36,7 @@ class AddEventScreen extends ConsumerStatefulWidget {
 
 class _AddEventScreenState extends ConsumerState<AddEventScreen> {
   //final _db = FirebaseFirestore.instance;
+  var calendarInstance = AddEventsToAllCalendars();
 
   final eventNameController = TextEditingController();
   final eventStartTimeController = TextEditingController();
@@ -152,9 +153,9 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
     DateTime _date = DateTime.now();
     DateTime _selectedDate = DateTime.now();
     DateTime _selectedRecurrenceDate = DateTime.now();
-    DateTime _dt = DateTime.now();
+    //DateTime _dt = DateTime.now();
 
-    AddEventsToAllCalendars addEventsToAllCalendars = AddEventsToAllCalendars();
+    //AddEventsToAllCalendars addEventsToAllCalendars = AddEventsToAllCalendars();
     bool isChecked = true;
 
     return Scaffold(
@@ -401,7 +402,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                       setState(() {
                         eventRecurrenceEndDateController.text =
                             DateFormat("MM/dd/yyyy")
-                                .format(_dateRecurrencePicked!);
+                                .format(_dateRecurrencePicked);
 
                         _selectedRecurrenceDate = _dateRecurrencePicked;
                         //DateFormat("MM/dd/yyyy").format(_date));
@@ -410,8 +411,8 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   },
                   onChanged: (value) {},
                   decoration: const InputDecoration(
-                    hintText: 'Recurrence End Date*',
-                    labelText: 'Recurrence End Date*',
+                    hintText: 'Recurrence End Date',
+                    labelText: 'Recurrence End Date',
                   ),
                 ),
                 TextField(
@@ -525,15 +526,15 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                                 .text); // Create new event
                       }
                       if (isChecked) {
-                        DateTime endTime = ref
-                            .read(eventsNotifierProvider)
-                            .eventStartTime!
-                            .add(Duration(
-                                minutes:
-                                    int.parse(eventDurationController.text)));
+                        // DateTime endTime = ref
+                        // .read(eventsNotifierProvider)
+                        // .eventStartTime!
+                        // .add(Duration(
+                        //     minutes:
+                        //         int.parse(eventDurationController.text)));
 
-                        addEventsToAllCalendars
-                            .addEvent(ref.read(eventsNotifierProvider));
+                        AddEventsToAllCalendars.addEvent(
+                            ref.read(eventsNotifierProvider));
                       }
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) =>

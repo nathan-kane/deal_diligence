@@ -1,5 +1,5 @@
 //import 'package:flutter/material.dart';
-import 'package:add_2_calendar/add_2_calendar.dart';
+//import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
@@ -105,13 +105,13 @@ class Events {
       eventDate: eventDate ?? this.eventDate,
       eventDescription: eventDescription ?? this.eventDescription,
       location: location ?? this.location,
-      allDay: allDay ?? this.allDay,
+      allDay: allDay,
       userId: userId ?? this.userId,
       companyId: companyId ?? this.companyId,
       frequency: frequency ?? this.frequency,
       occurences: occurences ?? this.occurences,
       recurrenceEndDate: recurrenceEndDate ?? this.recurrenceEndDate,
-      interval: interval ?? this.interval,
+      interval: interval,
       rRule: rRule ?? this.rRule,
     );
   }

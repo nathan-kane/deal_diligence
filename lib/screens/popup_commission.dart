@@ -67,7 +67,7 @@ class _CommissionCalculatorDialogState
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text('Close'),
+          child: const Text('Close'),
         ),
       ],
     );

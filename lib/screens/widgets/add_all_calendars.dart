@@ -1,31 +1,32 @@
+//*********************************************
+//  Deal Diligence was designed and created by      *
+//  Nathan Kane                               *
+//  copyright 2023                            *
+//*********************************************
+
 import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:deal_diligence/Providers/event_provider.dart';
 
 class AddEventsToAllCalendars {
-  // addNormalEvent(title, description, startDate, endDate, allDay) {
-  //   Add2Calendar.addEvent2Cal(
-  //     buildEvent(),
-  //   );
-  // }
-
-  addEvent(Events event) {
+  static void addEvent(Events event) {
     Add2Calendar.addEvent2Cal(buildEvent(event));
   }
 
-  Event buildEvent(Events event) {
-    int eventRecurrenceDays =
-        event.recurrenceEndDate!.difference(event.eventDate!).inDays.abs();
+  static Event buildEvent(Events event) {
+    Frequency freq = Frequency.yearly;
 
-    Frequency freq = Frequency.daily;
+    if (event.frequency != "" && event.frequency != null) {
+      if (event.frequency == 'daily') {
+        freq = Frequency.daily;
+      } else if (event.frequency == 'weekly') {
+        freq = Frequency.weekly;
+      } else if (event.frequency == 'monthly') {
+        freq = Frequency.monthly;
+      }
+    }
 
-    if (event.frequency == 'daily') {
-      freq = Frequency.daily;
-    } else if (event.frequency == 'weekly') {
-      freq = Frequency.weekly;
-    } else if (event.frequency == 'monthly') {
-      freq = Frequency.monthly;
-    } else {
-      freq = Frequency.yearly;
+    if (event.eventDuration == "" || event.eventDuration == null) {
+      event.eventDuration = "30";
     }
 
     return Event(
@@ -46,7 +47,6 @@ class AddEventsToAllCalendars {
       recurrence: Recurrence(
         frequency: freq,
         endDate: event.recurrenceEndDate,
-        //endDate: event.eventStartTime!.add(Duration(days: eventRecurrenceDays)),
       ),
     );
   }
