@@ -1,4 +1,4 @@
-package com.example.deal_diligence
+package com.kane.dealdiligence
 
 import io.flutter.embedding.android.FlutterActivity
 
