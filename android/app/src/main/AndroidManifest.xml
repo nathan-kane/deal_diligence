@@ -11,7 +11,7 @@
     </queries>
 
     <application
-        android:label="deal_diligence"
+        android:label="Deal Diligence"
         android:name="${applicationName}"
         android:icon="@mipmap/dd_logo"> 
         <activity
