@@ -235,7 +235,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(),
+      appBar: const CustomAppBar(),
       resizeToAvoidBottomInset: false, // This fixes the keyboard white space
       body: SafeArea(
         child: Padding(
@@ -295,11 +295,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                 ),
               ),
-              TextButton(
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(fontSize: 15),
-                  ),
+              ElevatedButton(
                   onPressed: () async {
                     setState(() {
                       showSpinner = true;
@@ -338,49 +334,88 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       setState(() {
                         showSpinner = false;
                       });
-                    } on FirebaseAuthException catch (error) {
-                      switch (error.code) {
-                        case "ERROR_INVALID_EMAIL":
-                        case "invalid-email":
-                          errorMessage =
-                              "Your email address appears to be malformed.";
-                          break;
-                        case "email-already-in-use":
-                          errorMessage = "Email is already in use.";
-                          break;
-                        case "ERROR_WRONG_PASSWORD":
-                        case "wrong-password":
-                          errorMessage = "Your password is wrong.";
-                          break;
-                        case "ERROR_USER_NOT_FOUND":
-                        case "user-not-found":
-                          errorMessage = "User with this email doesn't exist.";
-                          break;
-                        case "ERROR_USER_DISABLED":
-                        case "user-disabled":
-                          errorMessage =
-                              "User with this email has been disabled.";
-                          break;
-                        case "ERROR_TOO_MANY_REQUESTS":
-                        case "too-many-requests":
-                          errorMessage = "Too many requests. Try again later.";
-                          break;
-                        case "ERROR_OPERATION_NOT_ALLOWED":
-                        case "operation-not-allowed":
-                          errorMessage =
-                              "Signing in with Email and Password is not enabled.";
-                          break;
-                        default:
-                          errorMessage =
-                              "An undefined Error happened. Please try again.";
+                    } catch (error) {
+                      if (error is FirebaseAuthException) {
+                        //} on FirebaseAuthException catch (error) {
+                        switch (error.code) {
+                          case "ERROR_INVALID_EMAIL":
+                          case "invalid-email":
+                            errorMessage =
+                                "Your email address appears to be malformed.";
+                            break;
+                          case "invalid-credential":
+                            errorMessage =
+                                "Wrong email or password. Please try again";
+                            break;
+                          case "email-already-in-use":
+                            errorMessage = "Email is already in use.";
+                            break;
+                          case "ERROR_WRONG_PASSWORD":
+                          case "wrong-password":
+                            errorMessage = "Your password is wrong.";
+                            break;
+                          case "ERROR_USER_NOT_FOUND":
+                          case "user-not-found":
+                            errorMessage =
+                                "User with this email doesn't exist.";
+                            break;
+                          case "ERROR_USER_DISABLED":
+                          case "user-disabled":
+                            errorMessage =
+                                "User with this email has been disabled.";
+                            break;
+                          case "ERROR_TOO_MANY_REQUESTS":
+                          case "too-many-requests":
+                            errorMessage =
+                                "Too many requests. Try again later.";
+                            break;
+                          case "ERROR_OPERATION_NOT_ALLOWED":
+                          case "operation-not-allowed":
+                            errorMessage =
+                                "Signing in with Email and Password is not enabled.";
+                            break;
+                          default:
+                            errorMessage =
+                                "An undefined Error happened. Please try again.";
+                        }
+                      } else {
+                        errorMessage = error.toString();
                       }
 
-                      if (errorMessage != null && errorMessage != "") {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            (SnackBar(content: Text(errorMessage))));
+                      if (errorMessage != "") {
+                        ScaffoldMessenger.of(context).showSnackBar((SnackBar(
+                          content: Center(
+                            child: Text(
+                              errorMessage,
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w900),
+                            ),
+                          ),
+                          behavior: SnackBarBehavior.floating,
+                          margin: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).size.height - 100,
+                            left: 10,
+                            right: 10,
+                          ),
+                          backgroundColor: Colors.redAccent,
+                        )));
                       }
                     }
-                  }),
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                  child: const Text(
+                    "Login",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        color: Colors.black,
+                        fontSize: 15),
+                  )),
               TextButton(
                 child: const Text(
                   'Forgot Password',
