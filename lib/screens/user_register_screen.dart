@@ -7,17 +7,12 @@
 // ignore_for_file: use_build_context_synchronously, unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
-//import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:firebase_messaging/firebase_messaging.dart';
-//import 'package:deal_diligence/screens/company_screen.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:deal_diligence/screens/verify_email.dart';
-//import 'package:riverpod/riverpod.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 
 class UserRegisterScreen extends ConsumerStatefulWidget {
@@ -221,9 +216,24 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                               "An undefined Error happened. Please try again.";
                       }
 
-                      if (errorMessage != null && errorMessage != "") {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            (SnackBar(content: Text(errorMessage))));
+                      if (errorMessage != "") {
+                        ScaffoldMessenger.of(context).showSnackBar((SnackBar(
+                          content: Center(
+                            child: Text(
+                              errorMessage,
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w900),
+                            ),
+                          ),
+                          behavior: SnackBarBehavior.floating,
+                          margin: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).size.height - 100,
+                            left: 10,
+                            right: 10,
+                          ),
+                          backgroundColor: Colors.redAccent,
+                        )));
                       }
                     }
                   },

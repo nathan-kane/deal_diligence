@@ -156,10 +156,15 @@ class SideDrawer extends StatelessWidget {
                 title: const Text('Add User'),
                 onTap: () {
                   Navigator.pop(context);
+                  // ref
+                  //     .read(globalsNotifierProvider.notifier)
+                  //     .updateNewUser(true);
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const UserProfileScreen(true)));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const UserProfileScreen(true),
+                    ),
+                  );
                 },
               ),
               ListTile(

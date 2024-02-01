@@ -256,9 +256,8 @@ class UsersNotifier extends Notifier<Users> {
   saveUser(globals, user) async {
     if (ref.watch(globalsNotifierProvider).newUser == true) {
       // final DocumentSnapshot currentCompanyProfile =
-      //     await companyRef.doc(companyId).get();
       final newUser = Users(
-        userId: globals.currentUid,
+        userId: user.userId,
         fName: user.fName,
         lName: user.lName,
         mls: user.mls,
@@ -276,7 +275,7 @@ class UsersNotifier extends Notifier<Users> {
         businessType: user.businessType,
         deviceToken: user.deviceToken,
       );
-      firestoreService.saveUser(toMap(newUser), globals.currentUid);
+      firestoreService.saveNewUser(toMap(newUser));
       ref.read(globalsNotifierProvider.notifier).updatenewUser(false);
     } else {
       final DocumentSnapshot currentuserProfile =

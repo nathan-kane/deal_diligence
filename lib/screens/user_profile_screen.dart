@@ -10,17 +10,19 @@
 import 'package:deal_diligence/Providers/company_provider.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:googleapis/artifactregistry/v1.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter/material.dart';
-//import 'package:deal_diligence/Providers/user_provider.dart';
-//import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:deal_diligence/screens/main_screen.dart';
 import 'package:deal_diligence/screens/company_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:deal_diligence/constants.dart' as constants;
+import 'package:firebase_auth/firebase_auth.dart';
 
 final usersRef = FirebaseFirestore.instance.collection(('users'));
 final companyRef = FirebaseFirestore.instance.collection(('company'));
@@ -30,9 +32,9 @@ var maskFormatter = MaskTextInputFormatter(
 class UserProfileScreen extends ConsumerStatefulWidget {
   static const String id = 'user_profile_screen';
   final Users? users;
-  final bool isNewUser;
+  final bool? isNewUser;
 
-  const UserProfileScreen([this.isNewUser = true, this.users]);
+  const UserProfileScreen([this.isNewUser, this.users]);
 
   @override
   ConsumerState<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -40,8 +42,10 @@ class UserProfileScreen extends ConsumerStatefulWidget {
 
 class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   final _db = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
   bool isChecked = false;
-  //bool isNewUser = false;
+  Users newUser = Users();
+  late String email;
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -56,8 +60,6 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   final officePhoneController = TextEditingController();
   final companyController = TextEditingController();
   final mlsController = TextEditingController();
-
-  @override
 
   // Dispose of all the TextControllers when done using them so they don't consume memory
   @override
@@ -79,23 +81,8 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   }
 
   bool showSpinner = false;
-  String? email;
-  String? password;
-  String? fName;
-  String? lName;
-  String? address1;
-  String? address2;
-  String? city;
-  String? state;
-  String? zip;
-  String? cellPhone;
-  String? officePhone;
-  String? company;
-  String? mls;
 
   String? _currentUserState = '';
-  //String? _currentCompanyState = '';
-  //String? _currentCompany = '';
   String? currentBusinessType = '';
 
   //String? _currentMlsId;
@@ -106,10 +93,6 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
     String currentCompanyId = ref.read(globalsNotifierProvider).companyId!;
 
     if (ref.read(globalsNotifierProvider).newUser == true) {
-      // final DocumentSnapshot currentCompanyProfile = await companyRef
-      //     .doc(ref.read(globalsNotifierProvider).companyId)
-      //     .get();
-
       emailController.text = "";
       fNameController.text = "";
       lNameController.text = "";
@@ -220,6 +203,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   void changedDropDownBusinessType(String? selectedBusinessType) {
     setState(() {
       currentBusinessType = selectedBusinessType;
+      newUser.businessType = selectedBusinessType;
       ref
           .read(globalsNotifierProvider.notifier)
           .updateUserBusinessType(selectedBusinessType!);
@@ -246,6 +230,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   void changedDropDownState(String? selectedState) {
     setState(() {
       _currentUserState = selectedState;
+      newUser.userState = selectedState;
       ref
           .read(globalsNotifierProvider.notifier)
           .updateselectedUserState(selectedState!);
@@ -259,6 +244,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   void changedDropDownCompany(String? selectedCompany) {
     setState(() {
       //_currentCompany = selectedCompany;
+      newUser.companyId = selectedCompany;
       ref
           .read(globalsNotifierProvider.notifier)
           .updateselectedCompany(selectedCompany!);
@@ -271,6 +257,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   void changedDropDownMls(String? selectedMls) {
     setState(() {
       //_currentMlsId = selectedMls;
+      newUser.mlsId = selectedMls;
       ref.read(globalsNotifierProvider.notifier).updatemlsId(selectedMls!);
     });
   }
@@ -304,6 +291,27 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
     _dropDownState = getDropDownState(); // Get the list of states
   }
 
+  Future sendNewUserEmail() async {
+    final api = GoogleAuthApi();
+    final googleUser = await api.signIn();
+    const accessToken = '';
+
+    final smtpServer = gmailSaslXoauth2('nkane1234@gmail.com', accessToken);
+    final message = Message()
+      ..from = const Address("nkane1234@gmail.com", "Deal Diligence")
+      ..recipients = ['nkane1234@gmail.com']
+      ..subject = "Welcome to Deal Diligence"
+      ..text = "Welcome to Deal Diligence. Your password is D3@lDiligence";
+
+    try {
+      await send(message, smtpServer);
+
+      //showSnackBar('Invitation email successfully sent');
+    } on MailerException catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     //final _firestoreService = FirestoreService();
@@ -333,6 +341,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     ref.read(usersNotifierProvider.notifier).updatefName(value);
+                    newUser.fName = value;
                   },
                   decoration: const InputDecoration(
                       hintText: 'First Name', labelText: 'First Name'),
@@ -346,6 +355,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     ref.read(usersNotifierProvider.notifier).updatelName(value);
+                    newUser.lName = value;
                   },
                   decoration: const InputDecoration(
                       hintText: 'Last Name', labelText: 'Last Name'),
@@ -383,6 +393,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                 .read(globalsNotifierProvider.notifier)
                                 .updatecompanyId(companyValue!);
                           });
+                          newUser.companyId = companyValue;
                         },
                         items: companyItems,
                       );
@@ -443,6 +454,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                     ref
                         .read(usersNotifierProvider.notifier)
                         .updateaddress1(value);
+                    newUser.address1 = value;
                   },
                   decoration: const InputDecoration(
                       hintText: 'Address 1', labelText: 'Address 1'),
@@ -457,6 +469,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                     ref
                         .read(usersNotifierProvider.notifier)
                         .updateaddress2(value);
+                    newUser.address2 = value;
                   },
                   decoration: const InputDecoration(
                       hintText: 'Address 2', labelText: 'Address 2'),
@@ -470,6 +483,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     ref.read(usersNotifierProvider.notifier).updateCity(value);
+                    newUser.city = value;
                   },
                   decoration: const InputDecoration(
                       hintText: 'City', labelText: 'City'),
@@ -494,6 +508,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                     ref
                         .read(usersNotifierProvider.notifier)
                         .updateZipcode(value);
+                    newUser.zipCode = value;
                   },
                   decoration: const InputDecoration(
                       hintText: 'Zip Code', labelText: 'Zip Code'),
@@ -510,6 +525,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                     ref
                         .read(usersNotifierProvider.notifier)
                         .updateCellPhone(value);
+                    newUser.cellPhone = value;
                   },
                   decoration: const InputDecoration(
                       hintText: 'Cell Phone', labelText: 'Cell Phone'),
@@ -526,9 +542,24 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                     ref
                         .read(usersNotifierProvider.notifier)
                         .updateOfficePhone(value);
+                    newUser.officePhone = value;
                   },
                   decoration: const InputDecoration(
                       hintText: 'Office Phone', labelText: 'Office Phone'),
+                ),
+                const SizedBox(
+                  height: 8.0,
+                ),
+                TextField(
+                  keyboardType: TextInputType.emailAddress,
+                  textAlign: TextAlign.left,
+                  onChanged: (value) {
+                    email = value; // Capture the value entered by the user
+                    ref.read(usersNotifierProvider.notifier).updateEmail(value);
+                    newUser.email = value;
+                  },
+                  decoration:
+                      const InputDecoration(hintText: 'Enter your email'),
                 ),
                 const SizedBox(
                   height: 8.0,
@@ -562,6 +593,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                         hint: const Text("Select MLS"),
                         value: _selectedMls,
                         onChanged: (mlsValue) {
+                          newUser.mls = mlsValue;
                           setState(() {
                             _selectedMls = mlsValue;
                             ref
@@ -589,10 +621,39 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                       showSpinner = true;
                     });
                     try {
-                      ref.read(usersNotifierProvider.notifier).saveUser(
-                          //ref.read(companyNotifierProvider),
-                          ref.read(globalsNotifierProvider),
-                          ref.read(usersNotifierProvider));
+                      if (widget.isNewUser!) {
+                        // Add new user account to Cloud Firestore
+                        try {
+                          UserCredential result =
+                              await _auth.createUserWithEmailAndPassword(
+                                  email: email, password: "D3@lDiligence");
+
+                          if (result.user != null) {
+                            final User user = result.user!;
+                            newUser.userId = user.uid;
+                            //return user;
+
+                            ref.read(usersNotifierProvider.notifier).saveUser(
+                                  //ref.read(companyNotifierProvider),
+                                  ref.read(globalsNotifierProvider),
+                                  newUser,
+                                );
+
+                            // Send email to new user with their default password
+                            sendNewUserEmail();
+                          }
+                        } catch (error) {
+                          var e = error as FirebaseAuthException;
+                          print(e.message!);
+                        }
+                      } else {
+                        ref.read(usersNotifierProvider.notifier).saveUser(
+                              //ref.read(companyNotifierProvider),
+                              ref.read(globalsNotifierProvider),
+                              ref.read(usersNotifierProvider),
+                            );
+                      }
+
                       ref
                           .read(globalsNotifierProvider.notifier)
                           .updatecurrentUserName(
@@ -707,5 +768,17 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
       //   ),
       // ),
     );
+  }
+}
+
+class GoogleAuthApi {
+  final _googleSignIn = GoogleSignIn();
+
+  Future<GoogleSignInAccount?> signIn() async {
+    if (_googleSignIn.isSignedIn == true) {
+      return _googleSignIn.currentUser;
+    } else {
+      return await _googleSignIn.signIn();
+    }
   }
 }
