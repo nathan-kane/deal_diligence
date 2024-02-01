@@ -336,6 +336,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                 ),
                 // Email entry text field
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: fNameController,
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.center,
@@ -350,6 +351,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: lNameController,
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.center,
@@ -447,6 +449,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: address1Controller,
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.center,
@@ -478,6 +481,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: cityController,
                   keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,
@@ -552,7 +556,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                 ),
                 TextField(
                   keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.left,
+                  textAlign: TextAlign.center,
                   onChanged: (value) {
                     email = value; // Capture the value entered by the user
                     ref.read(usersNotifierProvider.notifier).updateEmail(value);
