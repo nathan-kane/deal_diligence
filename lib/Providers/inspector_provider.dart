@@ -1,0 +1,290 @@
+//*********************************************
+//  Deal Diligence was designed and created by      *
+//  Nathan Kane                               *
+//  copyright 2023                            *
+//*********************************************
+
+// ignore_for_file: unused_label, unnecessary_null_comparison, unused_local_variable, unused_import
+
+import 'package:deal_diligence/Providers/global_provider.dart';
+import 'package:deal_diligence/Services/firestore_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:deal_diligence/Providers/company_provider.dart';
+
+class InspectorCompany {
+  String? inspectorCompanyId;
+  String? companyName;
+  String? fName;
+  String? lName;
+  String? address1;
+  String? address2;
+  String? city;
+  String? inspectorCompanyState;
+  String? zipCode;
+  String? cellPhone;
+  String? officePhone;
+  String? email;
+  String? website;
+
+  InspectorCompany(
+      {this.inspectorCompanyId,
+      this.companyName,
+      this.fName,
+      this.lName,
+      this.address1,
+      this.address2,
+      this.city,
+      this.inspectorCompanyState,
+      this.zipCode,
+      this.cellPhone,
+      this.officePhone,
+      this.website,
+      this.email});
+
+  InspectorCompany copyWith({
+    String? inspectorCompanyId,
+    String? companyName,
+    String? fName,
+    String? lName,
+    String? address1,
+    String? address2,
+    String? city,
+    String? inspectorCompanyState,
+    String? zipCode,
+    String? cellPhone,
+    String? officePhone,
+    String? email,
+    String? website,
+  }) {
+    return InspectorCompany(
+      companyName: companyName ?? this.companyName,
+      fName: fName ?? this.fName,
+      lName: lName ?? this.lName,
+      address1: address1 ?? this.address1,
+      address2: address2 ?? this.address2,
+      city: city ?? this.city,
+      inspectorCompanyState:
+          inspectorCompanyState ?? this.inspectorCompanyState,
+      zipCode: zipCode ?? this.zipCode,
+      cellPhone: cellPhone ?? this.cellPhone,
+      officePhone: officePhone ?? this.officePhone,
+      email: email ?? this.email,
+      website: website ?? this.website,
+    );
+  }
+}
+
+class InspectorCompanyNotifier extends Notifier<InspectorCompany> {
+  final firestoreService = FirestoreService();
+  //final companyRef = FirebaseFirestore.instance.collection(('Company'));
+  final inspectorDB = FirebaseFirestore.instance.collection(('inspector'));
+  InspectorCompanyNotifier(); // un-named constructor
+
+// **************************************************
+
+  String inspectorCompanyId = '';
+  String companyName = '';
+  String fName = '';
+  String lName = '';
+  String address1 = '';
+  String address2 = '';
+  String city = '';
+  String inspectorCompanyState = '';
+  String zipCode = '';
+  String officePhone = '';
+  String cellPhone = '';
+  String email = '';
+  String website = '';
+
+  @override
+  InspectorCompany build() {
+    return InspectorCompany(
+      // Return the initial state
+      inspectorCompanyId: '',
+      companyName: '',
+      fName: '',
+      lName: '',
+      address1: '',
+      address2: '',
+      city: '',
+      inspectorCompanyState: '',
+      zipCode: '',
+      cellPhone: '',
+      officePhone: '',
+      email: '',
+      website: '',
+    );
+  }
+
+  // functions to update class members
+  void updateCompanyName(String newCompanyName) {
+    state = state.copyWith(companyName: newCompanyName);
+  }
+
+  void updatefName(String newfName) {
+    state = state.copyWith(fName: newfName);
+  }
+
+  void updatelName(String newlName) {
+    state = state.copyWith(lName: newlName);
+  }
+
+  void updateaddress1(String newaddress1) {
+    state = state.copyWith(address1: newaddress1);
+  }
+
+  void updateaddress2(String newaddress2) {
+    state = state.copyWith(address2: newaddress2);
+  }
+
+  void updateCity(String newCity) {
+    state = state.copyWith(city: newCity);
+  }
+
+  void updateInspectorCompanyState(String newInspectorCompanyState) {
+    state = state.copyWith(inspectorCompanyState: newInspectorCompanyState);
+  }
+
+  void updateZipcode(String newZipcode) {
+    state = state.copyWith(zipCode: newZipcode);
+  }
+
+  void updateCellPhone(String newCellPhone) {
+    state = state.copyWith(cellPhone: newCellPhone);
+  }
+
+  void updateOfficePhone(String newOfficePhone) {
+    state = state.copyWith(officePhone: newOfficePhone);
+  }
+
+  void updateEmail(String newEmail) {
+    state = state.copyWith(email: newEmail);
+  }
+
+  void updateWebsite(String newWebsite) {
+    state = state.copyWith(website: newWebsite);
+  }
+
+  Map<String, dynamic> toMap(InspectorCompany inspectorCompany) {
+    return {
+      'companyName': inspectorCompany.companyName,
+      'cellPhone': inspectorCompany.cellPhone,
+      'address1': inspectorCompany.address1,
+      'address2': inspectorCompany.address2,
+      'inspectorCompanyId': inspectorCompany.inspectorCompanyId,
+      'city': inspectorCompany.city,
+      'fName': inspectorCompany.fName,
+      'lName': inspectorCompany.lName,
+      'officePhone': inspectorCompany.officePhone,
+      'inspectorCompanyState': inspectorCompany.inspectorCompanyState,
+      'zipCode': inspectorCompany.zipCode,
+      'email': inspectorCompany.email,
+      'website': inspectorCompany.website,
+    };
+  }
+
+  InspectorCompanyNotifier.fromFirestore(Map<String, dynamic> firestore)
+      : cellPhone = firestore['cellPhone'],
+        address1 = firestore['address1'],
+        address2 = firestore['address2'],
+        inspectorCompanyId = firestore['inspectorCompanyId'],
+        companyName = firestore['companyName'],
+        city = firestore['city'],
+        fName = firestore['fName'],
+        lName = firestore['lName'],
+        officePhone = firestore['officePhone'],
+        inspectorCompanyState = firestore['inspectorCompanyState'],
+        zipCode = firestore['zipCode'],
+        email = firestore['email'],
+        website = firestore['website'];
+
+// **************************************************
+
+  // saveFcmToken(String userId, String userName) {
+  //   //firestoreService.saveUserFcmTokenId(userId, fcmTokenId);
+  //   firestoreService.saveDeviceToken(userId, userName);
+  // }
+
+  saveInspectorCompany(globals, inspectorCompany) async {
+    if (ref.watch(globalsNotifierProvider).newInspector == true) {
+      // final DocumentSnapshot currentCompanyProfile =
+      final newInspectorCompany = InspectorCompany(
+        inspectorCompanyId: inspectorCompany.inspectorCompanyId,
+        companyName: inspectorCompany.companyName,
+        fName: inspectorCompany.fName,
+        lName: inspectorCompany.lName,
+        address1: inspectorCompany.address1,
+        address2: inspectorCompany.address2,
+        city: inspectorCompany.city,
+        inspectorCompanyState: inspectorCompany.inspectorCompanyState,
+        zipCode: inspectorCompany.zipCode,
+        cellPhone: inspectorCompany.cellPhone,
+        officePhone: inspectorCompany.officePhone,
+        email: inspectorCompany.email,
+        website: inspectorCompany.website,
+      );
+      firestoreService.saveNewInspectorCompany(toMap(newInspectorCompany));
+      // ref
+      //     .read(globalsNotifierProvider.notifier)
+      //     .updatenewInspectorCompany(false);
+    } else {
+      final DocumentSnapshot currentInspectorCompanyProfile =
+          await inspectorDB.doc(inspectorCompany.InspectorCompanyId).get();
+
+      var newInspectorCompany = InspectorCompany(
+        companyName: (state.companyName != null && state.companyName != "")
+            ? state.companyName
+            : currentInspectorCompanyProfile.get('companyName'),
+        fName: (state.fName != null && state.fName != "")
+            ? state.fName
+            : currentInspectorCompanyProfile.get('fName'),
+        lName: (state.lName != null && state.lName != "")
+            ? state.lName
+            : currentInspectorCompanyProfile.get('lName'),
+        address1: (state.address1 != null && state.address1 != "")
+            ? state.address1
+            : currentInspectorCompanyProfile.get('address1'),
+        address2: (state.address2 != null && state.address2 != "")
+            ? state.address2
+            : currentInspectorCompanyProfile.get('address2'),
+        city: (state.city != null && state.city != "")
+            ? state.city
+            : currentInspectorCompanyProfile.get('city'),
+        inspectorCompanyState:
+            (inspectorCompanyState != null && inspectorCompanyState != "")
+                ? inspectorCompanyState
+                : currentInspectorCompanyProfile.get('inspectorCompanyState'),
+        /*state: (globals.selectedState != null)
+              ? globals.selectedState
+              : globals.currentuserState,*/
+        zipCode: (state.zipCode != null && state.zipCode != "")
+            ? state.zipCode
+            : currentInspectorCompanyProfile.get('zipCode'),
+        cellPhone: (state.cellPhone != null && state.cellPhone != "")
+            ? state.cellPhone
+            : currentInspectorCompanyProfile.get('cellPhone'),
+        officePhone: (state.officePhone != null && state.officePhone != "")
+            ? state.officePhone
+            : currentInspectorCompanyProfile.get('officePhone'),
+        website: (state.website != null && state.website != "")
+            ? state.website
+            : currentInspectorCompanyProfile.get('website'),
+      );
+      // businessType:
+      // ref.read(globalsNotifierProvider).userBusinessType;
+
+      firestoreService.saveInspectorCompany(
+          newInspectorCompany, inspectorCompanyId);
+    }
+  }
+
+  deleteInspectorCompany(String? inspectorCompanyId) {
+    firestoreService.deleteInspectorCompany(inspectorCompanyId);
+  }
+}
+
+final inspectorCompanyNotifierProvider =
+    NotifierProvider<InspectorCompanyNotifier, InspectorCompany>(() {
+  return InspectorCompanyNotifier();
+});

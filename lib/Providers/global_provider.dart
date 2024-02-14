@@ -29,7 +29,12 @@ class Globals {
   final bool? newEvent;
   final bool? newTrxn;
   final bool? newUser;
+  final bool? newClient;
+  final bool? newInspector;
+  final bool? isNewAppraiserCompany;
   final bool newCompany;
+  final bool? newMortgageCompany;
+  final bool? isNewTitleCompany;
   final bool? addCompany;
 
   Globals({
@@ -54,6 +59,11 @@ class Globals {
     this.newEvent,
     this.newTrxn,
     this.newUser,
+    this.newClient,
+    this.newInspector,
+    this.isNewAppraiserCompany,
+    this.newMortgageCompany,
+    this.isNewTitleCompany,
     this.addCompany,
     required this.newCompany,
   });
@@ -80,7 +90,12 @@ class Globals {
     bool newEvent = true,
     bool? newTrxn = true,
     bool newUser = true,
+    bool newClient = true,
+    bool newInspector = true,
+    bool isNewAppraiserCompany = true,
     bool newCompany = true,
+    bool newMortgageCompany = true,
+    bool isNewTitleCompany = true,
     bool addCompany = false,
   }) {
     return Globals(
@@ -105,7 +120,12 @@ class Globals {
       newEvent: newEvent,
       newTrxn: newTrxn,
       newUser: newUser,
+      newClient: newClient,
+      newInspector: newInspector,
+      isNewAppraiserCompany: isNewAppraiserCompany,
       newCompany: newCompany,
+      newMortgageCompany: newMortgageCompany,
+      isNewTitleCompany: isNewTitleCompany,
       addCompany: addCompany,
       // newEvent: newEvent ?? this.newEvent,
       // newTrxn: newTrxn ?? this.newTrxn,
@@ -141,6 +161,11 @@ class GlobalsNotifier extends Notifier<Globals> {
       newEvent: true,
       newTrxn: true,
       newUser: true,
+      newClient: true,
+      newInspector: true,
+      isNewAppraiserCompany: true,
+      newMortgageCompany: true,
+      isNewTitleCompany: true,
       addCompany: false,
     );
   }
@@ -230,12 +255,32 @@ class GlobalsNotifier extends Notifier<Globals> {
     state = state.copyWith(newUser: newNewUser);
   }
 
+  void updatenewClient(bool newNewClient) {
+    state = state.copyWith(newClient: newNewClient);
+  }
+
+  void updatenewInspector(bool newNewInspector) {
+    state = state.copyWith(newInspector: newNewInspector);
+  }
+
+  void updateIsNewAppraiserCompany(bool newIsNewAppraiserCompany) {
+    state = state.copyWith(isNewAppraiserCompany: newIsNewAppraiserCompany);
+  }
+
   void updatenewCompany(bool newNewCompany) {
     state = state.copyWith(newCompany: newNewCompany);
   }
 
   void updateAddCompany(bool newAddCompany) {
     state = state.copyWith(addCompany: newAddCompany);
+  }
+
+  void updatenewMortgageCompany(bool newMortgageCompany) {
+    state = state.copyWith(newMortgageCompany: newMortgageCompany);
+  }
+
+  void updateIsNewTitleCompany(bool newIsNewTitleCompany) {
+    state = state.copyWith(isNewTitleCompany: newIsNewTitleCompany);
   }
 }
 

@@ -1,13 +1,14 @@
 {
   "project_info": {
     "project_number": "394692266013",
+    "firebase_url": "https://deal-diligence-5de73-default-rtdb.firebaseio.com",
     "project_id": "deal-diligence-5de73",
-    "storage_bucket": "deal-diligence-5de73.appspot.com"
+    "storage_bucket": "deal-diligence-5de73.appspot.com" 
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:394692266013:android:dfbaae290896d469a51ef4",
+        "mobilesdk_app_id": "1:394692266013:android:41ad4f0128cc7958a51ef4",
         "android_client_info": {
           "package_name": "com.kane.dealdiligence"
         }

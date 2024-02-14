@@ -1,3 +1,9 @@
+//*********************************************
+//  Deal Diligence was designed and created by      *
+//  Nathan Kane                               *
+//  copyright 2023                            *
+//*********************************************
+
 //import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:firebase_messaging/firebase_messaging.dart';
@@ -204,17 +210,17 @@ class CompanyNotifier extends Notifier<Company> {
     // If the agency is a new agency retrieve the agency
     // document ID and save it to a new agent document
     if (ref.read(globalsNotifierProvider).newCompany == true) {
-      String id = _db.collection('company').doc().id;
-      ref.read(globalsNotifierProvider.notifier).updatecompanyId(id);
-      ref.read(globalsNotifierProvider.notifier).updatecurrentCompanyState(
-          ref.read(globalsNotifierProvider).selectedState!);
+      // String id = _db.collection('company').doc().id;
+      // ref.read(globalsNotifierProvider.notifier).updatecompanyId(id);
+      // ref.read(globalsNotifierProvider.notifier).updatecurrentCompanyState(
+      //     ref.read(globalsNotifierProvider).selectedState!);
 
-      firestoreService.saveNewCompany(toMap(newCompany), id);
+      firestoreService.saveNewCompany(toMap(newCompany));
 
-      ref.read(globalsNotifierProvider.notifier).updatecompanyId(id);
+      //ref.read(globalsNotifierProvider.notifier).updatecompanyId(id);
       ref.read(globalsNotifierProvider.notifier).updatenewCompany(false);
     } else {
-      //firestoreService.saveCompany(newCompany, ref);
+      firestoreService.saveCompany(toMap(newCompany), companyId!);
     }
   }
 }

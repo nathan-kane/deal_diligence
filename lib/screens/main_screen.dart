@@ -18,6 +18,10 @@ import 'package:deal_diligence/screens/company_dash_board.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:deal_diligence/screens/chat_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:deal_diligence/screens/appraiser_company_screen.dart';
+import 'package:deal_diligence/screens/inspector_profile_screen.dart';
+import 'package:deal_diligence/screens/mortgage_company_screen.dart';
+import 'package:deal_diligence/screens/title_company_screen.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});
@@ -139,7 +143,7 @@ class SideDrawer extends StatelessWidget {
                   Icons.add_business,
                   color: Colors.blueAccent,
                 ),
-                title: const Text('Add Company'),
+                title: const Text('Add RE Company'),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
@@ -153,7 +157,7 @@ class SideDrawer extends StatelessWidget {
                   Icons.person,
                   color: Colors.lightBlueAccent,
                 ),
-                title: const Text('Add User'),
+                title: const Text('Add Company User'),
                 onTap: () {
                   Navigator.pop(context);
                   // ref
@@ -163,6 +167,82 @@ class SideDrawer extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const UserProfileScreen(true),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.person,
+                  color: Colors.lightBlueAccent,
+                ),
+                title: const Text('Add Mortgage Company'),
+                onTap: () {
+                  Navigator.pop(context);
+                  // ref
+                  //     .read(globalsNotifierProvider.notifier)
+                  //     .updateNewUser(true);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MortgageCompanyScreen(true),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.person,
+                  color: Colors.lightBlueAccent,
+                ),
+                title: const Text('Add Title Company'),
+                onTap: () {
+                  Navigator.pop(context);
+                  // ref
+                  //     .read(globalsNotifierProvider.notifier)
+                  //     .updateNewUser(true);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TitleCompanyScreen(true),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.person,
+                  color: Colors.lightBlueAccent,
+                ),
+                title: const Text('Add Appraiser Company'),
+                onTap: () {
+                  Navigator.pop(context);
+                  // ref
+                  //     .read(globalsNotifierProvider.notifier)
+                  //     .updateNewUser(true);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AppraiserCompanyScreen(true),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.person,
+                  color: Colors.lightBlueAccent,
+                ),
+                title: const Text('Add Inspector Company'),
+                onTap: () {
+                  Navigator.pop(context);
+                  // ref
+                  //     .read(globalsNotifierProvider.notifier)
+                  //     .updateNewUser(true);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const InspectorCompanyScreen(true),
                     ),
                   );
                 },

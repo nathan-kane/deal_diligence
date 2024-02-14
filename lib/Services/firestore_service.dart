@@ -7,18 +7,10 @@
 //import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:firebase_messaging/firebase_messaging.dart";
-//import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:deal_diligence/Models/users_model.dart';
-// import 'package:deal_diligence/Models/Company.dart';
-//import 'package:deal_diligence/Models/Trxns.dart' as TrxnModel;
 import 'dart:io';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/event_provider.dart';
 import 'package:deal_diligence/Providers/device_tokens.dart';
-// import 'package:deal_diligence/Providers/user_provider.dart';
-//import 'package:deal_diligence/Providers/trxn_provider.dart';
-// import 'package:deal_diligence/Providers/event_provider.dart';
-//import 'package:deal_diligence/Providers/company_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FirestoreService {
@@ -35,13 +27,68 @@ class FirestoreService {
     return _db.collection('users').doc(currentUid).set(users);
   }
 
+  Future<void> saveNewClient(client) {
+    return _db.collection('client').add(client);
+  }
+
+  Future<void> saveClient(client, String currentClientid) {
+    return _db.collection('client').doc(currentClientid).set(client);
+  }
+
+  Future<void> saveNewInspectorCompany(inspectorCompany) {
+    return _db.collection('inspectorCompany').add(inspectorCompany);
+  }
+
+  Future<void> saveInspectorCompany(
+      inspectorCompany, String inspectorCompanyId) {
+    return _db
+        .collection('inspectorCompany')
+        .doc(inspectorCompanyId)
+        .set(inspectorCompany);
+  }
+
+  Future<void> saveNewAppraiserCompany(appraiserCompany) {
+    return _db.collection('appraiserCompany').add(appraiserCompany);
+  }
+
+  Future<void> saveAppraiserCompany(
+      appraiserCompany, String appraiserCompanyId) {
+    return _db
+        .collection('appraiserCompany')
+        .doc(appraiserCompanyId)
+        .set(appraiserCompany);
+  }
+
+  Future<void> saveNewMortgageCompany(mortgageCompany) {
+    return _db.collection('mortgageCompany').add(mortgageCompany);
+  }
+
+  Future<void> saveMortgageCompany(mortgageCompany, String mortgageCompanyId) {
+    return _db
+        .collection('mortgageCompany')
+        .doc(mortgageCompanyId)
+        .set(mortgageCompany);
+  }
+
+  Future<void> saveNewTitleCompany(titleCompany) {
+    return _db.collection('titleCompany').add(titleCompany);
+  }
+
+  Future<void> saveTitleCompany(titleCompany, String titleCompanyId) {
+    return _db.collection('titleCompany').doc(titleCompanyId).set(titleCompany);
+  }
+
   // Save the Users or users to database
   // Future<void> saveCompany(Company Company, Ref ref) {
   //   return _db.collection('Company').doc(ref.read(globalsNotifierProvider).companyId).set(CompanyNotifier.toMap());
   // }
 
-  Future<void> saveNewCompany(company, String companyId) async {
+  Future<void> saveCompany(company, String companyId) async {
     await _db.collection('company').doc(companyId).set(company);
+  }
+
+  Future<void> saveNewCompany(company) {
+    return _db.collection('company').add(company);
   }
 
   Future<void> saveUserFcmTokenId(String userId, String fcmTokenId) async {
@@ -149,6 +196,14 @@ class FirestoreService {
 
   Future<void> deleteUser(String? userId) {
     return _db.collection('Users').doc(userId).delete();
+  }
+
+  Future<void> deleteInspectorCompany(String? inspectorCompanyId) {
+    return _db.collection('InspectorCompany').doc(inspectorCompanyId).delete();
+  }
+
+  Future<void> deleteAppraiserCompany(String? appraiserCompanyId) {
+    return _db.collection('AppraiserCompany').doc(appraiserCompanyId).delete();
   }
 
   Future<void> deleteTrxn(String trxnId, String companyId) async {
