@@ -41,7 +41,7 @@ class TitleCompany {
     String? address1,
     String? address2,
     String? city,
-    String? titleState,
+    String? titleCompanyState,
     String? zipCode,
     String? cellPhone,
     String? officePhone,
@@ -91,7 +91,7 @@ class TitleCompanyNotifier extends Notifier<TitleCompany> {
   String? address1;
   String? address2;
   String? city;
-  String? titleState;
+  String? titleCompanyState;
   String? zipCode;
   String? cellPhone;
   String? officePhone;
@@ -119,8 +119,8 @@ class TitleCompanyNotifier extends Notifier<TitleCompany> {
     state = state.copyWith(city: newcity);
   }
 
-  void updatestate(String newstate) {
-    state = state.copyWith(titleState: newstate);
+  void updateTitleCompanyState(String newTitleCompanyState) {
+    state = state.copyWith(titleCompanyState: newTitleCompanyState);
   }
 
   void updatezipcode(String newzipcode) {
@@ -145,11 +145,11 @@ class TitleCompanyNotifier extends Notifier<TitleCompany> {
 
   TitleCompanyNotifier.fromFirestore(Map<String, dynamic> firestore)
       : titleId = firestore['titleId'],
-        titleCompanyName = firestore['name'],
+        titleCompanyName = firestore['titleCompanyName'],
         address1 = firestore['address1'],
         address2 = firestore['address2'],
         city = firestore['city'],
-        titleState = firestore['state'],
+        titleCompanyState = firestore['titleCompanyState'],
         zipCode = firestore['zipCode'],
         cellPhone = firestore['cellPhone'],
         officePhone = firestore['officePhone'],
@@ -159,11 +159,11 @@ class TitleCompanyNotifier extends Notifier<TitleCompany> {
   Map<String, dynamic> toMap(TitleCompany title) {
     return {
       'titleId': title.titleCompanyId,
-      'name': title.titleCompanyName,
+      'titleCompanyName': title.titleCompanyName,
       'address1': title.address1,
       'address2': title.address2,
       'city': title.city,
-      'state': title.titleCompanyState,
+      'titleCompanyState': title.titleCompanyState,
       'zipCode': title.zipCode,
       'cellPhone': title.cellPhone,
       'officePhone': title.officePhone,
@@ -172,25 +172,23 @@ class TitleCompanyNotifier extends Notifier<TitleCompany> {
     };
   }
 
-  saveTitleCompany(WidgetRef ref) {
+  saveTitleCompany(TitleCompany titleCompany) {
     //globals.agencyId = name;
     //ref.read(globalsNotifierProvider.notifier).updatetitleId(name);
     //final TitleVals = ref.watch(titleCompanyNotifierProvider);
 
     var newTitleCompany = TitleCompany(
-        titleCompanyId: ref.read(titleCompanyNotifierProvider).titleCompanyId,
-        titleCompanyName:
-            ref.read(titleCompanyNotifierProvider).titleCompanyName,
-        address1: ref.read(titleCompanyNotifierProvider).address1,
-        address2: ref.read(titleCompanyNotifierProvider).address2,
-        city: ref.read(titleCompanyNotifierProvider).city,
-        titleCompanyState:
-            ref.read(titleCompanyNotifierProvider).titleCompanyState,
-        zipCode: ref.read(titleCompanyNotifierProvider).zipCode,
-        cellPhone: ref.read(titleCompanyNotifierProvider).cellPhone,
-        officePhone: ref.read(titleCompanyNotifierProvider).officePhone,
-        email: ref.read(titleCompanyNotifierProvider).email,
-        website: ref.read(titleCompanyNotifierProvider).website);
+        titleCompanyId: titleCompany.titleCompanyId,
+        titleCompanyName: titleCompany.titleCompanyName,
+        address1: titleCompany.address1,
+        address2: titleCompany.address2,
+        city: titleCompany.city,
+        titleCompanyState: titleCompany.titleCompanyState,
+        zipCode: titleCompany.zipCode,
+        cellPhone: titleCompany.cellPhone,
+        officePhone: titleCompany.officePhone,
+        email: titleCompany.email,
+        website: titleCompany.website);
 
     // If the agency is a new agency retrieve the agency
     // document ID and save it to a new agent document

@@ -21,7 +21,7 @@ var maskFormatter = MaskTextInputFormatter(
     mask: '(###) ###-####', filter: {"#": RegExp(r'[0-9]')});
 
 class TitleCompanyScreen extends ConsumerStatefulWidget {
-  static const String id = 'mortgage_company_screen';
+  static const String id = 'title_company_screen';
   final bool? isNewTitleCompany;
 
   const TitleCompanyScreen([this.isNewTitleCompany, this.titleCompany]);
@@ -80,7 +80,7 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
   getCurrentTitleCompanyProfile() async {
     if (ref.read(globalsNotifierProvider).companyId == null ||
         ref.read(globalsNotifierProvider).companyId == "") {
-      ref.read(globalsNotifierProvider.notifier).updatenewCompany(true);
+      ref.read(globalsNotifierProvider.notifier).updateIsNewTitleCompany(true);
       titleCompanyNameController.text = "";
       address1Controller.text = "";
       address2Controller.text = "";
@@ -99,7 +99,7 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
       // existing record
       // Updates Controllers
       titleCompanyNameController.text =
-          currentTitleCompanyProfile["name"] ?? "";
+          currentTitleCompanyProfile["titleCompanyName"] ?? "";
       address1Controller.text = currentTitleCompanyProfile['address1'] ?? "";
       address2Controller.text = currentTitleCompanyProfile['address2'] ?? "";
       cityController.text = currentTitleCompanyProfile['city'] ?? "";
@@ -131,15 +131,15 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
   void changedDropDownState(String? selectedState) {
     setState(() {
       _currentTitleCompanyState = selectedState;
-      ref
-          .read(globalsNotifierProvider.notifier)
-          .updatecurrentCompanyState(selectedState!);
-      ref
-          .read(globalsNotifierProvider.notifier)
-          .updateselectedState(selectedState);
+      // ref
+      //     .read(globalsNotifierProvider.notifier)
+      //     .updatecurrentCompanyState(selectedState!);
+      // ref
+      //     .read(globalsNotifierProvider.notifier)
+      //     .updateselectedState(selectedState);
       ref
           .read(titleCompanyNotifierProvider.notifier)
-          .updatestate(selectedState);
+          .updateTitleCompanyState(selectedState!);
     });
   }
 
@@ -184,7 +184,7 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
               //crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 const Text(
-                  'Mortgage Company Profile',
+                  'Title Company Profile',
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.w800,
@@ -193,85 +193,11 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
                 const SizedBox(
                   height: 30.0,
                 ),
-                // const Text(
-                //   'Select your company',
-                //   style: TextStyle(
-                //     fontSize: 20,
-                //     fontWeight: FontWeight.w700,
-                //   ),
-                // ),
-                // const SizedBox(
-                //   height: 8.0,
-                // ),
-                // StreamBuilder(
-                //     stream: _db.collection('company').snapshots(),
-                //     builder: (BuildContext context, AsyncSnapshot snapshot) {
-                //       if (snapshot.data == null) {
-                //         return const Center(
-                //           child: CircularProgressIndicator(),
-                //         );
-                //       } else {
-                //         return DropdownButton<String>(
-                //           hint: const Text("Select Company"),
-                //           value: _currentCompanyName,
-                //           onChanged: changedDropDownCompany,
-                //           items: snapshot.data.docs
-                //               .map<DropdownMenuItem<String>>((document) {
-                //             return DropdownMenuItem<String>(
-                //               value: document.id,
-                //               child: Text(document.data()['name']),
-                //             );
-                //           }).toList(),
-                //         );
-                //       }
-                //     }),
-                // RoundedButton(
-                //   title: 'Link to your company',
-                //   colour: Colors.blueAccent,
-                //   onPressed: () async {
-                //     setState(() {
-                //       showSpinner = true;
-                //     });
-                //     try {
-                //       await _firestoreService.linkUserToExistingCompany(
-                //           _currentCompanyName,
-                //           ref.read(globalsNotifierProvider).currentUid!);
-                //       ref
-                //           .read(globalsNotifierProvider.notifier)
-                //           .updatecompanyId(_currentCompanyName!);
-                //       final DocumentSnapshot currentTitleCompanyProfile =
-                //           await titleCompanyRef
-                //               .doc(_currentCompanyName)
-                //               .get();
-                //       ref
-                //           .read(globalsNotifierProvider.notifier)
-                //           .updatecurrentCompanyState(
-                //               currentTitleCompanyProfile.get('state'));
-                //       Navigator.of(context).push(MaterialPageRoute(
-                //           builder: (context) => const UserProfileScreen()));
-                //       setState(() {
-                //         showSpinner = false;
-                //       });
-                //     } catch (e) {
-                //       // todo: add better error handling
-                //       //print(e);
-                //     }
-                //   },
-                // ),
-                // const SizedBox(
-                //   height: 20.0,
-                // ),
-                // const Text(
-                //   'or add new company',
-                //   style: TextStyle(
-                //     fontSize: 20,
-                //     fontWeight: FontWeight.w700,
-                //   ),
-                // ),
                 const SizedBox(
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: titleCompanyNameController,
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.center,
@@ -281,13 +207,14 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
                         .updateTitleCompanyName(value);
                   },
                   decoration: const InputDecoration(
-                      hintText: 'Mortgage Company Name',
-                      labelText: 'Mortgage Company Name'),
+                      hintText: 'Title Company Name',
+                      labelText: 'Title Company Name'),
                 ),
                 const SizedBox(
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: address1Controller,
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.center,
@@ -303,6 +230,7 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: address2Controller,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
@@ -317,6 +245,7 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: cityController,
                   keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,
@@ -430,7 +359,7 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
                   height: 8.0,
                 ),
                 RoundedButton(
-                  title: 'Save new company',
+                  title: 'Save Title company',
                   colour: Colors.blueAccent,
                   onPressed: () async {
                     setState(() {
@@ -446,8 +375,9 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
                       //agencyProvider.saveCompany();
                       ref
                           .read(titleCompanyNotifierProvider.notifier)
-                          .saveTitleCompany(ref);
-                      Navigator.pop;
+                          .saveTitleCompany(
+                              ref.read(titleCompanyNotifierProvider));
+                      Navigator.pop(context);
                       // Navigator.of(context).pushReplacement(MaterialPageRoute(
                       //     builder: (context) => const UserProfileScreen()));
 
@@ -465,7 +395,7 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
                 ),
                 (widget != null)
                     ? RoundedButton(
-                        title: 'Delete',
+                        title: 'Delete Title Company',
                         colour: Colors.red,
                         onPressed: () async {
                           setState(() {

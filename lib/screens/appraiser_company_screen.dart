@@ -29,8 +29,6 @@ class AppraiserCompanyScreen extends ConsumerStatefulWidget {
       [this.isNewAppraiserCompany, this.appraiserCompany]);
   final AppraiserCompany? appraiserCompany;
 
-  //AgencyScreen([this.agency]);
-
   @override
   ConsumerState<AppraiserCompanyScreen> createState() =>
       _AppraiserCompanyScreenState();
@@ -72,7 +70,7 @@ class _AppraiserCompanyScreenState
   String? address1;
   String? address2;
   String? city;
-  String? state;
+  String? appraiserState;
   String? zip;
   String? cellPhone;
   String? officePhone;
@@ -110,9 +108,10 @@ class _AppraiserCompanyScreenState
       address2Controller.text =
           currentAppraiserCompanyProfile['address2'] ?? "";
       cityController.text = currentAppraiserCompanyProfile['city'] ?? "";
-      stateController.text = currentAppraiserCompanyProfile['state'] ?? "";
+      stateController.text =
+          currentAppraiserCompanyProfile['appraiserState'] ?? "";
       _currentAppraiserCompanyState =
-          currentAppraiserCompanyProfile['state'] ?? "";
+          currentAppraiserCompanyProfile['appraiserState'] ?? "";
       zipController.text = currentAppraiserCompanyProfile['zipCode'].toString();
       cellPhoneController.text =
           currentAppraiserCompanyProfile['cellPhone'] ?? "";
@@ -141,14 +140,8 @@ class _AppraiserCompanyScreenState
     setState(() {
       _currentAppraiserCompanyState = selectedState;
       ref
-          .read(globalsNotifierProvider.notifier)
-          .updatecurrentCompanyState(selectedState!);
-      ref
-          .read(globalsNotifierProvider.notifier)
-          .updateselectedState(selectedState);
-      ref
           .read(appraiserCompanyNotifierProvider.notifier)
-          .updateAppraiserState(selectedState);
+          .updateAppraiserState(selectedState!);
     });
   }
 
@@ -202,85 +195,11 @@ class _AppraiserCompanyScreenState
                 const SizedBox(
                   height: 30.0,
                 ),
-                // const Text(
-                //   'Select your company',
-                //   style: TextStyle(
-                //     fontSize: 20,
-                //     fontWeight: FontWeight.w700,
-                //   ),
-                // ),
-                // const SizedBox(
-                //   height: 8.0,
-                // ),
-                // StreamBuilder(
-                //     stream: _db.collection('company').snapshots(),
-                //     builder: (BuildContext context, AsyncSnapshot snapshot) {
-                //       if (snapshot.data == null) {
-                //         return const Center(
-                //           child: CircularProgressIndicator(),
-                //         );
-                //       } else {
-                //         return DropdownButton<String>(
-                //           hint: const Text("Select Company"),
-                //           value: _currentCompanyName,
-                //           onChanged: changedDropDownCompany,
-                //           items: snapshot.data.docs
-                //               .map<DropdownMenuItem<String>>((document) {
-                //             return DropdownMenuItem<String>(
-                //               value: document.id,
-                //               child: Text(document.data()['name']),
-                //             );
-                //           }).toList(),
-                //         );
-                //       }
-                //     }),
-                // RoundedButton(
-                //   title: 'Link to your company',
-                //   colour: Colors.blueAccent,
-                //   onPressed: () async {
-                //     setState(() {
-                //       showSpinner = true;
-                //     });
-                //     try {
-                //       await _firestoreService.linkUserToExistingCompany(
-                //           _currentCompanyName,
-                //           ref.read(globalsNotifierProvider).currentUid!);
-                //       ref
-                //           .read(globalsNotifierProvider.notifier)
-                //           .updatecompanyId(_currentCompanyName!);
-                //       final DocumentSnapshot currentAppraiserCompanyProfile =
-                //           await appraiserCompanyRef
-                //               .doc(_currentCompanyName)
-                //               .get();
-                //       ref
-                //           .read(globalsNotifierProvider.notifier)
-                //           .updatecurrentCompanyState(
-                //               currentAppraiserCompanyProfile.get('state'));
-                //       Navigator.of(context).push(MaterialPageRoute(
-                //           builder: (context) => const UserProfileScreen()));
-                //       setState(() {
-                //         showSpinner = false;
-                //       });
-                //     } catch (e) {
-                //       // todo: add better error handling
-                //       //print(e);
-                //     }
-                //   },
-                // ),
-                // const SizedBox(
-                //   height: 20.0,
-                // ),
-                // const Text(
-                //   'or add new company',
-                //   style: TextStyle(
-                //     fontSize: 20,
-                //     fontWeight: FontWeight.w700,
-                //   ),
-                // ),
                 const SizedBox(
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: appraiserCompanyNameController,
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.center,
@@ -297,6 +216,7 @@ class _AppraiserCompanyScreenState
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: address1Controller,
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.center,
@@ -312,6 +232,7 @@ class _AppraiserCompanyScreenState
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: address2Controller,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
@@ -326,6 +247,7 @@ class _AppraiserCompanyScreenState
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: cityController,
                   keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,
@@ -439,7 +361,7 @@ class _AppraiserCompanyScreenState
                   height: 8.0,
                 ),
                 RoundedButton(
-                  title: 'Save new company',
+                  title: 'Save Appraiser Company',
                   colour: Colors.blueAccent,
                   onPressed: () async {
                     setState(() {
@@ -448,7 +370,7 @@ class _AppraiserCompanyScreenState
                     try {
                       ref
                           .read(globalsNotifierProvider.notifier)
-                          .updatenewCompany(true);
+                          .updateIsNewAppraiserCompany(true);
 
                       //  This is a new company record but it will already
                       //  have a document ID that should be used.
@@ -458,7 +380,7 @@ class _AppraiserCompanyScreenState
                           .saveAppraiserCompany(
                               ref.read(globalsNotifierProvider),
                               ref.read(appraiserCompanyNotifierProvider));
-                      Navigator.pop;
+                      Navigator.pop(context);
                       // Navigator.of(context).pushReplacement(MaterialPageRoute(
                       //     builder: (context) => const UserProfileScreen()));
 
@@ -476,7 +398,7 @@ class _AppraiserCompanyScreenState
                 ),
                 (widget != null)
                     ? RoundedButton(
-                        title: 'Delete',
+                        title: 'Delete Appraiser',
                         colour: Colors.red,
                         onPressed: () async {
                           setState(() {

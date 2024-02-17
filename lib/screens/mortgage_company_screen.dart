@@ -87,7 +87,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
   getCurrentMortgageCompanyProfile() async {
     if (ref.read(globalsNotifierProvider).companyId == null ||
         ref.read(globalsNotifierProvider).companyId == "") {
-      ref.read(globalsNotifierProvider.notifier).updatenewCompany(true);
+      ref.read(globalsNotifierProvider.notifier).updatenewMortgageCompany(true);
       mortgageCompanyNameController.text = "";
       address1Controller.text = "";
       address2Controller.text = "";
@@ -107,7 +107,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
       // existing record
       // Updates Controllers
       mortgageCompanyNameController.text =
-          currentMortgageCompanyProfile["name"] ?? "";
+          currentMortgageCompanyProfile["mortgageCompanyName"] ?? "";
       address1Controller.text = currentMortgageCompanyProfile['address1'] ?? "";
       address2Controller.text = currentMortgageCompanyProfile['address2'] ?? "";
       cityController.text = currentMortgageCompanyProfile['city'] ?? "";
@@ -440,7 +440,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                   height: 8.0,
                 ),
                 RoundedButton(
-                  title: 'Save new company',
+                  title: 'Save Mortgage Company',
                   colour: Colors.blueAccent,
                   onPressed: () async {
                     setState(() {

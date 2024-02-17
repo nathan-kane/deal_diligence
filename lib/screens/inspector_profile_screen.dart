@@ -104,15 +104,16 @@ class _InspectorCompanyScreenState
       // existing record
       // Updates Controllers
       inspectorCompanyNameController.text =
-          currentInspectorCompanyProfile["name"] ?? "";
+          currentInspectorCompanyProfile["companyName"] ?? "";
       address1Controller.text =
           currentInspectorCompanyProfile['address1'] ?? "";
       address2Controller.text =
           currentInspectorCompanyProfile['address2'] ?? "";
       cityController.text = currentInspectorCompanyProfile['city'] ?? "";
-      stateController.text = currentInspectorCompanyProfile['state'] ?? "";
+      stateController.text =
+          currentInspectorCompanyProfile['inspectorCompanyState'] ?? "";
       _currentInspectorCompanyState =
-          currentInspectorCompanyProfile['state'] ?? "";
+          currentInspectorCompanyProfile['inspectorCompanyState'] ?? "";
       zipController.text = currentInspectorCompanyProfile['zipCode'].toString();
       cellPhoneController.text =
           currentInspectorCompanyProfile['cellPhone'] ?? "";
@@ -439,7 +440,7 @@ class _InspectorCompanyScreenState
                   height: 8.0,
                 ),
                 RoundedButton(
-                  title: 'Save new company',
+                  title: 'Save Inspector Company',
                   colour: Colors.blueAccent,
                   onPressed: () async {
                     setState(() {
@@ -476,7 +477,7 @@ class _InspectorCompanyScreenState
                 ),
                 (widget != null)
                     ? RoundedButton(
-                        title: 'Delete',
+                        title: 'Delete Inspector Company',
                         colour: Colors.red,
                         onPressed: () async {
                           setState(() {
