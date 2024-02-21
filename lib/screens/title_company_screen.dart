@@ -24,8 +24,8 @@ class TitleCompanyScreen extends ConsumerStatefulWidget {
   static const String id = 'title_company_screen';
   final bool? isNewTitleCompany;
 
-  const TitleCompanyScreen([this.isNewTitleCompany, this.titleCompany]);
-  final TitleCompany? titleCompany;
+  const TitleCompanyScreen([this.isNewTitleCompany, this.titleCompanyId]);
+  final String? titleCompanyId;
 
   //AgencyScreen([this.agency]);
 
@@ -37,6 +37,7 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
   final _db = FirebaseFirestore.instance;
 
   final titleCompanyNameController = TextEditingController();
+  final primaryContactController = TextEditingController();
   final address1Controller = TextEditingController();
   final address2Controller = TextEditingController();
   final cityController = TextEditingController();
@@ -50,6 +51,7 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
   @override
   void dispose() {
     titleCompanyNameController.dispose();
+    primaryContactController.dispose();
     address1Controller.dispose();
     address2Controller.dispose();
     cityController.dispose();
@@ -65,6 +67,7 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
 
   bool showSpinner = false;
   String? titleCompany;
+  String? primaryContact;
   String? address1;
   String? address2;
   String? city;
@@ -82,6 +85,7 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
         ref.read(globalsNotifierProvider).companyId == "") {
       ref.read(globalsNotifierProvider.notifier).updateIsNewTitleCompany(true);
       titleCompanyNameController.text = "";
+      primaryContactController.text = "";
       address1Controller.text = "";
       address2Controller.text = "";
       cityController.text = "";
@@ -100,6 +104,8 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
       // Updates Controllers
       titleCompanyNameController.text =
           currentTitleCompanyProfile["titleCompanyName"] ?? "";
+      primaryContactController.text =
+          currentTitleCompanyProfile['primaryContact'];
       address1Controller.text = currentTitleCompanyProfile['address1'] ?? "";
       address2Controller.text = currentTitleCompanyProfile['address2'] ?? "";
       cityController.text = currentTitleCompanyProfile['city'] ?? "";
@@ -209,6 +215,23 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Title Company Name',
                       labelText: 'Title Company Name'),
+                ),
+                const SizedBox(
+                  height: 8.0,
+                ),
+                TextField(
+                  textCapitalization: TextCapitalization.words,
+                  controller: primaryContactController,
+                  keyboardType: TextInputType.text,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    ref
+                        .read(titleCompanyNotifierProvider.notifier)
+                        .updatePrimaryContact(value);
+                  },
+                  decoration: const InputDecoration(
+                      hintText: 'Primary Contact',
+                      labelText: 'Primary Contact'),
                 ),
                 const SizedBox(
                   height: 8.0,

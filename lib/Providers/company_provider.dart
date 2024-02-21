@@ -13,7 +13,7 @@ import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class Company {
-  String? companyId;
+  //String? companyId;
   String? companyName;
   String? address1;
   String? address2;
@@ -26,7 +26,7 @@ class Company {
   String? website;
 
   Company(
-      {this.companyId,
+      { //this.companyId,
       this.companyName,
       this.address1,
       this.address2,
@@ -39,7 +39,7 @@ class Company {
       this.website});
 
   Company copyWith({
-    String? companyId,
+    //String? companyId,
     String? companyName,
     String? address1,
     String? address2,
@@ -52,7 +52,7 @@ class Company {
     String? website,
   }) {
     return Company(
-      companyId: companyId ?? this.companyId,
+      //companyId: companyId ?? this.companyId,
       companyName: companyName ?? this.companyName,
       address1: address1 ?? this.address1,
       address2: address2 ?? this.address2,
@@ -75,7 +75,7 @@ class CompanyNotifier extends Notifier<Company> {
   @override
   Company build() {
     return Company(
-      companyId: '',
+      //companyId: '',
       companyName: '',
       address1: '',
       address2: '',
@@ -89,7 +89,7 @@ class CompanyNotifier extends Notifier<Company> {
     );
   }
 
-  String? companyId;
+  //String? companyId;
   String? companyName;
   String? address1;
   String? address2;
@@ -102,9 +102,9 @@ class CompanyNotifier extends Notifier<Company> {
   String? website;
 
   // Update functions
-  void updateCompanyId(String newcompanyId) {
-    state = state.copyWith(companyId: newcompanyId);
-  }
+  // void updateCompanyId(String newcompanyId) {
+  //   state = state.copyWith(companyId: newcompanyId);
+  // }
 
   void updateCompanyName(String newcompanyName) {
     state = state.copyWith(companyName: newcompanyName);
@@ -147,7 +147,7 @@ class CompanyNotifier extends Notifier<Company> {
   }
 
   CompanyNotifier.fromFirestore(Map<String, dynamic> firestore)
-      : companyId = firestore['companyId'],
+      : //companyId = firestore['companyId'],
         companyName = firestore['name'],
         address1 = firestore['address1'],
         address2 = firestore['address2'],
@@ -161,7 +161,7 @@ class CompanyNotifier extends Notifier<Company> {
 
   Map<String, dynamic> toMap(Company company) {
     return {
-      'companyId': company.companyId,
+      //'companyId': company.companyId,
       'name': company.companyName,
       'address1': company.address1,
       'address2': company.address2,
@@ -189,13 +189,13 @@ class CompanyNotifier extends Notifier<Company> {
   //   _website = agency.website;
   // }
 
-  saveCompany(WidgetRef ref) {
+  saveCompany(WidgetRef ref, [companyId]) {
     //globals.agencyId = name;
     //ref.read(globalsNotifierProvider.notifier).updatecompanyId(name);
     //final CompanyVals = ref.watch(companyNotifierProvider);
 
     var newCompany = Company(
-        companyId: ref.read(companyNotifierProvider).companyId,
+        //companyId: ref.read(companyNotifierProvider).companyId,
         companyName: ref.read(companyNotifierProvider).companyName,
         address1: ref.read(companyNotifierProvider).address1,
         address2: ref.read(companyNotifierProvider).address2,

@@ -10,8 +10,9 @@ import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MortgageCompany {
-  String? mortgageCompanyId;
+  //String? mortgageCompanyId;
   String? mortgageCompanyName;
+  String? primaryContact;
   String? address1;
   String? address2;
   String? city;
@@ -23,8 +24,9 @@ class MortgageCompany {
   String? website;
 
   MortgageCompany(
-      {this.mortgageCompanyId,
+      { //this.mortgageCompanyId,
       this.mortgageCompanyName,
+      this.primaryContact,
       this.address1,
       this.address2,
       this.city,
@@ -36,12 +38,13 @@ class MortgageCompany {
       this.website});
 
   MortgageCompany copyWith({
-    String? mortgageId,
+    //String? mortgageId,
     String? mortgageCompanyName,
+    String? primaryContact,
     String? address1,
     String? address2,
     String? city,
-    String? mortgageState,
+    String? mortgageCompanyState,
     String? zipCode,
     String? cellPhone,
     String? officePhone,
@@ -49,8 +52,9 @@ class MortgageCompany {
     String? website,
   }) {
     return MortgageCompany(
-      mortgageCompanyId: mortgageCompanyId ?? this.mortgageCompanyId,
+      //mortgageCompanyId: mortgageCompanyId ?? this.mortgageCompanyId,
       mortgageCompanyName: mortgageCompanyName ?? this.mortgageCompanyName,
+      primaryContact: primaryContact ?? this.primaryContact,
       address1: address1 ?? this.address1,
       address2: address2 ?? this.address2,
       city: city ?? this.city,
@@ -72,8 +76,9 @@ class MortgageCompanyNotifier extends Notifier<MortgageCompany> {
   @override
   MortgageCompany build() {
     return MortgageCompany(
-      mortgageCompanyId: '',
+      //mortgageCompanyId: '',
       mortgageCompanyName: '',
+      primaryContact: '',
       address1: '',
       address2: '',
       city: '',
@@ -86,12 +91,13 @@ class MortgageCompanyNotifier extends Notifier<MortgageCompany> {
     );
   }
 
-  String? mortgageId;
+  //String? mortgageId;
   String? mortgageCompanyName;
+  String? primaryContact;
   String? address1;
   String? address2;
   String? city;
-  String? mortgageState;
+  String? mortgageCompanyState;
   String? zipCode;
   String? cellPhone;
   String? officePhone;
@@ -99,12 +105,16 @@ class MortgageCompanyNotifier extends Notifier<MortgageCompany> {
   String? website;
 
   // Update functions
-  void updateMortgageId(String newmortgageId) {
-    state = state.copyWith(mortgageId: newmortgageId);
-  }
+  // void updateMortgageId(String newmortgageId) {
+  //   state = state.copyWith(mortgageId: newmortgageId);
+  // }
 
   void updateMortgageCompanyName(String newmortgageCompanyName) {
     state = state.copyWith(mortgageCompanyName: newmortgageCompanyName);
+  }
+
+  void updatePrimaryContact(String newPrimaryContact) {
+    state = state.copyWith(primaryContact: newPrimaryContact);
   }
 
   void updateaddress1(String newaddress1) {
@@ -119,8 +129,8 @@ class MortgageCompanyNotifier extends Notifier<MortgageCompany> {
     state = state.copyWith(city: newcity);
   }
 
-  void updatestate(String newstate) {
-    state = state.copyWith(mortgageState: newstate);
+  void updatestate(String newMortgageCompanyState) {
+    state = state.copyWith(mortgageCompanyState: newMortgageCompanyState);
   }
 
   void updatezipcode(String newzipcode) {
@@ -144,12 +154,13 @@ class MortgageCompanyNotifier extends Notifier<MortgageCompany> {
   }
 
   MortgageCompanyNotifier.fromFirestore(Map<String, dynamic> firestore)
-      : mortgageId = firestore['mortgageId'],
-        mortgageCompanyName = firestore['name'],
+      : //mortgageId = firestore['mortgageId'],
+        mortgageCompanyName = firestore['mortgageCompanyName'],
+        primaryContact = firestore['primaryContact'],
         address1 = firestore['address1'],
         address2 = firestore['address2'],
         city = firestore['city'],
-        mortgageState = firestore['state'],
+        mortgageCompanyState = firestore['mortgageCompanytate'],
         zipCode = firestore['zipCode'],
         cellPhone = firestore['cellPhone'],
         officePhone = firestore['officePhone'],
@@ -158,8 +169,9 @@ class MortgageCompanyNotifier extends Notifier<MortgageCompany> {
 
   Map<String, dynamic> toMap(MortgageCompany mortgage) {
     return {
-      'mortgageId': mortgage.mortgageCompanyId,
-      'name': mortgage.mortgageCompanyName,
+      //'mortgageId': mortgage.mortgageCompanyId,
+      'mortgageCompanyName': mortgage.mortgageCompanyName,
+      'primaryContact': mortgage.primaryContact,
       'address1': mortgage.address1,
       'address2': mortgage.address2,
       'city': mortgage.city,
@@ -172,35 +184,29 @@ class MortgageCompanyNotifier extends Notifier<MortgageCompany> {
     };
   }
 
-  saveMortgageCompany(WidgetRef ref) {
+  saveMortgageCompany(mortgageCompany, [mortgageCompanyId]) {
     //globals.agencyId = name;
     //ref.read(globalsNotifierProvider.notifier).updatemortgageId(name);
     //final MortgageVals = ref.watch(mortgageCompanyNotifierProvider);
 
     var newMortgageCompany = MortgageCompany(
-        mortgageCompanyId:
-            ref.read(mortgageCompanyNotifierProvider).mortgageCompanyId,
-        mortgageCompanyName:
-            ref.read(mortgageCompanyNotifierProvider).mortgageCompanyName,
-        address1: ref.read(mortgageCompanyNotifierProvider).address1,
-        address2: ref.read(mortgageCompanyNotifierProvider).address2,
-        city: ref.read(mortgageCompanyNotifierProvider).city,
-        mortgageCompanyState:
-            ref.read(mortgageCompanyNotifierProvider).mortgageCompanyState,
-        zipCode: ref.read(mortgageCompanyNotifierProvider).zipCode,
-        cellPhone: ref.read(mortgageCompanyNotifierProvider).cellPhone,
-        officePhone: ref.read(mortgageCompanyNotifierProvider).officePhone,
-        email: ref.read(mortgageCompanyNotifierProvider).email,
-        website: ref.read(mortgageCompanyNotifierProvider).website);
+        // mortgageCompanyId:
+        //     ref.read(mortgageCompanyNotifierProvider).mortgageCompanyId,
+        mortgageCompanyName: mortgageCompany.mortgageCompanyName,
+        primaryContact: mortgageCompany.primaryContact,
+        address1: mortgageCompany.address1,
+        address2: mortgageCompany.address2,
+        city: mortgageCompany.city,
+        mortgageCompanyState: mortgageCompany.mortgageCompanyState,
+        zipCode: mortgageCompany.zipCode,
+        cellPhone: mortgageCompany.cellPhone,
+        officePhone: mortgageCompany.officePhone,
+        email: mortgageCompany.email,
+        website: mortgageCompany.website);
 
     // If the agency is a new agency retrieve the agency
     // document ID and save it to a new agent document
-    if (ref.read(globalsNotifierProvider).newMortgageCompany == true) {
-      //String id = _db.collection('mortgage').doc().id;
-      //ref.read(globalsNotifierProvider.notifier).updateMortgageId(id);
-      // ref.read(globalsNotifierProvider.notifier).updatecurrentMortgageState(
-      //     ref.read(globalsNotifierProvider).selectedState!);
-
+    if (mortgageCompanyId == "" || mortgageCompanyId == null) {
       firestoreService.saveNewMortgageCompany(toMap(newMortgageCompany));
 
       //ref.read(globalsNotifierProvider.notifier).updatemortgageId(id);
@@ -209,7 +215,7 @@ class MortgageCompanyNotifier extends Notifier<MortgageCompany> {
           .updatenewMortgageCompany(false);
     } else {
       firestoreService.saveMortgageCompany(
-          toMap(newMortgageCompany), mortgageId!);
+          toMap(newMortgageCompany), mortgageCompanyId!);
     }
   }
 }

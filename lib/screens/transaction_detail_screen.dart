@@ -311,12 +311,12 @@ class _TransactionDetailScreenState
     final trxnProvider =
         ref.read(trxnNotifierProvider); // Provider.of<TrxnProvider>(context);
 
-    trxnProvider.clientCellPhone != "" && trxnProvider.clientCellPhone != null
-        ? _hasCellNumber = true
-        : _hasCellNumber = false;
-    trxnProvider.clientHomePhone != "" && trxnProvider.clientHomePhone != null
-        ? _hasHomeNumber = true
-        : _hasHomeNumber = false;
+    // trxnProvider.clientCellPhone != "" && trxnProvider.clientCellPhone != null
+    //     ? _hasCellNumber = true
+    //     : _hasCellNumber = false;
+    // trxnProvider.clientHomePhone != "" && trxnProvider.clientHomePhone != null
+    //     ? _hasHomeNumber = true
+    //     : _hasHomeNumber = false;
 
     if (trxnProvider.mlsNumber != null && trxnProvider.mlsNumber != "") {
       _propertyMLSNbr = trxnProvider.mlsNumber;
@@ -400,16 +400,16 @@ class _TransactionDetailScreenState
         //   var docData = doc.data() as Map<String, dynamic>;
         // }
         clientFNameController.text = trxnSnapshot.data()?['clientFName'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateClientFName(clientFNameController.text);
+        // ref
+        //     .read(trxnNotifierProvider.notifier)
+        //     .updateClientFName(clientFNameController.text);
         // existing record: Put data from database into the TextFields
         // Updates Controllers
         //DateTime _dt = DateTime.now();
         clientLNameController.text = trxnSnapshot.data()?['clientLName'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateClientLName(clientLNameController.text);
+        // ref
+        //     .read(trxnNotifierProvider.notifier)
+        //     .updateClientLName(clientLNameController.text);
         clientTypeController.text = trxnSnapshot.data()?['clientType'] ?? "";
         _clientType = trxnSnapshot.data()?['clientType'] ?? "";
         // ref
@@ -417,9 +417,9 @@ class _TransactionDetailScreenState
         //     .updateClientType(clientTypeController.text);
         clientCellPhoneController.text =
             trxnSnapshot.data()?['clientCellPhone'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateClientCellPhone(clientCellPhoneController.text);
+        // ref
+        //     .read(trxnNotifierProvider.notifier)
+        //     .updateClientCellPhone(clientCellPhoneController.text);
         clientCellPhoneController.text != "" &&
                 clientCellPhoneController.text != null
             ? _hasCellNumber = true
@@ -427,18 +427,18 @@ class _TransactionDetailScreenState
         _clientCellPhoneNumber = trxnSnapshot.data()?['clientCellPhone'] ?? "";
         clientHomePhoneController.text =
             trxnSnapshot.data()?['clientHomePhone'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateClientHomePhone(clientCellPhoneController.text);
+        // ref
+        //     .read(trxnNotifierProvider.notifier)
+        //     .updateClientHomePhone(clientCellPhoneController.text);
         clientHomePhoneController.text != "" &&
                 clientHomePhoneController.text != null
             ? _hasHomeNumber = true
             : _hasHomeNumber = false;
         _clientHomePhoneNumber = trxnSnapshot.data()?['clientHomePhone'] ?? "";
         clientEmailController.text = trxnSnapshot.data()?['clientEmail'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateClientEmail(clientEmailController.text);
+        // ref
+        //     .read(trxnNotifierProvider.notifier)
+        //     .updateClientEmail(clientEmailController.text);
         propertyAddressController.text =
             trxnSnapshot.data()?['propertyAddress'] ?? "";
         ref
@@ -551,14 +551,14 @@ class _TransactionDetailScreenState
 
         inspectorCompanyController.text =
             trxnSnapshot.data()?['inspectorCompany'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateInspectorCompany(inspectorCompanyController.text);
+        // ref
+        //     .read(trxnNotifierProvider.notifier)
+        //     .updateInspectorCompany(inspectorCompanyController.text);
         inspectorPhoneController.text =
             trxnSnapshot.data()?['inspectorPhone'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateInspectorPhone(inspectorPhoneController.text);
+        // ref
+        //     .read(trxnNotifierProvider.notifier)
+        //     .updateInspectorPhone(inspectorPhoneController.text);
 
         final String? inspectionDate = trxnSnapshot.data()?['inspectionDate'];
         if (inspectionDate != null && inspectionDate != "") {
@@ -573,14 +573,14 @@ class _TransactionDetailScreenState
         }
 
         appraiserController.text = trxnSnapshot.data()?['appraiser'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateAppraiser(appraiserController.text);
+        // ref
+        //     .read(trxnNotifierProvider.notifier)
+        //     .updateAppraiser(appraiserController.text);
         appraiserPhoneController.text =
             trxnSnapshot.data()?['appraiserPhone'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateAppraiserPhone(appraiserPhoneController.text);
+        // ref
+        //     .read(trxnNotifierProvider.notifier)
+        //     .updateAppraiserPhone(appraiserPhoneController.text);
 
         final String? appraisalDate = trxnSnapshot.data()?['appraisalDate'];
         if (appraisalDate != null && appraisalDate != "") {
@@ -620,32 +620,32 @@ class _TransactionDetailScreenState
 
         titleCompanyController.text =
             trxnSnapshot.data()?['titleCompany'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateTitleCompany(titleCompanyController.text);
+        // ref
+        //     .read(trxnNotifierProvider.notifier)
+        //     .updateTitleCompany(titleCompanyController.text);
         titlePhoneController.text = trxnSnapshot.data()?['titlePhone'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateTitlePhone(titlePhoneController.text);
+        // ref
+        //     .read(trxnNotifierProvider.notifier)
+        //     .updateTitlePhone(titlePhoneController.text);
         titleEmailController.text = trxnSnapshot.data()?['titleEmail'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateTitleEmail(titleEmailController.text);
+        // ref
+        //     .read(trxnNotifierProvider.notifier)
+        //     .updateTitleEmail(titleEmailController.text);
         mortgageCompanyController.text =
             trxnSnapshot.data()?['mortgageCompany'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateMortgageCompany(mortgageCompanyController.text);
+        // ref
+        //     .read(trxnNotifierProvider.notifier)
+        //     .updateMortgageCompany(mortgageCompanyController.text);
         mortgagePhoneController.text =
             trxnSnapshot.data()?['mortgagePhone'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateMortgagePhone(mortgagePhoneController.text);
+        // ref
+        //     .read(trxnNotifierProvider.notifier)
+        //     .updateMortgagePhone(mortgagePhoneController.text);
         mortgageEmailController.text =
             trxnSnapshot.data()?['mortgageEmail'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateMortgageEmail(mortgageEmailController.text);
+        // ref
+        //     .read(trxnNotifierProvider.notifier)
+        //     .updateMortgageEmail(mortgageEmailController.text);
         otherAgentController.text = trxnSnapshot.data()?['otherAgent'] ?? "";
         ref
             .read(trxnNotifierProvider.notifier)
@@ -693,23 +693,23 @@ class _TransactionDetailScreenState
   }
 
   populateTrxnProvider() {
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateClientFName(clientFNameController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateClientLName(clientLNameController.text);
+    // ref
+    //     .read(trxnNotifierProvider.notifier)
+    //     .updateClientFName(clientFNameController.text);
+    // ref
+    //     .read(trxnNotifierProvider.notifier)
+    //     .updateClientLName(clientLNameController.text);
     ref.read(trxnNotifierProvider.notifier).updateCompanyid(_selectedCompany!);
-    ref.read(trxnNotifierProvider.notifier).updateClientType(_clientType);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateClientCellPhone(clientCellPhoneController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateClientHomePhone(clientHomePhoneController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateClientEmail(clientEmailController.text);
+    // ref.read(trxnNotifierProvider.notifier).updateClientType(_clientType);
+    // ref
+    //     .read(trxnNotifierProvider.notifier)
+    //     .updateClientCellPhone(clientCellPhoneController.text);
+    // ref
+    //     .read(trxnNotifierProvider.notifier)
+    //     .updateClientHomePhone(clientHomePhoneController.text);
+    // ref
+    //     .read(trxnNotifierProvider.notifier)
+    //     .updateClientEmail(clientEmailController.text);
     ref
         .read(trxnNotifierProvider.notifier)
         .updatePropertyAddress(propertyAddressController.text);
@@ -743,21 +743,21 @@ class _TransactionDetailScreenState
     ref
         .read(trxnNotifierProvider.notifier)
         .updateSettlement24d(settlement24dController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateInspectorCompany(inspectorCompanyController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateInspectorPhone(inspectorPhoneController.text);
+    // ref
+    //     .read(trxnNotifierProvider.notifier)
+    //     .updateInspectorCompany(inspectorCompanyController.text);
+    // ref
+    //     .read(trxnNotifierProvider.notifier)
+    //     .updateInspectorPhone(inspectorPhoneController.text);
     ref
         .read(trxnNotifierProvider.notifier)
         .updateInspectionDate(inspectionDateController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateAppraiser(appraiserController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateAppraiserPhone(appraiserPhoneController.text);
+    // ref
+    //     .read(trxnNotifierProvider.notifier)
+    //     .updateAppraiser(appraiserController.text);
+    // ref
+    //     .read(trxnNotifierProvider.notifier)
+    //     .updateAppraiserPhone(appraiserPhoneController.text);
     ref
         .read(trxnNotifierProvider.notifier)
         .updateAppraisalDate(appraisalDateController.text);
@@ -767,24 +767,24 @@ class _TransactionDetailScreenState
     ref
         .read(trxnNotifierProvider.notifier)
         .updateWalkThroughDate(walkThroughDateController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateTitleCompany(titleCompanyController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateTitlePhone(titlePhoneController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateTitleEmail(titleEmailController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateMortgageCompany(mortgageCompanyController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateMortgagePhone(mortgagePhoneController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateMortgageEmail(mortgageEmailController.text);
+    // ref
+    //     .read(trxnNotifierProvider.notifier)
+    //     .updateTitleCompany(titleCompanyController.text);
+    // ref
+    //     .read(trxnNotifierProvider.notifier)
+    //     .updateTitlePhone(titlePhoneController.text);
+    // ref
+    //     .read(trxnNotifierProvider.notifier)
+    //     .updateTitleEmail(titleEmailController.text);
+    // ref
+    //     .read(trxnNotifierProvider.notifier)
+    //     .updateMortgageCompany(mortgageCompanyController.text);
+    // ref
+    //     .read(trxnNotifierProvider.notifier)
+    //     .updateMortgagePhone(mortgagePhoneController.text);
+    // ref
+    //     .read(trxnNotifierProvider.notifier)
+    //     .updateMortgageEmail(mortgageEmailController.text);
     ref
         .read(trxnNotifierProvider.notifier)
         .updateOtherAgent(otherAgentController.text);
@@ -861,7 +861,7 @@ class _TransactionDetailScreenState
                   height: 30.0,
                 ),
                 const Text(
-                  'Select company',
+                  'Representing Company',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
@@ -897,9 +897,6 @@ class _TransactionDetailScreenState
                         onChanged: (companyValue) {
                           setState(() {
                             _selectedCompany = companyValue;
-                            // ref
-                            //     .read(globalsNotifierProvider.notifier)
-                            //     .updatecompanyId(companyValue!);
                           });
                         },
                         items: companyItems,
@@ -909,7 +906,7 @@ class _TransactionDetailScreenState
                   height: 8.0,
                 ),
                 const Text(
-                  'Select user',
+                  'Select User',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
@@ -962,181 +959,124 @@ class _TransactionDetailScreenState
                           })
                       : const Text('No users yet'),
                 ),
-                TextField(
-                  autofocus: true,
-                  keyboardType: TextInputType.text,
-                  controller: clientFNameController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateClientFName(value);
-                    //trxnProvider.changeclientFName(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Client First Name',
-                      labelText: 'Client First Name'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  keyboardType: TextInputType.text,
-                  controller: clientLNameController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateClientLName(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Client Last Name',
-                      labelText: 'Client Last Name'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                DropdownButton<String>(
-                  value: _clientType,
-                  hint: const Text('Client Type'),
-                  onChanged: (_value) {
-                    setState(() {
-                      _clientType = _value!;
-                      // ref
-                      //     .read(trxnNotifierProvider.notifier)
-                      //     .updateClientType(_value);
-                    });
-                  },
-                  items: <String>['Select Client Type', 'Buyer', 'Seller']
-                      .map<DropdownMenuItem<String>>((String clientType) {
-                    return DropdownMenuItem<String>(
-                      value: clientType,
-                      child: Text(clientType),
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  inputFormatters: [maskFormatter],
-                  keyboardType: TextInputType.phone,
-                  controller: clientCellPhoneController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateClientCellPhone(value);
-                    _clientCellPhoneNumber = value;
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Client Cell Phone',
-                      labelText: 'Client Cell Phone'),
-                ),
-                Visibility(
-                  visible: _hasCellNumber,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                Card(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    //mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Column(
+                      ExpansionTile(
+                        subtitle: const Text('John Seller'),
+                        title: const Text(
+                          'Client Information',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
                         children: [
-                          IconButton(
-                            icon: const Icon(Icons.message),
-                            iconSize: 25,
-                            color: Colors.blueAccent,
-                            tooltip: 'Text Client',
-                            onPressed: () {
-                              setState(() {
-                                _launched = _makeCallOrSendText(
-                                    'sms:$_clientCellPhoneNumber');
-                              });
-                            },
+                          Row(
+                            children: [
+                              const Text('Client Type:   '),
+                              DropdownButton<String>(
+                                value: _clientType,
+                                hint: const Text('Client Type'),
+                                onChanged: (_value) {
+                                  setState(() {
+                                    _clientType = _value!;
+                                  });
+                                },
+                                items: <String>[
+                                  'Select Client Type',
+                                  'Buyer',
+                                  'Seller'
+                                ].map<DropdownMenuItem<String>>(
+                                    (String clientType) {
+                                  return DropdownMenuItem<String>(
+                                    value: clientType,
+                                    child: Text(clientType),
+                                  );
+                                }).toList(),
+                              ),
+                            ],
                           ),
-                          const Text('Text'),
-                          const SizedBox(
-                            height: 8.0,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Column(
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.message),
+                                    iconSize: 25,
+                                    color: Colors.blueAccent,
+                                    tooltip: 'Text Client',
+                                    onPressed: () {
+                                      setState(() {
+                                        _launched = _makeCallOrSendText(
+                                            'sms:$_clientCellPhoneNumber');
+                                      });
+                                    },
+                                  ),
+                                  const Text('Text'),
+                                  const SizedBox(
+                                    height: 8.0,
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.add_call),
+                                    iconSize: 25,
+                                    color: Colors.blueAccent,
+                                    tooltip: 'Call Cell',
+                                    onPressed: () {
+                                      setState(() {
+                                        _launched = _makeCallOrSendText(
+                                            'tel:$_clientCellPhoneNumber');
+                                      });
+                                    },
+                                  ),
+                                  const Text('Call Cell'),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.add_call),
+                                    iconSize: 25,
+                                    color: Colors.blueAccent,
+                                    tooltip: 'Call Home',
+                                    onPressed: () {
+                                      setState(() {
+                                        _launched = _makeCallOrSendText(
+                                            'tel:$_clientHomePhoneNumber');
+                                      });
+                                    },
+                                  ),
+                                  const Text('Call Home'),
+                                  const SizedBox(
+                                    height: 8.0,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          const Row(
+                            children: [
+                              Text('Email: '),
+                            ],
                           ),
                         ],
                       ),
-                      Column(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.add_call),
-                            iconSize: 25,
-                            color: Colors.blueAccent,
-                            tooltip: 'Call Cell',
-                            onPressed: () {
-                              setState(() {
-                                _launched = _makeCallOrSendText(
-                                    'tel:$_clientCellPhoneNumber');
-                              });
-                            },
-                          ),
-                          const Text('Call Cell'),
-                        ],
-                      ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.start,
+                      //   children: <Widget>[],
+                      // ),
+                      // Visibility(
+                      //   visible: _hasCellNumber,
+                      //   child:
+                      // ),
                     ],
                   ),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  inputFormatters: [maskFormatter],
-                  keyboardType: TextInputType.phone,
-                  controller: clientHomePhoneController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateClientHomePhone(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Client Home Phone',
-                      labelText: 'Client Home Phone'),
-                ),
-                Visibility(
-                  visible: _hasHomeNumber,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Column(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.add_call),
-                            iconSize: 25,
-                            color: Colors.blueAccent,
-                            tooltip: 'Call Home',
-                            onPressed: () {
-                              setState(() {
-                                _launched = _makeCallOrSendText(
-                                    'tel:$_clientHomePhoneNumber');
-                              });
-                            },
-                          ),
-                          const Text('Call Home'),
-                          const SizedBox(
-                            height: 8.0,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  controller: clientEmailController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateClientEmail(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Client Email', labelText: 'Client Email'),
                 ),
                 const SizedBox(
                   height: 8.0,
@@ -1523,38 +1463,46 @@ class _TransactionDetailScreenState
                 const SizedBox(
                   height: 8.0,
                 ),
-                TextField(
-                  keyboardType: TextInputType.text,
-                  controller: inspectorCompanyController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateInspectorCompany(value); //, loggedInUid);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Inspector Company',
-                      labelText: 'Inspector Company'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  inputFormatters: [maskFormatter],
-                  keyboardType: TextInputType.phone,
-                  controller: inspectorPhoneController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateInspectorPhone(value); //, loggedInUid);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Inspector Phone',
-                      labelText: 'Inspector Phone'),
-                ),
-                const SizedBox(
-                  height: 8.0,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Inspector Company:    ',
+                    ),
+                    StreamBuilder<QuerySnapshot>(
+                        stream: _db.collection('company').snapshots(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          List<DropdownMenuItem<String>> companyItems = [];
+                          if (snapshot.hasData) {
+                            final companyList = snapshot.data.docs;
+                            for (var company in companyList) {
+                              companyItems.add(
+                                DropdownMenuItem(
+                                  value: company.id,
+                                  child: Text(
+                                    company['name'],
+                                  ),
+                                ),
+                              );
+                            }
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          return DropdownButton<String>(
+                            hint: const Text("Select Inspector"),
+                            value: _selectedCompany,
+                            onChanged: (companyValue) {
+                              setState(() {
+                                _selectedCompany = companyValue;
+                              });
+                            },
+                            items: companyItems,
+                          );
+                        }),
+                  ],
                 ),
                 TextField(
                   keyboardType: TextInputType.text,
@@ -1612,34 +1560,46 @@ class _TransactionDetailScreenState
                 const SizedBox(
                   height: 8.0,
                 ),
-                TextField(
-                  keyboardType: TextInputType.text,
-                  controller: appraiserController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateAppraiser(value); //, loggedInUid);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Appraiser', labelText: 'Appraiser'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  inputFormatters: [maskFormatter],
-                  keyboardType: TextInputType.phone,
-                  controller: appraiserPhoneController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateAppraiserPhone(value); //, loggedInUid);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Appraiser Phone',
-                      labelText: 'Appraiser Phone'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Appraiser Company:    ',
+                    ),
+                    StreamBuilder<QuerySnapshot>(
+                        stream: _db.collection('company').snapshots(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          List<DropdownMenuItem<String>> companyItems = [];
+                          if (snapshot.hasData) {
+                            final companyList = snapshot.data.docs;
+                            for (var company in companyList) {
+                              companyItems.add(
+                                DropdownMenuItem(
+                                  value: company.id,
+                                  child: Text(
+                                    company['name'],
+                                  ),
+                                ),
+                              );
+                            }
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          return DropdownButton<String>(
+                            hint: const Text("Select Appraiser"),
+                            value: _selectedCompany,
+                            onChanged: (companyValue) {
+                              setState(() {
+                                _selectedCompany = companyValue;
+                              });
+                            },
+                            items: companyItems,
+                          );
+                        }),
+                  ],
                 ),
                 const SizedBox(
                   height: 8.0,
@@ -1802,145 +1762,137 @@ class _TransactionDetailScreenState
                 const SizedBox(
                   height: 8.0,
                 ),
-                TextField(
-                  keyboardType: TextInputType.text,
-                  controller: titleCompanyController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateTitleCompany(value); //, loggedInUid);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Title Company', labelText: 'Title Company'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Title Company:    ',
+                    ),
+                    StreamBuilder<QuerySnapshot>(
+                        stream: _db.collection('company').snapshots(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          List<DropdownMenuItem<String>> companyItems = [];
+                          if (snapshot.hasData) {
+                            final companyList = snapshot.data.docs;
+                            for (var company in companyList) {
+                              companyItems.add(
+                                DropdownMenuItem(
+                                  value: company.id,
+                                  child: Text(
+                                    company['name'],
+                                  ),
+                                ),
+                              );
+                            }
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          return DropdownButton<String>(
+                            hint: const Text("Select Title Company"),
+                            value: _selectedCompany,
+                            onChanged: (companyValue) {
+                              setState(() {
+                                _selectedCompany = companyValue;
+                              });
+                            },
+                            items: companyItems,
+                          );
+                        }),
+                  ],
                 ),
                 const SizedBox(
                   height: 8.0,
                 ),
-                TextField(
-                  inputFormatters: [maskFormatter],
-                  keyboardType: TextInputType.phone,
-                  controller: titlePhoneController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateTitlePhone(value); //, loggedInUid);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Title Company Phone',
-                      labelText: 'Title Company Phone'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Mortgage Company:    ',
+                    ),
+                    StreamBuilder<QuerySnapshot>(
+                        stream: _db.collection('company').snapshots(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          List<DropdownMenuItem<String>> companyItems = [];
+                          if (snapshot.hasData) {
+                            final companyList = snapshot.data.docs;
+                            for (var company in companyList) {
+                              companyItems.add(
+                                DropdownMenuItem(
+                                  value: company.id,
+                                  child: Text(
+                                    company['name'],
+                                  ),
+                                ),
+                              );
+                            }
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          return DropdownButton<String>(
+                            hint: const Text("Select Mortgage Company"),
+                            value: _selectedCompany,
+                            onChanged: (companyValue) {
+                              setState(() {
+                                _selectedCompany = companyValue;
+                              });
+                            },
+                            items: companyItems,
+                          );
+                        }),
+                  ],
                 ),
                 const SizedBox(
                   height: 8.0,
                 ),
-                TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  controller: titleEmailController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateTitleEmail(value); //, loggedInUid);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Title Company Email',
-                      labelText: 'Title Company Email'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  keyboardType: TextInputType.text,
-                  controller: mortgageCompanyController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateMortgageCompany(value); //, loggedInUid);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Mortgage Company',
-                      labelText: 'Mortgage Company'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  inputFormatters: [maskFormatter],
-                  keyboardType: TextInputType.phone,
-                  controller: mortgagePhoneController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateMortgagePhone(value); //, loggedInUid);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Mortgage Phone', labelText: 'Mortgage Phone'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  controller: mortgageEmailController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateMortgageEmail(value); //, loggedInUid);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Mortgage Email', labelText: 'Mortgage Email'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  keyboardType: TextInputType.text,
-                  controller: otherAgentController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateOtherAgent(value); //, loggedInUid);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Other Agent', labelText: 'Other Agent'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  inputFormatters: [maskFormatter],
-                  keyboardType: TextInputType.phone,
-                  controller: otherAgentPhoneController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateOtherAgentPhone(value); //, loggedInUid);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Other Agent Phone',
-                      labelText: 'Other Agent Phone'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  controller: otherAgentEmailController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateOtherAgentEmail(value); //, loggedInUid);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Other Agent Email',
-                      labelText: 'Other Agent Email'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Other Agent Company:    ',
+                    ),
+                    StreamBuilder<QuerySnapshot>(
+                        stream: _db.collection('company').snapshots(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          List<DropdownMenuItem<String>> companyItems = [];
+                          if (snapshot.hasData) {
+                            final companyList = snapshot.data.docs;
+                            for (var company in companyList) {
+                              companyItems.add(
+                                DropdownMenuItem(
+                                  value: company.id,
+                                  child: Text(
+                                    company['name'],
+                                  ),
+                                ),
+                              );
+                            }
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          return DropdownButton<String>(
+                            hint: const Text("Select Other Agent"),
+                            value: _selectedCompany,
+                            onChanged: (companyValue) {
+                              setState(() {
+                                _selectedCompany = companyValue;
+                                // ref
+                                //     .read(globalsNotifierProvider.notifier)
+                                //     .updatecompanyId(companyValue!);
+                              });
+                            },
+                            items: companyItems,
+                          );
+                        }),
+                  ],
                 ),
                 const SizedBox(
                   height: 8.0,
@@ -1961,18 +1913,46 @@ class _TransactionDetailScreenState
                 const SizedBox(
                   height: 8.0,
                 ),
-                TextField(
-                  keyboardType: TextInputType.text,
-                  controller: otherPartyTitleCompanyController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateOtherPartyTitleCompany(value); //, loggedInUid);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Other Party Title Company Info',
-                      labelText: 'Other Party Title Company Info'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Other Title Company:    ',
+                    ),
+                    StreamBuilder<QuerySnapshot>(
+                        stream: _db.collection('company').snapshots(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          List<DropdownMenuItem<String>> companyItems = [];
+                          if (snapshot.hasData) {
+                            final companyList = snapshot.data.docs;
+                            for (var company in companyList) {
+                              companyItems.add(
+                                DropdownMenuItem(
+                                  value: company.id,
+                                  child: Text(
+                                    company['name'],
+                                  ),
+                                ),
+                              );
+                            }
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          return DropdownButton<String>(
+                            hint: const Text("Select Title Company"),
+                            value: _selectedCompany,
+                            onChanged: (companyValue) {
+                              setState(() {
+                                _selectedCompany = companyValue;
+                              });
+                            },
+                            items: companyItems,
+                          );
+                        }),
+                  ],
                 ),
                 const SizedBox(
                   height: 8.0,
@@ -2022,11 +2002,13 @@ class _TransactionDetailScreenState
                       // Add dates to calendar
                       if (bContractDate) {
                         bContractDate = false;
-                        String title =
-                            'Contract Date for ${ref.read(trxnNotifierProvider).clientLName}';
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventname(title);
+                        //FIX THIS
+                        // String title =
+                        //     'Contract Date for ${ref.read(trxnNotifierProvider).clientLName}';
+                        //FIX THIS
+                        // ref
+                        //     .read(eventsNotifierProvider.notifier)
+                        //     .updateEventname(title);
                         String? desc =
                             '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
                         ref
@@ -2043,11 +2025,13 @@ class _TransactionDetailScreenState
 
                       if (bTwofouraSellerDisclosureDeadline) {
                         bTwofouraSellerDisclosureDeadline = false;
-                        String title =
-                            '24a Seller Disclosure Deadline for ${ref.read(trxnNotifierProvider).clientLName}';
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventname(title);
+                        //FIX THIS
+                        // String title =
+                        //     '24a Seller Disclosure Deadline for ${ref.read(trxnNotifierProvider).clientLName}';
+                        //FIX THIS
+                        // ref
+                        //     .read(eventsNotifierProvider.notifier)
+                        //     .updateEventname(title);
                         String? desc =
                             '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
                         ref
@@ -2063,11 +2047,13 @@ class _TransactionDetailScreenState
                       }
                       if (bTwofourbDueDiligenceDeadline) {
                         bTwofourbDueDiligenceDeadline = false;
-                        String title =
-                            '24b Due Diligence Deadline for ${ref.read(trxnNotifierProvider).clientLName}';
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventname(title);
+                        //FIX THIS
+                        // String title =
+                        //     '24b Due Diligence Deadline for ${ref.read(trxnNotifierProvider).clientLName}';
+                        //FIX THIS
+                        // ref
+                        //     .read(eventsNotifierProvider.notifier)
+                        //     .updateEventname(title);
                         String? desc =
                             '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
                         ref
@@ -2083,11 +2069,12 @@ class _TransactionDetailScreenState
                       }
                       if (bTwofourcFinancingAndAppraisalDeadline) {
                         bTwofourcFinancingAndAppraisalDeadline = false;
-                        String title =
-                            '24c Financing and Appraisal Deadline for ${ref.read(trxnNotifierProvider).clientLName}';
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventname(title);
+                        // String title =
+                        //     '24c Financing and Appraisal Deadline for ${ref.read(trxnNotifierProvider).clientLName}';
+                        //FIX THIS
+                        // ref
+                        //     .read(eventsNotifierProvider.notifier)
+                        //     .updateEventname(title);
                         String? desc =
                             '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
                         ref
@@ -2103,11 +2090,13 @@ class _TransactionDetailScreenState
                       }
                       if (btwofourdSettlementDeadline) {
                         btwofourdSettlementDeadline = false;
-                        String title =
-                            '24d Settlement Deadline for ${ref.read(trxnNotifierProvider).clientLName}';
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventname(title);
+                        //FIX THIS
+                        // String title =
+                        //     '24d Settlement Deadline for ${ref.read(trxnNotifierProvider).clientLName}';
+                        //FIX THIS
+                        // ref
+                        //     .read(eventsNotifierProvider.notifier)
+                        //     .updateEventname(title);
                         String? desc =
                             '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
                         ref
@@ -2123,11 +2112,13 @@ class _TransactionDetailScreenState
                       }
                       if (bInspectionDate) {
                         bInspectionDate = false;
-                        String title =
-                            'Inspection Date for ${ref.read(trxnNotifierProvider).clientLName}';
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventname(title);
+                        //FIX THIS
+                        // String title =
+                        //     'Inspection Date for ${ref.read(trxnNotifierProvider).clientLName}';
+                        //FIX THIS
+                        // ref
+                        //     .read(eventsNotifierProvider.notifier)
+                        //     .updateEventname(title);
                         String? desc =
                             '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
                         ref
@@ -2143,11 +2134,13 @@ class _TransactionDetailScreenState
                       }
                       if (bAppraisalDate) {
                         bAppraisalDate = false;
-                        String title =
-                            'Appraisal Date for ${ref.read(trxnNotifierProvider).clientLName}';
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventname(title);
+                        //FIX THIS
+                        // String title =
+                        //     'Appraisal Date for ${ref.read(trxnNotifierProvider).clientLName}';
+                        //FIX THIS
+                        // ref
+                        //     .read(eventsNotifierProvider.notifier)
+                        //     .updateEventname(title);
                         String? desc =
                             '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
                         ref
@@ -2163,11 +2156,12 @@ class _TransactionDetailScreenState
                       }
                       if (bClosingDate) {
                         bClosingDate = false;
-                        String title =
-                            'Closing Date for ${ref.read(trxnNotifierProvider).clientLName}';
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventname(title);
+                        //FIX THIS
+                        // String title =
+                        //     'Closing Date for ${ref.read(trxnNotifierProvider).clientLName}';
+                        // ref
+                        //     .read(eventsNotifierProvider.notifier)
+                        //     .updateEventname(title);
                         String? desc =
                             '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
                         ref
@@ -2183,11 +2177,12 @@ class _TransactionDetailScreenState
                       }
                       if (bFinalWalkThrough) {
                         bFinalWalkThrough = false;
-                        String title =
-                            'Final Walkthrough Date for ${ref.read(trxnNotifierProvider).clientLName}';
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventname(title);
+                        //FIX THIS
+                        // String title =
+                        //     'Final Walkthrough Date for ${ref.read(trxnNotifierProvider).clientLName}';
+                        // ref
+                        //     .read(eventsNotifierProvider.notifier)
+                        //     .updateEventname(title);
                         String? desc =
                             '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
                         ref

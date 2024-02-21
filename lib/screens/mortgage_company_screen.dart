@@ -15,10 +15,6 @@ import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:deal_diligence/screens/user_profile_screen.dart';
-// import 'company_dash_board.dart';
-// import 'package:provider/provider.dart';
-// import 'package:deal_diligence/Models/Company.dart';
 
 final mortgageCompanyRef =
     FirebaseFirestore.instance.collection(('mortgageCompany'));
@@ -30,8 +26,8 @@ class MortgageCompanyScreen extends ConsumerStatefulWidget {
   final bool? isNewMortgageCompany;
 
   const MortgageCompanyScreen(
-      [this.isNewMortgageCompany, this.mortgageCompany]);
-  final MortgageCompany? mortgageCompany;
+      [this.isNewMortgageCompany, this.mortgageCompanyId]);
+  final String? mortgageCompanyId;
 
   //AgencyScreen([this.agency]);
 
@@ -44,6 +40,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
   final _db = FirebaseFirestore.instance;
 
   final mortgageCompanyNameController = TextEditingController();
+  final primaryContactController = TextEditingController();
   final address1Controller = TextEditingController();
   final address2Controller = TextEditingController();
   final cityController = TextEditingController();
@@ -57,6 +54,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
   @override
   void dispose() {
     mortgageCompanyNameController.dispose();
+    primaryContactController.dispose();
     address1Controller.dispose();
     address2Controller.dispose();
     cityController.dispose();
@@ -72,6 +70,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
 
   bool showSpinner = false;
   String? mortgageCompany;
+  String? primaryContact;
   String? address1;
   String? address2;
   String? city;
@@ -89,6 +88,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
         ref.read(globalsNotifierProvider).companyId == "") {
       ref.read(globalsNotifierProvider.notifier).updatenewMortgageCompany(true);
       mortgageCompanyNameController.text = "";
+      primaryContactController.text = "";
       address1Controller.text = "";
       address2Controller.text = "";
       cityController.text = "";
@@ -108,6 +108,8 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
       // Updates Controllers
       mortgageCompanyNameController.text =
           currentMortgageCompanyProfile["mortgageCompanyName"] ?? "";
+      primaryContactController.text =
+          currentMortgageCompanyProfile['primaryContact'];
       address1Controller.text = currentMortgageCompanyProfile['address1'] ?? "";
       address2Controller.text = currentMortgageCompanyProfile['address2'] ?? "";
       cityController.text = currentMortgageCompanyProfile['city'] ?? "";
@@ -141,15 +143,15 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
   void changedDropDownState(String? selectedState) {
     setState(() {
       _currentMortgageCompanyState = selectedState;
-      ref
-          .read(globalsNotifierProvider.notifier)
-          .updatecurrentCompanyState(selectedState!);
-      ref
-          .read(globalsNotifierProvider.notifier)
-          .updateselectedState(selectedState);
+      // ref
+      //     .read(globalsNotifierProvider.notifier)
+      //     .updatecurrentCompanyState(selectedState!);
+      // ref
+      //     .read(globalsNotifierProvider.notifier)
+      //     .updateselectedState(selectedState);
       ref
           .read(mortgageCompanyNotifierProvider.notifier)
-          .updatestate(selectedState);
+          .updatestate(selectedState!);
     });
   }
 
@@ -203,84 +205,6 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                 const SizedBox(
                   height: 30.0,
                 ),
-                // const Text(
-                //   'Select your company',
-                //   style: TextStyle(
-                //     fontSize: 20,
-                //     fontWeight: FontWeight.w700,
-                //   ),
-                // ),
-                // const SizedBox(
-                //   height: 8.0,
-                // ),
-                // StreamBuilder(
-                //     stream: _db.collection('company').snapshots(),
-                //     builder: (BuildContext context, AsyncSnapshot snapshot) {
-                //       if (snapshot.data == null) {
-                //         return const Center(
-                //           child: CircularProgressIndicator(),
-                //         );
-                //       } else {
-                //         return DropdownButton<String>(
-                //           hint: const Text("Select Company"),
-                //           value: _currentCompanyName,
-                //           onChanged: changedDropDownCompany,
-                //           items: snapshot.data.docs
-                //               .map<DropdownMenuItem<String>>((document) {
-                //             return DropdownMenuItem<String>(
-                //               value: document.id,
-                //               child: Text(document.data()['name']),
-                //             );
-                //           }).toList(),
-                //         );
-                //       }
-                //     }),
-                // RoundedButton(
-                //   title: 'Link to your company',
-                //   colour: Colors.blueAccent,
-                //   onPressed: () async {
-                //     setState(() {
-                //       showSpinner = true;
-                //     });
-                //     try {
-                //       await _firestoreService.linkUserToExistingCompany(
-                //           _currentCompanyName,
-                //           ref.read(globalsNotifierProvider).currentUid!);
-                //       ref
-                //           .read(globalsNotifierProvider.notifier)
-                //           .updatecompanyId(_currentCompanyName!);
-                //       final DocumentSnapshot currentMortgageCompanyProfile =
-                //           await mortgageCompanyRef
-                //               .doc(_currentCompanyName)
-                //               .get();
-                //       ref
-                //           .read(globalsNotifierProvider.notifier)
-                //           .updatecurrentCompanyState(
-                //               currentMortgageCompanyProfile.get('state'));
-                //       Navigator.of(context).push(MaterialPageRoute(
-                //           builder: (context) => const UserProfileScreen()));
-                //       setState(() {
-                //         showSpinner = false;
-                //       });
-                //     } catch (e) {
-                //       // todo: add better error handling
-                //       //print(e);
-                //     }
-                //   },
-                // ),
-                // const SizedBox(
-                //   height: 20.0,
-                // ),
-                // const Text(
-                //   'or add new company',
-                //   style: TextStyle(
-                //     fontSize: 20,
-                //     fontWeight: FontWeight.w700,
-                //   ),
-                // ),
-                const SizedBox(
-                  height: 8.0,
-                ),
                 TextField(
                   controller: mortgageCompanyNameController,
                   keyboardType: TextInputType.text,
@@ -293,6 +217,22 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Mortgage Company Name',
                       labelText: 'Mortgage Company Name'),
+                ),
+                const SizedBox(
+                  height: 8.0,
+                ),
+                TextField(
+                  controller: primaryContactController,
+                  keyboardType: TextInputType.text,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    ref
+                        .read(mortgageCompanyNotifierProvider.notifier)
+                        .updatePrimaryContact(value);
+                  },
+                  decoration: const InputDecoration(
+                      hintText: 'Primary Contact',
+                      labelText: 'Primary Contact'),
                 ),
                 const SizedBox(
                   height: 8.0,
@@ -449,17 +389,16 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                     try {
                       ref
                           .read(globalsNotifierProvider.notifier)
-                          .updatenewCompany(true);
+                          .updatenewMortgageCompany(true);
 
                       //  This is a new company record but it will already
                       //  have a document ID that should be used.
                       //agencyProvider.saveCompany();
                       ref
                           .read(mortgageCompanyNotifierProvider.notifier)
-                          .saveMortgageCompany(ref);
-                      Navigator.pop;
-                      // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      //     builder: (context) => const UserProfileScreen()));
+                          .saveMortgageCompany(
+                              ref.read(mortgageCompanyNotifierProvider));
+                      Navigator.pop(context);
 
                       setState(() {
                         showSpinner = false;

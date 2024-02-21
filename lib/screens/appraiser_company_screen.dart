@@ -39,6 +39,7 @@ class _AppraiserCompanyScreenState
   final _db = FirebaseFirestore.instance;
 
   final appraiserCompanyNameController = TextEditingController();
+  final primaryContactController = TextEditingController();
   final address1Controller = TextEditingController();
   final address2Controller = TextEditingController();
   final cityController = TextEditingController();
@@ -52,6 +53,7 @@ class _AppraiserCompanyScreenState
   @override
   void dispose() {
     appraiserCompanyNameController.dispose();
+    primaryContactController.dispose();
     address1Controller.dispose();
     address2Controller.dispose();
     cityController.dispose();
@@ -67,6 +69,7 @@ class _AppraiserCompanyScreenState
 
   bool showSpinner = false;
   String? appraiserCompany;
+  String? primaryContact;
   String? address1;
   String? address2;
   String? city;
@@ -84,6 +87,7 @@ class _AppraiserCompanyScreenState
         ref.read(globalsNotifierProvider).companyId == "") {
       ref.read(globalsNotifierProvider.notifier).updatenewCompany(true);
       appraiserCompanyNameController.text = "";
+      primaryContactController.text = "";
       address1Controller.text = "";
       address2Controller.text = "";
       cityController.text = "";
@@ -103,6 +107,8 @@ class _AppraiserCompanyScreenState
       // Updates Controllers
       appraiserCompanyNameController.text =
           currentAppraiserCompanyProfile["name"] ?? "";
+      primaryContactController.text =
+          currentAppraiserCompanyProfile['primaryContact'];
       address1Controller.text =
           currentAppraiserCompanyProfile['address1'] ?? "";
       address2Controller.text =
@@ -211,6 +217,23 @@ class _AppraiserCompanyScreenState
                   decoration: const InputDecoration(
                       hintText: 'Appraiser Company Name',
                       labelText: 'Appraiser Company Name'),
+                ),
+                const SizedBox(
+                  height: 8.0,
+                ),
+                TextField(
+                  textCapitalization: TextCapitalization.words,
+                  controller: primaryContactController,
+                  keyboardType: TextInputType.text,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    ref
+                        .read(appraiserCompanyNotifierProvider.notifier)
+                        .updatePrimaryContact(value);
+                  },
+                  decoration: const InputDecoration(
+                      hintText: 'Primary Contact',
+                      labelText: 'Primary Contact'),
                 ),
                 const SizedBox(
                   height: 8.0,

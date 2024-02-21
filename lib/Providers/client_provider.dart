@@ -13,7 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:deal_diligence/Providers/company_provider.dart';
 
 class Client {
-  String? clientId;
+  //String? clientId;
   String? fName;
   String? lName;
   String? address1;
@@ -27,7 +27,7 @@ class Client {
   String? agentCompanyId;
 
   Client(
-      {this.clientId,
+      { //this.clientId,
       this.fName,
       this.lName,
       this.address1,
@@ -41,7 +41,7 @@ class Client {
       this.agentCompanyId});
 
   Client copyWith(
-      {String? clientId,
+      { //String? clientId,
       String? fName,
       String? lName,
       String? address1,
@@ -64,7 +64,7 @@ class Client {
       cellPhone: cellPhone ?? this.cellPhone,
       homePhone: homePhone ?? this.homePhone,
       email: email ?? this.email,
-      agentCompanyId: agentCompanyId ?? this.agentCompanyId,
+      //agentCompanyId: agentCompanyId ?? this.agentCompanyId,
     );
   }
 }
@@ -77,7 +77,7 @@ class ClientNotifier extends Notifier<Client> {
 
 // **************************************************
 
-  String clientId = '';
+  //String clientId = '';
   String fName = '';
   String lName = '';
   String address1 = '';
@@ -88,13 +88,13 @@ class ClientNotifier extends Notifier<Client> {
   String cellPhone = '';
   String homePhone = '';
   String email = '';
-  String agentCompanyId = '';
+  //String agentCompanyId = '';
 
   @override
   Client build() {
     return Client(
       // Return the initial state
-      clientId: '',
+      //clientId: '',
       fName: '',
       lName: '',
       address1: '',
@@ -105,7 +105,7 @@ class ClientNotifier extends Notifier<Client> {
       cellPhone: '',
       homePhone: '',
       email: '',
-      agentCompanyId: '',
+      //agentCompanyId: '',
     );
   }
 
@@ -159,7 +159,7 @@ class ClientNotifier extends Notifier<Client> {
       'cellPhone': client.cellPhone,
       'address1': client.address1,
       'address2': client.address2,
-      'clientId': client.clientId,
+      //'clientId': client.clientId,
       'city': client.city,
       'fName': client.fName,
       'lName': client.lName,
@@ -167,7 +167,7 @@ class ClientNotifier extends Notifier<Client> {
       'clientState': client.clientState,
       'zipCode': client.zipCode,
       'email': client.email,
-      'agentCompanyId': client.agentCompanyId,
+      //'agentCompanyId': client.agentCompanyId,
     };
   }
 
@@ -175,15 +175,15 @@ class ClientNotifier extends Notifier<Client> {
       : cellPhone = firestore['cellPhone'],
         address1 = firestore['address1'],
         address2 = firestore['address2'],
-        clientId = firestore['clientId'],
+        //clientId = firestore['clientId'],
         city = firestore['city'],
         fName = firestore['fName'],
         lName = firestore['lName'],
         homePhone = firestore['homePhone'],
         clientState = firestore['clientState'],
         zipCode = firestore['zipCode'],
-        email = firestore['email'],
-        agentCompanyId = firestore['agentCompanyId'];
+        email = firestore['email'];
+  //agentCompanyId = firestore['agentCompanyId'];
 
 // **************************************************
 
@@ -192,11 +192,11 @@ class ClientNotifier extends Notifier<Client> {
   //   firestoreService.saveDeviceToken(userId, userName);
   // }
 
-  saveClient(globals, client) async {
+  saveClient(globals, client, [clientId]) async {
     if (ref.watch(globalsNotifierProvider).newUser == true) {
       // final DocumentSnapshot currentCompanyProfile =
       final newClient = Client(
-        clientId: client.clientId,
+        //clientId: client.clientId,
         fName: client.fName,
         lName: client.lName,
         address1: client.address1,
@@ -207,7 +207,7 @@ class ClientNotifier extends Notifier<Client> {
         cellPhone: client.cellPhone,
         homePhone: client.homePhone,
         email: client.email,
-        agentCompanyId: client.agentCompanyId,
+        //agentCompanyId: client.agentCompanyId,
       );
       firestoreService.saveNewClient(toMap(newClient));
       ref.read(globalsNotifierProvider.notifier).updatenewClient(false);

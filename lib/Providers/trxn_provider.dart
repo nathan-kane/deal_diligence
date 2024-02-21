@@ -17,12 +17,13 @@ class Trxn {
   //String? trxnId;
   String? userId;
   String? companyId;
-  String? clientFName;
-  String? clientLName;
-  String? clientType;
-  String? clientEmail;
-  String? clientCellPhone;
-  String? clientHomePhone;
+  String? clientId;
+  // String? clientFName;
+  // String? clientLName;
+  // String? clientType;
+  // String? clientEmail;
+  // String? clientCellPhone;
+  // String? clientHomePhone;
   String? propertyAddress;
   String? propertyCity;
   String? propertyState;
@@ -34,20 +35,24 @@ class Trxn {
   String? dueDiligence24b;
   String? financing24c;
   String? settlement24d;
-  String? inspectorCompany;
-  String? inspectorPhone;
+  String? inspectorCompanyId;
+  // String? inspectorCompany;
+  // String? inspectorPhone;
   String? inspectionDate;
-  String? appraiser;
-  String? appraiserPhone;
+  String? appraiserCompanyId;
+  // String? appraiser;
+  // String? appraiserPhone;
   String? appraisalDate;
   String? closingDate;
   String? walkThroughDate;
-  String? titleCompany;
-  String? titlePhone;
-  String? titleEmail;
-  String? mortgageCompany;
-  String? mortgagePhone;
-  String? mortgageEmail;
+  String? titleCompanyId;
+  // String? titleCompany;
+  // String? titlePhone;
+  // String? titleEmail;
+  String? mortgageCompanyId;
+  // String? mortgageCompany;
+  // String? mortgagePhone;
+  // String? mortgageEmail;
   String? otherAgent;
   String? otherAgentPhone;
   String? otherAgentEmail;
@@ -60,12 +65,13 @@ class Trxn {
     //this.trxnId,
     this.userId,
     this.companyId,
-    this.clientFName,
-    this.clientLName,
-    this.clientType,
-    this.clientEmail,
-    this.clientCellPhone,
-    this.clientHomePhone,
+    this.clientId,
+    // this.clientFName,
+    // this.clientLName,
+    // this.clientType,
+    // this.clientEmail,
+    // this.clientCellPhone,
+    // this.clientHomePhone,
     this.propertyAddress,
     this.propertyCity,
     this.propertyState,
@@ -77,20 +83,24 @@ class Trxn {
     this.dueDiligence24b,
     this.financing24c,
     this.settlement24d,
-    this.inspectorCompany,
-    this.inspectorPhone,
+    this.inspectorCompanyId,
+    // this.inspectorCompany,
+    // this.inspectorPhone,
     this.inspectionDate,
-    this.appraiser,
-    this.appraiserPhone,
+    this.appraiserCompanyId,
+    // this.appraiser,
+    // this.appraiserPhone,
     this.appraisalDate,
     this.closingDate,
     this.walkThroughDate,
-    this.titleCompany,
-    this.titlePhone,
-    this.titleEmail,
-    this.mortgageCompany,
-    this.mortgagePhone,
-    this.mortgageEmail,
+    this.titleCompanyId,
+    // this.titleCompany,
+    // this.titlePhone,
+    // this.titleEmail,
+    this.mortgageCompanyId,
+    // this.mortgageCompany,
+    // this.mortgagePhone,
+    // this.mortgageEmail,
     this.otherAgent,
     this.otherAgentPhone,
     this.otherAgentEmail,
@@ -104,12 +114,13 @@ class Trxn {
     //String? trxnId,
     String? userId,
     String? companyId,
-    String? clientFName,
-    String? clientLName,
-    String? clientType,
-    String? clientEmail,
-    String? clientCellPhone,
-    String? clientHomePhone,
+    String? clientId,
+    // String? clientFName,
+    // String? clientLName,
+    // String? clientType,
+    // String? clientEmail,
+    // String? clientCellPhone,
+    // String? clientHomePhone,
     String? propertyAddress,
     String? propertyCity,
     String? propertyState,
@@ -121,20 +132,24 @@ class Trxn {
     String? dueDiligence24b,
     String? financing24c,
     String? settlement24d,
-    String? inspectorCompany,
-    String? inspectorPhone,
+    String? inspectorCompanyId,
+    // String? inspectorCompany,
+    // String? inspectorPhone,
     String? inspectionDate,
-    String? appraiser,
-    String? appraiserPhone,
+    String? appraiserCompanyId,
+    // String? appraiser,
+    // String? appraiserPhone,
     String? appraisalDate,
     String? closingDate,
     String? walkThroughDate,
-    String? titleCompany,
-    String? titlePhone,
-    String? titleEmail,
-    String? mortgageCompany,
-    String? mortgagePhone,
-    String? mortgageEmail,
+    String? titleCompanyId,
+    // String? titleCompany,
+    // String? titlePhone,
+    // String? titleEmail,
+    String? mortgageCompanyId,
+    // String? mortgageCompany,
+    // String? mortgagePhone,
+    // String? mortgageEmail,
     String? otherAgent,
     String? otherAgentPhone,
     String? otherAgentEmail,
@@ -147,12 +162,13 @@ class Trxn {
       //trxnId: trxnId ?? this.trxnId,
       userId: userId ?? this.userId,
       companyId: companyId ?? this.companyId,
-      clientFName: clientFName ?? this.clientFName,
-      clientLName: clientLName ?? this.clientLName,
-      clientType: clientType ?? this.clientType,
-      clientEmail: clientEmail ?? this.clientEmail,
-      clientCellPhone: clientCellPhone ?? this.clientCellPhone,
-      clientHomePhone: clientHomePhone ?? this.clientHomePhone,
+      clientId: clientId ?? this.clientId,
+      // clientFName: clientFName ?? this.clientFName,
+      // clientLName: clientLName ?? this.clientLName,
+      // clientType: clientType ?? this.clientType,
+      // clientEmail: clientEmail ?? this.clientEmail,
+      // clientCellPhone: clientCellPhone ?? this.clientCellPhone,
+      // clientHomePhone: clientHomePhone ?? this.clientHomePhone,
       propertyAddress: propertyAddress ?? this.propertyAddress,
       propertyCity: propertyCity ?? this.propertyCity,
       propertyState: propertyState ?? this.propertyState,
@@ -164,20 +180,24 @@ class Trxn {
       dueDiligence24b: dueDiligence24b ?? this.dueDiligence24b,
       financing24c: financing24c ?? this.financing24c,
       settlement24d: settlement24d ?? this.settlement24d,
-      inspectorCompany: inspectorCompany ?? this.inspectorCompany,
-      inspectorPhone: inspectorPhone ?? this.inspectorPhone,
+      inspectorCompanyId: inspectorCompanyId ?? this.inspectorCompanyId,
+      // inspectorCompany: inspectorCompany ?? this.inspectorCompany,
+      // inspectorPhone: inspectorPhone ?? this.inspectorPhone,
       inspectionDate: inspectionDate ?? this.inspectionDate,
-      appraiser: appraiser ?? this.appraiser,
-      appraiserPhone: appraiserPhone ?? this.appraiserPhone,
+      appraiserCompanyId: appraiserCompanyId ?? this.appraiserCompanyId,
+      // appraiser: appraiser ?? this.appraiser,
+      // appraiserPhone: appraiserPhone ?? this.appraiserPhone,
       appraisalDate: appraisalDate ?? this.appraisalDate,
       closingDate: closingDate ?? this.closingDate,
       walkThroughDate: walkThroughDate ?? this.walkThroughDate,
-      titleCompany: titleCompany ?? this.titleCompany,
-      titlePhone: titlePhone ?? this.titlePhone,
-      titleEmail: titleEmail ?? this.titleEmail,
-      mortgageCompany: mortgageCompany ?? this.mortgageCompany,
-      mortgagePhone: mortgagePhone ?? this.mortgagePhone,
-      mortgageEmail: mortgageEmail ?? this.mortgageEmail,
+      titleCompanyId: titleCompanyId ?? this.titleCompanyId,
+      // titleCompany: titleCompany ?? this.titleCompany,
+      // titlePhone: titlePhone ?? this.titlePhone,
+      // titleEmail: titleEmail ?? this.titleEmail,
+      mortgageCompanyId: mortgageCompanyId ?? this.mortgageCompanyId,
+      // mortgageCompany: mortgageCompany ?? this.mortgageCompany,
+      // mortgagePhone: mortgagePhone ?? this.mortgagePhone,
+      // mortgageEmail: mortgageEmail ?? this.mortgageEmail,
       otherAgent: otherAgent ?? this.otherAgent,
       otherAgentPhone: otherAgentPhone ?? this.otherAgentPhone,
       otherAgentEmail: otherAgentEmail ?? this.otherAgentEmail,
@@ -241,12 +261,13 @@ class TrxnNotifier extends Notifier<Trxn> {
       //trxnId: '',
       userId: '',
       companyId: '',
-      clientFName: '',
-      clientLName: '',
-      clientType: '',
-      clientEmail: '',
-      clientCellPhone: '',
-      clientHomePhone: '',
+      clientId: '',
+      // clientFName: '',
+      // clientLName: '',
+      // clientType: '',
+      // clientEmail: '',
+      // clientCellPhone: '',
+      // clientHomePhone: '',
       propertyAddress: '',
       propertyCity: '',
       propertyState: '',
@@ -258,20 +279,24 @@ class TrxnNotifier extends Notifier<Trxn> {
       dueDiligence24b: '',
       financing24c: '',
       settlement24d: '',
-      inspectorCompany: '',
-      inspectorPhone: '',
+      inspectorCompanyId: '',
+      // inspectorCompany: '',
+      // inspectorPhone: '',
       inspectionDate: '',
-      appraiser: '',
-      appraiserPhone: '',
+      appraiserCompanyId: '',
+      // appraiser: '',
+      // appraiserPhone: '',
       appraisalDate: '',
       closingDate: '',
       walkThroughDate: '',
-      titleCompany: '',
-      titlePhone: '',
-      titleEmail: '',
-      mortgageCompany: '',
-      mortgagePhone: '',
-      mortgageEmail: '',
+      titleCompanyId: '',
+      // titleCompany: '',
+      // titlePhone: '',
+      // titleEmail: '',
+      mortgageCompanyId: '',
+      // mortgageCompany: '',
+      // mortgagePhone: '',
+      // mortgageEmail: '',
       otherAgent: '',
       otherAgentPhone: '',
       otherAgentEmail: '',
@@ -284,13 +309,14 @@ class TrxnNotifier extends Notifier<Trxn> {
   //String? trxnId;
   String? userId;
   String? companyId;
-  String? clientFName;
-  String? clientLName;
-  String? clientType;
-  //String? tHomePhone;
-  String? clientEmail;
-  String? clientCellPhone;
-  String? clientHomePhone;
+  String? clientId;
+  // String? clientFName;
+  // String? clientLName;
+  // String? clientType;
+  // //String? tHomePhone;
+  // String? clientEmail;
+  // String? clientCellPhone;
+  // String? clientHomePhone;
   String? propertyAddress;
   String? propertyCity;
   String? propertyState;
@@ -302,11 +328,13 @@ class TrxnNotifier extends Notifier<Trxn> {
   String? dueDiligence24b;
   String? financing24c;
   String? settlement24d;
-  String? inspectorCompany;
-  String? inspectorPhone;
+  String? inpspectorCompanyId;
+  // String? inspectorCompany;
+  // String? inspectorPhone;
   String? inspectionDate;
-  String? appraiser;
-  String? appraiserPhone;
+  String? appraiserCompanyId;
+  // String? appraiser;
+  // String? appraiserPhone;
   String? appraisalDate;
   String? closingDate;
   String? walkThroughDate;
@@ -324,33 +352,37 @@ class TrxnNotifier extends Notifier<Trxn> {
   String? trxnStatus;
 
   // functions to update class members
-  void updateClientFName(String newClientFName) {
-    state = state.copyWith(clientFName: newClientFName);
-  }
-
   void updateCompanyid(String newCompanyId) {
     state = state.copyWith(companyId: newCompanyId);
   }
 
-  void updateClientLName(String newClientLName) {
-    state = state.copyWith(clientLName: newClientLName);
+  void updateClientId(String newClientId) {
+    state = state.copyWith(clientId: newClientId);
   }
 
-  void updateClientEmail(String newClientEmail) {
-    state = state.copyWith(clientEmail: newClientEmail);
-  }
+  // void updateClientFName(String newClientFName) {
+  //   state = state.copyWith(clientFName: newClientFName);
+  // }
 
-  void updateClientType(String? newClientType) {
-    state = state.copyWith(clientType: newClientType);
-  }
+  // void updateClientLName(String newClientLName) {
+  //   state = state.copyWith(clientLName: newClientLName);
+  // }
 
-  void updateClientCellPhone(String newClientCellPhone) {
-    state = state.copyWith(clientCellPhone: newClientCellPhone);
-  }
+  // void updateClientEmail(String newClientEmail) {
+  //   state = state.copyWith(clientEmail: newClientEmail);
+  // }
 
-  void updateClientHomePhone(String newClientHomePhone) {
-    state = state.copyWith(clientHomePhone: newClientHomePhone);
-  }
+  // void updateClientType(String? newClientType) {
+  //   state = state.copyWith(clientType: newClientType);
+  // }
+
+  // void updateClientCellPhone(String newClientCellPhone) {
+  //   state = state.copyWith(clientCellPhone: newClientCellPhone);
+  // }
+
+  // void updateClientHomePhone(String newClientHomePhone) {
+  //   state = state.copyWith(clientHomePhone: newClientHomePhone);
+  // }
 
   void updatePropertyAddress(String newPropertyAddress) {
     state = state.copyWith(propertyAddress: newPropertyAddress);
@@ -397,25 +429,33 @@ class TrxnNotifier extends Notifier<Trxn> {
     state = state.copyWith(settlement24d: newSettlement24d);
   }
 
-  void updateInspectorCompany(String newInspectorCompany) {
-    state = state.copyWith(inspectorCompany: newInspectorCompany);
+  void updateInspectorCompanyId(String newInspectorCompanyId) {
+    state = state.copyWith(inspectorCompanyId: newInspectorCompanyId);
   }
 
-  void updateInspectorPhone(String newInspectorPhone) {
-    state = state.copyWith(inspectorPhone: newInspectorPhone);
-  }
+  // void updateInspectorCompany(String newInspectorCompany) {
+  //   state = state.copyWith(inspectorCompany: newInspectorCompany);
+  // }
+
+  // void updateInspectorPhone(String newInspectorPhone) {
+  //   state = state.copyWith(inspectorPhone: newInspectorPhone);
+  // }
 
   void updateInspectionDate(String newInspectionDate) {
     state = state.copyWith(inspectionDate: newInspectionDate);
   }
 
-  void updateAppraiser(String newAppraiser) {
-    state = state.copyWith(appraiser: newAppraiser);
+  void updateAppraiserCompanyId(String newAppraiserCompanyId) {
+    state = state.copyWith(appraiserCompanyId: newAppraiserCompanyId);
   }
 
-  void updateAppraiserPhone(String newAppraiserPhone) {
-    state = state.copyWith(appraiserPhone: newAppraiserPhone);
-  } // Convert String to int
+  // void updateAppraiser(String newAppraiser) {
+  //   state = state.copyWith(appraiser: newAppraiser);
+  // }
+
+  // void updateAppraiserPhone(String newAppraiserPhone) {
+  //   state = state.copyWith(appraiserPhone: newAppraiserPhone);
+  // } // Convert String to int
 
   void updateAppraisalDate(String newAppraisalDate) {
     state = state.copyWith(appraisalDate: newAppraisalDate);
@@ -429,29 +469,37 @@ class TrxnNotifier extends Notifier<Trxn> {
     state = state.copyWith(walkThroughDate: newWalkThroughDate);
   }
 
-  void updateTitleCompany(String newTitleCompany) {
-    state = state.copyWith(titleCompany: newTitleCompany);
+  void updateTitleCompanyId(String newTitleCompanyId) {
+    state = state.copyWith(titleCompanyId: newTitleCompanyId);
   }
 
-  void updateTitlePhone(String newTitlePhone) {
-    state = state.copyWith(titlePhone: newTitlePhone);
+  // void updateTitleCompany(String newTitleCompany) {
+  //   state = state.copyWith(titleCompany: newTitleCompany);
+  // }
+
+  // void updateTitlePhone(String newTitlePhone) {
+  //   state = state.copyWith(titlePhone: newTitlePhone);
+  // }
+
+  // void updateTitleEmail(String newTitleEmail) {
+  //   state = state.copyWith(titleEmail: newTitleEmail);
+  // }
+
+  void updateMortgageCompanyId(String newMortgageCompanyId) {
+    state = state.copyWith(mortgageCompanyId: newMortgageCompanyId);
   }
 
-  void updateTitleEmail(String newTitleEmail) {
-    state = state.copyWith(titleEmail: newTitleEmail);
-  }
+  // void updateMortgageCompany(String newMortgageCompany) {
+  //   state = state.copyWith(mortgageCompany: newMortgageCompany);
+  // }
 
-  void updateMortgageCompany(String newMortgageCompany) {
-    state = state.copyWith(mortgageCompany: newMortgageCompany);
-  }
+  // void updateMortgagePhone(String newMortgagePhone) {
+  //   state = state.copyWith(mortgagePhone: newMortgagePhone);
+  // }
 
-  void updateMortgagePhone(String newMortgagePhone) {
-    state = state.copyWith(mortgagePhone: newMortgagePhone);
-  }
-
-  void updateMortgageEmail(String newMortgageEmail) {
-    state = state.copyWith(mortgageEmail: newMortgageEmail);
-  }
+  // void updateMortgageEmail(String newMortgageEmail) {
+  //   state = state.copyWith(mortgageEmail: newMortgageEmail);
+  // }
 
   void updateOtherAgent(String newOtherAgent) {
     state = state.copyWith(otherAgent: newOtherAgent);
@@ -482,12 +530,13 @@ class TrxnNotifier extends Notifier<Trxn> {
       //'trxnId': trxnId,
       'userId': trxn.userId,
       'companyId': trxn.companyId,
-      'clientFName': trxn.clientFName,
-      'clientLName': trxn.clientLName,
-      'clientType': trxn.clientType,
-      'clientEmail': trxn.clientEmail,
-      'clientCellPhone': trxn.clientCellPhone,
-      'clientHomePhone': trxn.clientHomePhone,
+      'clientCompanyId': trxn.clientId,
+      // 'clientFName': trxn.clientFName,
+      // 'clientLName': trxn.clientLName,
+      // 'clientType': trxn.clientType,
+      // 'clientEmail': trxn.clientEmail,
+      // 'clientCellPhone': trxn.clientCellPhone,
+      // 'clientHomePhone': trxn.clientHomePhone,
       'propertyAddress': trxn.propertyAddress,
       'propertyCity': trxn.propertyCity,
       'propertyState': trxn.propertyState,
@@ -499,20 +548,24 @@ class TrxnNotifier extends Notifier<Trxn> {
       'dueDiligence24b': trxn.dueDiligence24b,
       'financing24c': trxn.financing24c,
       'settlement24d': trxn.settlement24d,
-      'inspectorCompany': trxn.inspectorCompany,
-      'inspectorPhone': trxn.inspectorPhone,
+      'inspectorCompanyId': trxn.inspectorCompanyId,
+      // 'inspectorCompany': trxn.inspectorCompany,
+      // 'inspectorPhone': trxn.inspectorPhone,
       'inspectionDate': trxn.inspectionDate,
-      'appraiser': trxn.appraiser,
-      'appraiserPhone': trxn.appraiserPhone,
+      'appraiserCompanyId': trxn.appraiserCompanyId,
+      // 'appraiser': trxn.appraiser,
+      // 'appraiserPhone': trxn.appraiserPhone,
       'appraisalDate': trxn.appraisalDate,
       'closingDate': trxn.closingDate,
       'walkThroughDate': trxn.walkThroughDate,
-      'titleCompany': trxn.titleCompany,
-      'titlePhone': trxn.titlePhone,
-      'titleEmail': trxn.titleEmail,
-      'mortgageCompany': trxn.mortgageCompany,
-      'mortgagePhone': trxn.mortgagePhone,
-      'mortgageEmail': trxn.mortgageEmail,
+      'titleCompanyId': trxn.titleCompanyId,
+      // 'titleCompany': trxn.titleCompany,
+      // 'titlePhone': trxn.titlePhone,
+      // 'titleEmail': trxn.titleEmail,
+      'mortgageCompanyId': trxn.mortgageCompanyId,
+      // 'mortgageCompany': trxn.mortgageCompany,
+      // 'mortgagePhone': trxn.mortgagePhone,
+      // 'mortgageEmail': trxn.mortgageEmail,
       'otherAgent': trxn.otherAgent,
       'otherAgentPhone': trxn.otherAgentPhone,
       'otherAgentEmail': trxn.otherAgentEmail,
@@ -542,12 +595,13 @@ class TrxnNotifier extends Notifier<Trxn> {
         userId: ref.read(globalsNotifierProvider).currentUid,
         companyId: refTrxn.companyId,
         //trxnId: refTrxn.trxnId,
-        clientFName: refTrxn.clientFName,
-        clientLName: refTrxn.clientLName,
-        clientType: refTrxn.clientType,
-        clientEmail: refTrxn.clientEmail,
-        clientCellPhone: refTrxn.clientCellPhone,
-        clientHomePhone: refTrxn.clientHomePhone,
+        clientId: refTrxn.clientId,
+        // clientFName: refTrxn.clientFName,
+        // clientLName: refTrxn.clientLName,
+        // clientType: refTrxn.clientType,
+        // clientEmail: refTrxn.clientEmail,
+        // clientCellPhone: refTrxn.clientCellPhone,
+        // clientHomePhone: refTrxn.clientHomePhone,
         propertyAddress: refTrxn.propertyAddress,
         propertyCity: refTrxn.propertyCity,
         propertyState: ref.read(globalsNotifierProvider).selectedTrxnState,
@@ -559,20 +613,24 @@ class TrxnNotifier extends Notifier<Trxn> {
         dueDiligence24b: refTrxn.dueDiligence24b,
         financing24c: refTrxn.financing24c,
         settlement24d: refTrxn.settlement24d,
-        inspectorCompany: refTrxn.inspectorCompany,
+        inspectorCompanyId: refTrxn.inspectorCompanyId,
+        // inspectorCompany: refTrxn.inspectorCompany,
         inspectionDate: refTrxn.inspectionDate,
-        inspectorPhone: refTrxn.inspectorPhone,
-        appraiser: refTrxn.appraiser,
-        appraiserPhone: refTrxn.appraiserPhone,
+        // inspectorPhone: refTrxn.inspectorPhone,
+        appraiserCompanyId: refTrxn.appraiserCompanyId,
+        // appraiser: refTrxn.appraiser,
+        // appraiserPhone: refTrxn.appraiserPhone,
         appraisalDate: refTrxn.appraisalDate,
         closingDate: refTrxn.closingDate,
         walkThroughDate: refTrxn.walkThroughDate,
-        titleCompany: refTrxn.titleCompany,
-        titlePhone: refTrxn.titlePhone,
-        titleEmail: refTrxn.titleEmail,
-        mortgageCompany: refTrxn.mortgageCompany,
-        mortgagePhone: refTrxn.mortgagePhone,
-        mortgageEmail: refTrxn.mortgageEmail,
+        titleCompanyId: refTrxn.titleCompanyId,
+        // titleCompany: refTrxn.titleCompany,
+        // titlePhone: refTrxn.titlePhone,
+        // titleEmail: refTrxn.titleEmail,
+        mortgageCompanyId: refTrxn.mortgageCompanyId,
+        // mortgageCompany: refTrxn.mortgageCompany,
+        // mortgagePhone: refTrxn.mortgagePhone,
+        // mortgageEmail: refTrxn.mortgageEmail,
         otherAgent: refTrxn.otherAgent,
         otherAgentPhone: refTrxn.otherAgentPhone,
         otherAgentEmail: refTrxn.otherAgentEmail,

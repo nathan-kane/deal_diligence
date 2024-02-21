@@ -10,8 +10,9 @@ import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TitleCompany {
-  String? titleCompanyId;
+  //String? titleCompanyId;
   String? titleCompanyName;
+  String? primaryContact;
   String? address1;
   String? address2;
   String? city;
@@ -23,8 +24,9 @@ class TitleCompany {
   String? website;
 
   TitleCompany(
-      {this.titleCompanyId,
+      { //this.titleCompanyId,
       this.titleCompanyName,
+      this.primaryContact,
       this.address1,
       this.address2,
       this.city,
@@ -36,8 +38,9 @@ class TitleCompany {
       this.website});
 
   TitleCompany copyWith({
-    String? titleId,
+    //String? titleId,
     String? titleCompanyName,
+    String? primaryContact,
     String? address1,
     String? address2,
     String? city,
@@ -49,8 +52,9 @@ class TitleCompany {
     String? website,
   }) {
     return TitleCompany(
-      titleCompanyId: titleCompanyId ?? this.titleCompanyId,
+      //titleCompanyId: titleCompanyId ?? this.titleCompanyId,
       titleCompanyName: titleCompanyName ?? this.titleCompanyName,
+      primaryContact: primaryContact ?? this.primaryContact,
       address1: address1 ?? this.address1,
       address2: address2 ?? this.address2,
       city: city ?? this.city,
@@ -72,8 +76,9 @@ class TitleCompanyNotifier extends Notifier<TitleCompany> {
   @override
   TitleCompany build() {
     return TitleCompany(
-      titleCompanyId: '',
+      //titleCompanyId: '',
       titleCompanyName: '',
+      primaryContact: '',
       address1: '',
       address2: '',
       city: '',
@@ -86,8 +91,9 @@ class TitleCompanyNotifier extends Notifier<TitleCompany> {
     );
   }
 
-  String? titleId;
+  //String? titleId;
   String? titleCompanyName;
+  String? primaryContact;
   String? address1;
   String? address2;
   String? city;
@@ -99,12 +105,16 @@ class TitleCompanyNotifier extends Notifier<TitleCompany> {
   String? website;
 
   // Update functions
-  void updateTitleId(String newtitleId) {
-    state = state.copyWith(titleId: newtitleId);
-  }
+  // void updateTitleId(String newtitleId) {
+  //   state = state.copyWith(titleId: newtitleId);
+  // }
 
   void updateTitleCompanyName(String newtitleCompanyName) {
     state = state.copyWith(titleCompanyName: newtitleCompanyName);
+  }
+
+  void updatePrimaryContact(String newPrimaryContact) {
+    state = state.copyWith(primaryContact: newPrimaryContact);
   }
 
   void updateaddress1(String newaddress1) {
@@ -144,8 +154,9 @@ class TitleCompanyNotifier extends Notifier<TitleCompany> {
   }
 
   TitleCompanyNotifier.fromFirestore(Map<String, dynamic> firestore)
-      : titleId = firestore['titleId'],
+      : //titleId = firestore['titleId'],
         titleCompanyName = firestore['titleCompanyName'],
+        primaryContact = firestore['primaryContact'],
         address1 = firestore['address1'],
         address2 = firestore['address2'],
         city = firestore['city'],
@@ -158,8 +169,9 @@ class TitleCompanyNotifier extends Notifier<TitleCompany> {
 
   Map<String, dynamic> toMap(TitleCompany title) {
     return {
-      'titleId': title.titleCompanyId,
+      //'titleId': title.titleCompanyId,
       'titleCompanyName': title.titleCompanyName,
+      'primaryContact': title.primaryContact,
       'address1': title.address1,
       'address2': title.address2,
       'city': title.city,
@@ -172,14 +184,15 @@ class TitleCompanyNotifier extends Notifier<TitleCompany> {
     };
   }
 
-  saveTitleCompany(TitleCompany titleCompany) {
+  saveTitleCompany(TitleCompany titleCompany, [titleCompanyId]) {
     //globals.agencyId = name;
     //ref.read(globalsNotifierProvider.notifier).updatetitleId(name);
     //final TitleVals = ref.watch(titleCompanyNotifierProvider);
 
     var newTitleCompany = TitleCompany(
-        titleCompanyId: titleCompany.titleCompanyId,
+        //titleCompanyId: titleCompany.titleCompanyId,
         titleCompanyName: titleCompany.titleCompanyName,
+        primaryContact: titleCompany.primaryContact,
         address1: titleCompany.address1,
         address2: titleCompany.address2,
         city: titleCompany.city,
@@ -192,18 +205,14 @@ class TitleCompanyNotifier extends Notifier<TitleCompany> {
 
     // If the agency is a new agency retrieve the agency
     // document ID and save it to a new agent document
-    if (ref.read(globalsNotifierProvider).isNewTitleCompany == true) {
-      //String id = _db.collection('title').doc().id;
-      //ref.read(globalsNotifierProvider.notifier).updateTitleId(id);
-      // ref.read(globalsNotifierProvider.notifier).updatecurrentTitleState(
-      //     ref.read(globalsNotifierProvider).selectedState!);
-
+    if (titleCompanyId == "" || titleCompanyId == null) {
       firestoreService.saveNewTitleCompany(toMap(newTitleCompany));
 
       //ref.read(globalsNotifierProvider.notifier).updatetitleId(id);
       ref.read(globalsNotifierProvider.notifier).updateIsNewTitleCompany(false);
     } else {
-      firestoreService.saveTitleCompany(toMap(newTitleCompany), titleId!);
+      firestoreService.saveTitleCompany(
+          toMap(newTitleCompany), titleCompanyId!);
     }
   }
 }

@@ -13,10 +13,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:deal_diligence/Providers/company_provider.dart';
 
 class AppraiserCompany {
-  String? appraiserCompanyId;
+  //String? appraiserCompanyId;
   String? apraiserCompanyName;
-  String? fName;
-  String? lName;
+  String? primaryContact;
   String? address1;
   String? address2;
   String? city;
@@ -28,10 +27,9 @@ class AppraiserCompany {
   String? website;
 
   AppraiserCompany(
-      {this.appraiserCompanyId,
+      { //this.appraiserCompanyId,
       this.apraiserCompanyName,
-      this.fName,
-      this.lName,
+      this.primaryContact,
       this.address1,
       this.address2,
       this.city,
@@ -43,10 +41,9 @@ class AppraiserCompany {
       this.website});
 
   AppraiserCompany copyWith({
-    String? appraiserId,
+    //String? appraiserId,
     String? appraiserCompanyName,
-    String? fName,
-    String? lName,
+    String? primaryContact,
     String? address1,
     String? address2,
     String? city,
@@ -59,8 +56,7 @@ class AppraiserCompany {
   }) {
     return AppraiserCompany(
       apraiserCompanyName: apraiserCompanyName ?? appraiserCompanyName,
-      fName: fName ?? this.fName,
-      lName: lName ?? this.lName,
+      primaryContact: primaryContact ?? this.primaryContact,
       address1: address1 ?? this.address1,
       address2: address2 ?? this.address2,
       city: city ?? this.city,
@@ -83,10 +79,9 @@ class AppraiserCompanyNotifier extends Notifier<AppraiserCompany> {
 
 // **************************************************
 
-  String appraiserCompanyId = '';
+  //String appraiserCompanyId = '';
   String appraiserCompanyName = '';
-  String fName = '';
-  String lName = '';
+  String primaryContact = '';
   String address1 = '';
   String address2 = '';
   String city = '';
@@ -101,10 +96,9 @@ class AppraiserCompanyNotifier extends Notifier<AppraiserCompany> {
   AppraiserCompany build() {
     return AppraiserCompany(
       // Return the initial state
-      appraiserCompanyId: '',
+      //appraiserCompanyId: '',
       apraiserCompanyName: '',
-      fName: '',
-      lName: '',
+      primaryContact: '',
       address1: '',
       address2: '',
       city: '',
@@ -122,13 +116,13 @@ class AppraiserCompanyNotifier extends Notifier<AppraiserCompany> {
     state = state.copyWith(appraiserCompanyName: newAppraiserCompanyName);
   }
 
-  void updatefName(String newfName) {
-    state = state.copyWith(fName: newfName);
+  void updatePrimaryContact(String newPrimaryContact) {
+    state = state.copyWith(primaryContact: newPrimaryContact);
   }
 
-  void updatelName(String newlName) {
-    state = state.copyWith(lName: newlName);
-  }
+  // void updatelName(String newlName) {
+  //   state = state.copyWith(lName: newlName);
+  // }
 
   void updateaddress1(String newaddress1) {
     state = state.copyWith(address1: newaddress1);
@@ -171,10 +165,9 @@ class AppraiserCompanyNotifier extends Notifier<AppraiserCompany> {
       'cellPhone': appraiserCompany.cellPhone,
       'address1': appraiserCompany.address1,
       'address2': appraiserCompany.address2,
-      'appraiserId': appraiserCompany.appraiserCompanyId,
+      //'appraiserId': appraiserCompany.appraiserCompanyId,
       'city': appraiserCompany.city,
-      'fName': appraiserCompany.fName,
-      'lName': appraiserCompany.lName,
+      'primaryContact': appraiserCompany.primaryContact,
       'officePhone': appraiserCompany.officePhone,
       'appraiserState': appraiserCompany.appraiserState,
       'zipCode': appraiserCompany.zipCode,
@@ -186,10 +179,9 @@ class AppraiserCompanyNotifier extends Notifier<AppraiserCompany> {
       : cellPhone = firestore['cellPhone'],
         address1 = firestore['address1'],
         address2 = firestore['address2'],
-        appraiserCompanyId = firestore['appraiserCompanyId'],
+        //appraiserCompanyId = firestore['appraiserCompanyId'],
         city = firestore['city'],
-        fName = firestore['fName'],
-        lName = firestore['lName'],
+        primaryContact = firestore['primaryContact'],
         officePhone = firestore['officePhone'],
         appraiserState = firestore['appraiserState'],
         zipCode = firestore['zipCode'],
@@ -202,13 +194,12 @@ class AppraiserCompanyNotifier extends Notifier<AppraiserCompany> {
   //   firestoreService.saveDeviceToken(userId, userName);
   // }
 
-  saveAppraiserCompany(globals, appraiserCompany) async {
+  saveAppraiserCompany(globals, appraiserCompany, [appraiserCompanyId]) async {
     if (ref.watch(globalsNotifierProvider).isNewAppraiserCompany == true) {
       // final DocumentSnapshot currentCompanyProfile =
       final newAppraiser = AppraiserCompany(
-        appraiserCompanyId: appraiserCompany.appraiserCompanyId,
-        fName: appraiserCompany.fName,
-        lName: appraiserCompany.lName,
+        //appraiserCompanyId: appraiserCompany.appraiserCompanyId,
+        primaryContact: appraiserCompany.primaryContact,
         address1: appraiserCompany.address1,
         address2: appraiserCompany.address2,
         city: appraiserCompany.city,
@@ -228,12 +219,10 @@ class AppraiserCompanyNotifier extends Notifier<AppraiserCompany> {
           .get();
 
       var newAppraiser = AppraiserCompany(
-          fName: (state.fName != null && state.fName != "")
-              ? state.fName
-              : currentAppraiserProfile.get('fName'),
-          lName: (state.lName != null && state.lName != "")
-              ? state.lName
-              : currentAppraiserProfile.get('lName'),
+          primaryContact:
+              (state.primaryContact != null && state.primaryContact != "")
+                  ? state.primaryContact
+                  : currentAppraiserProfile.get('primaryContact'),
           address1: (state.address1 != null && state.address1 != "")
               ? state.address1
               : currentAppraiserProfile.get('address1'),

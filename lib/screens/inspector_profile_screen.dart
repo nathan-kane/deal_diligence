@@ -26,8 +26,8 @@ class InspectorCompanyScreen extends ConsumerStatefulWidget {
   final bool? isNewInspectorCompany;
 
   const InspectorCompanyScreen(
-      [this.isNewInspectorCompany, this.inspectorCompany]);
-  final InspectorCompany? inspectorCompany;
+      [this.isNewInspectorCompany, this.inspectorCompanyId]);
+  final String? inspectorCompanyId;
 
   //AgencyScreen([this.agency]);
 
@@ -41,6 +41,7 @@ class _InspectorCompanyScreenState
   final _db = FirebaseFirestore.instance;
 
   final inspectorCompanyNameController = TextEditingController();
+  final primaryContactController = TextEditingController();
   final address1Controller = TextEditingController();
   final address2Controller = TextEditingController();
   final cityController = TextEditingController();
@@ -54,6 +55,7 @@ class _InspectorCompanyScreenState
   @override
   void dispose() {
     inspectorCompanyNameController.dispose();
+    primaryContactController.dispose();
     address1Controller.dispose();
     address2Controller.dispose();
     cityController.dispose();
@@ -69,6 +71,7 @@ class _InspectorCompanyScreenState
 
   bool showSpinner = false;
   String? inspectorCompany;
+  String? primaryContact;
   String? address1;
   String? address2;
   String? city;
@@ -86,6 +89,7 @@ class _InspectorCompanyScreenState
         ref.read(globalsNotifierProvider).companyId == "") {
       ref.read(globalsNotifierProvider.notifier).updatenewCompany(true);
       inspectorCompanyNameController.text = "";
+      primaryContactController.text = "";
       address1Controller.text = "";
       address2Controller.text = "";
       cityController.text = "";
@@ -105,6 +109,8 @@ class _InspectorCompanyScreenState
       // Updates Controllers
       inspectorCompanyNameController.text =
           currentInspectorCompanyProfile["companyName"] ?? "";
+      primaryContactController.text =
+          currentInspectorCompanyProfile['primaryContact'];
       address1Controller.text =
           currentInspectorCompanyProfile['address1'] ?? "";
       address2Controller.text =
@@ -203,81 +209,19 @@ class _InspectorCompanyScreenState
                 const SizedBox(
                   height: 30.0,
                 ),
-                // const Text(
-                //   'Select your company',
-                //   style: TextStyle(
-                //     fontSize: 20,
-                //     fontWeight: FontWeight.w700,
-                //   ),
-                // ),
-                // const SizedBox(
-                //   height: 8.0,
-                // ),
-                // StreamBuilder(
-                //     stream: _db.collection('company').snapshots(),
-                //     builder: (BuildContext context, AsyncSnapshot snapshot) {
-                //       if (snapshot.data == null) {
-                //         return const Center(
-                //           child: CircularProgressIndicator(),
-                //         );
-                //       } else {
-                //         return DropdownButton<String>(
-                //           hint: const Text("Select Company"),
-                //           value: _currentCompanyName,
-                //           onChanged: changedDropDownCompany,
-                //           items: snapshot.data.docs
-                //               .map<DropdownMenuItem<String>>((document) {
-                //             return DropdownMenuItem<String>(
-                //               value: document.id,
-                //               child: Text(document.data()['name']),
-                //             );
-                //           }).toList(),
-                //         );
-                //       }
-                //     }),
-                // RoundedButton(
-                //   title: 'Link to your company',
-                //   colour: Colors.blueAccent,
-                //   onPressed: () async {
-                //     setState(() {
-                //       showSpinner = true;
-                //     });
-                //     try {
-                //       await _firestoreService.linkUserToExistingCompany(
-                //           _currentCompanyName,
-                //           ref.read(globalsNotifierProvider).currentUid!);
-                //       ref
-                //           .read(globalsNotifierProvider.notifier)
-                //           .updatecompanyId(_currentCompanyName!);
-                //       final DocumentSnapshot currentInspectorCompanyProfile =
-                //           await inspectorCompanyRef
-                //               .doc(_currentCompanyName)
-                //               .get();
-                //       ref
-                //           .read(globalsNotifierProvider.notifier)
-                //           .updatecurrentCompanyState(
-                //               currentInspectorCompanyProfile.get('state'));
-                //       Navigator.of(context).push(MaterialPageRoute(
-                //           builder: (context) => const UserProfileScreen()));
-                //       setState(() {
-                //         showSpinner = false;
-                //       });
-                //     } catch (e) {
-                //       // todo: add better error handling
-                //       //print(e);
-                //     }
-                //   },
-                // ),
-                // const SizedBox(
-                //   height: 20.0,
-                // ),
-                // const Text(
-                //   'or add new company',
-                //   style: TextStyle(
-                //     fontSize: 20,
-                //     fontWeight: FontWeight.w700,
-                //   ),
-                // ),
+                TextField(
+                  controller: primaryContactController,
+                  keyboardType: TextInputType.text,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    ref
+                        .read(inspectorCompanyNotifierProvider.notifier)
+                        .updatePrimaryContact(value);
+                  },
+                  decoration: const InputDecoration(
+                      hintText: 'Primary Contact',
+                      labelText: 'Primary Contact'),
+                ),
                 const SizedBox(
                   height: 8.0,
                 ),
@@ -459,7 +403,7 @@ class _InspectorCompanyScreenState
                           .saveInspectorCompany(
                               ref.read(globalsNotifierProvider),
                               ref.read(inspectorCompanyNotifierProvider));
-                      Navigator.pop;
+                      Navigator.pop(context);
                       // Navigator.of(context).pushReplacement(MaterialPageRoute(
                       //     builder: (context) => const UserProfileScreen()));
 

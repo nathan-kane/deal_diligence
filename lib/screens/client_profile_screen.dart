@@ -29,10 +29,10 @@ var maskFormatter = MaskTextInputFormatter(
 
 class ClientProfileScreen extends ConsumerStatefulWidget {
   static const String id = 'client_profile_screen';
-  final Client? client;
+  final String? clientId;
   final bool? isNewClient;
 
-  const ClientProfileScreen([this.isNewClient, this.client]);
+  const ClientProfileScreen([this.isNewClient, this.clientId]);
 
   @override
   ConsumerState<ClientProfileScreen> createState() =>
@@ -103,7 +103,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
       //companyController.text = ref.read(companyNotifierProvider).companyName!;
     } else {
       final DocumentSnapshot currentClientProfile =
-          await clientsRef.doc(widget.client?.clientId).get();
+          await clientsRef.doc(widget.clientId).get();
 
       // existing record
       // Updates Controllers

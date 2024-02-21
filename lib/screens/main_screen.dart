@@ -173,7 +173,7 @@ class SideDrawer extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(
-                  Icons.person,
+                  Icons.account_balance,
                   color: Colors.lightBlueAccent,
                 ),
                 title: const Text('Add Mortgage Company'),
@@ -192,7 +192,7 @@ class SideDrawer extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(
-                  Icons.person,
+                  Icons.add_business,
                   color: Colors.lightBlueAccent,
                 ),
                 title: const Text('Add Title Company'),
@@ -211,7 +211,7 @@ class SideDrawer extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(
-                  Icons.person,
+                  Icons.add_home,
                   color: Colors.lightBlueAccent,
                 ),
                 title: const Text('Add Appraiser Company'),
@@ -230,7 +230,7 @@ class SideDrawer extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(
-                  Icons.person,
+                  Icons.add_circle_outline,
                   color: Colors.lightBlueAccent,
                 ),
                 title: const Text('Add Inspector Company'),

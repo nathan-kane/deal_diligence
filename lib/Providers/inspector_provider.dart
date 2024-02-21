@@ -13,10 +13,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:deal_diligence/Providers/company_provider.dart';
 
 class InspectorCompany {
-  String? inspectorCompanyId;
+  //String? inspectorCompanyId;
   String? companyName;
-  String? fName;
-  String? lName;
+  String? primaryContact;
   String? address1;
   String? address2;
   String? city;
@@ -28,10 +27,9 @@ class InspectorCompany {
   String? website;
 
   InspectorCompany(
-      {this.inspectorCompanyId,
+      { //this.inspectorCompanyId,
       this.companyName,
-      this.fName,
-      this.lName,
+      this.primaryContact,
       this.address1,
       this.address2,
       this.city,
@@ -43,10 +41,9 @@ class InspectorCompany {
       this.email});
 
   InspectorCompany copyWith({
-    String? inspectorCompanyId,
+    //String? inspectorCompanyId,
     String? companyName,
-    String? fName,
-    String? lName,
+    String? primaryContact,
     String? address1,
     String? address2,
     String? city,
@@ -59,8 +56,7 @@ class InspectorCompany {
   }) {
     return InspectorCompany(
       companyName: companyName ?? this.companyName,
-      fName: fName ?? this.fName,
-      lName: lName ?? this.lName,
+      primaryContact: primaryContact ?? this.primaryContact,
       address1: address1 ?? this.address1,
       address2: address2 ?? this.address2,
       city: city ?? this.city,
@@ -83,10 +79,9 @@ class InspectorCompanyNotifier extends Notifier<InspectorCompany> {
 
 // **************************************************
 
-  String inspectorCompanyId = '';
+  //String inspectorCompanyId = '';
   String companyName = '';
-  String fName = '';
-  String lName = '';
+  String primaryContact = '';
   String address1 = '';
   String address2 = '';
   String city = '';
@@ -101,10 +96,9 @@ class InspectorCompanyNotifier extends Notifier<InspectorCompany> {
   InspectorCompany build() {
     return InspectorCompany(
       // Return the initial state
-      inspectorCompanyId: '',
+      //inspectorCompanyId: '',
       companyName: '',
-      fName: '',
-      lName: '',
+      primaryContact: '',
       address1: '',
       address2: '',
       city: '',
@@ -122,12 +116,8 @@ class InspectorCompanyNotifier extends Notifier<InspectorCompany> {
     state = state.copyWith(companyName: newCompanyName);
   }
 
-  void updatefName(String newfName) {
-    state = state.copyWith(fName: newfName);
-  }
-
-  void updatelName(String newlName) {
-    state = state.copyWith(lName: newlName);
+  void updatePrimaryContact(String newprimaryContact) {
+    state = state.copyWith(primaryContact: newprimaryContact);
   }
 
   void updateaddress1(String newaddress1) {
@@ -172,10 +162,9 @@ class InspectorCompanyNotifier extends Notifier<InspectorCompany> {
       'cellPhone': inspectorCompany.cellPhone,
       'address1': inspectorCompany.address1,
       'address2': inspectorCompany.address2,
-      'inspectorCompanyId': inspectorCompany.inspectorCompanyId,
+      //'inspectorCompanyId': inspectorCompany.inspectorCompanyId,
       'city': inspectorCompany.city,
-      'fName': inspectorCompany.fName,
-      'lName': inspectorCompany.lName,
+      'primaryContact': inspectorCompany.primaryContact,
       'officePhone': inspectorCompany.officePhone,
       'inspectorCompanyState': inspectorCompany.inspectorCompanyState,
       'zipCode': inspectorCompany.zipCode,
@@ -188,11 +177,10 @@ class InspectorCompanyNotifier extends Notifier<InspectorCompany> {
       : cellPhone = firestore['cellPhone'],
         address1 = firestore['address1'],
         address2 = firestore['address2'],
-        inspectorCompanyId = firestore['inspectorCompanyId'],
+        //inspectorCompanyId = firestore['inspectorCompanyId'],
         companyName = firestore['companyName'],
         city = firestore['city'],
-        fName = firestore['fName'],
-        lName = firestore['lName'],
+        primaryContact = firestore['primaryContact'],
         officePhone = firestore['officePhone'],
         inspectorCompanyState = firestore['inspectorCompanyState'],
         zipCode = firestore['zipCode'],
@@ -206,14 +194,13 @@ class InspectorCompanyNotifier extends Notifier<InspectorCompany> {
   //   firestoreService.saveDeviceToken(userId, userName);
   // }
 
-  saveInspectorCompany(globals, inspectorCompany) async {
+  saveInspectorCompany(globals, inspectorCompany, [inspectorCompanyId]) async {
     if (ref.watch(globalsNotifierProvider).newInspector == true) {
       // final DocumentSnapshot currentCompanyProfile =
       final newInspectorCompany = InspectorCompany(
-        inspectorCompanyId: inspectorCompany.inspectorCompanyId,
+        //inspectorCompanyId: inspectorCompany.inspectorCompanyId,
         companyName: inspectorCompany.companyName,
-        fName: inspectorCompany.fName,
-        lName: inspectorCompany.lName,
+        primaryContact: inspectorCompany.primaryContact,
         address1: inspectorCompany.address1,
         address2: inspectorCompany.address2,
         city: inspectorCompany.city,
@@ -236,12 +223,10 @@ class InspectorCompanyNotifier extends Notifier<InspectorCompany> {
         companyName: (state.companyName != null && state.companyName != "")
             ? state.companyName
             : currentInspectorCompanyProfile.get('companyName'),
-        fName: (state.fName != null && state.fName != "")
-            ? state.fName
-            : currentInspectorCompanyProfile.get('fName'),
-        lName: (state.lName != null && state.lName != "")
-            ? state.lName
-            : currentInspectorCompanyProfile.get('lName'),
+        primaryContact:
+            (state.primaryContact != null && state.primaryContact != "")
+                ? state.primaryContact
+                : currentInspectorCompanyProfile.get('primaryContact'),
         address1: (state.address1 != null && state.address1 != "")
             ? state.address1
             : currentInspectorCompanyProfile.get('address1'),
@@ -255,9 +240,6 @@ class InspectorCompanyNotifier extends Notifier<InspectorCompany> {
             (inspectorCompanyState != null && inspectorCompanyState != "")
                 ? inspectorCompanyState
                 : currentInspectorCompanyProfile.get('inspectorCompanyState'),
-        /*state: (globals.selectedState != null)
-              ? globals.selectedState
-              : globals.currentuserState,*/
         zipCode: (state.zipCode != null && state.zipCode != "")
             ? state.zipCode
             : currentInspectorCompanyProfile.get('zipCode'),
