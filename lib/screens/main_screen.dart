@@ -7,6 +7,7 @@
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/screens/company_screen.dart';
+import 'package:deal_diligence/screens/list_of_title_companies.dart';
 import 'package:deal_diligence/screens/login_screen.dart';
 import 'package:deal_diligence/screens/mortgage_calculator.dart';
 import 'package:deal_diligence/screens/widgets/my_appbar.dart';
@@ -157,7 +158,7 @@ class SideDrawer extends StatelessWidget {
                   Icons.person,
                   color: Colors.lightBlueAccent,
                 ),
-                title: const Text('Add Company User'),
+                title: const Text('Add Company Agent'),
                 onTap: () {
                   Navigator.pop(context);
                   // ref
@@ -195,16 +196,20 @@ class SideDrawer extends StatelessWidget {
                   Icons.add_business,
                   color: Colors.lightBlueAccent,
                 ),
-                title: const Text('Add Title Company'),
+                title: const Text('View Title Companies'),
                 onTap: () {
                   Navigator.pop(context);
                   // ref
                   //     .read(globalsNotifierProvider.notifier)
                   //     .updateNewUser(true);
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => const TitleCompanyScreen(true),
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const TitleCompanyScreen(true),
+                      builder: (context) => const ListOfTitleCompaniesScreen(),
                     ),
                   );
                 },

@@ -21,12 +21,16 @@ var maskFormatter = MaskTextInputFormatter(
     mask: '(###) ###-####', filter: {"#": RegExp(r'[0-9]')});
 
 class TitleCompanyScreen extends ConsumerStatefulWidget {
-  static const String id = 'title_company_screen';
+  //static const String id = 'title_company_screen';
+
+  const TitleCompanyScreen([
+    this.isNewTitleCompany,
+    this.titleCompanyId,
+    Key? key,
+  ]) : super(key: key);
+
   final bool? isNewTitleCompany;
-
-  const TitleCompanyScreen([this.isNewTitleCompany, this.titleCompanyId]);
   final String? titleCompanyId;
-
   //AgencyScreen([this.agency]);
 
   @override
@@ -35,6 +39,7 @@ class TitleCompanyScreen extends ConsumerStatefulWidget {
 
 class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
   final _db = FirebaseFirestore.instance;
+  String? titleCompanyId;
 
   final titleCompanyNameController = TextEditingController();
   final primaryContactController = TextEditingController();
@@ -81,8 +86,7 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
   String? _currentTitleCompanyName;
 
   getCurrentTitleCompanyProfile() async {
-    if (ref.read(globalsNotifierProvider).companyId == null ||
-        ref.read(globalsNotifierProvider).companyId == "") {
+    if (widget.titleCompanyId == null || widget.titleCompanyId == "") {
       ref.read(globalsNotifierProvider.notifier).updateIsNewTitleCompany(true);
       titleCompanyNameController.text = "";
       primaryContactController.text = "";
@@ -96,11 +100,12 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
       emailController.text = "";
       websiteController.text = "";
     } else {
-      final DocumentSnapshot currentTitleCompanyProfile = await titleCompanyRef
-          .doc(ref.read(globalsNotifierProvider).companyId)
-          .get();
+      final DocumentSnapshot currentTitleCompanyProfile =
+          await titleCompanyRef.doc(widget.titleCompanyId).get();
 
       // existing record
+      titleCompanyId = widget.titleCompanyId;
+
       // Updates Controllers
       titleCompanyNameController.text =
           currentTitleCompanyProfile["titleCompanyName"] ?? "";
@@ -109,14 +114,32 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
       address1Controller.text = currentTitleCompanyProfile['address1'] ?? "";
       address2Controller.text = currentTitleCompanyProfile['address2'] ?? "";
       cityController.text = currentTitleCompanyProfile['city'] ?? "";
-      stateController.text = currentTitleCompanyProfile['state'] ?? "";
-      _currentTitleCompanyState = currentTitleCompanyProfile['state'] ?? "";
+      stateController.text =
+          currentTitleCompanyProfile['titleCompanyState'] ?? "";
+      _currentTitleCompanyState =
+          currentTitleCompanyProfile['titleCompanyState'] ?? "";
       zipController.text = currentTitleCompanyProfile['zipCode'].toString();
       cellPhoneController.text = currentTitleCompanyProfile['cellPhone'] ?? "";
       officePhoneController.text =
           currentTitleCompanyProfile['officePhone'] ?? "";
       emailController.text = currentTitleCompanyProfile['email'] ?? "";
       websiteController.text = currentTitleCompanyProfile['website'] ?? "";
+
+      // Populate the state Notifier Provider with the current values
+      TitleCompanyNotifier titleCompanyProvider =
+          ref.read(titleCompanyNotifierProvider.notifier);
+      titleCompanyProvider
+          .updateTitleCompanyName(titleCompanyNameController.text);
+      titleCompanyProvider.updatePrimaryContact(primaryContactController.text);
+      titleCompanyProvider.updateaddress1(address1Controller.text);
+      titleCompanyProvider.updateaddress2(address2Controller.text);
+      titleCompanyProvider.updatecity(cityController.text);
+      titleCompanyProvider.updateTitleCompanyState(stateController.text);
+      titleCompanyProvider.updatezipcode(zipController.text);
+      titleCompanyProvider.updateCellPhone(cellPhoneController.text);
+      titleCompanyProvider.updateofficePhone(officePhoneController.text);
+      titleCompanyProvider.updateemail(emailController.text);
+      titleCompanyProvider.updatewebsite(websiteController.text);
     }
   }
 
@@ -137,12 +160,6 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
   void changedDropDownState(String? selectedState) {
     setState(() {
       _currentTitleCompanyState = selectedState;
-      // ref
-      //     .read(globalsNotifierProvider.notifier)
-      //     .updatecurrentCompanyState(selectedState!);
-      // ref
-      //     .read(globalsNotifierProvider.notifier)
-      //     .updateselectedState(selectedState);
       ref
           .read(titleCompanyNotifierProvider.notifier)
           .updateTitleCompanyState(selectedState!);
@@ -395,14 +412,22 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
 
                       //  This is a new company record but it will already
                       //  have a document ID that should be used.
-                      //agencyProvider.saveCompany();
-                      ref
-                          .read(titleCompanyNotifierProvider.notifier)
-                          .saveTitleCompany(
-                              ref.read(titleCompanyNotifierProvider));
+
+                      if (widget.titleCompanyId == "" ||
+                          widget.titleCompanyId == null) {
+                        ref
+                            .read(titleCompanyNotifierProvider.notifier)
+                            .saveTitleCompany(
+                                ref.read(titleCompanyNotifierProvider));
+                      } else {
+                        ref
+                            .read(titleCompanyNotifierProvider.notifier)
+                            .saveTitleCompany(
+                                ref.read(titleCompanyNotifierProvider),
+                                widget.titleCompanyId);
+                      }
+
                       Navigator.pop(context);
-                      // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      //     builder: (context) => const UserProfileScreen()));
 
                       setState(() {
                         showSpinner = false;

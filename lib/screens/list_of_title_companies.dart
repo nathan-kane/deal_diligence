@@ -10,36 +10,29 @@
 
 import 'package:deal_diligence/Providers/title_company_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
-//import 'package:intl/intl.dart';
+import 'package:deal_diligence/screens/title_company_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:deal_diligence/screens/transaction_detail_screen.dart';
-//import 'package:tonnah/screens/trxn_home.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 //import 'package:get/get.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
-//import 'package:deal_diligence/Providers/trxn_provider.dart';
 
 final FirestoreService firestoreService = FirestoreService();
 
-class TitleCompanyListScreen extends ConsumerStatefulWidget {
+class ListOfTitleCompaniesScreen extends ConsumerStatefulWidget {
   //static const String id = 'user_dashboard_screen';
 
-  const TitleCompanyListScreen({super.key});
+  const ListOfTitleCompaniesScreen({super.key});
 
   @override
-  ConsumerState<TitleCompanyListScreen> createState() =>
+  ConsumerState<ListOfTitleCompaniesScreen> createState() =>
       _CompanyDashboardScreenState();
 }
 
 class _CompanyDashboardScreenState
-    extends ConsumerState<TitleCompanyListScreen> {
+    extends ConsumerState<ListOfTitleCompaniesScreen> {
   bool showSpinner = false;
-
-  //late List<Map<String, dynamic>> itemsTrxn;
   bool isLoaded = false;
 
   setGlobals(String? Id) {
@@ -76,7 +69,7 @@ class _CompanyDashboardScreenState
                               title: Row(
                                 children: [
                                   Text(
-                                    'Client: ${snapshot.data?.docs[index]['clientFName'] ?? 'n/a'} ${snapshot.data?.docs[index]['clientLName'] ?? 'n/a'}',
+                                    '${snapshot.data?.docs[index]['titleCompanyName'] ?? 'n/a'}',
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w900,
                                         color: Colors.blueAccent),
@@ -86,33 +79,35 @@ class _CompanyDashboardScreenState
                               subtitle: Text.rich(
                                 TextSpan(
                                   text:
-                                      '${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
-                                      '${snapshot.data?.docs[index]['propertyCity'] ?? 'n/a'}, '
-                                      '${snapshot.data?.docs[index]['propertyState'] ?? 'n/a'}',
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text:
-                                          '\nPrice: ${snapshot.data?.docs[index]['contractPrice'] ?? 'n/a'}\nStatus: ${snapshot.data?.docs[index]['trxnStatus'] ?? 'n/a'}',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w900,
-                                          color: Colors.blueGrey),
-                                    )
-                                  ],
+                                      //'${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
+                                      '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
+                                      '${snapshot.data?.docs[index]['titleCompanyState'] ?? 'n/a'}',
+                                  // children: <TextSpan>[
+                                  //   TextSpan(
+                                  //     text:
+                                  //         '\nPrice: ${snapshot.data?.docs[index]['contractPrice'] ?? 'n/a'}\nStatus: ${snapshot.data?.docs[index]['trxnStatus'] ?? 'n/a'}',
+                                  //     style: const TextStyle(
+                                  //         fontWeight: FontWeight.w900,
+                                  //         color: Colors.blueGrey),
+                                  //   )
+                                  // ],
                                 ),
                               ),
                               trailing: Text(
-                                  'MLS#: ${snapshot.data?.docs[index]['mlsNumber'] ?? 'n/a'}\n${snapshot.data?.docs[index]['clientType']}'),
+                                  'Primary Contact: ${snapshot.data?.docs[index]['primaryContact'] ?? 'n/a'}'),
                               onTap: () {
                                 //MainScreen.of(context)?.setIndex(2);  // Added this for BottomNavigationBar sync
-                                setGlobals(snapshot.data?.docs[index].id);
+                                String? titleCompanyId =
+                                    snapshot.data?.docs[index].id;
+                                //setGlobals(snapshot.data?.docs[index].id);
                                 // ref
                                 //     .read(globalsNotifierProvider.notifier)
                                 //     .updatecurrentTrxnId(
                                 //         snapshot.data?.docs[index].id);
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        const TransactionDetailScreen(false),
+                                    builder: (context) => TitleCompanyScreen(
+                                        false, titleCompanyId),
                                   ),
                                 );
                               },
