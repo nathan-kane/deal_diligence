@@ -194,7 +194,7 @@ class InspectorCompanyNotifier extends Notifier<InspectorCompany> {
   //   firestoreService.saveDeviceToken(userId, userName);
   // }
 
-  saveInspectorCompany(globals, inspectorCompany, [inspectorCompanyId]) async {
+  saveInspectorCompany(inspectorCompany, [inspectorCompanyId]) async {
     if (ref.watch(globalsNotifierProvider).newInspector == true) {
       // final DocumentSnapshot currentCompanyProfile =
       final newInspectorCompany = InspectorCompany(

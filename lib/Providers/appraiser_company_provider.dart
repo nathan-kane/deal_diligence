@@ -194,7 +194,7 @@ class AppraiserCompanyNotifier extends Notifier<AppraiserCompany> {
   //   firestoreService.saveDeviceToken(userId, userName);
   // }
 
-  saveAppraiserCompany(globals, appraiserCompany, [appraiserCompanyId]) async {
+  saveAppraiserCompany(appraiserCompany, [appraiserCompanyId]) async {
     if (ref.watch(globalsNotifierProvider).isNewAppraiserCompany == true) {
       // final DocumentSnapshot currentCompanyProfile =
       final newAppraiser = AppraiserCompany(

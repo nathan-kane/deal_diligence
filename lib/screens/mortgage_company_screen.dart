@@ -22,14 +22,14 @@ var maskFormatter = MaskTextInputFormatter(
     mask: '(###) ###-####', filter: {"#": RegExp(r'[0-9]')});
 
 class MortgageCompanyScreen extends ConsumerStatefulWidget {
-  static const String id = 'mortgage_company_screen';
+  const MortgageCompanyScreen([
+    this.isNewMortgageCompany,
+    this.mortgageCompanyId,
+    Key? key,
+  ]) : super(key: key);
+
   final bool? isNewMortgageCompany;
-
-  const MortgageCompanyScreen(
-      [this.isNewMortgageCompany, this.mortgageCompanyId]);
   final String? mortgageCompanyId;
-
-  //AgencyScreen([this.agency]);
 
   @override
   ConsumerState<MortgageCompanyScreen> createState() =>
@@ -123,6 +123,23 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
           currentMortgageCompanyProfile['officePhone'] ?? "";
       emailController.text = currentMortgageCompanyProfile['email'] ?? "";
       websiteController.text = currentMortgageCompanyProfile['website'] ?? "";
+
+      // Populate the state Notifier Provider with the current values
+      MortgageCompanyNotifier mortgageCompanyProvider =
+          ref.read(mortgageCompanyNotifierProvider.notifier);
+      mortgageCompanyProvider
+          .updateMortgageCompanyName(mortgageCompanyNameController.text);
+      mortgageCompanyProvider
+          .updatePrimaryContact(primaryContactController.text);
+      mortgageCompanyProvider.updateaddress1(address1Controller.text);
+      mortgageCompanyProvider.updateaddress2(address2Controller.text);
+      mortgageCompanyProvider.updatecity(cityController.text);
+      mortgageCompanyProvider.updatestate(stateController.text);
+      mortgageCompanyProvider.updatezipcode(zipController.text);
+      mortgageCompanyProvider.updateCellPhone(cellPhoneController.text);
+      mortgageCompanyProvider.updateofficePhone(officePhoneController.text);
+      mortgageCompanyProvider.updateemail(emailController.text);
+      mortgageCompanyProvider.updatewebsite(websiteController.text);
     }
   }
 
@@ -394,10 +411,19 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                       //  This is a new company record but it will already
                       //  have a document ID that should be used.
                       //agencyProvider.saveCompany();
-                      ref
-                          .read(mortgageCompanyNotifierProvider.notifier)
-                          .saveMortgageCompany(
-                              ref.read(mortgageCompanyNotifierProvider));
+                      if (widget.mortgageCompanyId == "" ||
+                          widget.mortgageCompanyId == null) {
+                        ref
+                            .read(mortgageCompanyNotifierProvider.notifier)
+                            .saveMortgageCompany(
+                                ref.read(mortgageCompanyNotifierProvider));
+                      } else {
+                        ref
+                            .read(mortgageCompanyNotifierProvider.notifier)
+                            .saveMortgageCompany(
+                                ref.read(mortgageCompanyNotifierProvider),
+                                widget.mortgageCompanyId);
+                      }
                       Navigator.pop(context);
 
                       setState(() {

@@ -22,12 +22,14 @@ var maskFormatter = MaskTextInputFormatter(
     mask: '(###) ###-####', filter: {"#": RegExp(r'[0-9]')});
 
 class AppraiserCompanyScreen extends ConsumerStatefulWidget {
-  static const String id = 'appraiser_company_screen';
-  final bool? isNewAppraiserCompany;
+  const AppraiserCompanyScreen([
+    this.isNewAppraiserCompany,
+    this.appraiserCompanyId,
+    Key? key,
+  ]) : super(key: key);
 
-  const AppraiserCompanyScreen(
-      [this.isNewAppraiserCompany, this.appraiserCompany]);
-  final AppraiserCompany? appraiserCompany;
+  final bool? isNewAppraiserCompany;
+  final String? appraiserCompanyId;
 
   @override
   ConsumerState<AppraiserCompanyScreen> createState() =>
@@ -106,7 +108,7 @@ class _AppraiserCompanyScreenState
       // existing record
       // Updates Controllers
       appraiserCompanyNameController.text =
-          currentAppraiserCompanyProfile["name"] ?? "";
+          currentAppraiserCompanyProfile["appraiserCompanyName"] ?? "";
       primaryContactController.text =
           currentAppraiserCompanyProfile['primaryContact'];
       address1Controller.text =
@@ -125,6 +127,23 @@ class _AppraiserCompanyScreenState
           currentAppraiserCompanyProfile['officePhone'] ?? "";
       emailController.text = currentAppraiserCompanyProfile['email'] ?? "";
       websiteController.text = currentAppraiserCompanyProfile['website'] ?? "";
+
+      // Populate the state Notifier Provider with the current values
+      var appraiserCompanyProvider =
+          ref.read(appraiserCompanyNotifierProvider.notifier);
+      appraiserCompanyProvider
+          .updateAppraiserCompanyName(appraiserCompanyNameController.text);
+      appraiserCompanyProvider
+          .updatePrimaryContact(primaryContactController.text);
+      appraiserCompanyProvider.updateaddress1(address1Controller.text);
+      appraiserCompanyProvider.updateaddress2(address2Controller.text);
+      appraiserCompanyProvider.updateCity(cityController.text);
+      appraiserCompanyProvider.updateAppraiserState(stateController.text);
+      appraiserCompanyProvider.updateZipcode(zipController.text);
+      appraiserCompanyProvider.updateCellPhone(cellPhoneController.text);
+      appraiserCompanyProvider.updateOfficePhone(officePhoneController.text);
+      appraiserCompanyProvider.updateEmail(emailController.text);
+      appraiserCompanyProvider.updateWebsite(websiteController.text);
     }
   }
 
@@ -398,11 +417,19 @@ class _AppraiserCompanyScreenState
                       //  This is a new company record but it will already
                       //  have a document ID that should be used.
                       //agencyProvider.saveCompany();
-                      ref
-                          .read(appraiserCompanyNotifierProvider.notifier)
-                          .saveAppraiserCompany(
-                              ref.read(globalsNotifierProvider),
-                              ref.read(appraiserCompanyNotifierProvider));
+                      if (widget.appraiserCompanyId == "" ||
+                          widget.appraiserCompanyId == null) {
+                        ref
+                            .read(appraiserCompanyNotifierProvider.notifier)
+                            .saveAppraiserCompany(
+                                ref.read(appraiserCompanyNotifierProvider));
+                      } else {
+                        ref
+                            .read(appraiserCompanyNotifierProvider.notifier)
+                            .saveAppraiserCompany(
+                                ref.read(appraiserCompanyNotifierProvider),
+                                widget.appraiserCompanyId);
+                      }
                       Navigator.pop(context);
                       // Navigator.of(context).pushReplacement(MaterialPageRoute(
                       //     builder: (context) => const UserProfileScreen()));

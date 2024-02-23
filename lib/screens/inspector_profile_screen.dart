@@ -22,14 +22,14 @@ var maskFormatter = MaskTextInputFormatter(
     mask: '(###) ###-####', filter: {"#": RegExp(r'[0-9]')});
 
 class InspectorCompanyScreen extends ConsumerStatefulWidget {
-  static const String id = 'inspector_company_screen';
+  const InspectorCompanyScreen([
+    this.isNewInspectorCompany,
+    this.inspectorCompanyId,
+    Key? key,
+  ]) : super(key: key);
+
   final bool? isNewInspectorCompany;
-
-  const InspectorCompanyScreen(
-      [this.isNewInspectorCompany, this.inspectorCompanyId]);
   final String? inspectorCompanyId;
-
-  //AgencyScreen([this.agency]);
 
   @override
   ConsumerState<InspectorCompanyScreen> createState() =>
@@ -127,6 +127,24 @@ class _InspectorCompanyScreenState
           currentInspectorCompanyProfile['officePhone'] ?? "";
       emailController.text = currentInspectorCompanyProfile['email'] ?? "";
       websiteController.text = currentInspectorCompanyProfile['website'] ?? "";
+
+      // Populate the state Notifier Provider with the current values
+      InspectorCompanyNotifier inspectorCompanyProvider =
+          ref.read(inspectorCompanyNotifierProvider.notifier);
+      inspectorCompanyProvider
+          .updateCompanyName(inspectorCompanyNameController.text);
+      inspectorCompanyProvider
+          .updatePrimaryContact(primaryContactController.text);
+      inspectorCompanyProvider.updateaddress1(address1Controller.text);
+      inspectorCompanyProvider.updateaddress2(address2Controller.text);
+      inspectorCompanyProvider.updateCity(cityController.text);
+      inspectorCompanyProvider
+          .updateInspectorCompanyState(stateController.text);
+      inspectorCompanyProvider.updateZipcode(zipController.text);
+      inspectorCompanyProvider.updateCellPhone(cellPhoneController.text);
+      inspectorCompanyProvider.updateOfficePhone(officePhoneController.text);
+      inspectorCompanyProvider.updateEmail(emailController.text);
+      inspectorCompanyProvider.updateWebsite(websiteController.text);
     }
   }
 
@@ -397,15 +415,21 @@ class _InspectorCompanyScreenState
 
                       //  This is a new company record but it will already
                       //  have a document ID that should be used.
-                      //agencyProvider.saveCompany();
-                      ref
-                          .read(inspectorCompanyNotifierProvider.notifier)
-                          .saveInspectorCompany(
-                              ref.read(globalsNotifierProvider),
-                              ref.read(inspectorCompanyNotifierProvider));
+                      if (widget.inspectorCompanyId == "" ||
+                          widget.inspectorCompanyId == null) {
+                        ref
+                            .read(inspectorCompanyNotifierProvider.notifier)
+                            .saveInspectorCompany(
+                                ref.read(inspectorCompanyNotifierProvider));
+                      } else {
+                        ref
+                            .read(inspectorCompanyNotifierProvider.notifier)
+                            .saveInspectorCompany(
+                                ref.read(inspectorCompanyNotifierProvider),
+                                widget.inspectorCompanyId);
+                      }
+
                       Navigator.pop(context);
-                      // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      //     builder: (context) => const UserProfileScreen()));
 
                       setState(() {
                         showSpinner = false;

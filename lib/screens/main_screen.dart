@@ -7,6 +7,9 @@
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/screens/company_screen.dart';
+import 'package:deal_diligence/screens/list_of_appraiser_companies.dart';
+import 'package:deal_diligence/screens/list_of_inspector_companies.dart';
+import 'package:deal_diligence/screens/list_of_mortgage_companies.dart';
 import 'package:deal_diligence/screens/list_of_title_companies.dart';
 import 'package:deal_diligence/screens/login_screen.dart';
 import 'package:deal_diligence/screens/mortgage_calculator.dart';
@@ -177,7 +180,7 @@ class SideDrawer extends StatelessWidget {
                   Icons.account_balance,
                   color: Colors.lightBlueAccent,
                 ),
-                title: const Text('Add Mortgage Company'),
+                title: const Text('View Mortgage Companies'),
                 onTap: () {
                   Navigator.pop(context);
                   // ref
@@ -186,7 +189,8 @@ class SideDrawer extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const MortgageCompanyScreen(true),
+                      builder: (context) =>
+                          const ListOfMortgageCompaniesScreen(),
                     ),
                   );
                 },
@@ -219,7 +223,7 @@ class SideDrawer extends StatelessWidget {
                   Icons.add_home,
                   color: Colors.lightBlueAccent,
                 ),
-                title: const Text('Add Appraiser Company'),
+                title: const Text('View Appraiser Companies'),
                 onTap: () {
                   Navigator.pop(context);
                   // ref
@@ -228,7 +232,8 @@ class SideDrawer extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const AppraiserCompanyScreen(true),
+                      builder: (context) =>
+                          const ListOfAppraiserCompaniesScreen(),
                     ),
                   );
                 },
@@ -238,7 +243,7 @@ class SideDrawer extends StatelessWidget {
                   Icons.add_circle_outline,
                   color: Colors.lightBlueAccent,
                 ),
-                title: const Text('Add Inspector Company'),
+                title: const Text('View Inspector Companies'),
                 onTap: () {
                   Navigator.pop(context);
                   // ref
@@ -247,7 +252,8 @@ class SideDrawer extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const InspectorCompanyScreen(true),
+                      builder: (context) =>
+                          const ListOfInspectorCompaniesScreen(),
                     ),
                   );
                 },
