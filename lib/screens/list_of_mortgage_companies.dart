@@ -9,6 +9,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:deal_diligence/Providers/mortgage_company_provider.dart';
+import 'package:deal_diligence/screens/mortgage_company_screen.dart';
 //import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/screens/title_company_screen.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 //import 'package:get/get.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deal_diligence/constants.dart' as constants;
 //import 'package:deal_diligence/Providers/global_provider.dart';
 
 final FirestoreService firestoreService = FirestoreService();
@@ -118,6 +120,38 @@ class _CompanyDashboardScreenState
                       )
                     : const Text('No Date');
               }),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            setState(() {
+              showSpinner = true;
+            });
+            try {
+              // ref.read(trxnNotifierProvider.notifier).saveTrxn(
+              //     ref.read(trxnNotifierProvider),
+              //     ref.read(globalsNotifierProvider).companyId!,
+              //     widget.newTrxn!);
+              // ref.read(globalsNotifierProvider.notifier).updatetargetScreen(0);
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MortgageCompanyScreen(true),
+                ),
+              );
+              setState(() {
+                showSpinner = false;
+              });
+            } catch (e) {
+              // todo: add better error handling
+              //print(e);
+            }
+          },
+          backgroundColor: constants.kPrimaryColor,
+          child: const Icon(
+            Icons.assignment_turned_in_outlined,
+            color: Colors.blueAccent,
+          ),
         ),
       ),
     );

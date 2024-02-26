@@ -21,8 +21,6 @@ var maskFormatter = MaskTextInputFormatter(
     mask: '(###) ###-####', filter: {"#": RegExp(r'[0-9]')});
 
 class TitleCompanyScreen extends ConsumerStatefulWidget {
-  //static const String id = 'title_company_screen';
-
   const TitleCompanyScreen([
     this.isNewTitleCompany,
     this.titleCompanyId,
@@ -31,7 +29,6 @@ class TitleCompanyScreen extends ConsumerStatefulWidget {
 
   final bool? isNewTitleCompany;
   final String? titleCompanyId;
-  //AgencyScreen([this.agency]);
 
   @override
   ConsumerState<TitleCompanyScreen> createState() => _TitleCompanyScreenState();

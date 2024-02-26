@@ -108,7 +108,7 @@ class _InspectorCompanyScreenState
       // existing record
       // Updates Controllers
       inspectorCompanyNameController.text =
-          currentInspectorCompanyProfile["companyName"] ?? "";
+          currentInspectorCompanyProfile["inspectorCompanyName"] ?? "";
       primaryContactController.text =
           currentInspectorCompanyProfile['primaryContact'];
       address1Controller.text =
@@ -132,7 +132,7 @@ class _InspectorCompanyScreenState
       InspectorCompanyNotifier inspectorCompanyProvider =
           ref.read(inspectorCompanyNotifierProvider.notifier);
       inspectorCompanyProvider
-          .updateCompanyName(inspectorCompanyNameController.text);
+          .updateInspectorCompanyName(inspectorCompanyNameController.text);
       inspectorCompanyProvider
           .updatePrimaryContact(primaryContactController.text);
       inspectorCompanyProvider.updateaddress1(address1Controller.text);
@@ -177,14 +177,14 @@ class _InspectorCompanyScreenState
     });
   }
 
-  void changedDropDownCompany(String? selectedCompany) {
-    setState(() {
-      _currentInspectorCompanyName = selectedCompany;
-      ref
-          .read(globalsNotifierProvider.notifier)
-          .updatecurrentCompanyName(selectedCompany!);
-    });
-  }
+  // void changedDropDownCompany(String? selectedCompany) {
+  //   setState(() {
+  //     _currentInspectorCompanyName = selectedCompany;
+  //     ref
+  //         .read(globalsNotifierProvider.notifier)
+  //         .updatecurrentCompanyName(selectedCompany!);
+  //   });
+  // }
 
   @override
   void initState() {
@@ -228,6 +228,24 @@ class _InspectorCompanyScreenState
                   height: 30.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
+                  controller: inspectorCompanyNameController,
+                  keyboardType: TextInputType.text,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    ref
+                        .read(inspectorCompanyNotifierProvider.notifier)
+                        .updateInspectorCompanyName(value);
+                  },
+                  decoration: const InputDecoration(
+                      hintText: 'Inspector Company Name',
+                      labelText: 'Inspector Company Name'),
+                ),
+                const SizedBox(
+                  height: 8.0,
+                ),
+                TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: primaryContactController,
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.center,
@@ -244,22 +262,7 @@ class _InspectorCompanyScreenState
                   height: 8.0,
                 ),
                 TextField(
-                  controller: inspectorCompanyNameController,
-                  keyboardType: TextInputType.text,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(inspectorCompanyNotifierProvider.notifier)
-                        .updateCompanyName(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Inspector Company Name',
-                      labelText: 'Inspector Company Name'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: address1Controller,
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.center,
@@ -275,6 +278,7 @@ class _InspectorCompanyScreenState
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: address2Controller,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
@@ -289,6 +293,7 @@ class _InspectorCompanyScreenState
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: cityController,
                   keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,
@@ -296,19 +301,6 @@ class _InspectorCompanyScreenState
                     ref
                         .read(inspectorCompanyNotifierProvider.notifier)
                         .updateCity(value);
-                    // if (ref
-                    //         .watch(globalsNotifierProvider)
-                    //         .currentCompanyState ==
-                    //     "") {
-                    //   _currentCompanyState = ref
-                    //       .watch(globalsNotifierProvider)
-                    //       .currentCompanyState;
-                    // } else {
-                    //   _currentCompanyState = ref
-                    //       .watch(globalsNotifierProvider)
-                    //       .currentCompanyState;
-                    // }
-                    // ;
                   },
                   decoration: const InputDecoration(
                       hintText: 'City', labelText: 'City'),

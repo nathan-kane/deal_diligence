@@ -4,22 +4,19 @@
 //  copyright 2023                            *
 //*********************************************
 
-// ignore_for_file: unused_label, unnecessary_null_comparison, unused_local_variable, unused_import
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:deal_diligence/Providers/company_provider.dart';
 
 class AppraiserCompany {
   //String? appraiserCompanyId;
-  String? apraiserCompanyName;
+  String? appraiserCompanyName;
   String? primaryContact;
   String? address1;
   String? address2;
   String? city;
-  String? appraiserState;
+  String? appraiserCompanyState;
   String? zipCode;
   String? cellPhone;
   String? officePhone;
@@ -28,12 +25,12 @@ class AppraiserCompany {
 
   AppraiserCompany(
       { //this.appraiserCompanyId,
-      this.apraiserCompanyName,
+      this.appraiserCompanyName,
       this.primaryContact,
       this.address1,
       this.address2,
       this.city,
-      this.appraiserState,
+      this.appraiserCompanyState,
       this.zipCode,
       this.cellPhone,
       this.officePhone,
@@ -47,7 +44,7 @@ class AppraiserCompany {
     String? address1,
     String? address2,
     String? city,
-    String? appraiserState,
+    String? appraiserCompanyState,
     String? zipCode,
     String? cellPhone,
     String? officePhone,
@@ -55,12 +52,14 @@ class AppraiserCompany {
     String? website,
   }) {
     return AppraiserCompany(
-      apraiserCompanyName: apraiserCompanyName ?? appraiserCompanyName,
+      //appraiserCompanyId: appraiserCompanyId ?? this.appraiserCompanyId,
+      appraiserCompanyName: appraiserCompanyName ?? this.appraiserCompanyName,
       primaryContact: primaryContact ?? this.primaryContact,
       address1: address1 ?? this.address1,
       address2: address2 ?? this.address2,
       city: city ?? this.city,
-      appraiserState: appraiserState ?? this.appraiserState,
+      appraiserCompanyState:
+          appraiserCompanyState ?? this.appraiserCompanyState,
       zipCode: zipCode ?? this.zipCode,
       cellPhone: cellPhone ?? this.cellPhone,
       officePhone: officePhone ?? this.officePhone,
@@ -72,37 +71,19 @@ class AppraiserCompany {
 
 class AppraiserCompanyNotifier extends Notifier<AppraiserCompany> {
   final firestoreService = FirestoreService();
-  //final companyRef = FirebaseFirestore.instance.collection(('Company'));
-  final appraiserCompanyDB =
-      FirebaseFirestore.instance.collection(('appraiserCompany'));
+  FirebaseFirestore _db = FirebaseFirestore.instance;
   AppraiserCompanyNotifier(); // un-named constructor
-
-// **************************************************
-
-  //String appraiserCompanyId = '';
-  String appraiserCompanyName = '';
-  String primaryContact = '';
-  String address1 = '';
-  String address2 = '';
-  String city = '';
-  String appraiserState = '';
-  String zipCode = '';
-  String cellPhone = '';
-  String officePhone = '';
-  String email = '';
-  String website = '';
 
   @override
   AppraiserCompany build() {
     return AppraiserCompany(
-      // Return the initial state
       //appraiserCompanyId: '',
-      apraiserCompanyName: '',
+      appraiserCompanyName: '',
       primaryContact: '',
       address1: '',
       address2: '',
       city: '',
-      appraiserState: '',
+      appraiserCompanyState: '',
       zipCode: '',
       cellPhone: '',
       officePhone: '',
@@ -111,7 +92,24 @@ class AppraiserCompanyNotifier extends Notifier<AppraiserCompany> {
     );
   }
 
-  // functions to update class members
+  //String? appraiserId;
+  String? appraiserCompanyName;
+  String? primaryContact;
+  String? address1;
+  String? address2;
+  String? city;
+  String? appraiserCompanyState;
+  String? zipCode;
+  String? cellPhone;
+  String? officePhone;
+  String? email;
+  String? website;
+
+  // Update functions
+  // void updateAppraiserId(String newappraiserId) {
+  //   state = state.copyWith(appraiserId: newappraiserId);
+  // }
+
   void updateAppraiserCompanyName(String newAppraiserCompanyName) {
     state = state.copyWith(appraiserCompanyName: newAppraiserCompanyName);
   }
@@ -120,24 +118,20 @@ class AppraiserCompanyNotifier extends Notifier<AppraiserCompany> {
     state = state.copyWith(primaryContact: newPrimaryContact);
   }
 
-  // void updatelName(String newlName) {
-  //   state = state.copyWith(lName: newlName);
-  // }
-
-  void updateaddress1(String newaddress1) {
-    state = state.copyWith(address1: newaddress1);
+  void updateAddress1(String newAddress1) {
+    state = state.copyWith(address1: newAddress1);
   }
 
-  void updateaddress2(String newaddress2) {
-    state = state.copyWith(address2: newaddress2);
+  void updateAddress2(String newAddress2) {
+    state = state.copyWith(address2: newAddress2);
   }
 
   void updateCity(String newCity) {
     state = state.copyWith(city: newCity);
   }
 
-  void updateAppraiserState(String newAppraiserState) {
-    state = state.copyWith(appraiserState: newAppraiserState);
+  void updateAppraiserCompanyState(String newAppraiserCompanyState) {
+    state = state.copyWith(appraiserCompanyState: newAppraiserCompanyState);
   }
 
   void updateZipcode(String newZipcode) {
@@ -160,103 +154,70 @@ class AppraiserCompanyNotifier extends Notifier<AppraiserCompany> {
     state = state.copyWith(website: newWebsite);
   }
 
-  Map<String, dynamic> toMap(AppraiserCompany appraiserCompany) {
+  AppraiserCompanyNotifier.fromFirestore(Map<String, dynamic> firestore)
+      : //appraiserId = firestore['appraiserId'],
+        appraiserCompanyName = firestore['appraiserCompanyName'],
+        primaryContact = firestore['primaryContact'],
+        address1 = firestore['address1'],
+        address2 = firestore['address2'],
+        city = firestore['city'],
+        appraiserCompanyState = firestore['appraiserCompanytate'],
+        zipCode = firestore['zipCode'],
+        cellPhone = firestore['cellPhone'],
+        officePhone = firestore['officePhone'],
+        email = firestore['email'],
+        website = firestore['website'];
+
+  Map<String, dynamic> toMap(AppraiserCompany appraiser) {
     return {
-      'cellPhone': appraiserCompany.cellPhone,
-      'address1': appraiserCompany.address1,
-      'address2': appraiserCompany.address2,
-      //'appraiserId': appraiserCompany.appraiserCompanyId,
-      'city': appraiserCompany.city,
-      'primaryContact': appraiserCompany.primaryContact,
-      'officePhone': appraiserCompany.officePhone,
-      'appraiserState': appraiserCompany.appraiserState,
-      'zipCode': appraiserCompany.zipCode,
-      'email': appraiserCompany.email,
+      //'appraiserId': appraiser.appraiserCompanyId,
+      'appraiserCompanyName': appraiser.appraiserCompanyName,
+      'primaryContact': appraiser.primaryContact,
+      'address1': appraiser.address1,
+      'address2': appraiser.address2,
+      'city': appraiser.city,
+      'appraiserCompanyState': appraiser.appraiserCompanyState,
+      'zipCode': appraiser.zipCode,
+      'cellPhone': appraiser.cellPhone,
+      'officePhone': appraiser.officePhone,
+      'email': appraiser.email,
+      'website': appraiser.website
     };
   }
 
-  AppraiserCompanyNotifier.fromFirestore(Map<String, dynamic> firestore)
-      : cellPhone = firestore['cellPhone'],
-        address1 = firestore['address1'],
-        address2 = firestore['address2'],
-        //appraiserCompanyId = firestore['appraiserCompanyId'],
-        city = firestore['city'],
-        primaryContact = firestore['primaryContact'],
-        officePhone = firestore['officePhone'],
-        appraiserState = firestore['appraiserState'],
-        zipCode = firestore['zipCode'],
-        email = firestore['email'];
+  saveAppraiserCompany(appraiserCompany, [appraiserCompanyId]) {
+    //globals.agencyId = name;
+    //ref.read(globalsNotifierProvider.notifier).updateappraiserId(name);
+    //final AppraiserVals = ref.watch(appraiserCompanyNotifierProvider);
 
-// **************************************************
-
-  // saveFcmToken(String userId, String userName) {
-  //   //firestoreService.saveUserFcmTokenId(userId, fcmTokenId);
-  //   firestoreService.saveDeviceToken(userId, userName);
-  // }
-
-  saveAppraiserCompany(appraiserCompany, [appraiserCompanyId]) async {
-    if (ref.watch(globalsNotifierProvider).isNewAppraiserCompany == true) {
-      // final DocumentSnapshot currentCompanyProfile =
-      final newAppraiser = AppraiserCompany(
-        //appraiserCompanyId: appraiserCompany.appraiserCompanyId,
+    var newAppraiserCompany = AppraiserCompany(
+        // appraiserCompanyId:
+        //     ref.read(appraiserCompanyNotifierProvider).appraiserCompanyId,
+        appraiserCompanyName: appraiserCompany.appraiserCompanyName,
         primaryContact: appraiserCompany.primaryContact,
         address1: appraiserCompany.address1,
         address2: appraiserCompany.address2,
         city: appraiserCompany.city,
-        appraiserState: appraiserCompany.appraiserState,
+        appraiserCompanyState: appraiserCompany.appraiserCompanyState,
         zipCode: appraiserCompany.zipCode,
         cellPhone: appraiserCompany.cellPhone,
         officePhone: appraiserCompany.officePhone,
         email: appraiserCompany.email,
-      );
-      firestoreService.saveNewAppraiserCompany(toMap(newAppraiser));
+        website: appraiserCompany.website);
+
+    // If the agency is a new agency retrieve the agency
+    // document ID and save it to a new agent document
+    if (appraiserCompanyId == "" || appraiserCompanyId == null) {
+      firestoreService.saveNewAppraiserCompany(toMap(newAppraiserCompany));
+
+      //ref.read(globalsNotifierProvider.notifier).updateappraiserId(id);
       ref
           .read(globalsNotifierProvider.notifier)
           .updateIsNewAppraiserCompany(false);
     } else {
-      final DocumentSnapshot currentAppraiserProfile = await appraiserCompanyDB
-          .doc(appraiserCompany.AppraiserCompanyId)
-          .get();
-
-      var newAppraiser = AppraiserCompany(
-          primaryContact:
-              (state.primaryContact != null && state.primaryContact != "")
-                  ? state.primaryContact
-                  : currentAppraiserProfile.get('primaryContact'),
-          address1: (state.address1 != null && state.address1 != "")
-              ? state.address1
-              : currentAppraiserProfile.get('address1'),
-          address2: (state.address2 != null && state.address2 != "")
-              ? state.address2
-              : currentAppraiserProfile.get('address2'),
-          city: (state.city != null && state.city != "")
-              ? state.city
-              : currentAppraiserProfile.get('city'),
-          appraiserState: (appraiserState != null && appraiserState != "")
-              ? appraiserState
-              : currentAppraiserProfile.get('appraiserState'),
-          /*state: (globals.selectedState != null)
-              ? globals.selectedState
-              : globals.currentuserState,*/
-          zipCode: (state.zipCode != null && state.zipCode != "")
-              ? state.zipCode
-              : currentAppraiserProfile.get('zipCode'),
-          cellPhone: (state.cellPhone != null && state.cellPhone != "")
-              ? state.cellPhone
-              : currentAppraiserProfile.get('cellPhone'),
-          officePhone: (state.officePhone != null && state.officePhone != "")
-              ? state.officePhone
-              : currentAppraiserProfile.get('officePhone'));
-      // businessType:
-      // ref.read(globalsNotifierProvider).userBusinessType;
-
       firestoreService.saveAppraiserCompany(
-          AppraiserCompany, appraiserCompanyId);
+          toMap(newAppraiserCompany), appraiserCompanyId!);
     }
-  }
-
-  deleteAppraiserCompany(String? appraiserCompanyId) {
-    firestoreService.deleteAppraiserCompany(appraiserCompanyId);
   }
 }
 

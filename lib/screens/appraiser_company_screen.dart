@@ -75,7 +75,7 @@ class _AppraiserCompanyScreenState
   String? address1;
   String? address2;
   String? city;
-  String? appraiserState;
+  String? state;
   String? zip;
   String? cellPhone;
   String? officePhone;
@@ -117,9 +117,9 @@ class _AppraiserCompanyScreenState
           currentAppraiserCompanyProfile['address2'] ?? "";
       cityController.text = currentAppraiserCompanyProfile['city'] ?? "";
       stateController.text =
-          currentAppraiserCompanyProfile['appraiserState'] ?? "";
+          currentAppraiserCompanyProfile['appraiserCompanyState'] ?? "";
       _currentAppraiserCompanyState =
-          currentAppraiserCompanyProfile['appraiserState'] ?? "";
+          currentAppraiserCompanyProfile['appraiserCompanyState'] ?? "";
       zipController.text = currentAppraiserCompanyProfile['zipCode'].toString();
       cellPhoneController.text =
           currentAppraiserCompanyProfile['cellPhone'] ?? "";
@@ -129,16 +129,17 @@ class _AppraiserCompanyScreenState
       websiteController.text = currentAppraiserCompanyProfile['website'] ?? "";
 
       // Populate the state Notifier Provider with the current values
-      var appraiserCompanyProvider =
+      AppraiserCompanyNotifier appraiserCompanyProvider =
           ref.read(appraiserCompanyNotifierProvider.notifier);
       appraiserCompanyProvider
           .updateAppraiserCompanyName(appraiserCompanyNameController.text);
       appraiserCompanyProvider
           .updatePrimaryContact(primaryContactController.text);
-      appraiserCompanyProvider.updateaddress1(address1Controller.text);
-      appraiserCompanyProvider.updateaddress2(address2Controller.text);
+      appraiserCompanyProvider.updateAddress1(address1Controller.text);
+      appraiserCompanyProvider.updateAddress2(address2Controller.text);
       appraiserCompanyProvider.updateCity(cityController.text);
-      appraiserCompanyProvider.updateAppraiserState(stateController.text);
+      appraiserCompanyProvider
+          .updateAppraiserCompanyState(stateController.text);
       appraiserCompanyProvider.updateZipcode(zipController.text);
       appraiserCompanyProvider.updateCellPhone(cellPhoneController.text);
       appraiserCompanyProvider.updateOfficePhone(officePhoneController.text);
@@ -165,19 +166,25 @@ class _AppraiserCompanyScreenState
     setState(() {
       _currentAppraiserCompanyState = selectedState;
       ref
+          .read(globalsNotifierProvider.notifier)
+          .updatecurrentCompanyState(selectedState!);
+      ref
+          .read(globalsNotifierProvider.notifier)
+          .updateselectedState(selectedState);
+      ref
           .read(appraiserCompanyNotifierProvider.notifier)
-          .updateAppraiserState(selectedState!);
+          .updateAppraiserCompanyState(selectedState);
     });
   }
 
-  void changedDropDownCompany(String? selectedCompany) {
-    setState(() {
-      _currentAppraiserCompanyName = selectedCompany;
-      ref
-          .read(globalsNotifierProvider.notifier)
-          .updatecurrentCompanyName(selectedCompany!);
-    });
-  }
+  // void changedDropDownCompany(String? selectedCompany) {
+  //   setState(() {
+  //     _currentAppraiserCompanyName = selectedCompany;
+  //     ref
+  //         .read(globalsNotifierProvider.notifier)
+  //         .updatecurrentCompanyName(selectedCompany!);
+  //   });
+  // }
 
   @override
   void initState() {
@@ -219,9 +226,6 @@ class _AppraiserCompanyScreenState
                 ),
                 const SizedBox(
                   height: 30.0,
-                ),
-                const SizedBox(
-                  height: 8.0,
                 ),
                 TextField(
                   textCapitalization: TextCapitalization.words,
@@ -265,7 +269,7 @@ class _AppraiserCompanyScreenState
                   onChanged: (value) {
                     ref
                         .read(appraiserCompanyNotifierProvider.notifier)
-                        .updateaddress1(value);
+                        .updateAddress1(value);
                   },
                   decoration: const InputDecoration(
                       hintText: 'Address 1', labelText: 'Address 1'),
@@ -280,7 +284,7 @@ class _AppraiserCompanyScreenState
                   onChanged: (value) {
                     ref
                         .read(appraiserCompanyNotifierProvider.notifier)
-                        .updateaddress2(value);
+                        .updateAddress2(value);
                   },
                   decoration: const InputDecoration(
                       hintText: 'Address 2', labelText: 'Address 2'),
@@ -297,19 +301,6 @@ class _AppraiserCompanyScreenState
                     ref
                         .read(appraiserCompanyNotifierProvider.notifier)
                         .updateCity(value);
-                    // if (ref
-                    //         .watch(globalsNotifierProvider)
-                    //         .currentCompanyState ==
-                    //     "") {
-                    //   _currentCompanyState = ref
-                    //       .watch(globalsNotifierProvider)
-                    //       .currentCompanyState;
-                    // } else {
-                    //   _currentCompanyState = ref
-                    //       .watch(globalsNotifierProvider)
-                    //       .currentCompanyState;
-                    // }
-                    // ;
                   },
                   decoration: const InputDecoration(
                       hintText: 'City', labelText: 'City'),
@@ -412,11 +403,10 @@ class _AppraiserCompanyScreenState
                     try {
                       ref
                           .read(globalsNotifierProvider.notifier)
-                          .updateIsNewAppraiserCompany(true);
+                          .updatenewCompany(true);
 
                       //  This is a new company record but it will already
                       //  have a document ID that should be used.
-                      //agencyProvider.saveCompany();
                       if (widget.appraiserCompanyId == "" ||
                           widget.appraiserCompanyId == null) {
                         ref
@@ -430,9 +420,8 @@ class _AppraiserCompanyScreenState
                                 ref.read(appraiserCompanyNotifierProvider),
                                 widget.appraiserCompanyId);
                       }
+
                       Navigator.pop(context);
-                      // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      //     builder: (context) => const UserProfileScreen()));
 
                       setState(() {
                         showSpinner = false;
@@ -448,7 +437,7 @@ class _AppraiserCompanyScreenState
                 ),
                 (widget != null)
                     ? RoundedButton(
-                        title: 'Delete Appraiser',
+                        title: 'Delete Appraiser Company',
                         colour: Colors.red,
                         onPressed: () async {
                           setState(() {

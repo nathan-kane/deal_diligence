@@ -44,7 +44,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
   final address1Controller = TextEditingController();
   final address2Controller = TextEditingController();
   final cityController = TextEditingController();
-  final stateController = TextEditingController();
+  final mortgageCompanyStateController = TextEditingController();
   final zipController = TextEditingController();
   final cellPhoneController = TextEditingController();
   final officePhoneController = TextEditingController();
@@ -58,7 +58,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
     address1Controller.dispose();
     address2Controller.dispose();
     cityController.dispose();
-    stateController.dispose();
+    mortgageCompanyStateController.dispose();
     zipController.dispose();
     cellPhoneController.dispose();
     officePhoneController.dispose();
@@ -74,7 +74,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
   String? address1;
   String? address2;
   String? city;
-  String? state;
+  String? mortgageCompanyState;
   String? zip;
   String? cellPhone;
   String? officePhone;
@@ -92,7 +92,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
       address1Controller.text = "";
       address2Controller.text = "";
       cityController.text = "";
-      stateController.text = "";
+      mortgageCompanyStateController.text = "";
       zipController.text = "";
       cellPhoneController.text = "";
       officePhoneController.text = "";
@@ -113,9 +113,10 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
       address1Controller.text = currentMortgageCompanyProfile['address1'] ?? "";
       address2Controller.text = currentMortgageCompanyProfile['address2'] ?? "";
       cityController.text = currentMortgageCompanyProfile['city'] ?? "";
-      stateController.text = currentMortgageCompanyProfile['state'] ?? "";
+      mortgageCompanyStateController.text =
+          currentMortgageCompanyProfile['mortgageCompanyState'] ?? "";
       _currentMortgageCompanyState =
-          currentMortgageCompanyProfile['state'] ?? "";
+          currentMortgageCompanyProfile['mortgageCompanyState'] ?? "";
       zipController.text = currentMortgageCompanyProfile['zipCode'].toString();
       cellPhoneController.text =
           currentMortgageCompanyProfile['cellPhone'] ?? "";
@@ -134,7 +135,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
       mortgageCompanyProvider.updateaddress1(address1Controller.text);
       mortgageCompanyProvider.updateaddress2(address2Controller.text);
       mortgageCompanyProvider.updatecity(cityController.text);
-      mortgageCompanyProvider.updatestate(stateController.text);
+      mortgageCompanyProvider.updatestate(mortgageCompanyStateController.text);
       mortgageCompanyProvider.updatezipcode(zipController.text);
       mortgageCompanyProvider.updateCellPhone(cellPhoneController.text);
       mortgageCompanyProvider.updateofficePhone(officePhoneController.text);
@@ -160,12 +161,6 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
   void changedDropDownState(String? selectedState) {
     setState(() {
       _currentMortgageCompanyState = selectedState;
-      // ref
-      //     .read(globalsNotifierProvider.notifier)
-      //     .updatecurrentCompanyState(selectedState!);
-      // ref
-      //     .read(globalsNotifierProvider.notifier)
-      //     .updateselectedState(selectedState);
       ref
           .read(mortgageCompanyNotifierProvider.notifier)
           .updatestate(selectedState!);

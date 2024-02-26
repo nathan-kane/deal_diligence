@@ -14,7 +14,7 @@ import 'package:deal_diligence/Providers/company_provider.dart';
 
 class InspectorCompany {
   //String? inspectorCompanyId;
-  String? companyName;
+  String? inspectorCompanyName;
   String? primaryContact;
   String? address1;
   String? address2;
@@ -28,7 +28,7 @@ class InspectorCompany {
 
   InspectorCompany(
       { //this.inspectorCompanyId,
-      this.companyName,
+      this.inspectorCompanyName,
       this.primaryContact,
       this.address1,
       this.address2,
@@ -42,7 +42,7 @@ class InspectorCompany {
 
   InspectorCompany copyWith({
     //String? inspectorCompanyId,
-    String? companyName,
+    String? inspectorCompanyName,
     String? primaryContact,
     String? address1,
     String? address2,
@@ -55,7 +55,7 @@ class InspectorCompany {
     String? website,
   }) {
     return InspectorCompany(
-      companyName: companyName ?? this.companyName,
+      inspectorCompanyName: inspectorCompanyName ?? this.inspectorCompanyName,
       primaryContact: primaryContact ?? this.primaryContact,
       address1: address1 ?? this.address1,
       address2: address2 ?? this.address2,
@@ -80,7 +80,7 @@ class InspectorCompanyNotifier extends Notifier<InspectorCompany> {
 // **************************************************
 
   //String inspectorCompanyId = '';
-  String companyName = '';
+  String inspectorCompanyName = '';
   String primaryContact = '';
   String address1 = '';
   String address2 = '';
@@ -97,7 +97,7 @@ class InspectorCompanyNotifier extends Notifier<InspectorCompany> {
     return InspectorCompany(
       // Return the initial state
       //inspectorCompanyId: '',
-      companyName: '',
+      inspectorCompanyName: '',
       primaryContact: '',
       address1: '',
       address2: '',
@@ -112,8 +112,8 @@ class InspectorCompanyNotifier extends Notifier<InspectorCompany> {
   }
 
   // functions to update class members
-  void updateCompanyName(String newCompanyName) {
-    state = state.copyWith(companyName: newCompanyName);
+  void updateInspectorCompanyName(String newInspectorCompanyName) {
+    state = state.copyWith(inspectorCompanyName: newInspectorCompanyName);
   }
 
   void updatePrimaryContact(String newprimaryContact) {
@@ -158,7 +158,7 @@ class InspectorCompanyNotifier extends Notifier<InspectorCompany> {
 
   Map<String, dynamic> toMap(InspectorCompany inspectorCompany) {
     return {
-      'companyName': inspectorCompany.companyName,
+      'inspectorCompanyName': inspectorCompany.inspectorCompanyName,
       'cellPhone': inspectorCompany.cellPhone,
       'address1': inspectorCompany.address1,
       'address2': inspectorCompany.address2,
@@ -178,7 +178,7 @@ class InspectorCompanyNotifier extends Notifier<InspectorCompany> {
         address1 = firestore['address1'],
         address2 = firestore['address2'],
         //inspectorCompanyId = firestore['inspectorCompanyId'],
-        companyName = firestore['companyName'],
+        inspectorCompanyName = firestore['inspectorCompanyName'],
         city = firestore['city'],
         primaryContact = firestore['primaryContact'],
         officePhone = firestore['officePhone'],
@@ -199,7 +199,7 @@ class InspectorCompanyNotifier extends Notifier<InspectorCompany> {
       // final DocumentSnapshot currentCompanyProfile =
       final newInspectorCompany = InspectorCompany(
         //inspectorCompanyId: inspectorCompany.inspectorCompanyId,
-        companyName: inspectorCompany.companyName,
+        inspectorCompanyName: inspectorCompany.inspectorCompanyName,
         primaryContact: inspectorCompany.primaryContact,
         address1: inspectorCompany.address1,
         address2: inspectorCompany.address2,
@@ -220,9 +220,10 @@ class InspectorCompanyNotifier extends Notifier<InspectorCompany> {
           await inspectorDB.doc(inspectorCompany.InspectorCompanyId).get();
 
       var newInspectorCompany = InspectorCompany(
-        companyName: (state.companyName != null && state.companyName != "")
-            ? state.companyName
-            : currentInspectorCompanyProfile.get('companyName'),
+        inspectorCompanyName: (state.inspectorCompanyName != null &&
+                state.inspectorCompanyName != "")
+            ? state.inspectorCompanyName
+            : currentInspectorCompanyProfile.get('inspectorCompanyName'),
         primaryContact:
             (state.primaryContact != null && state.primaryContact != "")
                 ? state.primaryContact

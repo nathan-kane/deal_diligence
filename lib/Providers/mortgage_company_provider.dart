@@ -175,7 +175,7 @@ class MortgageCompanyNotifier extends Notifier<MortgageCompany> {
       'address1': mortgage.address1,
       'address2': mortgage.address2,
       'city': mortgage.city,
-      'state': mortgage.mortgageCompanyState,
+      'mortgageCompanyState': mortgage.mortgageCompanyState,
       'zipCode': mortgage.zipCode,
       'cellPhone': mortgage.cellPhone,
       'officePhone': mortgage.officePhone,

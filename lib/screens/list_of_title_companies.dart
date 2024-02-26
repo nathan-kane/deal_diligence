@@ -17,6 +17,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
+import 'package:deal_diligence/constants.dart' as constants;
 
 final FirestoreService firestoreService = FirestoreService();
 
@@ -117,6 +118,38 @@ class _CompanyDashboardScreenState
                       )
                     : const Text('No Date');
               }),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            setState(() {
+              showSpinner = true;
+            });
+            try {
+              // ref.read(trxnNotifierProvider.notifier).saveTrxn(
+              //     ref.read(trxnNotifierProvider),
+              //     ref.read(globalsNotifierProvider).companyId!,
+              //     widget.newTrxn!);
+              // ref.read(globalsNotifierProvider.notifier).updatetargetScreen(0);
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const TitleCompanyScreen(true),
+                ),
+              );
+              setState(() {
+                showSpinner = false;
+              });
+            } catch (e) {
+              // todo: add better error handling
+              //print(e);
+            }
+          },
+          backgroundColor: constants.kPrimaryColor,
+          child: const Icon(
+            Icons.assignment_turned_in_outlined,
+            color: Colors.blueAccent,
+          ),
         ),
       ),
     );
