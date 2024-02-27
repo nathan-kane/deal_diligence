@@ -18,7 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:deal_diligence/screens/appointment_calendar.dart';
 import 'package:deal_diligence/screens/transaction_detail_screen.dart';
 import 'package:deal_diligence/screens/user_profile_screen.dart';
-import 'package:deal_diligence/screens/company_dash_board.dart';
+import 'package:deal_diligence/screens/list_of_trxns.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:deal_diligence/screens/chat_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

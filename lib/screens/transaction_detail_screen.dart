@@ -12,7 +12,7 @@ import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/trxn_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/Providers/event_provider.dart';
-import 'package:deal_diligence/screens/company_dash_board.dart';
+import 'package:deal_diligence/screens/list_of_trxns.dart';
 import 'package:deal_diligence/screens/popup_commission.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
