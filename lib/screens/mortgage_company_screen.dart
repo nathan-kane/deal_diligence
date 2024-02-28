@@ -100,9 +100,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
       websiteController.text = "";
     } else {
       final DocumentSnapshot currentMortgageCompanyProfile =
-          await mortgageCompanyRef
-              .doc(ref.read(globalsNotifierProvider).companyId)
-              .get();
+          await mortgageCompanyRef.doc(widget.mortgageCompanyId).get();
 
       // existing record
       // Updates Controllers
@@ -115,8 +113,11 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
       cityController.text = currentMortgageCompanyProfile['city'] ?? "";
       mortgageCompanyStateController.text =
           currentMortgageCompanyProfile['mortgageCompanyState'] ?? "";
-      _currentMortgageCompanyState =
-          currentMortgageCompanyProfile['mortgageCompanyState'] ?? "";
+      setState(() {
+        _currentMortgageCompanyState =
+            currentMortgageCompanyProfile['mortgageCompanyState'] ?? "";
+      });
+
       zipController.text = currentMortgageCompanyProfile['zipCode'].toString();
       cellPhoneController.text =
           currentMortgageCompanyProfile['cellPhone'] ?? "";
@@ -218,6 +219,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                   height: 30.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: mortgageCompanyNameController,
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.center,
@@ -234,6 +236,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: primaryContactController,
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.center,
@@ -250,6 +253,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: address1Controller,
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.center,
@@ -265,6 +269,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: address2Controller,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
@@ -279,6 +284,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: cityController,
                   keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,

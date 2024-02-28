@@ -109,7 +109,7 @@ class _CompanyDashboardScreenState
                                 //         snapshot.data?.docs[index].id);
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => TitleCompanyScreen(
+                                    builder: (context) => MortgageCompanyScreen(
                                         false, mortgageCompanyId),
                                   ),
                                 );

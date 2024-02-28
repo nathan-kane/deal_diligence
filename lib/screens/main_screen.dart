@@ -8,6 +8,7 @@ import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/screens/company_screen.dart';
 import 'package:deal_diligence/screens/list_of_appraiser_companies.dart';
+import 'package:deal_diligence/screens/list_of_clients.dart';
 import 'package:deal_diligence/screens/list_of_inspector_companies.dart';
 import 'package:deal_diligence/screens/list_of_mortgage_companies.dart';
 import 'package:deal_diligence/screens/list_of_title_companies.dart';
@@ -191,6 +192,22 @@ class SideDrawer extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) =>
                           const ListOfMortgageCompaniesScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.account_balance,
+                  color: Colors.lightBlueAccent,
+                ),
+                title: const Text('View Clients'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ListOfClientsScreen(),
                     ),
                   );
                 },

@@ -1,38 +1,34 @@
 //*********************************************
-//  Deal Diligence was designed and created by      *
-//  Nathan Kane                               *
-//  copyright 2023                            *
+//  Deal Diligence was designed and created by
+//  Nathan Kane
+//  copyright 2023
 //*********************************************
 
-// ignore_for_file: no_leading_underscores_for_local_identifiers, use_key_in_widget_constructors
+// ignore_for_file: use_build_context_synchronously, unnecessary_null_comparison
 
-//import 'dart:io';
-import 'package:deal_diligence/Providers/company_provider.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
-import 'package:deal_diligence/Providers/client_provider.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:deal_diligence/components/rounded_button.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:deal_diligence/screens/main_screen.dart';
-// import 'package:deal_diligence/screens/company_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:deal_diligence/constants.dart' as constants;
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:deal_diligence/screens/widgets/snackbarwidget.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:deal_diligence/Providers/client_provider.dart';
+import 'package:deal_diligence/Services/firestore_service.dart';
+import 'package:deal_diligence/components/rounded_button.dart';
+import 'package:deal_diligence/constants.dart' as constants;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-final clientsRef = FirebaseFirestore.instance.collection(('client'));
-//final companyRef = FirebaseFirestore.instance.collection(('company'));
+final appraiserCompanyRef = FirebaseFirestore.instance.collection(('client'));
 var maskFormatter = MaskTextInputFormatter(
     mask: '(###) ###-####', filter: {"#": RegExp(r'[0-9]')});
 
 class ClientProfileScreen extends ConsumerStatefulWidget {
-  static const String id = 'client_profile_screen';
-  final String? clientId;
-  final bool? isNewClient;
+  const ClientProfileScreen([
+    this.isNewClient,
+    this.clientId,
+    Key? key,
+  ]) : super(key: key);
 
-  const ClientProfileScreen([this.isNewClient, this.clientId]);
+  final bool? isNewClient;
+  final String? clientId;
 
   @override
   ConsumerState<ClientProfileScreen> createState() =>
@@ -41,146 +37,101 @@ class ClientProfileScreen extends ConsumerStatefulWidget {
 
 class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
   final _db = FirebaseFirestore.instance;
-  final _auth = FirebaseAuth.instance;
-  bool isChecked = false;
-  Client newClient = Client();
-  late String email;
 
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final fNameController = TextEditingController();
-  final lNameController = TextEditingController();
+  final clientFNameController = TextEditingController();
+  final clientLNameController = TextEditingController();
   final address1Controller = TextEditingController();
   final address2Controller = TextEditingController();
   final cityController = TextEditingController();
-  final stateController = TextEditingController();
+  final clientStateController = TextEditingController();
   final zipController = TextEditingController();
   final cellPhoneController = TextEditingController();
   final homePhoneController = TextEditingController();
-  //final companyController = TextEditingController();
+  final emailController = TextEditingController();
 
-  // Dispose of all the TextControllers when done using them so they don't consume memory
   @override
   void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    fNameController.dispose();
-    lNameController.dispose();
+    clientFNameController.dispose();
+    clientLNameController.dispose();
     address1Controller.dispose();
     address2Controller.dispose();
     cityController.dispose();
-    stateController.dispose();
+    clientStateController.dispose();
     zipController.dispose();
     cellPhoneController.dispose();
     homePhoneController.dispose();
-    // companyController.dispose();
-    // mlsController.dispose();
+    emailController.dispose();
+
     super.dispose();
   }
 
   bool showSpinner = false;
-
-  String? _currentClientState = '';
-  //String? currentBusinessType = '';
-
-  //String? _currentMlsId;
-  // String? _selectedCompany; // This is the company assigned to new client
-  // String? _selectedMls;
+  String? fName;
+  String? lName;
+  String? address1;
+  String? address2;
+  String? city;
+  String? state;
+  String? zip;
+  String? cellPhone;
+  String? officePhone;
+  String? email;
+  String? website;
+  String? _currentClientState;
+  // String? _currentAppraiserCompanyName;
 
   getCurrentClientProfile() async {
-    String currentAgentCompanyId = ref.read(globalsNotifierProvider).companyId!;
-
-    if (ref.read(globalsNotifierProvider).newClient == true) {
-      emailController.text = "";
-      fNameController.text = "";
-      lNameController.text = "";
+    if (ref.read(globalsNotifierProvider).companyId == null ||
+        ref.read(globalsNotifierProvider).companyId == "") {
+      ref.read(globalsNotifierProvider.notifier).updatenewCompany(true);
+      clientFNameController.text = "";
+      clientLNameController.text = "";
       address1Controller.text = "";
       address2Controller.text = "";
       cityController.text = "";
+      clientStateController.text = "";
       zipController.text = "";
       cellPhoneController.text = "";
       homePhoneController.text = "";
-      //companyController.text = ref.read(companyNotifierProvider).companyName!;
+      emailController.text = "";
     } else {
       final DocumentSnapshot currentClientProfile =
-          await clientsRef.doc(widget.clientId).get();
+          await appraiserCompanyRef.doc(widget.clientId).get();
 
       // existing record
       // Updates Controllers
-      emailController.text = currentClientProfile["email"] ?? "";
-      fNameController.text = currentClientProfile['fName'] ?? "";
-      lNameController.text = currentClientProfile['lName'] ?? "";
+      clientFNameController.text = currentClientProfile["fName"] ?? "";
+      clientLNameController.text = currentClientProfile['lName'] ?? "";
       address1Controller.text = currentClientProfile['address1'] ?? "";
       address2Controller.text = currentClientProfile['address2'] ?? "";
       cityController.text = currentClientProfile['city'] ?? "";
-      //stateController.text = currentAgentProfile.data()['state'];
-      _currentClientState = currentClientProfile['state'] ?? "";
-      if (currentClientProfile.get('state') == "" ||
-          currentClientProfile.get('state') == null) {
-        //_currentCompanyState = globals.currentAgentState;
-      } else {
-        //_currentCompanyState = currentClientProfile['state'] ?? "";
-      }
+      clientStateController.text = currentClientProfile['clientState'] ?? "";
+
+      setState(() {
+        _currentClientState = currentClientProfile['clientState'] ?? "";
+      });
 
       zipController.text = currentClientProfile['zipCode'].toString();
       cellPhoneController.text = currentClientProfile['cellPhone'] ?? "";
       homePhoneController.text = currentClientProfile['homePhone'] ?? "";
-      // companyController.text = currentClientProfile['company'] ?? "";
-      // mlsController.text = currentClientProfile['mls'] ?? "";
+      emailController.text = currentClientProfile['email'] ?? "";
 
-      // populate the company provider with the retreived data
-
-      ref
-          .read(clientNotifierProvider.notifier)
-          .updatefName(currentClientProfile['fName']);
-      ref
-          .read(clientNotifierProvider.notifier)
-          .updatelName(currentClientProfile['lName']);
-      ref
-          .read(clientNotifierProvider.notifier)
-          .updateaddress1(currentClientProfile['address1']);
-      ref
-          .read(clientNotifierProvider.notifier)
-          .updateaddress2(currentClientProfile['address2']);
-      ref
-          .read(clientNotifierProvider.notifier)
-          .updateCity(currentClientProfile['city']);
-      ref
-          .read(clientNotifierProvider.notifier)
-          .updateClientState(currentClientProfile['clientState']);
-      ref
-          .read(clientNotifierProvider.notifier)
-          .updateZipcode(currentClientProfile['zipCode']);
-      ref
-          .read(clientNotifierProvider.notifier)
-          .updateCellPhone(currentClientProfile['cellPhone']);
-      ref
-          .read(clientNotifierProvider.notifier)
-          .updateHomePhone(currentClientProfile['homePhone']);
-      ref
-          .read(clientNotifierProvider.notifier)
-          .updateEmail(currentClientProfile['email']);
-      ref
-          .read(clientNotifierProvider.notifier)
-          .updateAgentCompanyId(currentAgentCompanyId);
+      // Populate the state Notifier Provider with the current values
+      ClientNotifier clientProvider = ref.read(clientNotifierProvider.notifier);
+      clientProvider.updatefName(clientFNameController.text);
+      clientProvider.updatelName(clientLNameController.text);
+      clientProvider.updateAddress1(address1Controller.text);
+      clientProvider.updateAddress2(address2Controller.text);
+      clientProvider.updateCity(cityController.text);
+      clientProvider.updateClientState(clientStateController.text);
+      clientProvider.updateZipcode(zipController.text);
+      clientProvider.updateCellPhone(cellPhoneController.text);
+      clientProvider.updateHomePhone(homePhoneController.text);
+      clientProvider.updateEmail(emailController.text);
     }
   }
 
-  List<DropdownMenuItem<String>>? dropDownBusiness;
-
-  List<DropdownMenuItem<String>> getDropDownBusiness() {
-    List<DropdownMenuItem<String>> itemsBusiness = [];
-    for (String business in constants.kBusinessType) {
-      itemsBusiness.add(DropdownMenuItem(
-          value: business,
-          child: Text(
-            business,
-          )));
-    }
-    return itemsBusiness;
-  }
-
-  List<DropdownMenuItem<String>>? _dropDownState;
+  List<DropdownMenuItem<String>> _dropDownState = [];
 
   List<DropdownMenuItem<String>> getDropDownState() {
     List<DropdownMenuItem<String>> items = [];
@@ -197,50 +148,37 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
   void changedDropDownState(String? selectedState) {
     setState(() {
       _currentClientState = selectedState;
-      newClient.clientState = selectedState;
+      ref
+          .read(globalsNotifierProvider.notifier)
+          .updatecurrentCompanyState(selectedState!);
+      ref
+          .read(globalsNotifierProvider.notifier)
+          .updateselectedState(selectedState);
       ref
           .read(clientNotifierProvider.notifier)
-          .updateClientState(selectedState!);
+          .updateClientState(selectedState);
     });
   }
 
-  // void changedDropDownCompany(String? selectedCompany) {
-  //   setState(() {
-  //     //_currentCompany = selectedCompany;
-  //     newClient.companyId = selectedCompany;
-  //     ref
-  //         .read(globalsNotifierProvider.notifier)
-  //         .updateselectedCompany(selectedCompany!);
-  //     ref
-  //         .read(globalsNotifierProvider.notifier)
-  //         .updatecurrentCompanyName(selectedCompany);
-  //   });
-  // }
-
   @override
   void initState() {
-    if (ref.read(globalsNotifierProvider).newClient == false) {
-      getCurrentClientProfile();
-    }
-
-    if (ref.read(clientNotifierProvider).clientState == "" ||
-        ref.read(clientNotifierProvider).clientState == null) {
-      _currentClientState = 'AZ';
-    } else {
-      _currentClientState = ref.read(clientNotifierProvider).clientState;
-    }
-    // if (ref.read(globalsNotifierProvider).companyId != "") {
-    //   _selectedCompany = ref.read(globalsNotifierProvider).companyId;
-    // }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!widget.isNewClient!) {
+        getCurrentClientProfile();
+      }
+    });
 
     super.initState();
 
-    _dropDownState = getDropDownState(); // Get the list of states
+    _dropDownState = getDropDownState();
+    //_currentAppraiserCompanyState = _dropDownState[0].value;
   }
 
   @override
   Widget build(BuildContext context) {
-    //final _firestoreService = FirestoreService();
+    // Get the stream of agents created in main.dart
+    // final agencyProvider = Provider.of<AgencyProvider>(context);
+    final _firestoreService = FirestoreService();
 
     return Scaffold(
       //appBar: CustomAppBar(),
@@ -250,27 +188,28 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
+              //mainAxisAlignment: MainAxisAlignment.center,
+              //crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 const Text(
                   'Client Profile',
                   style: TextStyle(
                     fontSize: 30,
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
                 const SizedBox(
-                  height: 8.0,
+                  height: 30.0,
                 ),
-                // Email entry text field
                 TextField(
                   textCapitalization: TextCapitalization.words,
-                  controller: fNameController,
+                  controller: clientFNameController,
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     ref
                         .read(clientNotifierProvider.notifier)
                         .updatefName(value);
-                    newClient.fName = value;
                   },
                   decoration: const InputDecoration(
                       hintText: 'First Name', labelText: 'First Name'),
@@ -280,58 +219,16 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                 ),
                 TextField(
                   textCapitalization: TextCapitalization.words,
-                  controller: lNameController,
+                  controller: clientLNameController,
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     ref
                         .read(clientNotifierProvider.notifier)
                         .updatelName(value);
-                    newClient.lName = value;
                   },
                   decoration: const InputDecoration(
                       hintText: 'Last Name', labelText: 'Last Name'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                // StreamBuilder<QuerySnapshot>(
-                //     // Get a list of available companies to assign the new client to a company
-                //     stream: _db.collection('client').snapshots(),
-                //     builder: (BuildContext context, AsyncSnapshot snapshot) {
-                //       List<DropdownMenuItem<String>> companyItems = [];
-                //       if (snapshot.hasData) {
-                //         final companyList = snapshot.data.docs;
-                //         for (var company in companyList) {
-                //           companyItems.add(
-                //             DropdownMenuItem(
-                //               value: company.id,
-                //               child: Text(
-                //                 company['name'],
-                //               ),
-                //             ),
-                //           );
-                //         }
-                //       } else {
-                //         return const CircularProgressIndicator();
-                //       }
-                //       // return DropdownButton<String>(
-                //       //   hint: const Text("Select Company"),
-                //       //   value: _selectedCompany,
-                //       //   onChanged: (companyValue) {
-                //       //     setState(() {
-                //       //       _selectedCompany = companyValue;
-                //       //       ref
-                //       //           .read(globalsNotifierProvider.notifier)
-                //       //           .updatecompanyId(companyValue!);
-                //       //     });
-                //       //     newClient.companyId = companyValue;
-                //       //   },
-                //       //   items: companyItems,
-                //       // );
-                //     }),
-                const SizedBox(
-                  height: 8.0,
                 ),
                 const SizedBox(
                   height: 8.0,
@@ -344,8 +241,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                   onChanged: (value) {
                     ref
                         .read(clientNotifierProvider.notifier)
-                        .updateaddress1(value);
-                    newClient.address1 = value;
+                        .updateAddress1(value);
                   },
                   decoration: const InputDecoration(
                       hintText: 'Address 1', labelText: 'Address 1'),
@@ -360,8 +256,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                   onChanged: (value) {
                     ref
                         .read(clientNotifierProvider.notifier)
-                        .updateaddress2(value);
-                    newClient.address2 = value;
+                        .updateAddress2(value);
                   },
                   decoration: const InputDecoration(
                       hintText: 'Address 2', labelText: 'Address 2'),
@@ -376,7 +271,6 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     ref.read(clientNotifierProvider.notifier).updateCity(value);
-                    newClient.city = value;
                   },
                   decoration: const InputDecoration(
                       hintText: 'City', labelText: 'City'),
@@ -395,13 +289,12 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                 ),
                 TextField(
                   controller: zipController,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.phone,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     ref
                         .read(clientNotifierProvider.notifier)
                         .updateZipcode(value);
-                    newClient.zipCode = value;
                   },
                   decoration: const InputDecoration(
                       hintText: 'Zip Code', labelText: 'Zip Code'),
@@ -418,7 +311,6 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                     ref
                         .read(clientNotifierProvider.notifier)
                         .updateCellPhone(value);
-                    newClient.cellPhone = value;
                   },
                   decoration: const InputDecoration(
                       hintText: 'Cell Phone', labelText: 'Cell Phone'),
@@ -435,43 +327,63 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                     ref
                         .read(clientNotifierProvider.notifier)
                         .updateHomePhone(value);
-                    newClient.homePhone = value;
                   },
                   decoration: const InputDecoration(
-                      hintText: 'Home Phone', labelText: 'Home Phone'),
+                      hintText: 'Office Phone', labelText: 'Office Phone'),
                 ),
                 const SizedBox(
                   height: 8.0,
                 ),
                 TextField(
+                  controller: emailController,
                   keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
-                    email = value; // Capture the value entered by the client
                     ref
                         .read(clientNotifierProvider.notifier)
                         .updateEmail(value);
-                    newClient.email = value;
                   },
-                  decoration:
-                      const InputDecoration(hintText: 'Enter Your Email'),
+                  decoration: const InputDecoration(
+                      hintText: 'Email', labelText: 'Email'),
                 ),
                 const SizedBox(
                   height: 8.0,
                 ),
+                // TextField(
+                //   controller: websiteController,
+                //   textAlign: TextAlign.center,
+                //   onChanged: (value) {
+                //     ref.read(clientProvider.notifier).updateWebsite(value);
+                //   },
+                //   decoration: const InputDecoration(
+                //       hintText: 'Website', labelText: 'Website'),
+                // ),
+                // const SizedBox(
+                //   height: 8.0,
+                // ),
                 RoundedButton(
-                  title: 'Save Client',
+                  title: 'Save Appraiser Company',
                   colour: Colors.blueAccent,
                   onPressed: () async {
                     setState(() {
                       showSpinner = true;
                     });
                     try {
-                      ref.read(clientNotifierProvider.notifier).saveClient(
-                            //ref.read(companyNotifierProvider),
-                            ref.read(globalsNotifierProvider),
-                            ref.read(clientNotifierProvider),
-                          );
+                      ref
+                          .read(globalsNotifierProvider.notifier)
+                          .updatenewCompany(true);
+
+                      //  This is a new company record but it will already
+                      //  have a document ID that should be used.
+                      if (widget.clientId == "" || widget.clientId == null) {
+                        ref
+                            .read(clientNotifierProvider.notifier)
+                            .saveClient(ref.read(clientNotifierProvider));
+                      } else {
+                        ref.read(clientNotifierProvider.notifier).saveClient(
+                            ref.read(clientNotifierProvider), widget.clientId);
+                      }
+
                       Navigator.pop(context);
 
                       setState(() {
@@ -479,33 +391,25 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                       });
                     } catch (e) {
                       // todo: add better error handling
-                      //print(e);
+                      // print(e);
                     }
                   },
                 ),
                 const SizedBox(
                   height: 8.0,
                 ),
-
-                // ignore: unnecessary_null_comparison
                 (widget != null)
                     ? RoundedButton(
-                        title: 'Delete Client',
+                        title: 'Delete Appraiser Company',
                         colour: Colors.red,
                         onPressed: () async {
                           setState(() {
                             showSpinner = true;
                           });
                           try {
-                            ref
-                                .read(clientNotifierProvider.notifier)
-                                .deleteClient(ref
-                                    .watch(globalsNotifierProvider)
-                                    .currentUid);
-                            ref
-                                .read(globalsNotifierProvider.notifier)
-                                .updatetargetScreen(2);
-                            Navigator.pop(context);
+                            //agencyProvider.deleteCompany(globals.currentUid);
+                            // Navigator.pushNamed(
+                            //     context, UserDashboardScreen.id);
 
                             setState(() {
                               showSpinner = false;

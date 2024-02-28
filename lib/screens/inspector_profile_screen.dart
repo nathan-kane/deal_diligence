@@ -101,9 +101,7 @@ class _InspectorCompanyScreenState
       websiteController.text = "";
     } else {
       final DocumentSnapshot currentInspectorCompanyProfile =
-          await inspectorCompanyRef
-              .doc(ref.read(globalsNotifierProvider).companyId)
-              .get();
+          await inspectorCompanyRef.doc(widget.inspectorCompanyId).get();
 
       // existing record
       // Updates Controllers
@@ -116,8 +114,12 @@ class _InspectorCompanyScreenState
       address2Controller.text =
           currentInspectorCompanyProfile['address2'] ?? "";
       cityController.text = currentInspectorCompanyProfile['city'] ?? "";
-      stateController.text =
-          currentInspectorCompanyProfile['inspectorCompanyState'] ?? "";
+
+      setState(() {
+        stateController.text =
+            currentInspectorCompanyProfile['inspectorCompanyState'] ?? "";
+      });
+
       _currentInspectorCompanyState =
           currentInspectorCompanyProfile['inspectorCompanyState'] ?? "";
       zipController.text = currentInspectorCompanyProfile['zipCode'].toString();

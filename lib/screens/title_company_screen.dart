@@ -113,8 +113,11 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
       cityController.text = currentTitleCompanyProfile['city'] ?? "";
       stateController.text =
           currentTitleCompanyProfile['titleCompanyState'] ?? "";
-      _currentTitleCompanyState =
-          currentTitleCompanyProfile['titleCompanyState'] ?? "";
+      setState(() {
+        _currentTitleCompanyState =
+            currentTitleCompanyProfile['titleCompanyState'] ?? "";
+      });
+
       zipController.text = currentTitleCompanyProfile['zipCode'].toString();
       cellPhoneController.text = currentTitleCompanyProfile['cellPhone'] ?? "";
       officePhoneController.text =
@@ -163,14 +166,14 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
     });
   }
 
-  void changedDropDownCompany(String? selectedCompany) {
-    setState(() {
-      _currentTitleCompanyName = selectedCompany;
-      ref
-          .read(globalsNotifierProvider.notifier)
-          .updatecurrentCompanyName(selectedCompany!);
-    });
-  }
+  // void changedDropDownCompany(String? selectedCompany) {
+  //   setState(() {
+  //     _currentTitleCompanyName = selectedCompany;
+  //     ref
+  //         .read(globalsNotifierProvider.notifier)
+  //         .updatecurrentCompanyName(selectedCompany!);
+  //   });
+  // }
 
   @override
   void initState() {

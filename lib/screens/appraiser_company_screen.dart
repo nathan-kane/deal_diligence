@@ -101,9 +101,7 @@ class _AppraiserCompanyScreenState
       websiteController.text = "";
     } else {
       final DocumentSnapshot currentAppraiserCompanyProfile =
-          await appraiserCompanyRef
-              .doc(ref.read(globalsNotifierProvider).companyId)
-              .get();
+          await appraiserCompanyRef.doc(widget.appraiserCompanyId).get();
 
       // existing record
       // Updates Controllers
@@ -118,8 +116,12 @@ class _AppraiserCompanyScreenState
       cityController.text = currentAppraiserCompanyProfile['city'] ?? "";
       stateController.text =
           currentAppraiserCompanyProfile['appraiserCompanyState'] ?? "";
-      _currentAppraiserCompanyState =
-          currentAppraiserCompanyProfile['appraiserCompanyState'] ?? "";
+
+      setState(() {
+        _currentAppraiserCompanyState =
+            currentAppraiserCompanyProfile['appraiserCompanyState'] ?? "";
+      });
+
       zipController.text = currentAppraiserCompanyProfile['zipCode'].toString();
       cellPhoneController.text =
           currentAppraiserCompanyProfile['cellPhone'] ?? "";
@@ -197,7 +199,7 @@ class _AppraiserCompanyScreenState
     super.initState();
 
     _dropDownState = getDropDownState();
-    //_currentCompanyState = _dropDownState[0].value;
+    //_currentAppraiserCompanyState = _dropDownState[0].value;
   }
 
   @override

@@ -8,17 +8,11 @@
 
 // ignore_for_file: non_constant_identifier_names
 
-// import 'package:deal_diligence/Providers/appraiser_company_provider.dart';
-// import 'package:deal_diligence/Providers/user_provider.dart';
-// import 'package:deal_diligence/main.dart';
 import 'package:deal_diligence/screens/appraiser_company_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-//import 'package:get/get.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:deal_diligence/Providers/global_provider.dart';
-// import 'package:googleapis/artifactregistry/v1.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 
 final FirestoreService firestoreService = FirestoreService();

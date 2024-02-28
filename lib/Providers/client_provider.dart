@@ -118,11 +118,11 @@ class ClientNotifier extends Notifier<Client> {
     state = state.copyWith(lName: newlName);
   }
 
-  void updateaddress1(String newaddress1) {
+  void updateAddress1(String newaddress1) {
     state = state.copyWith(address1: newaddress1);
   }
 
-  void updateaddress2(String newaddress2) {
+  void updateAddress2(String newaddress2) {
     state = state.copyWith(address2: newaddress2);
   }
 
@@ -192,7 +192,7 @@ class ClientNotifier extends Notifier<Client> {
   //   firestoreService.saveDeviceToken(userId, userName);
   // }
 
-  saveClient(globals, client, [clientId]) async {
+  saveClient(client, [clientId]) async {
     if (ref.watch(globalsNotifierProvider).newUser == true) {
       // final DocumentSnapshot currentCompanyProfile =
       final newClient = Client(
