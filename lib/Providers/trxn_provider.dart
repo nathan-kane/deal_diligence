@@ -4,11 +4,7 @@
 //  copyright 2023                            *
 //*********************************************
 
-// import 'package:flutter/material.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:deal_diligence/Models/Trxns.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
-//import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:uuid/uuid.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,12 +14,6 @@ class Trxn {
   String? userId;
   String? companyId;
   String? clientId;
-  // String? clientFName;
-  // String? clientLName;
-  // String? clientType;
-  // String? clientEmail;
-  // String? clientCellPhone;
-  // String? clientHomePhone;
   String? propertyAddress;
   String? propertyCity;
   String? propertyState;
@@ -36,23 +26,13 @@ class Trxn {
   String? financing24c;
   String? settlement24d;
   String? inspectorCompanyId;
-  // String? inspectorCompany;
-  // String? inspectorPhone;
   String? inspectionDate;
   String? appraiserCompanyId;
-  // String? appraiser;
-  // String? appraiserPhone;
   String? appraisalDate;
   String? closingDate;
   String? walkThroughDate;
   String? titleCompanyId;
-  // String? titleCompany;
-  // String? titlePhone;
-  // String? titleEmail;
   String? mortgageCompanyId;
-  // String? mortgageCompany;
-  // String? mortgagePhone;
-  // String? mortgageEmail;
   String? otherAgent;
   String? otherAgentPhone;
   String? otherAgentEmail;
@@ -66,12 +46,6 @@ class Trxn {
     this.userId,
     this.companyId,
     this.clientId,
-    // this.clientFName,
-    // this.clientLName,
-    // this.clientType,
-    // this.clientEmail,
-    // this.clientCellPhone,
-    // this.clientHomePhone,
     this.propertyAddress,
     this.propertyCity,
     this.propertyState,
@@ -84,23 +58,13 @@ class Trxn {
     this.financing24c,
     this.settlement24d,
     this.inspectorCompanyId,
-    // this.inspectorCompany,
-    // this.inspectorPhone,
     this.inspectionDate,
     this.appraiserCompanyId,
-    // this.appraiser,
-    // this.appraiserPhone,
     this.appraisalDate,
     this.closingDate,
     this.walkThroughDate,
     this.titleCompanyId,
-    // this.titleCompany,
-    // this.titlePhone,
-    // this.titleEmail,
     this.mortgageCompanyId,
-    // this.mortgageCompany,
-    // this.mortgagePhone,
-    // this.mortgageEmail,
     this.otherAgent,
     this.otherAgentPhone,
     this.otherAgentEmail,
@@ -115,12 +79,6 @@ class Trxn {
     String? userId,
     String? companyId,
     String? clientId,
-    // String? clientFName,
-    // String? clientLName,
-    // String? clientType,
-    // String? clientEmail,
-    // String? clientCellPhone,
-    // String? clientHomePhone,
     String? propertyAddress,
     String? propertyCity,
     String? propertyState,
@@ -133,23 +91,13 @@ class Trxn {
     String? financing24c,
     String? settlement24d,
     String? inspectorCompanyId,
-    // String? inspectorCompany,
-    // String? inspectorPhone,
     String? inspectionDate,
     String? appraiserCompanyId,
-    // String? appraiser,
-    // String? appraiserPhone,
     String? appraisalDate,
     String? closingDate,
     String? walkThroughDate,
     String? titleCompanyId,
-    // String? titleCompany,
-    // String? titlePhone,
-    // String? titleEmail,
     String? mortgageCompanyId,
-    // String? mortgageCompany,
-    // String? mortgagePhone,
-    // String? mortgageEmail,
     String? otherAgent,
     String? otherAgentPhone,
     String? otherAgentEmail,
@@ -163,12 +111,6 @@ class Trxn {
       userId: userId ?? this.userId,
       companyId: companyId ?? this.companyId,
       clientId: clientId ?? this.clientId,
-      // clientFName: clientFName ?? this.clientFName,
-      // clientLName: clientLName ?? this.clientLName,
-      // clientType: clientType ?? this.clientType,
-      // clientEmail: clientEmail ?? this.clientEmail,
-      // clientCellPhone: clientCellPhone ?? this.clientCellPhone,
-      // clientHomePhone: clientHomePhone ?? this.clientHomePhone,
       propertyAddress: propertyAddress ?? this.propertyAddress,
       propertyCity: propertyCity ?? this.propertyCity,
       propertyState: propertyState ?? this.propertyState,
@@ -181,23 +123,13 @@ class Trxn {
       financing24c: financing24c ?? this.financing24c,
       settlement24d: settlement24d ?? this.settlement24d,
       inspectorCompanyId: inspectorCompanyId ?? this.inspectorCompanyId,
-      // inspectorCompany: inspectorCompany ?? this.inspectorCompany,
-      // inspectorPhone: inspectorPhone ?? this.inspectorPhone,
       inspectionDate: inspectionDate ?? this.inspectionDate,
       appraiserCompanyId: appraiserCompanyId ?? this.appraiserCompanyId,
-      // appraiser: appraiser ?? this.appraiser,
-      // appraiserPhone: appraiserPhone ?? this.appraiserPhone,
       appraisalDate: appraisalDate ?? this.appraisalDate,
       closingDate: closingDate ?? this.closingDate,
       walkThroughDate: walkThroughDate ?? this.walkThroughDate,
       titleCompanyId: titleCompanyId ?? this.titleCompanyId,
-      // titleCompany: titleCompany ?? this.titleCompany,
-      // titlePhone: titlePhone ?? this.titlePhone,
-      // titleEmail: titleEmail ?? this.titleEmail,
       mortgageCompanyId: mortgageCompanyId ?? this.mortgageCompanyId,
-      // mortgageCompany: mortgageCompany ?? this.mortgageCompany,
-      // mortgagePhone: mortgagePhone ?? this.mortgagePhone,
-      // mortgageEmail: mortgageEmail ?? this.mortgageEmail,
       otherAgent: otherAgent ?? this.otherAgent,
       otherAgentPhone: otherAgentPhone ?? this.otherAgentPhone,
       otherAgentEmail: otherAgentEmail ?? this.otherAgentEmail,
@@ -262,12 +194,6 @@ class TrxnNotifier extends Notifier<Trxn> {
       userId: '',
       companyId: '',
       clientId: '',
-      // clientFName: '',
-      // clientLName: '',
-      // clientType: '',
-      // clientEmail: '',
-      // clientCellPhone: '',
-      // clientHomePhone: '',
       propertyAddress: '',
       propertyCity: '',
       propertyState: '',
@@ -280,23 +206,13 @@ class TrxnNotifier extends Notifier<Trxn> {
       financing24c: '',
       settlement24d: '',
       inspectorCompanyId: '',
-      // inspectorCompany: '',
-      // inspectorPhone: '',
       inspectionDate: '',
       appraiserCompanyId: '',
-      // appraiser: '',
-      // appraiserPhone: '',
       appraisalDate: '',
       closingDate: '',
       walkThroughDate: '',
       titleCompanyId: '',
-      // titleCompany: '',
-      // titlePhone: '',
-      // titleEmail: '',
       mortgageCompanyId: '',
-      // mortgageCompany: '',
-      // mortgagePhone: '',
-      // mortgageEmail: '',
       otherAgent: '',
       otherAgentPhone: '',
       otherAgentEmail: '',
@@ -310,13 +226,6 @@ class TrxnNotifier extends Notifier<Trxn> {
   String? userId;
   String? companyId;
   String? clientId;
-  // String? clientFName;
-  // String? clientLName;
-  // String? clientType;
-  // //String? tHomePhone;
-  // String? clientEmail;
-  // String? clientCellPhone;
-  // String? clientHomePhone;
   String? propertyAddress;
   String? propertyCity;
   String? propertyState;
@@ -329,12 +238,8 @@ class TrxnNotifier extends Notifier<Trxn> {
   String? financing24c;
   String? settlement24d;
   String? inpspectorCompanyId;
-  // String? inspectorCompany;
-  // String? inspectorPhone;
   String? inspectionDate;
   String? appraiserCompanyId;
-  // String? appraiser;
-  // String? appraiserPhone;
   String? appraisalDate;
   String? closingDate;
   String? walkThroughDate;

@@ -10,6 +10,7 @@ import 'dart:async';
 import 'dart:core';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/trxn_provider.dart';
+import 'package:deal_diligence/Providers/client_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/Providers/event_provider.dart';
 import 'package:deal_diligence/screens/list_of_trxns.dart';
@@ -30,6 +31,11 @@ String? _trxnStatus;
 String? _companyId;
 String? _selectedCompany;
 String? _selectedUser;
+String? _selectedClientState;
+String? _selectedInspectorCompany;
+String? _selectedAppraiserCompany;
+String? _selectedTitleCompany;
+String? _selectedMortgageCompany;
 
 // Variables telling if a date has been changed so it can be set on the calendar
 bool bContractDate = false;
@@ -80,10 +86,15 @@ class _TransactionDetailScreenState
 
   final clientFNameController = TextEditingController();
   final clientLNameController = TextEditingController();
+  final clientAddress1Controller = TextEditingController();
+  final clientAddress2Controller = TextEditingController();
+  final clientCityController = TextEditingController();
+  final clientStateController = TextEditingController();
   final clientTypeController = TextEditingController();
   final clientCellPhoneController = TextEditingController();
   final clientHomePhoneController = TextEditingController();
   final clientEmailController = TextEditingController();
+
   final propertyAddressController = TextEditingController();
   final propertyCityController = TextEditingController();
   final propertyStateController = TextEditingController();
@@ -121,6 +132,8 @@ class _TransactionDetailScreenState
   void dispose() {
     clientFNameController.dispose();
     clientLNameController.dispose();
+    clientAddress1Controller.dispose();
+    clientAddress2Controller.dispose();
     clientTypeController.dispose();
     clientCellPhoneController.dispose();
     clientHomePhoneController.dispose();
@@ -165,6 +178,8 @@ class _TransactionDetailScreenState
   String? trxnId = "";
   String? clientFName = "";
   String? clientLName = "";
+  String? clientAddress1 = "";
+  String? clientAddress2 = "";
   String? clientType = "";
   String? clientCellPhone = "";
   String? clientHomePhone = "";
@@ -223,12 +238,14 @@ class _TransactionDetailScreenState
 
     _dropDownState = getDropDownState();
     _currentState = _dropDownState![0].value;
+    _currentClientState = _dropDownState![0].value;
   }
 
   String _currentStatus = "Select Status";
 
   List<DropdownMenuItem<String>>? _dropDownState;
   String? _currentState = "AL";
+  String? _currentClientState = "";
 
   List<DropdownMenuItem<String>> getDropDownState() {
     List<DropdownMenuItem<String>> items = [];
@@ -268,6 +285,13 @@ class _TransactionDetailScreenState
     ref
         .read(globalsNotifierProvider.notifier)
         .updateselectedTrxnState(selectedState!);
+  }
+
+  void changedClientDropDownState(String? selectedState) {
+    setState(() {
+      _currentClientState = selectedState;
+    });
+    ref.read(clientNotifierProvider.notifier).updateClientState(selectedState!);
   }
 
   void changedDropDownClientType(String selectedClientType) {
@@ -344,10 +368,15 @@ class _TransactionDetailScreenState
       // new record: Set the textFields to blank
       clientFNameController.text = "";
       clientLNameController.text = "";
+      clientAddress1Controller.text = "";
+      clientAddress2Controller.text = "";
+      clientCityController.text = "";
+      clientStateController.text = "";
       clientTypeController.text = "";
       clientCellPhoneController.text = "";
       clientHomePhoneController.text = "";
       clientEmailController.text = "";
+
       propertyAddressController.text = "";
       propertyCityController.text = "";
       propertyStateController.text = "";
@@ -396,30 +425,18 @@ class _TransactionDetailScreenState
           .doc(ref.read(globalsNotifierProvider).currentTrxnId)
           .snapshots()
           .listen((trxnSnapshot) {
-        // for (var doc in trxnSnapshot.data()?['clientFName']) {
-        //   var docData = doc.data() as Map<String, dynamic>;
-        // }
         clientFNameController.text = trxnSnapshot.data()?['clientFName'] ?? "";
-        // ref
-        //     .read(trxnNotifierProvider.notifier)
-        //     .updateClientFName(clientFNameController.text);
-        // existing record: Put data from database into the TextFields
-        // Updates Controllers
-        //DateTime _dt = DateTime.now();
         clientLNameController.text = trxnSnapshot.data()?['clientLName'] ?? "";
-        // ref
-        //     .read(trxnNotifierProvider.notifier)
-        //     .updateClientLName(clientLNameController.text);
+        clientAddress1Controller.text =
+            trxnSnapshot.data()?['clientAddress1'] ?? "";
+        clientAddress2Controller.text =
+            trxnSnapshot.data()?['clientAddress2'] ?? "";
+        clientCityController.text = trxnSnapshot.data()?['clientCity'] ?? "";
+        clientStateController.text = trxnSnapshot.data()?['clientState'] ?? "";
         clientTypeController.text = trxnSnapshot.data()?['clientType'] ?? "";
         _clientType = trxnSnapshot.data()?['clientType'] ?? "";
-        // ref
-        //     .read(trxnNotifierProvider.notifier)
-        //     .updateClientType(clientTypeController.text);
         clientCellPhoneController.text =
             trxnSnapshot.data()?['clientCellPhone'] ?? "";
-        // ref
-        //     .read(trxnNotifierProvider.notifier)
-        //     .updateClientCellPhone(clientCellPhoneController.text);
         clientCellPhoneController.text != "" &&
                 clientCellPhoneController.text != null
             ? _hasCellNumber = true
@@ -427,18 +444,13 @@ class _TransactionDetailScreenState
         _clientCellPhoneNumber = trxnSnapshot.data()?['clientCellPhone'] ?? "";
         clientHomePhoneController.text =
             trxnSnapshot.data()?['clientHomePhone'] ?? "";
-        // ref
-        //     .read(trxnNotifierProvider.notifier)
-        //     .updateClientHomePhone(clientCellPhoneController.text);
         clientHomePhoneController.text != "" &&
                 clientHomePhoneController.text != null
             ? _hasHomeNumber = true
             : _hasHomeNumber = false;
         _clientHomePhoneNumber = trxnSnapshot.data()?['clientHomePhone'] ?? "";
         clientEmailController.text = trxnSnapshot.data()?['clientEmail'] ?? "";
-        // ref
-        //     .read(trxnNotifierProvider.notifier)
-        //     .updateClientEmail(clientEmailController.text);
+
         propertyAddressController.text =
             trxnSnapshot.data()?['propertyAddress'] ?? "";
         ref
@@ -551,14 +563,8 @@ class _TransactionDetailScreenState
 
         inspectorCompanyController.text =
             trxnSnapshot.data()?['inspectorCompany'] ?? "";
-        // ref
-        //     .read(trxnNotifierProvider.notifier)
-        //     .updateInspectorCompany(inspectorCompanyController.text);
         inspectorPhoneController.text =
             trxnSnapshot.data()?['inspectorPhone'] ?? "";
-        // ref
-        //     .read(trxnNotifierProvider.notifier)
-        //     .updateInspectorPhone(inspectorPhoneController.text);
 
         final String? inspectionDate = trxnSnapshot.data()?['inspectionDate'];
         if (inspectionDate != null && inspectionDate != "") {
@@ -573,14 +579,8 @@ class _TransactionDetailScreenState
         }
 
         appraiserController.text = trxnSnapshot.data()?['appraiser'] ?? "";
-        // ref
-        //     .read(trxnNotifierProvider.notifier)
-        //     .updateAppraiser(appraiserController.text);
         appraiserPhoneController.text =
             trxnSnapshot.data()?['appraiserPhone'] ?? "";
-        // ref
-        //     .read(trxnNotifierProvider.notifier)
-        //     .updateAppraiserPhone(appraiserPhoneController.text);
 
         final String? appraisalDate = trxnSnapshot.data()?['appraisalDate'];
         if (appraisalDate != null && appraisalDate != "") {
@@ -620,32 +620,14 @@ class _TransactionDetailScreenState
 
         titleCompanyController.text =
             trxnSnapshot.data()?['titleCompany'] ?? "";
-        // ref
-        //     .read(trxnNotifierProvider.notifier)
-        //     .updateTitleCompany(titleCompanyController.text);
         titlePhoneController.text = trxnSnapshot.data()?['titlePhone'] ?? "";
-        // ref
-        //     .read(trxnNotifierProvider.notifier)
-        //     .updateTitlePhone(titlePhoneController.text);
         titleEmailController.text = trxnSnapshot.data()?['titleEmail'] ?? "";
-        // ref
-        //     .read(trxnNotifierProvider.notifier)
-        //     .updateTitleEmail(titleEmailController.text);
         mortgageCompanyController.text =
             trxnSnapshot.data()?['mortgageCompany'] ?? "";
-        // ref
-        //     .read(trxnNotifierProvider.notifier)
-        //     .updateMortgageCompany(mortgageCompanyController.text);
         mortgagePhoneController.text =
             trxnSnapshot.data()?['mortgagePhone'] ?? "";
-        // ref
-        //     .read(trxnNotifierProvider.notifier)
-        //     .updateMortgagePhone(mortgagePhoneController.text);
         mortgageEmailController.text =
             trxnSnapshot.data()?['mortgageEmail'] ?? "";
-        // ref
-        //     .read(trxnNotifierProvider.notifier)
-        //     .updateMortgageEmail(mortgageEmailController.text);
         otherAgentController.text = trxnSnapshot.data()?['otherAgent'] ?? "";
         ref
             .read(trxnNotifierProvider.notifier)
@@ -681,6 +663,7 @@ class _TransactionDetailScreenState
               trxnSnapshot.data()?['clientType'] ?? 'Select Client Type';
           _selectedCompany = trxnSnapshot.data()?['companyId'] ?? "";
           _selectedUser = trxnSnapshot.data()?['userId'] ?? "";
+          _selectedClientState = trxnSnapshot.data()?['clientState'] ?? "";
           if (trxnSnapshot.data()?['propertyState'] == null ||
               trxnSnapshot.data()?['propertyState'] == "") {
             _currentState = "AL";
@@ -692,24 +675,35 @@ class _TransactionDetailScreenState
     }
   }
 
+  populateClientProvider() {
+    ref
+        .read(clientNotifierProvider.notifier)
+        .updatefName(clientFNameController.text);
+    ref
+        .read(clientNotifierProvider.notifier)
+        .updatelName(clientLNameController.text);
+    ref
+        .read(clientNotifierProvider.notifier)
+        .updateAddress1(clientAddress1Controller.text);
+    ref
+        .read(clientNotifierProvider.notifier)
+        .updateCity(clientCityController.text);
+    ref
+        .read(clientNotifierProvider.notifier)
+        .updateClientState(clientStateController.text);
+    ref
+        .read(clientNotifierProvider.notifier)
+        .updateCellPhone(clientCellPhoneController.text);
+    ref
+        .read(clientNotifierProvider.notifier)
+        .updateHomePhone(clientHomePhoneController.text);
+    ref
+        .read(clientNotifierProvider.notifier)
+        .updateEmail(clientEmailController.text);
+  }
+
   populateTrxnProvider() {
-    // ref
-    //     .read(trxnNotifierProvider.notifier)
-    //     .updateClientFName(clientFNameController.text);
-    // ref
-    //     .read(trxnNotifierProvider.notifier)
-    //     .updateClientLName(clientLNameController.text);
     ref.read(trxnNotifierProvider.notifier).updateCompanyid(_selectedCompany!);
-    // ref.read(trxnNotifierProvider.notifier).updateClientType(_clientType);
-    // ref
-    //     .read(trxnNotifierProvider.notifier)
-    //     .updateClientCellPhone(clientCellPhoneController.text);
-    // ref
-    //     .read(trxnNotifierProvider.notifier)
-    //     .updateClientHomePhone(clientHomePhoneController.text);
-    // ref
-    //     .read(trxnNotifierProvider.notifier)
-    //     .updateClientEmail(clientEmailController.text);
     ref
         .read(trxnNotifierProvider.notifier)
         .updatePropertyAddress(propertyAddressController.text);
@@ -743,21 +737,9 @@ class _TransactionDetailScreenState
     ref
         .read(trxnNotifierProvider.notifier)
         .updateSettlement24d(settlement24dController.text);
-    // ref
-    //     .read(trxnNotifierProvider.notifier)
-    //     .updateInspectorCompany(inspectorCompanyController.text);
-    // ref
-    //     .read(trxnNotifierProvider.notifier)
-    //     .updateInspectorPhone(inspectorPhoneController.text);
     ref
         .read(trxnNotifierProvider.notifier)
         .updateInspectionDate(inspectionDateController.text);
-    // ref
-    //     .read(trxnNotifierProvider.notifier)
-    //     .updateAppraiser(appraiserController.text);
-    // ref
-    //     .read(trxnNotifierProvider.notifier)
-    //     .updateAppraiserPhone(appraiserPhoneController.text);
     ref
         .read(trxnNotifierProvider.notifier)
         .updateAppraisalDate(appraisalDateController.text);
@@ -767,24 +749,6 @@ class _TransactionDetailScreenState
     ref
         .read(trxnNotifierProvider.notifier)
         .updateWalkThroughDate(walkThroughDateController.text);
-    // ref
-    //     .read(trxnNotifierProvider.notifier)
-    //     .updateTitleCompany(titleCompanyController.text);
-    // ref
-    //     .read(trxnNotifierProvider.notifier)
-    //     .updateTitlePhone(titlePhoneController.text);
-    // ref
-    //     .read(trxnNotifierProvider.notifier)
-    //     .updateTitleEmail(titleEmailController.text);
-    // ref
-    //     .read(trxnNotifierProvider.notifier)
-    //     .updateMortgageCompany(mortgageCompanyController.text);
-    // ref
-    //     .read(trxnNotifierProvider.notifier)
-    //     .updateMortgagePhone(mortgagePhoneController.text);
-    // ref
-    //     .read(trxnNotifierProvider.notifier)
-    //     .updateMortgageEmail(mortgageEmailController.text);
     ref
         .read(trxnNotifierProvider.notifier)
         .updateOtherAgent(otherAgentController.text);
@@ -802,31 +766,6 @@ class _TransactionDetailScreenState
         .updateOtherPartyTitleCompany(otherPartyTitleCompanyController.text);
     ref.read(trxnNotifierProvider.notifier).updateTrxnStatus(_trxnStatus);
   }
-
-//   @override
-//   void initState() {
-//     getTrxn();
-//     super.initState();
-//     //final trxnProvider = Provider.of<TrxnProvider>(context);
-
-//     _dropDownState = getDropDownState();
-//     _currentState = _dropDownState![0].value;
-//     //_trxnStatus = 'Select Status';
-
-//     // Set the values from Firestore into the Dropdowns
-//     //if (widget.trxns != null) {
-//  /*     _currentCompany = trxnProvider.agencyId;
-//       _currentAgent = globals.currentAgentId;
-//       _currentState = trxnProvider.propertyState;
-//       _trxnStatus = trxnProvider.trxnStatus;
-//       _clientType = trxnProvider.clientType;*/
-//     /*} else {
-//       _currentState = _dropDownState![0].value;
-//       _trxnStatus = "Select Status";
-//       _currentAgent = globals.currentAgentId;
-//       _clientType = "Select Client Type";
-//     }*/
-//   }
 
   @override
   Widget build(BuildContext context) {
@@ -973,6 +912,79 @@ class _TransactionDetailScreenState
                               fontWeight: FontWeight.bold, fontSize: 20),
                         ),
                         children: [
+                          TextField(
+                            textCapitalization: TextCapitalization.words,
+                            keyboardType: TextInputType.text,
+                            controller: clientFNameController,
+                            textAlign: TextAlign.center,
+                            onChanged: (value) {
+                              ref
+                                  .read(clientNotifierProvider.notifier)
+                                  .updatefName(value);
+                            },
+                            decoration: const InputDecoration(
+                                hintText: 'Client First Name',
+                                labelText: 'Client First Name'),
+                          ),
+                          TextField(
+                            textCapitalization: TextCapitalization.words,
+                            keyboardType: TextInputType.text,
+                            controller: clientLNameController,
+                            textAlign: TextAlign.center,
+                            onChanged: (value) {
+                              ref
+                                  .read(clientNotifierProvider.notifier)
+                                  .updatelName(value);
+                            },
+                            decoration: const InputDecoration(
+                                hintText: 'Client Last Name',
+                                labelText: 'Client Last Name'),
+                          ),
+                          TextField(
+                            textCapitalization: TextCapitalization.words,
+                            keyboardType: TextInputType.text,
+                            controller: clientAddress1Controller,
+                            textAlign: TextAlign.center,
+                            onChanged: (value) {
+                              ref
+                                  .read(clientNotifierProvider.notifier)
+                                  .updateAddress1(value);
+                            },
+                            decoration: const InputDecoration(
+                                hintText: 'Address 1', labelText: 'Address 1'),
+                          ),
+                          TextField(
+                            textCapitalization: TextCapitalization.words,
+                            keyboardType: TextInputType.text,
+                            controller: clientAddress2Controller,
+                            textAlign: TextAlign.center,
+                            onChanged: (value) {
+                              ref
+                                  .read(clientNotifierProvider.notifier)
+                                  .updateAddress2(value);
+                            },
+                            decoration: const InputDecoration(
+                                hintText: 'Address 2', labelText: 'Address 2'),
+                          ),
+                          TextField(
+                            textCapitalization: TextCapitalization.words,
+                            keyboardType: TextInputType.text,
+                            controller: clientCityController,
+                            textAlign: TextAlign.center,
+                            onChanged: (value) {
+                              ref
+                                  .read(clientNotifierProvider.notifier)
+                                  .updateCity(value);
+                            },
+                            decoration: const InputDecoration(
+                                hintText: 'City', labelText: 'City'),
+                          ),
+                          DropdownButton(
+                            value: _currentClientState,
+                            items: _dropDownState,
+                            hint: const Text('Choose State'),
+                            onChanged: changedClientDropDownState,
+                          ),
                           Row(
                             children: [
                               const Text('Client Type:   '),
@@ -997,6 +1009,34 @@ class _TransactionDetailScreenState
                                 }).toList(),
                               ),
                             ],
+                          ),
+                          TextField(
+                            textCapitalization: TextCapitalization.words,
+                            keyboardType: TextInputType.text,
+                            controller: clientCellPhoneController,
+                            textAlign: TextAlign.center,
+                            onChanged: (value) {
+                              ref
+                                  .read(clientNotifierProvider.notifier)
+                                  .updateCellPhone(value);
+                            },
+                            decoration: const InputDecoration(
+                                hintText: 'Cell Phone',
+                                labelText: 'Cell Phone'),
+                          ),
+                          TextField(
+                            textCapitalization: TextCapitalization.words,
+                            keyboardType: TextInputType.text,
+                            controller: clientHomePhoneController,
+                            textAlign: TextAlign.center,
+                            onChanged: (value) {
+                              ref
+                                  .read(clientNotifierProvider.notifier)
+                                  .updateHomePhone(value);
+                            },
+                            decoration: const InputDecoration(
+                                hintText: 'Home Phone',
+                                labelText: 'Home Phone'),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -1060,21 +1100,25 @@ class _TransactionDetailScreenState
                               ),
                             ],
                           ),
-                          const Row(
-                            children: [
-                              Text('Email: '),
-                            ],
+                          // Row(
+                          //   children: [
+                          TextField(
+                            textCapitalization: TextCapitalization.words,
+                            keyboardType: TextInputType.text,
+                            controller: clientEmailController,
+                            textAlign: TextAlign.center,
+                            onChanged: (value) {
+                              ref
+                                  .read(clientNotifierProvider.notifier)
+                                  .updateEmail(value);
+                            },
+                            decoration: const InputDecoration(
+                                hintText: 'Email', labelText: 'Email'),
                           ),
+                          //   ],
+                          // ),
                         ],
                       ),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.start,
-                      //   children: <Widget>[],
-                      // ),
-                      // Visibility(
-                      //   visible: _hasCellNumber,
-                      //   child:
-                      // ),
                     ],
                   ),
                 ),
@@ -1470,7 +1514,7 @@ class _TransactionDetailScreenState
                       'Inspector Company:    ',
                     ),
                     StreamBuilder<QuerySnapshot>(
-                        stream: _db.collection('company').snapshots(),
+                        stream: _db.collection('inspectorCompany').snapshots(),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
                           List<DropdownMenuItem<String>> companyItems = [];
@@ -1481,7 +1525,7 @@ class _TransactionDetailScreenState
                                 DropdownMenuItem(
                                   value: company.id,
                                   child: Text(
-                                    company['name'],
+                                    company['inspectorCompanyName'],
                                   ),
                                 ),
                               );
@@ -1493,10 +1537,10 @@ class _TransactionDetailScreenState
                           }
                           return DropdownButton<String>(
                             hint: const Text("Select Inspector"),
-                            value: _selectedCompany,
+                            value: _selectedInspectorCompany,
                             onChanged: (companyValue) {
                               setState(() {
-                                _selectedCompany = companyValue;
+                                _selectedInspectorCompany = companyValue;
                               });
                             },
                             items: companyItems,
@@ -1567,7 +1611,7 @@ class _TransactionDetailScreenState
                       'Appraiser Company:    ',
                     ),
                     StreamBuilder<QuerySnapshot>(
-                        stream: _db.collection('company').snapshots(),
+                        stream: _db.collection('appraiserCompany').snapshots(),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
                           List<DropdownMenuItem<String>> companyItems = [];
@@ -1578,7 +1622,7 @@ class _TransactionDetailScreenState
                                 DropdownMenuItem(
                                   value: company.id,
                                   child: Text(
-                                    company['name'],
+                                    company['appraiserCompanyName'],
                                   ),
                                 ),
                               );
@@ -1590,10 +1634,10 @@ class _TransactionDetailScreenState
                           }
                           return DropdownButton<String>(
                             hint: const Text("Select Appraiser"),
-                            value: _selectedCompany,
+                            value: _selectedAppraiserCompany,
                             onChanged: (companyValue) {
                               setState(() {
-                                _selectedCompany = companyValue;
+                                _selectedAppraiserCompany = companyValue;
                               });
                             },
                             items: companyItems,
@@ -1769,7 +1813,7 @@ class _TransactionDetailScreenState
                       'Title Company:    ',
                     ),
                     StreamBuilder<QuerySnapshot>(
-                        stream: _db.collection('company').snapshots(),
+                        stream: _db.collection('titleCompany').snapshots(),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
                           List<DropdownMenuItem<String>> companyItems = [];
@@ -1780,7 +1824,7 @@ class _TransactionDetailScreenState
                                 DropdownMenuItem(
                                   value: company.id,
                                   child: Text(
-                                    company['name'],
+                                    company['titleCompanyName'],
                                   ),
                                 ),
                               );
@@ -1792,10 +1836,10 @@ class _TransactionDetailScreenState
                           }
                           return DropdownButton<String>(
                             hint: const Text("Select Title Company"),
-                            value: _selectedCompany,
+                            value: _selectedTitleCompany,
                             onChanged: (companyValue) {
                               setState(() {
-                                _selectedCompany = companyValue;
+                                _selectedTitleCompany = companyValue;
                               });
                             },
                             items: companyItems,
@@ -1813,7 +1857,7 @@ class _TransactionDetailScreenState
                       'Mortgage Company:    ',
                     ),
                     StreamBuilder<QuerySnapshot>(
-                        stream: _db.collection('company').snapshots(),
+                        stream: _db.collection('mortgageCompany').snapshots(),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
                           List<DropdownMenuItem<String>> companyItems = [];
@@ -1824,7 +1868,7 @@ class _TransactionDetailScreenState
                                 DropdownMenuItem(
                                   value: company.id,
                                   child: Text(
-                                    company['name'],
+                                    company['mortgageCompanyName'],
                                   ),
                                 ),
                               );
@@ -1836,10 +1880,10 @@ class _TransactionDetailScreenState
                           }
                           return DropdownButton<String>(
                             hint: const Text("Select Mortgage Company"),
-                            value: _selectedCompany,
+                            value: _selectedMortgageCompany,
                             onChanged: (companyValue) {
                               setState(() {
-                                _selectedCompany = companyValue;
+                                _selectedMortgageCompany = companyValue;
                               });
                             },
                             items: companyItems,
@@ -1991,6 +2035,12 @@ class _TransactionDetailScreenState
                       showSpinner = true;
                     });
                     try {
+                      // Save the client information first
+                      populateClientProvider();
+                      ref
+                          .read(clientNotifierProvider.notifier)
+                          .saveClient(ref.read(clientNotifierProvider));
+
                       // Save the Trxn
                       populateTrxnProvider();
 

@@ -24,7 +24,8 @@ class Client {
   String? cellPhone;
   String? homePhone;
   String? email;
-  String? agentCompanyId;
+  String? userCompanyId;
+  String? userId;
 
   Client(
       { //this.clientId,
@@ -38,7 +39,8 @@ class Client {
       this.cellPhone,
       this.homePhone,
       this.email,
-      this.agentCompanyId});
+      this.userCompanyId,
+      this.userId});
 
   Client copyWith(
       { //String? clientId,
@@ -52,7 +54,8 @@ class Client {
       String? cellPhone,
       String? homePhone,
       String? email,
-      String? agentCompanyId}) {
+      String? userCompanyId,
+      String? userId}) {
     return Client(
       fName: fName ?? this.fName,
       lName: lName ?? this.lName,
@@ -64,7 +67,8 @@ class Client {
       cellPhone: cellPhone ?? this.cellPhone,
       homePhone: homePhone ?? this.homePhone,
       email: email ?? this.email,
-      //agentCompanyId: agentCompanyId ?? this.agentCompanyId,
+      userCompanyId: userCompanyId ?? this.userCompanyId,
+      userId: userId ?? this.userId,
     );
   }
 }
@@ -88,13 +92,13 @@ class ClientNotifier extends Notifier<Client> {
   String cellPhone = '';
   String homePhone = '';
   String email = '';
-  //String agentCompanyId = '';
+  String userCompanyId = '';
+  String userId = '';
 
   @override
   Client build() {
     return Client(
       // Return the initial state
-      //clientId: '',
       fName: '',
       lName: '',
       address1: '',
@@ -105,7 +109,8 @@ class ClientNotifier extends Notifier<Client> {
       cellPhone: '',
       homePhone: '',
       email: '',
-      //agentCompanyId: '',
+      userCompanyId: '',
+      userId: '',
     );
   }
 
@@ -150,8 +155,12 @@ class ClientNotifier extends Notifier<Client> {
     state = state.copyWith(email: newEmail);
   }
 
-  void updateAgentCompanyId(String newAgentCompanyId) {
-    state = state.copyWith(agentCompanyId: newAgentCompanyId);
+  void updateUserCompanyId(String newUserCompanyId) {
+    state = state.copyWith(userCompanyId: newUserCompanyId);
+  }
+
+  void updateUserId(String newUserId) {
+    state = state.copyWith(userId: newUserId);
   }
 
   Map<String, dynamic> toMap(Client client) {
@@ -159,7 +168,6 @@ class ClientNotifier extends Notifier<Client> {
       'cellPhone': client.cellPhone,
       'address1': client.address1,
       'address2': client.address2,
-      //'clientId': client.clientId,
       'city': client.city,
       'fName': client.fName,
       'lName': client.lName,
@@ -167,7 +175,8 @@ class ClientNotifier extends Notifier<Client> {
       'clientState': client.clientState,
       'zipCode': client.zipCode,
       'email': client.email,
-      //'agentCompanyId': client.agentCompanyId,
+      'agentCompanyId': client.userCompanyId,
+      'userId': client.userId,
     };
   }
 
@@ -175,7 +184,6 @@ class ClientNotifier extends Notifier<Client> {
       : cellPhone = firestore['cellPhone'],
         address1 = firestore['address1'],
         address2 = firestore['address2'],
-        //clientId = firestore['clientId'],
         city = firestore['city'],
         fName = firestore['fName'],
         lName = firestore['lName'],
@@ -183,14 +191,10 @@ class ClientNotifier extends Notifier<Client> {
         clientState = firestore['clientState'],
         zipCode = firestore['zipCode'],
         email = firestore['email'];
-  //agentCompanyId = firestore['agentCompanyId'];
+  // userCompanyId = firestore['userCompanyId'];
+  // userId = firestore['userId'];
 
 // **************************************************
-
-  // saveFcmToken(String userId, String userName) {
-  //   //firestoreService.saveUserFcmTokenId(userId, fcmTokenId);
-  //   firestoreService.saveDeviceToken(userId, userName);
-  // }
 
   saveClient(client, [clientId]) async {
     if (ref.watch(globalsNotifierProvider).newUser == true) {
@@ -207,7 +211,8 @@ class ClientNotifier extends Notifier<Client> {
         cellPhone: client.cellPhone,
         homePhone: client.homePhone,
         email: client.email,
-        //agentCompanyId: client.agentCompanyId,
+        userCompanyId: client.agentCompanyId,
+        userId: client.userId,
       );
       firestoreService.saveNewClient(toMap(newClient));
       ref.read(globalsNotifierProvider.notifier).updatenewClient(false);
@@ -234,19 +239,19 @@ class ClientNotifier extends Notifier<Client> {
           clientState: (clientState != null && clientState != "")
               ? clientState
               : currentClientProfile.get('clientState'),
-          /*state: (globals.selectedState != null)
-              ? globals.selectedState
-              : globals.currentuserState,*/
           zipCode: (state.zipCode != null && state.zipCode != "")
               ? state.zipCode
               : currentClientProfile.get('zipCode'),
           cellPhone: (state.cellPhone != null && state.cellPhone != "")
               ? state.cellPhone
               : currentClientProfile.get('cellPhone'),
-          agentCompanyId:
-              (state.agentCompanyId != null && state.agentCompanyId != "")
-                  ? state.agentCompanyId
-                  : currentClientProfile.get('agentCompanyId'),
+          userCompanyId:
+              (state.userCompanyId != null && state.userCompanyId != "")
+                  ? state.userCompanyId
+                  : currentClientProfile.get('userCompanyId'),
+          userId: (state.userId != null && state.userId != "")
+              ? state.userId
+              : currentClientProfile.get('userId'),
           homePhone: (state.homePhone != null && state.homePhone != "")
               ? state.homePhone
               : currentClientProfile.get('homePhone'));
