@@ -6,6 +6,7 @@
 
 //import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deal_diligence/Providers/client_provider.dart';
 import "package:firebase_messaging/firebase_messaging.dart";
 import 'dart:io';
 import 'package:deal_diligence/Providers/global_provider.dart';
@@ -27,8 +28,14 @@ class FirestoreService {
     return _db.collection('users').doc(currentUid).set(users);
   }
 
-  Future<void> saveNewClient(client) {
-    return _db.collection('client').add(client);
+  Future<DocumentReference?> saveNewClient(client) async {
+    try {
+      DocumentReference docRef = await _db.collection('client').add(client);
+      // Enter your Update doc code
+      return docRef;
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<void> saveClient(client, String currentClientid) {

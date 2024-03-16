@@ -378,10 +378,12 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                       if (widget.clientId == "" || widget.clientId == null) {
                         ref
                             .read(clientNotifierProvider.notifier)
-                            .saveClient(ref.read(clientNotifierProvider));
+                            .saveClient(ref.read(clientNotifierProvider), true);
                       } else {
                         ref.read(clientNotifierProvider.notifier).saveClient(
-                            ref.read(clientNotifierProvider), widget.clientId);
+                            ref.read(clientNotifierProvider),
+                            false,
+                            widget.clientId);
                       }
 
                       Navigator.pop(context);

@@ -20,6 +20,7 @@ import 'package:deal_diligence/screens/appointment_calendar.dart';
 import 'package:deal_diligence/screens/transaction_detail_screen.dart';
 import 'package:deal_diligence/screens/user_profile_screen.dart';
 import 'package:deal_diligence/screens/list_of_trxns.dart';
+//import 'package:deal_diligence/screens/list_of_trxns.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:deal_diligence/screens/chat_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -65,7 +66,7 @@ class MainScreenState extends ConsumerState<MainScreen> {
 
   final List<Widget> appScreens = [
     const CompanyDashboardScreen(),
-    const TransactionDetailScreen(true),
+    const TransactionDetailScreen(true, true),
     const AppointmentCalendarScreen(),
     const UserProfileScreen(),
     const ChatScreen(),

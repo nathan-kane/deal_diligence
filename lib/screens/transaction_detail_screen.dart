@@ -8,6 +8,7 @@
 
 import 'dart:async';
 import 'dart:core';
+import 'package:deal_diligence/Providers/appraiser_company_provider.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/trxn_provider.dart';
 import 'package:deal_diligence/Providers/client_provider.dart';
@@ -36,6 +37,7 @@ String? _selectedInspectorCompany;
 String? _selectedAppraiserCompany;
 String? _selectedTitleCompany;
 String? _selectedMortgageCompany;
+String? _selectedOtherTitleCompany;
 
 // Variables telling if a date has been changed so it can be set on the calendar
 bool bContractDate = false;
@@ -56,8 +58,9 @@ class TransactionDetailScreen extends ConsumerStatefulWidget {
   static const String id = 'transaction_detail_screen';
   // final String? trxnId;
   final bool? newTrxn;
+  final bool? isNewClient;
 
-  const TransactionDetailScreen(this.newTrxn, {super.key});
+  const TransactionDetailScreen(this.newTrxn, this.isNewClient, {super.key});
 
   @override
   ConsumerState<TransactionDetailScreen> createState() =>
@@ -68,6 +71,8 @@ class _TransactionDetailScreenState
     extends ConsumerState<TransactionDetailScreen> {
   StreamProvider<List<Trxn>>? streamProvider;
   final _db = FirebaseFirestore.instance;
+
+  DocumentReference? docRef;
 
   final mlsRef = FirebaseFirestore.instance.collection('mls');
   Future<void>? _launched;
@@ -82,6 +87,7 @@ class _TransactionDetailScreenState
   String _clientType = 'Select Client Type';
   double commission = 0.0;
   late final StreamSubscription _trxnStream;
+  late final StreamSubscription _clientStream;
   DateTime eventDatePicked = DateTime.now();
 
   final clientFNameController = TextEditingController();
@@ -360,9 +366,11 @@ class _TransactionDetailScreenState
   }
 
   getTrxn() async {
+    String? _clientId;
     //if (widget.trxns == null) {
     if (widget.newTrxn!) {
       _companyId = ref.read(globalsNotifierProvider).companyId;
+      //_selectedCompany = _companyId;
       //ref.read(globalsNotifierProvider.notifier).updatenewTrxn(false);
 
       // new record: Set the textFields to blank
@@ -417,7 +425,6 @@ class _TransactionDetailScreenState
           await mlsRef.doc(ref.read(usersNotifierProvider).mlsId).get();
       _mlsSearchLink = _mlsId.get('mlsNbrSearch');
 
-      //final trxnProvider = ref.read(trxnNotifierProvider);
       _trxnStream = _db
           .collection('company')
           .doc(ref.read(globalsNotifierProvider).companyId)
@@ -425,31 +432,10 @@ class _TransactionDetailScreenState
           .doc(ref.read(globalsNotifierProvider).currentTrxnId)
           .snapshots()
           .listen((trxnSnapshot) {
-        clientFNameController.text = trxnSnapshot.data()?['clientFName'] ?? "";
-        clientLNameController.text = trxnSnapshot.data()?['clientLName'] ?? "";
-        clientAddress1Controller.text =
-            trxnSnapshot.data()?['clientAddress1'] ?? "";
-        clientAddress2Controller.text =
-            trxnSnapshot.data()?['clientAddress2'] ?? "";
-        clientCityController.text = trxnSnapshot.data()?['clientCity'] ?? "";
-        clientStateController.text = trxnSnapshot.data()?['clientState'] ?? "";
         clientTypeController.text = trxnSnapshot.data()?['clientType'] ?? "";
         _clientType = trxnSnapshot.data()?['clientType'] ?? "";
-        clientCellPhoneController.text =
-            trxnSnapshot.data()?['clientCellPhone'] ?? "";
-        clientCellPhoneController.text != "" &&
-                clientCellPhoneController.text != null
-            ? _hasCellNumber = true
-            : _hasCellNumber = false;
-        _clientCellPhoneNumber = trxnSnapshot.data()?['clientCellPhone'] ?? "";
-        clientHomePhoneController.text =
-            trxnSnapshot.data()?['clientHomePhone'] ?? "";
-        clientHomePhoneController.text != "" &&
-                clientHomePhoneController.text != null
-            ? _hasHomeNumber = true
-            : _hasHomeNumber = false;
-        _clientHomePhoneNumber = trxnSnapshot.data()?['clientHomePhone'] ?? "";
-        clientEmailController.text = trxnSnapshot.data()?['clientEmail'] ?? "";
+
+        _clientId = trxnSnapshot.data()?['clientId'];
 
         propertyAddressController.text =
             trxnSnapshot.data()?['propertyAddress'] ?? "";
@@ -649,7 +635,7 @@ class _TransactionDetailScreenState
             .updateOtherPartyClient(otherPartyClientController.text);
         otherPartyTitleCompanyController.text =
             trxnSnapshot.data()?['otherPartyTitleCompany'] ?? "";
-        ref.read(trxnNotifierProvider.notifier).updateOtherPartyTitleCompany(
+        ref.read(trxnNotifierProvider.notifier).updateOtherPartyTitleCompanyId(
             otherPartyTitleCompanyController.text);
         trxnStatusController.text = trxnSnapshot.data()?['trxnStatus'] ?? "";
         ref
@@ -664,6 +650,15 @@ class _TransactionDetailScreenState
           _selectedCompany = trxnSnapshot.data()?['companyId'] ?? "";
           _selectedUser = trxnSnapshot.data()?['userId'] ?? "";
           _selectedClientState = trxnSnapshot.data()?['clientState'] ?? "";
+          _selectedInspectorCompany =
+              trxnSnapshot.data()?['inspectorCompanyId'] ?? "";
+          _selectedAppraiserCompany =
+              trxnSnapshot.data()?['appraiserCompanyId'] ?? "";
+          _selectedTitleCompany = trxnSnapshot.data()?['titleCompanyId'] ?? "";
+          _selectedMortgageCompany =
+              trxnSnapshot.data()?['mortgageCompanyid'] ?? "";
+          _selectedOtherTitleCompany =
+              trxnSnapshot.data()?['otherPartyTitleCompanyId'] ?? "";
           if (trxnSnapshot.data()?['propertyState'] == null ||
               trxnSnapshot.data()?['propertyState'] == "") {
             _currentState = "AL";
@@ -672,6 +667,43 @@ class _TransactionDetailScreenState
           }
         });
       });
+
+      // Get the Client data associated with the transaction
+      _clientStream =
+          _db.collection('client').doc(_clientId).snapshots().listen(
+        (clientSnapshot) {
+          clientFNameController.text =
+              clientSnapshot.data()?['clientFName'] ?? "";
+          clientLNameController.text =
+              clientSnapshot.data()?['clientLName'] ?? "";
+          clientAddress1Controller.text =
+              clientSnapshot.data()?['clientAddress1'] ?? "";
+          clientAddress2Controller.text =
+              clientSnapshot.data()?['clientAddress2'] ?? "";
+          clientCityController.text =
+              clientSnapshot.data()?['clientCity'] ?? "";
+          clientStateController.text =
+              clientSnapshot.data()?['clientState'] ?? "";
+          clientCellPhoneController.text =
+              clientSnapshot.data()?['clientCellPhone'] ?? "";
+          clientCellPhoneController.text != "" &&
+                  clientCellPhoneController.text != null
+              ? _hasCellNumber = true
+              : _hasCellNumber = false;
+          _clientCellPhoneNumber =
+              clientSnapshot.data()?['clientCellPhone'] ?? "";
+          clientHomePhoneController.text =
+              clientSnapshot.data()?['clientHomePhone'] ?? "";
+          clientHomePhoneController.text != "" &&
+                  clientHomePhoneController.text != null
+              ? _hasHomeNumber = true
+              : _hasHomeNumber = false;
+          _clientHomePhoneNumber =
+              clientSnapshot.data()?['clientHomePhone'] ?? "";
+          clientEmailController.text =
+              clientSnapshot.data()?['clientEmail'] ?? "";
+        },
+      );
     }
   }
 
@@ -703,7 +735,10 @@ class _TransactionDetailScreenState
   }
 
   populateTrxnProvider() {
-    ref.read(trxnNotifierProvider.notifier).updateCompanyid(_selectedCompany!);
+    ref
+        .read(trxnNotifierProvider.notifier)
+        .updateCompanyid(ref.read(globalsNotifierProvider).companyId!);
+    ref.read(trxnNotifierProvider.notifier).updateClientId(docRef!.id);
     ref
         .read(trxnNotifierProvider.notifier)
         .updatePropertyAddress(propertyAddressController.text);
@@ -763,7 +798,7 @@ class _TransactionDetailScreenState
         .updateOtherPartyClient(otherPartyClientController.text);
     ref
         .read(trxnNotifierProvider.notifier)
-        .updateOtherPartyTitleCompany(otherPartyTitleCompanyController.text);
+        .updateOtherPartyTitleCompanyId(otherPartyTitleCompanyController.text);
     ref.read(trxnNotifierProvider.notifier).updateTrxnStatus(_trxnStatus);
   }
 
@@ -799,51 +834,52 @@ class _TransactionDetailScreenState
                 const SizedBox(
                   height: 30.0,
                 ),
-                const Text(
-                  'Representing Company',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                StreamBuilder<QuerySnapshot>(
-                    stream: _db.collection('company').snapshots(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      List<DropdownMenuItem<String>> companyItems = [];
-                      if (snapshot.hasData) {
-                        final companyList = snapshot.data.docs;
-                        for (var company in companyList) {
-                          companyItems.add(
-                            DropdownMenuItem(
-                              value: company.id,
-                              child: Text(
-                                company['name'],
-                              ),
-                            ),
-                          );
-                        }
-                      } else {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      return DropdownButton<String>(
-                        hint: const Text("Select Company"),
-                        value: _selectedCompany,
-                        onChanged: (companyValue) {
-                          setState(() {
-                            _selectedCompany = companyValue;
-                          });
-                        },
-                        items: companyItems,
-                      );
-                    }),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                // const Text(
+                //   'Representing Company',
+                //   style: TextStyle(
+                //     fontSize: 20,
+                //     fontWeight: FontWeight.w700,
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 8.0,
+                // ),
+                // StreamBuilder(
+                //     stream: _db.collection('company').snapshots(),
+                //     builder: (BuildContext context, AsyncSnapshot snapshot) {
+                //       List<DropdownMenuItem<String>> companyItems = [];
+                //       if (snapshot.hasData) {
+                //         final companyList = snapshot.data.docs;
+                //         for (var company in companyList) {
+                //           companyItems.add(
+                //             DropdownMenuItem(
+                //               value: company.id,
+                //               child: Text(
+                //                 company['name'],
+                //               ),
+                //             ),
+                //           );
+                //         }
+                //         return DropdownButton<String>(
+                //           hint: const Text("Select Company"),
+                //           value: _selectedCompany,
+                //           onChanged: (companyValue) {
+                //             setState(() {
+                //               _selectedCompany = companyValue;
+                //               // ref
+                //               //     .read(globalsNotifierProvider.notifier)
+                //               //     .updatecurrentUserId(userValue!);
+                //             });
+                //           },
+                //           items: companyItems,
+                //         );
+                //       } else {
+                //         return const CircularProgressIndicator();
+                //       }
+                //     }),
+                // const SizedBox(
+                //   height: 8.0,
+                // ),
                 const Text(
                   'Select User',
                   style: TextStyle(
@@ -985,31 +1021,31 @@ class _TransactionDetailScreenState
                             hint: const Text('Choose State'),
                             onChanged: changedClientDropDownState,
                           ),
-                          Row(
-                            children: [
-                              const Text('Client Type:   '),
-                              DropdownButton<String>(
-                                value: _clientType,
-                                hint: const Text('Client Type'),
-                                onChanged: (_value) {
-                                  setState(() {
-                                    _clientType = _value!;
-                                  });
-                                },
-                                items: <String>[
-                                  'Select Client Type',
-                                  'Buyer',
-                                  'Seller'
-                                ].map<DropdownMenuItem<String>>(
-                                    (String clientType) {
-                                  return DropdownMenuItem<String>(
-                                    value: clientType,
-                                    child: Text(clientType),
-                                  );
-                                }).toList(),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   children: [
+                          //     const Text('Client Type:   '),
+                          //     DropdownButton<String>(
+                          //       value: _clientType,
+                          //       hint: const Text('Client Type'),
+                          //       onChanged: (_value) {
+                          //         setState(() {
+                          //           _clientType = _value!;
+                          //         });
+                          //       },
+                          //       items: <String>[
+                          //         'Select Client Type',
+                          //         'Buyer',
+                          //         'Seller'
+                          //       ].map<DropdownMenuItem<String>>(
+                          //           (String clientType) {
+                          //         return DropdownMenuItem<String>(
+                          //           value: clientType,
+                          //           child: Text(clientType),
+                          //         );
+                          //       }).toList(),
+                          //     ),
+                          //   ],
+                          // ),
                           TextField(
                             textCapitalization: TextCapitalization.words,
                             keyboardType: TextInputType.text,
@@ -1122,10 +1158,32 @@ class _TransactionDetailScreenState
                     ],
                   ),
                 ),
+                Row(
+                  children: [
+                    const Text('Client Type:   '),
+                    DropdownButton<String>(
+                      value: _clientType,
+                      hint: const Text('Client Type'),
+                      onChanged: (_value) {
+                        setState(() {
+                          _clientType = _value!;
+                        });
+                      },
+                      items: <String>['Select Client Type', 'Buyer', 'Seller']
+                          .map<DropdownMenuItem<String>>((String clientType) {
+                        return DropdownMenuItem<String>(
+                          value: clientType,
+                          child: Text(clientType),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
                 const SizedBox(
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   keyboardType: TextInputType.text,
                   controller: propertyAddressController,
                   textAlign: TextAlign.center,
@@ -1142,6 +1200,7 @@ class _TransactionDetailScreenState
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   keyboardType: TextInputType.text,
                   controller: propertyCityController,
                   textAlign: TextAlign.center,
@@ -1507,8 +1566,8 @@ class _TransactionDetailScreenState
                 const SizedBox(
                   height: 8.0,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                Wrap(
+                  //mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const Text(
                       'Inspector Company:    ',
@@ -1542,6 +1601,10 @@ class _TransactionDetailScreenState
                               setState(() {
                                 _selectedInspectorCompany = companyValue;
                               });
+                              ref
+                                  .read(trxnNotifierProvider.notifier)
+                                  .updateInspectorCompanyId(
+                                      _selectedInspectorCompany!);
                             },
                             items: companyItems,
                           );
@@ -1604,8 +1667,8 @@ class _TransactionDetailScreenState
                 const SizedBox(
                   height: 8.0,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                Wrap(
+                  //mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const Text(
                       'Appraiser Company:    ',
@@ -1639,6 +1702,10 @@ class _TransactionDetailScreenState
                               setState(() {
                                 _selectedAppraiserCompany = companyValue;
                               });
+                              ref
+                                  .read(trxnNotifierProvider.notifier)
+                                  .updateAppraiserCompanyId(
+                                      _selectedAppraiserCompany!);
                             },
                             items: companyItems,
                           );
@@ -1806,8 +1873,8 @@ class _TransactionDetailScreenState
                 const SizedBox(
                   height: 8.0,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                Wrap(
+                  //mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const Text(
                       'Title Company:    ',
@@ -1841,6 +1908,9 @@ class _TransactionDetailScreenState
                               setState(() {
                                 _selectedTitleCompany = companyValue;
                               });
+                              ref
+                                  .read(trxnNotifierProvider.notifier)
+                                  .updateTitleCompanyId(_selectedTitleCompany!);
                             },
                             items: companyItems,
                           );
@@ -1850,8 +1920,8 @@ class _TransactionDetailScreenState
                 const SizedBox(
                   height: 8.0,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                Wrap(
+                  //mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const Text(
                       'Mortgage Company:    ',
@@ -1885,6 +1955,10 @@ class _TransactionDetailScreenState
                               setState(() {
                                 _selectedMortgageCompany = companyValue;
                               });
+                              ref
+                                  .read(trxnNotifierProvider.notifier)
+                                  .updateMortgageCompanyId(
+                                      _selectedMortgageCompany!);
                             },
                             items: companyItems,
                           );
@@ -1894,8 +1968,8 @@ class _TransactionDetailScreenState
                 const SizedBox(
                   height: 8.0,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                Wrap(
+                  //mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const Text(
                       'Other Agent Company:    ',
@@ -1957,14 +2031,14 @@ class _TransactionDetailScreenState
                 const SizedBox(
                   height: 8.0,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                Wrap(
+                  //mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const Text(
                       'Other Title Company:    ',
                     ),
                     StreamBuilder<QuerySnapshot>(
-                        stream: _db.collection('company').snapshots(),
+                        stream: _db.collection('titleCompany').snapshots(),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
                           List<DropdownMenuItem<String>> companyItems = [];
@@ -1975,7 +2049,7 @@ class _TransactionDetailScreenState
                                 DropdownMenuItem(
                                   value: company.id,
                                   child: Text(
-                                    company['name'],
+                                    company['titleCompanyName'],
                                   ),
                                 ),
                               );
@@ -1990,8 +2064,12 @@ class _TransactionDetailScreenState
                             value: _selectedCompany,
                             onChanged: (companyValue) {
                               setState(() {
-                                _selectedCompany = companyValue;
+                                _selectedOtherTitleCompany = companyValue;
                               });
+                              ref
+                                  .read(trxnNotifierProvider.notifier)
+                                  .updateOtherPartyTitleCompanyId(
+                                      _selectedOtherTitleCompany!);
                             },
                             items: companyItems,
                           );
@@ -2037,9 +2115,20 @@ class _TransactionDetailScreenState
                     try {
                       // Save the client information first
                       populateClientProvider();
-                      ref
-                          .read(clientNotifierProvider.notifier)
-                          .saveClient(ref.read(clientNotifierProvider));
+                      try {
+                        if (ref.read(clientNotifierProvider).clientId == null ||
+                            ref.read(clientNotifierProvider).clientId == "") {
+                          docRef = await ref
+                              .read(clientNotifierProvider.notifier)
+                              .saveClient(ref.read(clientNotifierProvider),
+                                  widget.isNewClient);
+                        } else {
+                          ref.read(clientNotifierProvider.notifier).saveClient(
+                              ref.read(clientNotifierProvider), false);
+                        }
+                      } catch (e) {
+                        print('Trxn Detail  $e');
+                      }
 
                       // Save the Trxn
                       populateTrxnProvider();

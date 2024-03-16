@@ -12,6 +12,7 @@ class Globals {
   final String? currentUEmail;
   final String? userDocumentId;
   final String? companyId;
+  final String? newClientId;
   final String? mlsId;
   final String? currentTrxnId;
   final String? currentCompanyName;
@@ -42,6 +43,7 @@ class Globals {
     this.currentUEmail,
     this.userDocumentId,
     this.companyId,
+    this.newClientId,
     this.mlsId,
     this.currentTrxnId,
     this.currentCompanyName,
@@ -73,6 +75,7 @@ class Globals {
     String? currentUEmail,
     String? userDocumentId,
     String? companyId,
+    String? newClientId,
     String? mlsId,
     String? currentTrxnId,
     String? currentCompanyName,
@@ -103,6 +106,7 @@ class Globals {
       currentUEmail: currentUEmail ?? this.currentUEmail,
       userDocumentId: userDocumentId ?? this.userDocumentId,
       companyId: companyId ?? this.companyId,
+      newClientId: newClientId ?? this.newClientId,
       mlsId: mlsId ?? this.mlsId,
       currentTrxnId: currentTrxnId ?? this.currentTrxnId,
       currentCompanyName: currentCompanyName ?? this.currentCompanyName,
@@ -143,6 +147,7 @@ class GlobalsNotifier extends Notifier<Globals> {
       currentUEmail: '',
       userDocumentId: '',
       companyId: '',
+      newClientId: '',
       mlsId: '',
       currentTrxnId: '',
       currentCompanyName: '',
@@ -185,6 +190,10 @@ class GlobalsNotifier extends Notifier<Globals> {
 
   void updatecompanyId(String newcompanyId) {
     state = state.copyWith(companyId: newcompanyId);
+  }
+
+  void updateNewClientId(String newClientId) {
+    state = state.copyWith(newClientId: newClientId);
   }
 
   void updatemlsId(String newmlsId) {

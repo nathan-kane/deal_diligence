@@ -7,10 +7,12 @@
 // ignore_for_file: unused_label, unnecessary_null_comparison, unused_local_variable, unused_import
 
 import 'package:deal_diligence/Providers/global_provider.dart';
+import 'package:deal_diligence/Providers/trxn_provider.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:deal_diligence/Providers/company_provider.dart';
+import 'package:deal_diligence/Providers/global_provider.dart';
 
 class Client {
   //String? clientId;
@@ -26,6 +28,7 @@ class Client {
   String? email;
   String? userCompanyId;
   String? userId;
+  String? clientId; // This is needed when a new client is added from a new Trxn
 
   Client(
       { //this.clientId,
@@ -40,7 +43,8 @@ class Client {
       this.homePhone,
       this.email,
       this.userCompanyId,
-      this.userId});
+      this.userId,
+      this.clientId});
 
   Client copyWith(
       { //String? clientId,
@@ -55,7 +59,8 @@ class Client {
       String? homePhone,
       String? email,
       String? userCompanyId,
-      String? userId}) {
+      String? userId,
+      String? clientId}) {
     return Client(
       fName: fName ?? this.fName,
       lName: lName ?? this.lName,
@@ -69,6 +74,7 @@ class Client {
       email: email ?? this.email,
       userCompanyId: userCompanyId ?? this.userCompanyId,
       userId: userId ?? this.userId,
+      clientId: clientId ?? this.clientId,
     );
   }
 }
@@ -94,6 +100,7 @@ class ClientNotifier extends Notifier<Client> {
   String email = '';
   String userCompanyId = '';
   String userId = '';
+  String clientId = '';
 
   @override
   Client build() {
@@ -111,6 +118,7 @@ class ClientNotifier extends Notifier<Client> {
       email: '',
       userCompanyId: '',
       userId: '',
+      clientId: '',
     );
   }
 
@@ -163,6 +171,10 @@ class ClientNotifier extends Notifier<Client> {
     state = state.copyWith(userId: newUserId);
   }
 
+  void updateClientId(String newClientId) {
+    state = state.copyWith(clientId: newClientId);
+  }
+
   Map<String, dynamic> toMap(Client client) {
     return {
       'cellPhone': client.cellPhone,
@@ -177,6 +189,7 @@ class ClientNotifier extends Notifier<Client> {
       'email': client.email,
       'agentCompanyId': client.userCompanyId,
       'userId': client.userId,
+      'clientId': client.clientId,
     };
   }
 
@@ -190,14 +203,15 @@ class ClientNotifier extends Notifier<Client> {
         homePhone = firestore['homePhone'],
         clientState = firestore['clientState'],
         zipCode = firestore['zipCode'],
-        email = firestore['email'];
+        email = firestore['email'],
+        clientId = firestore['clientId'];
   // userCompanyId = firestore['userCompanyId'];
   // userId = firestore['userId'];
 
 // **************************************************
 
-  saveClient(client, [clientId]) async {
-    if (ref.watch(globalsNotifierProvider).newUser == true) {
+  Future<DocumentReference?> saveClient(client, isNewClient, [clientId]) async {
+    if (isNewClient == true) {
       // final DocumentSnapshot currentCompanyProfile =
       final newClient = Client(
         //clientId: client.clientId,
@@ -211,11 +225,22 @@ class ClientNotifier extends Notifier<Client> {
         cellPhone: client.cellPhone,
         homePhone: client.homePhone,
         email: client.email,
-        userCompanyId: client.agentCompanyId,
-        userId: client.userId,
+        userCompanyId: ref.read(globalsNotifierProvider).companyId,
+        userId: ref.read(globalsNotifierProvider).currentUserId,
+        clientId: client.clientId,
       );
-      firestoreService.saveNewClient(toMap(newClient));
-      ref.read(globalsNotifierProvider.notifier).updatenewClient(false);
+
+      try {
+        DocumentReference? newDocRef =
+            await firestoreService.saveNewClient(toMap(newClient));
+        return newDocRef;
+        //ref.read(trxnNotifierProvider.notifier).updateClientId(newDocRef!.id);
+      } catch (e) {
+        print(e);
+        return null;
+      }
+
+      //ref.read(globalsNotifierProvider.notifier).updatenewClient(false);
     } else {
       final DocumentSnapshot currentClientProfile =
           await clientDB.doc(client.ClientId).get();
@@ -252,6 +277,9 @@ class ClientNotifier extends Notifier<Client> {
           userId: (state.userId != null && state.userId != "")
               ? state.userId
               : currentClientProfile.get('userId'),
+          clientId: (state.clientId != null && state.clientId != "")
+              ? state.clientId
+              : currentClientProfile.get('clientId'),
           homePhone: (state.homePhone != null && state.homePhone != "")
               ? state.homePhone
               : currentClientProfile.get('homePhone'));
