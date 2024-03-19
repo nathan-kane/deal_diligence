@@ -35,6 +35,7 @@ String? _selectedUser;
 String? _selectedClientState;
 String? _selectedInspectorCompany;
 String? _selectedAppraiserCompany;
+String? _selectedOtherCompany;
 String? _selectedTitleCompany;
 String? _selectedMortgageCompany;
 String? _selectedOtherTitleCompany;
@@ -245,6 +246,13 @@ class _TransactionDetailScreenState
     _dropDownState = getDropDownState();
     _currentState = _dropDownState![0].value;
     _currentClientState = _dropDownState![0].value;
+    _selectedInspectorCompany = null;
+    _selectedUser = 'Select Agent';
+    _selectedAppraiserCompany = null;
+    _selectedTitleCompany = null;
+    _selectedMortgageCompany = null;
+    _selectedOtherCompany = null;
+    _selectedOtherTitleCompany = null;
   }
 
   String _currentStatus = "Select Status";
@@ -300,12 +308,12 @@ class _TransactionDetailScreenState
     ref.read(clientNotifierProvider.notifier).updateClientState(selectedState!);
   }
 
-  void changedDropDownClientType(String selectedClientType) {
-    setState(() {
-      _clientType = selectedClientType;
-    });
-    //globals.selectedTrxnState = selectedClientType;
-  }
+  // void changedDropDownClientType(String selectedClientType) {
+  //   setState(() {
+  //     _clientType = selectedClientType;
+  //   });
+  //   //globals.selectedTrxnState = selectedClientType;
+  // }
 
   void changedDropDownAgency(String? selectedCompany) {
     setState(() {
@@ -650,15 +658,6 @@ class _TransactionDetailScreenState
           _selectedCompany = trxnSnapshot.data()?['companyId'] ?? "";
           _selectedUser = trxnSnapshot.data()?['userId'] ?? "";
           _selectedClientState = trxnSnapshot.data()?['clientState'] ?? "";
-          _selectedInspectorCompany =
-              trxnSnapshot.data()?['inspectorCompanyId'] ?? "";
-          _selectedAppraiserCompany =
-              trxnSnapshot.data()?['appraiserCompanyId'] ?? "";
-          _selectedTitleCompany = trxnSnapshot.data()?['titleCompanyId'] ?? "";
-          _selectedMortgageCompany =
-              trxnSnapshot.data()?['mortgageCompanyid'] ?? "";
-          _selectedOtherTitleCompany =
-              trxnSnapshot.data()?['otherPartyTitleCompanyId'] ?? "";
           if (trxnSnapshot.data()?['propertyState'] == null ||
               trxnSnapshot.data()?['propertyState'] == "") {
             _currentState = "AL";
@@ -834,52 +833,6 @@ class _TransactionDetailScreenState
                 const SizedBox(
                   height: 30.0,
                 ),
-                // const Text(
-                //   'Representing Company',
-                //   style: TextStyle(
-                //     fontSize: 20,
-                //     fontWeight: FontWeight.w700,
-                //   ),
-                // ),
-                // const SizedBox(
-                //   height: 8.0,
-                // ),
-                // StreamBuilder(
-                //     stream: _db.collection('company').snapshots(),
-                //     builder: (BuildContext context, AsyncSnapshot snapshot) {
-                //       List<DropdownMenuItem<String>> companyItems = [];
-                //       if (snapshot.hasData) {
-                //         final companyList = snapshot.data.docs;
-                //         for (var company in companyList) {
-                //           companyItems.add(
-                //             DropdownMenuItem(
-                //               value: company.id,
-                //               child: Text(
-                //                 company['name'],
-                //               ),
-                //             ),
-                //           );
-                //         }
-                //         return DropdownButton<String>(
-                //           hint: const Text("Select Company"),
-                //           value: _selectedCompany,
-                //           onChanged: (companyValue) {
-                //             setState(() {
-                //               _selectedCompany = companyValue;
-                //               // ref
-                //               //     .read(globalsNotifierProvider.notifier)
-                //               //     .updatecurrentUserId(userValue!);
-                //             });
-                //           },
-                //           items: companyItems,
-                //         );
-                //       } else {
-                //         return const CircularProgressIndicator();
-                //       }
-                //     }),
-                // const SizedBox(
-                //   height: 8.0,
-                // ),
                 const Text(
                   'Select User',
                   style: TextStyle(
@@ -890,50 +843,50 @@ class _TransactionDetailScreenState
                 const SizedBox(
                   height: 8.0,
                 ),
-                Container(
-                  /* Populate the Agent dropdown only if
-                       there is an agency to associate the agent with.
-                     */
-                  child: _currentCompany != null && _currentCompany != ""
-                      ? StreamBuilder(
-                          stream: _db
-                              .collection('users')
-                              .where('companyId', isEqualTo: _currentCompany)
-                              .snapshots(),
-                          builder:
-                              (BuildContext context, AsyncSnapshot snapshot) {
-                            List<DropdownMenuItem<String>> userItems = [];
-                            if (snapshot.hasData) {
-                              final userList = snapshot.data.docs;
-                              for (var user in userList) {
-                                userItems.add(
-                                  DropdownMenuItem(
-                                    value: user.id,
-                                    child: Text(
-                                      user['fName'] + '' + user['lName'],
-                                    ),
-                                  ),
-                                );
-                              }
-                            } else {
-                              return const CircularProgressIndicator();
-                            }
-                            return DropdownButton<String>(
-                              hint: const Text("Select User"),
-                              value: _selectedUser,
-                              onChanged: (userValue) {
-                                setState(() {
-                                  _selectedUser = userValue;
-                                  ref
-                                      .read(globalsNotifierProvider.notifier)
-                                      .updatecurrentUserId(userValue!);
-                                });
-                              },
-                              items: userItems,
-                            );
-                          })
-                      : const Text('No users yet'),
-                ),
+                // Container(
+                //   /* Populate the Agent dropdown only if
+                //        there is an agency to associate the agent with.
+                //      */
+                //   child: _currentCompany != null && _currentCompany != ""
+                //       ? StreamBuilder(
+                //           stream: _db
+                //               .collection('users')
+                //               .where('companyId', isEqualTo: _currentCompany)
+                //               .snapshots(),
+                //           builder:
+                //               (BuildContext context, AsyncSnapshot snapshot) {
+                //             List<DropdownMenuItem<String>> userItems = [];
+                //             if (snapshot.hasData) {
+                //               final userList = snapshot.data.docs;
+                //               for (var user in userList) {
+                //                 userItems.add(
+                //                   DropdownMenuItem(
+                //                     value: user.id,
+                //                     child: Text(
+                //                       user['fName'] + '' + user['lName'],
+                //                     ),
+                //                   ),
+                //                 );
+                //               }
+                //             } else {
+                //               return const CircularProgressIndicator();
+                //             }
+                //             return DropdownButton<String>(
+                //               hint: const Text("Select User"),
+                //               value: _selectedUser,
+                //               onChanged: (userValue) {
+                //                 setState(() {
+                //                   _selectedUser = userValue;
+                //                   ref
+                //                       .read(globalsNotifierProvider.notifier)
+                //                       .updatecurrentUserId(userValue!);
+                //                 });
+                //               },
+                //               items: userItems,
+                //             );
+                //           })
+                //       : const Text('No users yet'),
+                // ),
                 Card(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -941,7 +894,8 @@ class _TransactionDetailScreenState
                     //mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       ExpansionTile(
-                        subtitle: const Text('John Seller'),
+                        subtitle: Text(
+                            '$clientFNameController.text $clientLNameController.text'),
                         title: const Text(
                           'Client Information',
                           style: TextStyle(
@@ -1015,36 +969,11 @@ class _TransactionDetailScreenState
                             decoration: const InputDecoration(
                                 hintText: 'City', labelText: 'City'),
                           ),
-                          DropdownButton(
-                            value: _currentClientState,
-                            items: _dropDownState,
-                            hint: const Text('Choose State'),
-                            onChanged: changedClientDropDownState,
-                          ),
-                          // Row(
-                          //   children: [
-                          //     const Text('Client Type:   '),
-                          //     DropdownButton<String>(
-                          //       value: _clientType,
-                          //       hint: const Text('Client Type'),
-                          //       onChanged: (_value) {
-                          //         setState(() {
-                          //           _clientType = _value!;
-                          //         });
-                          //       },
-                          //       items: <String>[
-                          //         'Select Client Type',
-                          //         'Buyer',
-                          //         'Seller'
-                          //       ].map<DropdownMenuItem<String>>(
-                          //           (String clientType) {
-                          //         return DropdownMenuItem<String>(
-                          //           value: clientType,
-                          //           child: Text(clientType),
-                          //         );
-                          //       }).toList(),
-                          //     ),
-                          //   ],
+                          // DropdownButton(
+                          //   value: _currentClientState,
+                          //   items: _dropDownState,
+                          //   hint: const Text('Choose State'),
+                          //   onChanged: changedClientDropDownState,
                           // ),
                           TextField(
                             textCapitalization: TextCapitalization.words,
@@ -1158,27 +1087,30 @@ class _TransactionDetailScreenState
                     ],
                   ),
                 ),
-                Row(
-                  children: [
-                    const Text('Client Type:   '),
-                    DropdownButton<String>(
-                      value: _clientType,
-                      hint: const Text('Client Type'),
-                      onChanged: (_value) {
-                        setState(() {
-                          _clientType = _value!;
-                        });
-                      },
-                      items: <String>['Select Client Type', 'Buyer', 'Seller']
-                          .map<DropdownMenuItem<String>>((String clientType) {
-                        return DropdownMenuItem<String>(
-                          value: clientType,
-                          child: Text(clientType),
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     const Text('Client Type:   '),
+                //     DropdownButton<String>(
+                //       value: _clientType,
+                //       hint: const Text('Client Type'),
+                //       onChanged: (_value) {
+                //         setState(() {
+                //           _clientType = _value!;
+                //         });
+                //       },
+                //       items: <String>[
+                //         'Select Client Type',
+                //         'Buyer',
+                //         'Seller'
+                //       ].map<DropdownMenuItem<String>>((String clientTypeList) {
+                //         return DropdownMenuItem<String>(
+                //           value: clientTypeList,
+                //           child: Text(clientTypeList),
+                //         );
+                //       }).toList(),
+                //     ),
+                //   ],
+                // ),
                 const SizedBox(
                   height: 8.0,
                 ),
@@ -1573,42 +1505,46 @@ class _TransactionDetailScreenState
                       'Inspector Company:    ',
                     ),
                     StreamBuilder<QuerySnapshot>(
-                        stream: _db.collection('inspectorCompany').snapshots(),
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          List<DropdownMenuItem<String>> companyItems = [];
-                          if (snapshot.hasData) {
-                            final companyList = snapshot.data.docs;
-                            for (var company in companyList) {
-                              companyItems.add(
-                                DropdownMenuItem(
-                                  value: company.id,
-                                  child: Text(
-                                    company['inspectorCompanyName'],
-                                  ),
+                      stream: _db.collection('inspectorCompany').snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        List<DropdownMenuItem<String>> inspectorCompanyItems =
+                            [];
+                        if (snapshot.hasData) {
+                          final inspectorCompanyList = snapshot.data!.docs;
+                          for (var inspectorCompany in inspectorCompanyList) {
+                            inspectorCompanyItems.add(
+                              DropdownMenuItem<String>(
+                                value: inspectorCompany.id,
+                                child: Text(
+                                  inspectorCompany['inspectorCompanyName'],
                                 ),
-                              );
-                            }
-                          } else {
-                            return const Center(
-                              child: CircularProgressIndicator(),
+                              ),
                             );
                           }
                           return DropdownButton<String>(
                             hint: const Text("Select Inspector"),
-                            value: _selectedInspectorCompany,
-                            onChanged: (companyValue) {
+                            value: _selectedInspectorCompany ??
+                                inspectorCompanyItems[0].value,
+                            onChanged: (inspectorCompanyValue) {
                               setState(() {
-                                _selectedInspectorCompany = companyValue;
+                                _selectedInspectorCompany =
+                                    inspectorCompanyValue;
                               });
                               ref
                                   .read(trxnNotifierProvider.notifier)
                                   .updateInspectorCompanyId(
                                       _selectedInspectorCompany!);
                             },
-                            items: companyItems,
+                            items: inspectorCompanyItems,
                           );
-                        }),
+                        } else {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
+                    ),
                   ],
                 ),
                 TextField(
@@ -1677,15 +1613,16 @@ class _TransactionDetailScreenState
                         stream: _db.collection('appraiserCompany').snapshots(),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
-                          List<DropdownMenuItem<String>> companyItems = [];
+                          List<DropdownMenuItem<String>> appraiserCompanyItems =
+                              [];
                           if (snapshot.hasData) {
-                            final companyList = snapshot.data.docs;
-                            for (var company in companyList) {
-                              companyItems.add(
+                            final appraiserCompanyList = snapshot.data.docs;
+                            for (var appraiserCompany in appraiserCompanyList) {
+                              appraiserCompanyItems.add(
                                 DropdownMenuItem(
-                                  value: company.id,
+                                  value: appraiserCompany.id,
                                   child: Text(
-                                    company['appraiserCompanyName'],
+                                    appraiserCompany['appraiserCompanyName'],
                                   ),
                                 ),
                               );
@@ -1697,17 +1634,19 @@ class _TransactionDetailScreenState
                           }
                           return DropdownButton<String>(
                             hint: const Text("Select Appraiser"),
-                            value: _selectedAppraiserCompany,
-                            onChanged: (companyValue) {
+                            value: _selectedAppraiserCompany ??
+                                appraiserCompanyItems[0].value,
+                            onChanged: (appraiserCompanyValue) {
                               setState(() {
-                                _selectedAppraiserCompany = companyValue;
+                                _selectedAppraiserCompany =
+                                    appraiserCompanyValue;
                               });
                               ref
                                   .read(trxnNotifierProvider.notifier)
                                   .updateAppraiserCompanyId(
                                       _selectedAppraiserCompany!);
                             },
-                            items: companyItems,
+                            items: appraiserCompanyItems,
                           );
                         }),
                   ],
@@ -1883,15 +1822,15 @@ class _TransactionDetailScreenState
                         stream: _db.collection('titleCompany').snapshots(),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
-                          List<DropdownMenuItem<String>> companyItems = [];
+                          List<DropdownMenuItem<String>> titleCompanyItems = [];
                           if (snapshot.hasData) {
-                            final companyList = snapshot.data.docs;
-                            for (var company in companyList) {
-                              companyItems.add(
+                            final titleCompanyList = snapshot.data.docs;
+                            for (var titleCompany in titleCompanyList) {
+                              titleCompanyItems.add(
                                 DropdownMenuItem(
-                                  value: company.id,
+                                  value: titleCompany.id,
                                   child: Text(
-                                    company['titleCompanyName'],
+                                    titleCompany['titleCompanyName'],
                                   ),
                                 ),
                               );
@@ -1903,16 +1842,17 @@ class _TransactionDetailScreenState
                           }
                           return DropdownButton<String>(
                             hint: const Text("Select Title Company"),
-                            value: _selectedTitleCompany,
-                            onChanged: (companyValue) {
+                            value: _selectedTitleCompany ??
+                                titleCompanyItems[0].value,
+                            onChanged: (titleCompanyValue) {
                               setState(() {
-                                _selectedTitleCompany = companyValue;
+                                _selectedTitleCompany = titleCompanyValue;
                               });
                               ref
                                   .read(trxnNotifierProvider.notifier)
                                   .updateTitleCompanyId(_selectedTitleCompany!);
                             },
-                            items: companyItems,
+                            items: titleCompanyItems,
                           );
                         }),
                   ],
@@ -1930,15 +1870,16 @@ class _TransactionDetailScreenState
                         stream: _db.collection('mortgageCompany').snapshots(),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
-                          List<DropdownMenuItem<String>> companyItems = [];
+                          List<DropdownMenuItem<String>> mortgageCompanyItems =
+                              [];
                           if (snapshot.hasData) {
-                            final companyList = snapshot.data.docs;
-                            for (var company in companyList) {
-                              companyItems.add(
+                            final mortgageCompanyList = snapshot.data.docs;
+                            for (var mortgageCompany in mortgageCompanyList) {
+                              mortgageCompanyItems.add(
                                 DropdownMenuItem(
-                                  value: company.id,
+                                  value: mortgageCompany.id,
                                   child: Text(
-                                    company['mortgageCompanyName'],
+                                    mortgageCompany['mortgageCompanyName'],
                                   ),
                                 ),
                               );
@@ -1950,17 +1891,18 @@ class _TransactionDetailScreenState
                           }
                           return DropdownButton<String>(
                             hint: const Text("Select Mortgage Company"),
-                            value: _selectedMortgageCompany,
-                            onChanged: (companyValue) {
+                            value: _selectedMortgageCompany ??
+                                mortgageCompanyItems[0].value,
+                            onChanged: (mortgageCompanyValue) {
                               setState(() {
-                                _selectedMortgageCompany = companyValue;
+                                _selectedMortgageCompany = mortgageCompanyValue;
                               });
                               ref
                                   .read(trxnNotifierProvider.notifier)
                                   .updateMortgageCompanyId(
                                       _selectedMortgageCompany!);
                             },
-                            items: companyItems,
+                            items: mortgageCompanyItems,
                           );
                         }),
                   ],
@@ -1978,15 +1920,15 @@ class _TransactionDetailScreenState
                         stream: _db.collection('company').snapshots(),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
-                          List<DropdownMenuItem<String>> companyItems = [];
+                          List<DropdownMenuItem<String>> otherCompanyItems = [];
                           if (snapshot.hasData) {
-                            final companyList = snapshot.data.docs;
-                            for (var company in companyList) {
-                              companyItems.add(
+                            final otherCompanyList = snapshot.data.docs;
+                            for (var otherCompany in otherCompanyList) {
+                              otherCompanyItems.add(
                                 DropdownMenuItem(
-                                  value: company.id,
+                                  value: otherCompany.id,
                                   child: Text(
-                                    company['name'],
+                                    otherCompany['name'],
                                   ),
                                 ),
                               );
@@ -1998,16 +1940,17 @@ class _TransactionDetailScreenState
                           }
                           return DropdownButton<String>(
                             hint: const Text("Select Other Agent"),
-                            value: _selectedCompany,
-                            onChanged: (companyValue) {
+                            value: _selectedOtherCompany ??
+                                otherCompanyItems[0].value,
+                            onChanged: (otherCompanyValue) {
                               setState(() {
-                                _selectedCompany = companyValue;
+                                _selectedCompany = otherCompanyValue;
                                 // ref
                                 //     .read(globalsNotifierProvider.notifier)
                                 //     .updatecompanyId(companyValue!);
                               });
                             },
-                            items: companyItems,
+                            items: otherCompanyItems,
                           );
                         }),
                   ],
@@ -2041,15 +1984,17 @@ class _TransactionDetailScreenState
                         stream: _db.collection('titleCompany').snapshots(),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
-                          List<DropdownMenuItem<String>> companyItems = [];
+                          List<DropdownMenuItem<String>>
+                              otherTitleCompanyItems = [];
                           if (snapshot.hasData) {
-                            final companyList = snapshot.data.docs;
-                            for (var company in companyList) {
-                              companyItems.add(
+                            final otherTitleCompanyList = snapshot.data.docs;
+                            for (var otherTitleCompany
+                                in otherTitleCompanyList) {
+                              otherTitleCompanyItems.add(
                                 DropdownMenuItem(
-                                  value: company.id,
+                                  value: otherTitleCompany.id,
                                   child: Text(
-                                    company['titleCompanyName'],
+                                    otherTitleCompany['titleCompanyName'],
                                   ),
                                 ),
                               );
@@ -2061,17 +2006,19 @@ class _TransactionDetailScreenState
                           }
                           return DropdownButton<String>(
                             hint: const Text("Select Title Company"),
-                            value: _selectedCompany,
-                            onChanged: (companyValue) {
+                            value: _selectedOtherTitleCompany ??
+                                otherTitleCompanyItems[0].value,
+                            onChanged: (otherTitleCompanyValue) {
                               setState(() {
-                                _selectedOtherTitleCompany = companyValue;
+                                _selectedOtherTitleCompany =
+                                    otherTitleCompanyValue;
                               });
                               ref
                                   .read(trxnNotifierProvider.notifier)
                                   .updateOtherPartyTitleCompanyId(
                                       _selectedOtherTitleCompany!);
                             },
-                            items: companyItems,
+                            items: otherTitleCompanyItems,
                           );
                         }),
                   ],
