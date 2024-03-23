@@ -72,6 +72,7 @@ class _TransactionDetailScreenState
     extends ConsumerState<TransactionDetailScreen> {
   StreamProvider<List<Trxn>>? streamProvider;
   final _db = FirebaseFirestore.instance;
+  String? _clientId;
 
   DocumentReference? docRef;
 
@@ -374,7 +375,6 @@ class _TransactionDetailScreenState
   }
 
   getTrxn() async {
-    String? _clientId;
     //if (widget.trxns == null) {
     if (widget.newTrxn!) {
       _companyId = ref.read(globalsNotifierProvider).companyId;
@@ -433,225 +433,231 @@ class _TransactionDetailScreenState
           await mlsRef.doc(ref.read(usersNotifierProvider).mlsId).get();
       _mlsSearchLink = _mlsId.get('mlsNbrSearch');
 
-      _trxnStream = _db
-          .collection('company')
-          .doc(ref.read(globalsNotifierProvider).companyId)
-          .collection('trxns')
-          .doc(ref.read(globalsNotifierProvider).currentTrxnId)
-          .snapshots()
-          .listen((trxnSnapshot) {
-        clientTypeController.text = trxnSnapshot.data()?['clientType'] ?? "";
-        _clientType = trxnSnapshot.data()?['clientType'] ?? "";
+      try {
+        _trxnStream = _db
+            .collection('company')
+            .doc(ref.read(globalsNotifierProvider).companyId)
+            .collection('trxns')
+            .doc(ref.read(globalsNotifierProvider).currentTrxnId)
+            .snapshots()
+            .listen((trxnSnapshot) {
+          clientTypeController.text = trxnSnapshot.data()?['clientType'] ?? "";
+          _clientType = trxnSnapshot.data()?['clientType'] ?? "";
 
-        _clientId = trxnSnapshot.data()?['clientId'];
+          _clientId = trxnSnapshot.data()?['clientId'] ?? "";
+          ref.read(trxnNotifierProvider.notifier).updateClientId(_clientId!);
 
-        propertyAddressController.text =
-            trxnSnapshot.data()?['propertyAddress'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updatePropertyAddress(propertyAddressController.text);
-        propertyCityController.text =
-            trxnSnapshot.data()?['propertyCity'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updatePropertyCity(propertyCityController.text);
-        propertyStateController.text =
-            trxnSnapshot.data()?['propertyState'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updatePropertyState(propertyStateController.text);
-        propertyZipcodeController.text =
-            trxnSnapshot.data()?['propertyZipcode'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updatePropertyZipcode(propertyZipcodeController.text);
-        mlsNumberController.text = trxnSnapshot.data()?['mlsNumber'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateMlsNumber(mlsNumberController.text);
-        if (trxnSnapshot.data()?['mlsNumber'] != null &&
-            trxnSnapshot.data()?['mlsNumber'] != "") {
-          _propertyMLSNbr = trxnSnapshot.data()?['mlsNumber'];
-          _hasMLSNumber = true;
-        } else {
-          _propertyMLSNbr = null;
-          _hasMLSNumber = false;
-        }
-
-        final String? contractDate = trxnSnapshot.data()?['contractDate'];
-        if (contractDate != null && contractDate != "") {
-          //_dt = DateTime.parse(contractDate);
-          contractDateController.text = contractDate;
-          //DateFormat('EE,  MM-dd-yyyy').format(_dt) ?? "";
+          propertyAddressController.text =
+              trxnSnapshot.data()?['propertyAddress'] ?? "";
           ref
               .read(trxnNotifierProvider.notifier)
-              .updateContractDate(contractDateController.text);
-        } else {
-          contractDateController.text = "";
-        }
-
-        if (trxnSnapshot.data()?['contractPrice'] != null &&
-            trxnSnapshot.data()?['contractPrice'] != "") {
-          _hasContractPrice = true;
-          var strCommission = trxnSnapshot.data()?['contractPrice'];
-          commission = .03 * double.parse(strCommission);
-        } else {
-          _hasContractPrice = false;
-        }
-        contractPriceController.text =
-            trxnSnapshot.data()?['contractPrice'] == null
-                ? 'n/a'
-                : trxnSnapshot.data()?['contractPrice'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateContractPrice(contractPriceController.text);
-
-        final String? sellerDisclosure24a =
-            trxnSnapshot.data()?['sellerDisclosure24a'];
-        if (sellerDisclosure24a != null && sellerDisclosure24a != "") {
-          //_dt = DateTime.parse(sellerDisclosure24a);
-          sellerDisclosure24aController.text = sellerDisclosure24a;
-          //DateFormat('EE,  MM-dd-yyyy').format(_dt) ?? "";
+              .updatePropertyAddress(propertyAddressController.text);
+          propertyCityController.text =
+              trxnSnapshot.data()?['propertyCity'] ?? "";
           ref
               .read(trxnNotifierProvider.notifier)
-              .updateSellerDisclosure24a(sellerDisclosure24aController.text);
-        } else {
-          sellerDisclosure24aController.text = "";
-        }
-
-        final String? dueDiligence24b = trxnSnapshot.data()?['dueDiligence24b'];
-        if (dueDiligence24b != null && dueDiligence24b != "") {
-          //_dt = DateTime.parse(dueDiligence24b);
-          dueDiligence24bController.text = dueDiligence24b;
-          //DateFormat('EE,  MM-dd-yyyy').format(_dt) ?? "";
+              .updatePropertyCity(propertyCityController.text);
+          propertyStateController.text =
+              trxnSnapshot.data()?['propertyState'] ?? "";
           ref
               .read(trxnNotifierProvider.notifier)
-              .updateDueDiligence24b(dueDiligence24bController.text);
-        } else {
-          dueDiligence24bController.text = "";
-        }
-
-        final String? financing24c = trxnSnapshot.data()?['financing24c'];
-        if (financing24c != null && financing24c != "") {
-          //_dt = DateTime.parse(financing24c);
-          financing2cController.text = financing24c;
-          //DateFormat('EE,  MM-dd-yyyy').format(_dt) ?? "";
+              .updatePropertyState(propertyStateController.text);
+          propertyZipcodeController.text =
+              trxnSnapshot.data()?['propertyZipcode'] ?? "";
           ref
               .read(trxnNotifierProvider.notifier)
-              .updateFinancing24c(financing2cController.text);
-        } else {
-          financing2cController.text = "";
-        }
-
-        final String? settlement24d = trxnSnapshot.data()?['settlement24d'];
-        if (settlement24d != null && settlement24d != "") {
-          //_dt = DateTime.parse(settlement24d);
-          settlement24dController.text = settlement24d;
-          //DateFormat('EE,  MM-dd-yyyy').format(_dt) ?? "";
+              .updatePropertyZipcode(propertyZipcodeController.text);
+          mlsNumberController.text = trxnSnapshot.data()?['mlsNumber'] ?? "";
           ref
               .read(trxnNotifierProvider.notifier)
-              .updateSettlement24d(settlement24dController.text);
-        } else {
-          settlement24dController.text = "";
-        }
+              .updateMlsNumber(mlsNumberController.text);
+          if (trxnSnapshot.data()?['mlsNumber'] != null &&
+              trxnSnapshot.data()?['mlsNumber'] != "") {
+            _propertyMLSNbr = trxnSnapshot.data()?['mlsNumber'];
+            _hasMLSNumber = true;
+          } else {
+            _propertyMLSNbr = null;
+            _hasMLSNumber = false;
+          }
 
-        inspectorCompanyController.text =
-            trxnSnapshot.data()?['inspectorCompany'] ?? "";
-        inspectorPhoneController.text =
-            trxnSnapshot.data()?['inspectorPhone'] ?? "";
+          final String? contractDate = trxnSnapshot.data()?['contractDate'];
+          if (contractDate != null && contractDate != "") {
+            //_dt = DateTime.parse(contractDate);
+            contractDateController.text = contractDate;
+            //DateFormat('EE,  MM-dd-yyyy').format(_dt) ?? "";
+            ref
+                .read(trxnNotifierProvider.notifier)
+                .updateContractDate(contractDateController.text);
+          } else {
+            contractDateController.text = "";
+          }
 
-        final String? inspectionDate = trxnSnapshot.data()?['inspectionDate'];
-        if (inspectionDate != null && inspectionDate != "") {
-          //_dt = DateTime.parse(inspectionDate);
-          inspectionDateController.text = inspectionDate;
-          //DateFormat('EE,  MM-dd-yyyy').format(_dt) ?? "";
+          if (trxnSnapshot.data()?['contractPrice'] != null &&
+              trxnSnapshot.data()?['contractPrice'] != "") {
+            _hasContractPrice = true;
+            var strCommission = trxnSnapshot.data()?['contractPrice'];
+            commission = .03 * double.parse(strCommission);
+          } else {
+            _hasContractPrice = false;
+          }
+          contractPriceController.text =
+              trxnSnapshot.data()?['contractPrice'] == null
+                  ? 'n/a'
+                  : trxnSnapshot.data()?['contractPrice'] ?? "";
           ref
               .read(trxnNotifierProvider.notifier)
-              .updateInspectionDate(inspectionDateController.text);
-        } else {
-          inspectionDateController.text = "";
-        }
+              .updateContractPrice(contractPriceController.text);
 
-        appraiserController.text = trxnSnapshot.data()?['appraiser'] ?? "";
-        appraiserPhoneController.text =
-            trxnSnapshot.data()?['appraiserPhone'] ?? "";
+          final String? sellerDisclosure24a =
+              trxnSnapshot.data()?['sellerDisclosure24a'];
+          if (sellerDisclosure24a != null && sellerDisclosure24a != "") {
+            //_dt = DateTime.parse(sellerDisclosure24a);
+            sellerDisclosure24aController.text = sellerDisclosure24a;
+            //DateFormat('EE,  MM-dd-yyyy').format(_dt) ?? "";
+            ref
+                .read(trxnNotifierProvider.notifier)
+                .updateSellerDisclosure24a(sellerDisclosure24aController.text);
+          } else {
+            sellerDisclosure24aController.text = "";
+          }
 
-        final String? appraisalDate = trxnSnapshot.data()?['appraisalDate'];
-        if (appraisalDate != null && appraisalDate != "") {
-          //_dt = DateTime.parse(appraisalDate);
-          appraisalDateController.text = appraisalDate;
-          //DateFormat('EE,  MM-dd-yyyy').format(_dt) ?? "";
+          final String? dueDiligence24b =
+              trxnSnapshot.data()?['dueDiligence24b'];
+          if (dueDiligence24b != null && dueDiligence24b != "") {
+            //_dt = DateTime.parse(dueDiligence24b);
+            dueDiligence24bController.text = dueDiligence24b;
+            //DateFormat('EE,  MM-dd-yyyy').format(_dt) ?? "";
+            ref
+                .read(trxnNotifierProvider.notifier)
+                .updateDueDiligence24b(dueDiligence24bController.text);
+          } else {
+            dueDiligence24bController.text = "";
+          }
+
+          final String? financing24c = trxnSnapshot.data()?['financing24c'];
+          if (financing24c != null && financing24c != "") {
+            //_dt = DateTime.parse(financing24c);
+            financing2cController.text = financing24c;
+            //DateFormat('EE,  MM-dd-yyyy').format(_dt) ?? "";
+            ref
+                .read(trxnNotifierProvider.notifier)
+                .updateFinancing24c(financing2cController.text);
+          } else {
+            financing2cController.text = "";
+          }
+
+          final String? settlement24d = trxnSnapshot.data()?['settlement24d'];
+          if (settlement24d != null && settlement24d != "") {
+            //_dt = DateTime.parse(settlement24d);
+            settlement24dController.text = settlement24d;
+            //DateFormat('EE,  MM-dd-yyyy').format(_dt) ?? "";
+            ref
+                .read(trxnNotifierProvider.notifier)
+                .updateSettlement24d(settlement24dController.text);
+          } else {
+            settlement24dController.text = "";
+          }
+
+          inspectorCompanyController.text =
+              trxnSnapshot.data()?['inspectorCompany'] ?? "";
+          inspectorPhoneController.text =
+              trxnSnapshot.data()?['inspectorPhone'] ?? "";
+
+          final String? inspectionDate = trxnSnapshot.data()?['inspectionDate'];
+          if (inspectionDate != null && inspectionDate != "") {
+            //_dt = DateTime.parse(inspectionDate);
+            inspectionDateController.text = inspectionDate;
+            //DateFormat('EE,  MM-dd-yyyy').format(_dt) ?? "";
+            ref
+                .read(trxnNotifierProvider.notifier)
+                .updateInspectionDate(inspectionDateController.text);
+          } else {
+            inspectionDateController.text = "";
+          }
+
+          appraiserController.text = trxnSnapshot.data()?['appraiser'] ?? "";
+          appraiserPhoneController.text =
+              trxnSnapshot.data()?['appraiserPhone'] ?? "";
+
+          final String? appraisalDate = trxnSnapshot.data()?['appraisalDate'];
+          if (appraisalDate != null && appraisalDate != "") {
+            //_dt = DateTime.parse(appraisalDate);
+            appraisalDateController.text = appraisalDate;
+            //DateFormat('EE,  MM-dd-yyyy').format(_dt) ?? "";
+            ref
+                .read(trxnNotifierProvider.notifier)
+                .updateAppraisalDate(appraisalDateController.text);
+          } else {
+            appraisalDateController.text = "";
+          }
+
+          final String? closingDate = trxnSnapshot.data()?['closingDate'];
+          if (closingDate != null && closingDate != "") {
+            //_dt = DateTime.parse(closingDate);
+            closingDateController.text = closingDate;
+            //DateFormat('EE,  MM-dd-yyyy').format(_dt) ?? "";
+            ref
+                .read(trxnNotifierProvider.notifier)
+                .updateClosingDate(closingDateController.text);
+          } else {
+            closingDateController.text = "";
+          }
+
+          final String? walkThroughDate =
+              trxnSnapshot.data()?['walkThroughDate'];
+          if (walkThroughDate != null && walkThroughDate != "") {
+            //_dt = DateTime.parse(walkThroughDate);
+            walkThroughDateController.text = walkThroughDate;
+            //DateFormat('EE,  MM-dd-yyyy').format(_dt) ?? "";
+            ref
+                .read(trxnNotifierProvider.notifier)
+                .updateWalkThroughDate(walkThroughDateController.text);
+          } else {
+            walkThroughDateController.text = "";
+          }
+
+          titleCompanyController.text =
+              trxnSnapshot.data()?['titleCompany'] ?? "";
+          titlePhoneController.text = trxnSnapshot.data()?['titlePhone'] ?? "";
+          titleEmailController.text = trxnSnapshot.data()?['titleEmail'] ?? "";
+          mortgageCompanyController.text =
+              trxnSnapshot.data()?['mortgageCompany'] ?? "";
+          mortgagePhoneController.text =
+              trxnSnapshot.data()?['mortgagePhone'] ?? "";
+          mortgageEmailController.text =
+              trxnSnapshot.data()?['mortgageEmail'] ?? "";
+          otherAgentController.text = trxnSnapshot.data()?['otherAgent'] ?? "";
           ref
               .read(trxnNotifierProvider.notifier)
-              .updateAppraisalDate(appraisalDateController.text);
-        } else {
-          appraisalDateController.text = "";
-        }
-
-        final String? closingDate = trxnSnapshot.data()?['closingDate'];
-        if (closingDate != null && closingDate != "") {
-          //_dt = DateTime.parse(closingDate);
-          closingDateController.text = closingDate;
-          //DateFormat('EE,  MM-dd-yyyy').format(_dt) ?? "";
+              .updateOtherAgent(otherAgentController.text);
+          otherAgentEmailController.text =
+              trxnSnapshot.data()?['otherAgentEmail'] ?? "";
           ref
               .read(trxnNotifierProvider.notifier)
-              .updateClosingDate(closingDateController.text);
-        } else {
-          closingDateController.text = "";
-        }
-
-        final String? walkThroughDate = trxnSnapshot.data()?['walkThroughDate'];
-        if (walkThroughDate != null && walkThroughDate != "") {
-          //_dt = DateTime.parse(walkThroughDate);
-          walkThroughDateController.text = walkThroughDate;
-          //DateFormat('EE,  MM-dd-yyyy').format(_dt) ?? "";
+              .updateOtherAgentEmail(otherAgentEmailController.text);
+          otherAgentPhoneController.text =
+              trxnSnapshot.data()?['otherAgentPhone'] ?? "";
           ref
               .read(trxnNotifierProvider.notifier)
-              .updateWalkThroughDate(walkThroughDateController.text);
-        } else {
-          walkThroughDateController.text = "";
-        }
+              .updateOtherAgentPhone(otherAgentPhoneController.text);
+          otherPartyClientController.text =
+              trxnSnapshot.data()?['otherPartyClient'] ?? "";
+          ref
+              .read(trxnNotifierProvider.notifier)
+              .updateOtherPartyClient(otherPartyClientController.text);
+          otherPartyTitleCompanyController.text =
+              trxnSnapshot.data()?['otherPartyTitleCompany'] ?? "";
+          ref
+              .read(trxnNotifierProvider.notifier)
+              .updateOtherPartyTitleCompanyId(
+                  otherPartyTitleCompanyController.text);
+          trxnStatusController.text = trxnSnapshot.data()?['trxnStatus'] ?? "";
+          ref
+              .read(trxnNotifierProvider.notifier)
+              .updateTrxnStatus(trxnStatusController.text);
+          trxnIdController.text = trxnSnapshot.data()?['trxnId'] ?? "";
 
-        titleCompanyController.text =
-            trxnSnapshot.data()?['titleCompany'] ?? "";
-        titlePhoneController.text = trxnSnapshot.data()?['titlePhone'] ?? "";
-        titleEmailController.text = trxnSnapshot.data()?['titleEmail'] ?? "";
-        mortgageCompanyController.text =
-            trxnSnapshot.data()?['mortgageCompany'] ?? "";
-        mortgagePhoneController.text =
-            trxnSnapshot.data()?['mortgagePhone'] ?? "";
-        mortgageEmailController.text =
-            trxnSnapshot.data()?['mortgageEmail'] ?? "";
-        otherAgentController.text = trxnSnapshot.data()?['otherAgent'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateOtherAgent(otherAgentController.text);
-        otherAgentEmailController.text =
-            trxnSnapshot.data()?['otherAgentEmail'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateOtherAgentEmail(otherAgentEmailController.text);
-        otherAgentPhoneController.text =
-            trxnSnapshot.data()?['otherAgentPhone'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateOtherAgentPhone(otherAgentPhoneController.text);
-        otherPartyClientController.text =
-            trxnSnapshot.data()?['otherPartyClient'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateOtherPartyClient(otherPartyClientController.text);
-        otherPartyTitleCompanyController.text =
-            trxnSnapshot.data()?['otherPartyTitleCompany'] ?? "";
-        ref.read(trxnNotifierProvider.notifier).updateOtherPartyTitleCompanyId(
-            otherPartyTitleCompanyController.text);
-        trxnStatusController.text = trxnSnapshot.data()?['trxnStatus'] ?? "";
-        ref
-            .read(trxnNotifierProvider.notifier)
-            .updateTrxnStatus(trxnStatusController.text);
-        trxnIdController.text = trxnSnapshot.data()?['trxnId'] ?? "";
-
-        setState(() {
+          // setState(() {
           _trxnStatus = trxnSnapshot.data()?['trxnStatus'] ?? "Select Status";
           _clientType =
               trxnSnapshot.data()?['clientType'] ?? 'Select Client Type';
@@ -664,45 +670,51 @@ class _TransactionDetailScreenState
           } else {
             _currentState = trxnSnapshot.data()?['propertyState'];
           }
-        });
-      });
+          // });
 
-      // Get the Client data associated with the transaction
-      _clientStream =
-          _db.collection('client').doc(_clientId).snapshots().listen(
-        (clientSnapshot) {
-          clientFNameController.text =
-              clientSnapshot.data()?['clientFName'] ?? "";
-          clientLNameController.text =
-              clientSnapshot.data()?['clientLName'] ?? "";
-          clientAddress1Controller.text =
-              clientSnapshot.data()?['clientAddress1'] ?? "";
-          clientAddress2Controller.text =
-              clientSnapshot.data()?['clientAddress2'] ?? "";
-          clientCityController.text =
-              clientSnapshot.data()?['clientCity'] ?? "";
-          clientStateController.text =
-              clientSnapshot.data()?['clientState'] ?? "";
-          clientCellPhoneController.text =
-              clientSnapshot.data()?['clientCellPhone'] ?? "";
-          clientCellPhoneController.text != "" &&
-                  clientCellPhoneController.text != null
-              ? _hasCellNumber = true
-              : _hasCellNumber = false;
-          _clientCellPhoneNumber =
-              clientSnapshot.data()?['clientCellPhone'] ?? "";
-          clientHomePhoneController.text =
-              clientSnapshot.data()?['clientHomePhone'] ?? "";
-          clientHomePhoneController.text != "" &&
-                  clientHomePhoneController.text != null
-              ? _hasHomeNumber = true
-              : _hasHomeNumber = false;
-          _clientHomePhoneNumber =
-              clientSnapshot.data()?['clientHomePhone'] ?? "";
-          clientEmailController.text =
-              clientSnapshot.data()?['clientEmail'] ?? "";
-        },
-      );
+          try {
+            _clientStream = _db
+                .collection('client')
+                .doc(_clientId)
+                .snapshots()
+                .listen((clientSnapshot) {
+              clientFNameController.text =
+                  clientSnapshot.data()?['fName'] ?? "";
+              clientLNameController.text =
+                  clientSnapshot.data()?['lName'] ?? "";
+              clientAddress1Controller.text =
+                  clientSnapshot.data()?['address1'] ?? "";
+              clientAddress2Controller.text =
+                  clientSnapshot.data()?['address2'] ?? "";
+              clientCityController.text = clientSnapshot.data()?['city'] ?? "";
+              clientStateController.text =
+                  clientSnapshot.data()?['clientState'] ?? "";
+              clientCellPhoneController.text =
+                  clientSnapshot.data()?['cellPhone'] ?? "";
+              clientCellPhoneController.text != "" &&
+                      clientCellPhoneController.text != null
+                  ? _hasCellNumber = true
+                  : _hasCellNumber = false;
+              _clientCellPhoneNumber =
+                  clientSnapshot.data()?['cellPhone'] ?? "";
+              clientHomePhoneController.text =
+                  clientSnapshot.data()?['homePhone'] ?? "";
+              clientHomePhoneController.text != "" &&
+                      clientHomePhoneController.text != null
+                  ? _hasHomeNumber = true
+                  : _hasHomeNumber = false;
+              _clientHomePhoneNumber =
+                  clientSnapshot.data()?['homePhone'] ?? "";
+              clientEmailController.text =
+                  clientSnapshot.data()?['email'] ?? "";
+            });
+          } catch (e) {
+            print(e);
+          }
+        });
+      } catch (e) {
+        print(e);
+      }
     }
   }
 
@@ -734,71 +746,74 @@ class _TransactionDetailScreenState
   }
 
   populateTrxnProvider() {
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateCompanyid(ref.read(globalsNotifierProvider).companyId!);
-    ref.read(trxnNotifierProvider.notifier).updateClientId(docRef!.id);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updatePropertyAddress(propertyAddressController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updatePropertyCity(propertyCityController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updatePropertyState(propertyStateController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updatePropertyZipcode(propertyZipcodeController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateMlsNumber(mlsNumberController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateContractDate(contractDateController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateContractPrice(contractPriceController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateSellerDisclosure24a(sellerDisclosure24aController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateDueDiligence24b(dueDiligence24bController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateFinancing24c(financing2cController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateSettlement24d(settlement24dController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateInspectionDate(inspectionDateController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateAppraisalDate(appraisalDateController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateClosingDate(closingDateController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateWalkThroughDate(walkThroughDateController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateOtherAgent(otherAgentController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateOtherAgentEmail(otherAgentEmailController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateOtherAgentPhone(otherAgentPhoneController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateOtherPartyClient(otherPartyClientController.text);
-    ref
-        .read(trxnNotifierProvider.notifier)
-        .updateOtherPartyTitleCompanyId(otherPartyTitleCompanyController.text);
-    ref.read(trxnNotifierProvider.notifier).updateTrxnStatus(_trxnStatus);
+    try {
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateCompanyid(ref.read(globalsNotifierProvider).companyId!);
+      //ref.read(trxnNotifierProvider.notifier).updateClientId(docRef!.id);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updatePropertyAddress(propertyAddressController.text);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updatePropertyCity(propertyCityController.text);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updatePropertyState(propertyStateController.text);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updatePropertyZipcode(propertyZipcodeController.text);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateMlsNumber(mlsNumberController.text);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateContractDate(contractDateController.text);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateContractPrice(contractPriceController.text);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateSellerDisclosure24a(sellerDisclosure24aController.text);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateDueDiligence24b(dueDiligence24bController.text);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateFinancing24c(financing2cController.text);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateSettlement24d(settlement24dController.text);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateInspectionDate(inspectionDateController.text);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateAppraisalDate(appraisalDateController.text);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateClosingDate(closingDateController.text);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateWalkThroughDate(walkThroughDateController.text);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateOtherAgent(otherAgentController.text);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateOtherAgentEmail(otherAgentEmailController.text);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateOtherAgentPhone(otherAgentPhoneController.text);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateOtherPartyClient(otherPartyClientController.text);
+      ref.read(trxnNotifierProvider.notifier).updateOtherPartyTitleCompanyId(
+          otherPartyTitleCompanyController.text);
+      ref.read(trxnNotifierProvider.notifier).updateTrxnStatus(_trxnStatus);
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -895,7 +910,7 @@ class _TransactionDetailScreenState
                     children: <Widget>[
                       ExpansionTile(
                         subtitle: Text(
-                            '$clientFNameController.text $clientLNameController.text'),
+                            '${clientFNameController.text} ${clientLNameController.text}'),
                         title: const Text(
                           'Client Information',
                           style: TextStyle(
@@ -1510,6 +1525,10 @@ class _TransactionDetailScreenState
                           AsyncSnapshot<QuerySnapshot> snapshot) {
                         List<DropdownMenuItem<String>> inspectorCompanyItems =
                             [];
+                        inspectorCompanyItems.add(
+                            const DropdownMenuItem<String>(
+                                value: 'a',
+                                child: Text('Select Inspector Company')));
                         if (snapshot.hasData) {
                           final inspectorCompanyList = snapshot.data!.docs;
                           for (var inspectorCompany in inspectorCompanyList) {
@@ -1615,6 +1634,10 @@ class _TransactionDetailScreenState
                             (BuildContext context, AsyncSnapshot snapshot) {
                           List<DropdownMenuItem<String>> appraiserCompanyItems =
                               [];
+                          appraiserCompanyItems.add(
+                              const DropdownMenuItem<String>(
+                                  value: 'a',
+                                  child: Text('Select Appraiser Company')));
                           if (snapshot.hasData) {
                             final appraiserCompanyList = snapshot.data.docs;
                             for (var appraiserCompany in appraiserCompanyList) {
@@ -1823,6 +1846,8 @@ class _TransactionDetailScreenState
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
                           List<DropdownMenuItem<String>> titleCompanyItems = [];
+                          titleCompanyItems.add(const DropdownMenuItem<String>(
+                              value: 'a', child: Text('Select Title Company')));
                           if (snapshot.hasData) {
                             final titleCompanyList = snapshot.data.docs;
                             for (var titleCompany in titleCompanyList) {
@@ -1872,6 +1897,10 @@ class _TransactionDetailScreenState
                             (BuildContext context, AsyncSnapshot snapshot) {
                           List<DropdownMenuItem<String>> mortgageCompanyItems =
                               [];
+                          mortgageCompanyItems.add(
+                              const DropdownMenuItem<String>(
+                                  value: 'a',
+                                  child: Text('Select Mortgage Company')));
                           if (snapshot.hasData) {
                             final mortgageCompanyList = snapshot.data.docs;
                             for (var mortgageCompany in mortgageCompanyList) {
@@ -1921,6 +1950,9 @@ class _TransactionDetailScreenState
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
                           List<DropdownMenuItem<String>> otherCompanyItems = [];
+                          otherCompanyItems.add(const DropdownMenuItem<String>(
+                              value: 'a',
+                              child: Text('Select Other Agent Company')));
                           if (snapshot.hasData) {
                             final otherCompanyList = snapshot.data.docs;
                             for (var otherCompany in otherCompanyList) {
@@ -1986,6 +2018,10 @@ class _TransactionDetailScreenState
                             (BuildContext context, AsyncSnapshot snapshot) {
                           List<DropdownMenuItem<String>>
                               otherTitleCompanyItems = [];
+                          otherTitleCompanyItems.add(
+                              const DropdownMenuItem<String>(
+                                  value: 'a',
+                                  child: Text('Select Other Title Company')));
                           if (snapshot.hasData) {
                             final otherTitleCompanyList = snapshot.data.docs;
                             for (var otherTitleCompany
