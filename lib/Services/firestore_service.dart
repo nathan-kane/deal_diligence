@@ -38,8 +38,14 @@ class FirestoreService {
     }
   }
 
-  Future<void> saveClient(client, String currentClientid) {
-    return _db.collection('client').doc(currentClientid).set(client);
+  Future<void> saveClient(client, String currentClientId) async {
+    try {
+      //Map<String, dynamic> clientMap = client.toMap(client);
+      await _db.collection('client').doc(currentClientId).set(client);
+    } catch (e) {
+      print(e.toString());
+      return Future.value(null);
+    }
   }
 
   Future<void> saveNewInspectorCompany(inspectorCompany) {

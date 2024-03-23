@@ -50,6 +50,7 @@ bool bInspectionDate = false;
 bool bAppraisalDate = false;
 bool bClosingDate = false;
 bool bFinalWalkThrough = false;
+bool bClientChanged = false;
 
 //var maskFormatter = new MaskTextInputFormatter(mask: '+# (###) ###-####', filter: { "#": RegExp(r'[0-9]') });
 var maskFormatter = MaskTextInputFormatter(
@@ -672,6 +673,7 @@ class _TransactionDetailScreenState
           }
           // });
 
+          // Get the client data
           try {
             _clientStream = _db
                 .collection('client')
@@ -743,6 +745,9 @@ class _TransactionDetailScreenState
     ref
         .read(clientNotifierProvider.notifier)
         .updateEmail(clientEmailController.text);
+    if (_clientId != null && _clientId != "") {
+      ref.read(clientNotifierProvider.notifier).updateClientId(_clientId!);
+    }
   }
 
   populateTrxnProvider() {
@@ -926,6 +931,7 @@ class _TransactionDetailScreenState
                               ref
                                   .read(clientNotifierProvider.notifier)
                                   .updatefName(value);
+                              bClientChanged = true;
                             },
                             decoration: const InputDecoration(
                                 hintText: 'Client First Name',
@@ -940,6 +946,7 @@ class _TransactionDetailScreenState
                               ref
                                   .read(clientNotifierProvider.notifier)
                                   .updatelName(value);
+                              bClientChanged = true;
                             },
                             decoration: const InputDecoration(
                                 hintText: 'Client Last Name',
@@ -954,6 +961,7 @@ class _TransactionDetailScreenState
                               ref
                                   .read(clientNotifierProvider.notifier)
                                   .updateAddress1(value);
+                              bClientChanged = true;
                             },
                             decoration: const InputDecoration(
                                 hintText: 'Address 1', labelText: 'Address 1'),
@@ -967,6 +975,7 @@ class _TransactionDetailScreenState
                               ref
                                   .read(clientNotifierProvider.notifier)
                                   .updateAddress2(value);
+                              bClientChanged = true;
                             },
                             decoration: const InputDecoration(
                                 hintText: 'Address 2', labelText: 'Address 2'),
@@ -980,6 +989,7 @@ class _TransactionDetailScreenState
                               ref
                                   .read(clientNotifierProvider.notifier)
                                   .updateCity(value);
+                              bClientChanged = true;
                             },
                             decoration: const InputDecoration(
                                 hintText: 'City', labelText: 'City'),
@@ -999,6 +1009,7 @@ class _TransactionDetailScreenState
                               ref
                                   .read(clientNotifierProvider.notifier)
                                   .updateCellPhone(value);
+                              bClientChanged = true;
                             },
                             decoration: const InputDecoration(
                                 hintText: 'Cell Phone',
@@ -1013,6 +1024,7 @@ class _TransactionDetailScreenState
                               ref
                                   .read(clientNotifierProvider.notifier)
                                   .updateHomePhone(value);
+                              bClientChanged = true;
                             },
                             decoration: const InputDecoration(
                                 hintText: 'Home Phone',
@@ -1091,6 +1103,7 @@ class _TransactionDetailScreenState
                               ref
                                   .read(clientNotifierProvider.notifier)
                                   .updateEmail(value);
+                              bClientChanged = true;
                             },
                             decoration: const InputDecoration(
                                 hintText: 'Email', labelText: 'Email'),
@@ -2095,22 +2108,29 @@ class _TransactionDetailScreenState
                     setState(() {
                       showSpinner = true;
                     });
+
                     try {
-                      // Save the client information first
-                      populateClientProvider();
-                      try {
-                        if (ref.read(clientNotifierProvider).clientId == null ||
-                            ref.read(clientNotifierProvider).clientId == "") {
-                          docRef = await ref
-                              .read(clientNotifierProvider.notifier)
-                              .saveClient(ref.read(clientNotifierProvider),
-                                  widget.isNewClient);
-                        } else {
-                          ref.read(clientNotifierProvider.notifier).saveClient(
-                              ref.read(clientNotifierProvider), false);
+                      if (bClientChanged == true) {
+                        populateClientProvider();
+                        try {
+                          // Save the client information first
+
+                          if (ref.read(clientNotifierProvider).clientId ==
+                                  null ||
+                              ref.read(clientNotifierProvider).clientId == "") {
+                            docRef = await ref
+                                .read(clientNotifierProvider.notifier)
+                                .saveClient(ref.read(clientNotifierProvider),
+                                    widget.isNewClient);
+                          } else {
+                            ref
+                                .read(clientNotifierProvider.notifier)
+                                .saveClient(
+                                    ref.read(clientNotifierProvider), false);
+                          }
+                        } catch (e) {
+                          print('Trxn Detail  $e');
                         }
-                      } catch (e) {
-                        print('Trxn Detail  $e');
                       }
 
                       // Save the Trxn

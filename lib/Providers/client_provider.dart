@@ -243,7 +243,7 @@ class ClientNotifier extends Notifier<Client> {
       //ref.read(globalsNotifierProvider.notifier).updatenewClient(false);
     } else {
       final DocumentSnapshot currentClientProfile =
-          await clientDB.doc(client.ClientId).get();
+          await clientDB.doc(client.clientId).get();
 
       var newClient = Client(
           fName: (state.fName != null && state.fName != "")
@@ -270,10 +270,10 @@ class ClientNotifier extends Notifier<Client> {
           cellPhone: (state.cellPhone != null && state.cellPhone != "")
               ? state.cellPhone
               : currentClientProfile.get('cellPhone'),
-          userCompanyId:
-              (state.userCompanyId != null && state.userCompanyId != "")
-                  ? state.userCompanyId
-                  : currentClientProfile.get('userCompanyId'),
+          // userCompanyId:
+          //     (state.userCompanyId != null && state.userCompanyId != "")
+          //         ? state.userCompanyId
+          //         : currentClientProfile.get('userCompanyId'),
           userId: (state.userId != null && state.userId != "")
               ? state.userId
               : currentClientProfile.get('userId'),
@@ -284,7 +284,7 @@ class ClientNotifier extends Notifier<Client> {
               ? state.homePhone
               : currentClientProfile.get('homePhone'));
 
-      firestoreService.saveClient(newClient, clientId);
+      firestoreService.saveClient(toMap(newClient), state.clientId!);
     }
   }
 
