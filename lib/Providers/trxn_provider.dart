@@ -34,7 +34,7 @@ class Trxn {
   String? walkThroughDate;
   String? titleCompanyId;
   String? mortgageCompanyId;
-  String? otherAgent;
+  String? otherAgentCompanyId;
   String? otherAgentPhone;
   String? otherAgentEmail;
   String? otherPartyClient;
@@ -67,7 +67,7 @@ class Trxn {
     this.walkThroughDate,
     this.titleCompanyId,
     this.mortgageCompanyId,
-    this.otherAgent,
+    this.otherAgentCompanyId,
     this.otherAgentPhone,
     this.otherAgentEmail,
     this.otherPartyClient,
@@ -101,7 +101,7 @@ class Trxn {
     String? walkThroughDate,
     String? titleCompanyId,
     String? mortgageCompanyId,
-    String? otherAgent,
+    String? otherAgentCompanyId,
     String? otherAgentPhone,
     String? otherAgentEmail,
     String? otherPartyClient,
@@ -134,7 +134,7 @@ class Trxn {
       walkThroughDate: walkThroughDate ?? this.walkThroughDate,
       titleCompanyId: titleCompanyId ?? this.titleCompanyId,
       mortgageCompanyId: mortgageCompanyId ?? this.mortgageCompanyId,
-      otherAgent: otherAgent ?? this.otherAgent,
+      otherAgentCompanyId: otherAgentCompanyId ?? this.otherAgentCompanyId,
       otherAgentPhone: otherAgentPhone ?? this.otherAgentPhone,
       otherAgentEmail: otherAgentEmail ?? this.otherAgentEmail,
       otherPartyClient: otherPartyClient ?? this.otherPartyClient,
@@ -218,7 +218,7 @@ class TrxnNotifier extends Notifier<Trxn> {
       walkThroughDate: '',
       titleCompanyId: '',
       mortgageCompanyId: '',
-      otherAgent: '',
+      otherAgentCompanyId: '',
       otherAgentPhone: '',
       otherAgentEmail: '',
       otherPartyClient: '',
@@ -255,7 +255,7 @@ class TrxnNotifier extends Notifier<Trxn> {
   String? mortgageCompany;
   String? mortgagePhone;
   String? mortgageEmail;
-  String? otherAgent;
+  String? otherAgentCompanyId;
   String? otherAgentPhone;
   String? otherAgentEmail;
   String? otherPartyClient;
@@ -352,8 +352,8 @@ class TrxnNotifier extends Notifier<Trxn> {
     state = state.copyWith(mortgageCompanyId: newMortgageCompanyId);
   }
 
-  void updateOtherAgent(String newOtherAgent) {
-    state = state.copyWith(otherAgent: newOtherAgent);
+  void updateOtherAgentCompanyId(String newOtherAgentCompanyId) {
+    state = state.copyWith(otherAgentCompanyId: newOtherAgentCompanyId);
   }
 
   void updateOtherAgentPhone(String newOtherAgentPhone) {
@@ -403,7 +403,7 @@ class TrxnNotifier extends Notifier<Trxn> {
       'walkThroughDate': trxn.walkThroughDate,
       'titleCompanyId': trxn.titleCompanyId,
       'mortgageCompanyId': trxn.mortgageCompanyId,
-      'otherAgent': trxn.otherAgent,
+      'otherAgentCompanyId': trxn.otherAgentCompanyId,
       'otherAgentPhone': trxn.otherAgentPhone,
       'otherAgentEmail': trxn.otherAgentEmail,
       'otherPartyClient': trxn.otherPartyClient,
@@ -449,7 +449,7 @@ class TrxnNotifier extends Notifier<Trxn> {
         walkThroughDate: refTrxn.walkThroughDate,
         titleCompanyId: refTrxn.titleCompanyId,
         mortgageCompanyId: refTrxn.mortgageCompanyId,
-        otherAgent: refTrxn.otherAgent,
+        otherAgentCompanyId: refTrxn.otherAgentCompanyId,
         otherAgentPhone: refTrxn.otherAgentPhone,
         otherAgentEmail: refTrxn.otherAgentEmail,
         otherPartyTitleCompanyId: refTrxn.otherPartyTitleCompanyId,
