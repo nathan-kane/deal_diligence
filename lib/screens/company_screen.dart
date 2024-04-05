@@ -171,7 +171,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
   Widget build(BuildContext context) {
     // Get the stream of agents created in main.dart
     // final agencyProvider = Provider.of<AgencyProvider>(context);
-    final _firestoreService = FirestoreService();
+    final firestoreService = FirestoreService();
 
     return Scaffold(
       //appBar: CustomAppBar(),
@@ -234,7 +234,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                       showSpinner = true;
                     });
                     try {
-                      await _firestoreService.linkUserToExistingCompany(
+                      await firestoreService.linkUserToExistingCompany(
                           _currentCompanyName,
                           ref.read(globalsNotifierProvider).currentUid!);
                       ref

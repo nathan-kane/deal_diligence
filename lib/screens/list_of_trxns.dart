@@ -78,7 +78,7 @@ class _CompanyDashboardScreenState
                             builder: (context, clientSnapshot) {
                               if (clientSnapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return CircularProgressIndicator();
+                                return const CircularProgressIndicator();
                               }
                               if (clientSnapshot.hasData) {
                                 return ListTile(
@@ -88,7 +88,7 @@ class _CompanyDashboardScreenState
                                       Text(
                                         // Replace 'INSERT CLIENT NAME HERE' with retrieved client name
                                         clientSnapshot.data!,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.w900,
                                             color: Colors.blueAccent),
                                       ),
@@ -126,7 +126,7 @@ class _CompanyDashboardScreenState
                                   },
                                 );
                               } else {
-                                return Text('No Client Data');
+                                return const Text('No Client Data');
                               }
                             },
                           ),

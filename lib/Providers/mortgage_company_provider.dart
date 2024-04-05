@@ -70,7 +70,7 @@ class MortgageCompany {
 
 class MortgageCompanyNotifier extends Notifier<MortgageCompany> {
   final firestoreService = FirestoreService();
-  FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
   MortgageCompanyNotifier(); // un-named constructor
 
   @override

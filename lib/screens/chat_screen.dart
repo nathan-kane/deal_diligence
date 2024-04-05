@@ -13,7 +13,7 @@ import 'package:deal_diligence/components/widgets.dart';
 import 'package:intl/intl.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  const ChatScreen({super.key});
 
   @override
   ConsumerState<ChatScreen> createState() => _ChatScreenState();

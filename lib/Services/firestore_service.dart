@@ -6,7 +6,6 @@
 
 //import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deal_diligence/Providers/client_provider.dart';
 import "package:firebase_messaging/firebase_messaging.dart";
 import 'dart:io';
 import 'package:deal_diligence/Providers/global_provider.dart';

@@ -71,7 +71,7 @@ class AppraiserCompany {
 
 class AppraiserCompanyNotifier extends Notifier<AppraiserCompany> {
   final firestoreService = FirestoreService();
-  FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
   AppraiserCompanyNotifier(); // un-named constructor
 
   @override

@@ -172,7 +172,6 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                           registrationFail = true;
                         });
                       }
-                      ;
                       setState(() {
                         showSpinner = false;
                       });

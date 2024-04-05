@@ -23,10 +23,6 @@ import 'package:deal_diligence/screens/list_of_trxns.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:deal_diligence/screens/chat_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:deal_diligence/screens/appraiser_company_screen.dart';
-import 'package:deal_diligence/screens/inspector_profile_screen.dart';
-import 'package:deal_diligence/screens/mortgage_company_screen.dart';
-import 'package:deal_diligence/screens/title_company_screen.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});
@@ -132,7 +128,7 @@ class SideDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text("${userFName} ${userLName}"),
+            accountName: Text("$userFName $userLName"),
             accountEmail: Text(auth.currentUser!.email ?? 'No Email Found'),
             //   currentAccountPicture: CircleAvatar(
             //     child: ClipOval(child: Image.asset('images/image.jpg')),

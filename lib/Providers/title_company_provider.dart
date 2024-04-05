@@ -70,7 +70,7 @@ class TitleCompany {
 
 class TitleCompanyNotifier extends Notifier<TitleCompany> {
   final firestoreService = FirestoreService();
-  FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
   TitleCompanyNotifier(); // un-named constructor
 
   @override

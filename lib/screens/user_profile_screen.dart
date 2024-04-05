@@ -11,7 +11,6 @@ import 'package:deal_diligence/Providers/company_provider.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:googleapis/artifactregistry/v1.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -797,5 +796,6 @@ class GoogleAuthApi {
         print(e);
       }
     }
+    return null;
   }
 }

@@ -12,8 +12,7 @@ class AnimatedDialog extends StatefulWidget {
   final double height;
   final double width;
 
-  const AnimatedDialog({Key? key, required this.height, required this.width})
-      : super(key: key);
+  const AnimatedDialog({super.key, required this.height, required this.width});
 
   @override
   State<AnimatedDialog> createState() => _AnimatedDialogState();

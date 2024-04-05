@@ -41,7 +41,7 @@ LinkedHashMap<DateTime, List<Events>> kEvents =
     LinkedHashMap<DateTime, List<Events>>();
 
 class AppointmentCalendarScreen extends ConsumerStatefulWidget {
-  const AppointmentCalendarScreen({Key? key, this.title}) : super(key: key);
+  const AppointmentCalendarScreen({super.key, this.title});
 
   final String? title;
 

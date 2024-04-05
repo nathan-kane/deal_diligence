@@ -11,7 +11,6 @@
 // import 'package:deal_diligence/Providers/title_company_provider.dart';
 // import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/screens/inspector_profile_screen.dart';
-import 'package:deal_diligence/screens/title_company_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 //import 'package:get/get.dart';

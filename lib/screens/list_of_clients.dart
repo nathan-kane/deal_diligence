@@ -8,7 +8,6 @@
 
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:deal_diligence/screens/appraiser_company_screen.dart';
 import 'package:deal_diligence/screens/client_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

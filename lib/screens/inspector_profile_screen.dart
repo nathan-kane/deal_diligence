@@ -206,7 +206,7 @@ class _InspectorCompanyScreenState
   Widget build(BuildContext context) {
     // Get the stream of agents created in main.dart
     // final agencyProvider = Provider.of<AgencyProvider>(context);
-    final _firestoreService = FirestoreService();
+    final firestoreService = FirestoreService();
 
     return Scaffold(
       //appBar: CustomAppBar(),

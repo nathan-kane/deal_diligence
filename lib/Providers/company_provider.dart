@@ -69,7 +69,7 @@ class Company {
 
 class CompanyNotifier extends Notifier<Company> {
   final firestoreService = FirestoreService();
-  FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
   CompanyNotifier(); // un-named constructor
 
   @override

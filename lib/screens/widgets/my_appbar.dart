@@ -6,9 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
-  const CustomAppBar({Key? key})
-      : preferredSize = const Size.fromHeight(kToolbarHeight),
-        super(key: key);
+  const CustomAppBar({super.key})
+      : preferredSize = const Size.fromHeight(kToolbarHeight);
 
   @override
   final Size preferredSize; // default is 56.0

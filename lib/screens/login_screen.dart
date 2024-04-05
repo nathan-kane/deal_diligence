@@ -422,7 +422,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   style: TextStyle(fontSize: 15),
                 ),
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ResetPasswordScreen())),
+                    builder: (context) => const ResetPasswordScreen())),
               ),
               const SizedBox(
                 height: 100.0,
@@ -433,7 +433,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   style: TextStyle(fontSize: 15, color: Colors.blue),
                 ),
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => UserRegisterScreen())),
+                    builder: (context) => const UserRegisterScreen())),
               ),
             ],
           ),

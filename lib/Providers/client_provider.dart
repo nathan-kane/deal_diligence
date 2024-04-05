@@ -12,7 +12,6 @@ import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:deal_diligence/Providers/company_provider.dart';
-import 'package:deal_diligence/Providers/global_provider.dart';
 
 class Client {
   //String? clientId;
@@ -286,6 +285,7 @@ class ClientNotifier extends Notifier<Client> {
 
       firestoreService.saveClient(toMap(newClient), state.clientId!);
     }
+    return null;
   }
 
   deleteClient(String? clientId) {
