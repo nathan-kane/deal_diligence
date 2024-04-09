@@ -52,6 +52,7 @@ const List kBusinessType = [
 const List kFrequencyList = ['daily', 'weekly', 'monthly', 'yearly'];
 
 const List kStates = [
+  'Choose State',
   'AL',
   'AK',
   'AZ',

@@ -38,6 +38,11 @@ String? _selectedOtherAgentCompany;
 String? _selectedTitleCompany;
 String? _selectedMortgageCompany;
 String? _selectedOtherTitleCompany;
+String? _currentPropertyState;
+String? _currentClientState;
+
+// List<DropdownMenuItem<String>> propertyStateItems = [];
+// List<DropdownMenuItem<String>> clientStateItems = [];
 
 // Variables telling if a date has been changed so it can be set on the calendar
 bool bContractDate = false;
@@ -193,25 +198,14 @@ class _TransactionDetailScreenState
 
     getTrxn();
     super.initState();
-    //final trxnProvider = Provider.of<TrxnProvider>(context);
 
     _dropDownState = getDropDownState();
-    _currentState = _dropDownState![0].value;
-    _currentClientState = _dropDownState![0].value;
-    //_selectedInspectorCompany = "Select Inspector Company";
     _selectedUser = 'Select Agent';
-    // _selectedAppraiserCompany = null;
-    // _selectedTitleCompany = null;
-    // _selectedMortgageCompany = null;
-    // _selectedOtherCompany = null;
-    // _selectedOtherTitleCompany = null;
   }
 
   String _currentStatus = "Select Status";
 
   List<DropdownMenuItem<String>>? _dropDownState;
-  String? _currentState = "AL";
-  String? _currentClientState = "";
 
   List<DropdownMenuItem<String>> getDropDownState() {
     List<DropdownMenuItem<String>> items = [];
@@ -246,7 +240,7 @@ class _TransactionDetailScreenState
   // Update State
   void changedDropDownState(String? selectedState) {
     setState(() {
-      _currentState = selectedState;
+      _currentPropertyState = selectedState;
     });
     ref
         .read(globalsNotifierProvider.notifier)
@@ -257,6 +251,7 @@ class _TransactionDetailScreenState
     setState(() {
       _currentClientState = selectedState;
     });
+    bClientChanged = true;
     ref.read(clientNotifierProvider.notifier).updateClientState(selectedState!);
   }
 
@@ -362,6 +357,12 @@ class _TransactionDetailScreenState
       setState(() {
         _trxnStatus = 'Select Status';
         _selectedAppraiserCompany = null;
+        _selectedInspectorCompany = null;
+        _selectedMortgageCompany = null;
+        _selectedTitleCompany = null;
+        _selectedOtherAgentCompany = null;
+        _selectedOtherTitleCompany = null;
+        _currentClientState = null;
       });
     } else {
       // Populate controllers when transaction exists
@@ -597,20 +598,20 @@ class _TransactionDetailScreenState
               .updateTrxnStatus(trxnStatusController.text);
           trxnIdController.text = trxnSnapshot.data()?['trxnId'] ?? "";
 
-          // setState(() {
           _trxnStatus = trxnSnapshot.data()?['trxnStatus'] ?? "Select Status";
           _clientType =
               trxnSnapshot.data()?['clientType'] ?? 'Select Client Type';
           _selectedCompany = trxnSnapshot.data()?['companyId'] ?? "";
           _selectedUser = trxnSnapshot.data()?['userId'] ?? "";
           _selectedClientState = trxnSnapshot.data()?['clientState'] ?? "";
-          if (trxnSnapshot.data()?['propertyState'] == null ||
-              trxnSnapshot.data()?['propertyState'] == "") {
-            _currentState = "AL";
-          } else {
-            _currentState = trxnSnapshot.data()?['propertyState'];
-          }
-          // });
+          setState(() {
+            if (trxnSnapshot.data()?['propertyState'] == null ||
+                trxnSnapshot.data()?['propertyState'] == "") {
+              _currentPropertyState = "Choose State";
+            } else {
+              _currentPropertyState = trxnSnapshot.data()?['propertyState'];
+            }
+          });
 
           // Get the client data
           try {
@@ -628,8 +629,17 @@ class _TransactionDetailScreenState
               clientAddress2Controller.text =
                   clientSnapshot.data()?['address2'] ?? "";
               clientCityController.text = clientSnapshot.data()?['city'] ?? "";
-              clientStateController.text =
-                  clientSnapshot.data()?['clientState'] ?? "";
+
+              setState(() {
+                if (clientSnapshot.data()?['clientState'] == null ||
+                    clientSnapshot.data()?['clientState'] == "") {
+                  _currentClientState = "Choose State";
+                  //clientStateController.text = "AL";
+                } else {
+                  _currentClientState = clientSnapshot.data()?['clientState'];
+                }
+              });
+
               clientCellPhoneController.text =
                   clientSnapshot.data()?['cellPhone'] ?? "";
               clientCellPhoneController.text != "" &&
@@ -674,7 +684,7 @@ class _TransactionDetailScreenState
         .updateCity(clientCityController.text);
     ref
         .read(clientNotifierProvider.notifier)
-        .updateClientState(clientStateController.text);
+        .updateClientState(_currentClientState!);
     ref
         .read(clientNotifierProvider.notifier)
         .updateCellPhone(clientCellPhoneController.text);
@@ -703,7 +713,7 @@ class _TransactionDetailScreenState
           .updatePropertyCity(propertyCityController.text);
       ref
           .read(trxnNotifierProvider.notifier)
-          .updatePropertyState(propertyStateController.text);
+          .updatePropertyState(_currentPropertyState!);
       ref
           .read(trxnNotifierProvider.notifier)
           .updatePropertyZipcode(propertyZipcodeController.text);
@@ -1099,8 +1109,9 @@ class _TransactionDetailScreenState
                 const SizedBox(
                   height: 8.0,
                 ),
-                DropdownButton(
-                  value: _currentState,
+                DropdownButton<String>(
+                  //icon: const Icon(Icons.add_to_home_screen),
+                  value: _currentPropertyState,
                   items: _dropDownState,
                   hint: const Text('Choose State'),
                   onChanged: changedDropDownState,

@@ -260,8 +260,8 @@ class ClientNotifier extends Notifier<Client> {
           city: (state.city != null && state.city != "")
               ? state.city
               : currentClientProfile.get('city'),
-          clientState: (clientState != null && clientState != "")
-              ? clientState
+          clientState: (state.clientState != null && state.clientState != "")
+              ? state.clientState
               : currentClientProfile.get('clientState'),
           zipCode: (state.zipCode != null && state.zipCode != "")
               ? state.zipCode
