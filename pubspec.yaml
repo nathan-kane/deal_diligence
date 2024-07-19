@@ -37,11 +37,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_riverpod: ^2.4.3
   # firebase_auth: ^4.10.1
-  firebase_auth: ^4.19.5
+  firebase_auth: any
   # cloud_firestore: ^4.9.3
-  cloud_firestore: ^4.17.3
+  cloud_firestore: any
   # firebase_core: ^2.17.0
-  firebase_core: ^2.31.0
+  firebase_core: any
   modal_progress_hud_nsn: ^0.5.1
   mask_text_input_formatter: ^2.5.0
   uuid: ^4.1.0
@@ -51,8 +51,8 @@ dependencies:
   table_calendar: ^3.0.9
   persistent_bottom_nav_bar_v2: ^5.2.3
   # firebase_messaging: ^14.7.4
-  firebase_messaging: ^14.9.2
-  flutter_local_notifications: ^17.1.2
+  firebase_messaging: any
+  flutter_local_notifications: any
   google_fonts: ^6.2.0
   flutter_dotenv: ^5.1.0
   http: ^1.1.0
@@ -62,7 +62,7 @@ dependencies:
   add_2_calendar: ^3.0.1
   mailer: ^6.0.1
   google_sign_in: ^6.2.1
-  firebase_messaging_web: ^3.8.0
+  firebase_messaging_web: any
 
 
 dev_dependencies:
