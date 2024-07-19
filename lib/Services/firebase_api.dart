@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+
 //import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -85,8 +86,6 @@ class FirebaseApi {
 
   Future<void> initNotifications() async {
     await firebaseMessaging.requestPermission();
-    await firebaseMessaging.subscribeToTopic('chat');
-    //final fcmToken = await firebaseMessaging.getToken();
     initPushNotifications();
     initLocalNotification();
   }

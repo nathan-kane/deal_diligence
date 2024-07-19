@@ -43,6 +43,9 @@ class DefaultFirebaseOptions {
     }
   }
 
+  var vapidKey =
+      "BPeAY_n11fc6jVMd5deMLLHJ51ntWfW4wzt9qjh3B0KFbC5pPkR3sn3t_QRxTg3zDSCVLLtZ2kHxxvR4jL2EoNk";
+
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyDBIaLXzl5tF2QNTN58s2iPDI--GLr7bqo',
     appId: '1:394692266013:web:0b5da830c03cc9d1a51ef4',
