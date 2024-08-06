@@ -1,8 +1,9 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
+import 'package:googleapis/calendar/v3.dart';
 //import 'package:flutter/material.dart';
 import "package:googleapis_auth/auth_io.dart";
-import 'package:googleapis/calendar/v3.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CalendarClient {
@@ -14,7 +15,9 @@ class CalendarClient {
         "");
     clientViaUserConsent(clientID, _scopes, prompt).then((AuthClient client) {
       var calendar = CalendarApi(client);
-      calendar.calendarList.list().then((value) => print("VAL________$value"));
+      calendar.calendarList
+          .list()
+          .then((value) => debugPrint("VAL________$value"));
 
       String calendarId = "primary";
       Event event = Event(); // Create object of event
@@ -32,7 +35,7 @@ class CalendarClient {
       event.end = end;
       try {
         calendar.events.insert(event, calendarId).then((value) {
-          print("ADDEDDD_________________${value.status}");
+          debugPrint("ADDEDDD_________________${value.status}");
           if (value.status == "confirmed") {
             log('Event added in google calendar');
           } else {
@@ -46,9 +49,9 @@ class CalendarClient {
   }
 
   void prompt(String url) async {
-    print("Please go to the following URL and grant access:");
-    print("  => $url");
-    print("");
+    debugPrint("Please go to the following URL and grant access:");
+    debugPrint("  => $url");
+    debugPrint("");
 
     if (await canLaunchUrl(url as Uri)) {
       await launchUrl(url as Uri);
@@ -122,7 +125,7 @@ class CalendarClient {
 
 //         try {
 //           calendar.events.insert(event, calendarId).then((value) {
-//             print("ADDEDDD_________________${value.status}");
+//             debugPrint("ADDEDDD_________________${value.status}");
 //             if (value.status == "confirmed") {
 //               // Dialogs().displayToast(
 //               //     context, "Event added in google calendar", 0);
@@ -144,9 +147,9 @@ class CalendarClient {
 //   }
 
 //   void prompt(String url) async {
-//     print("Please go to the following URL and grant access:");
-//     print("  => $url");
-//     print("");
+//     debugPrint("Please go to the following URL and grant access:");
+//     debugPrint("  => $url");
+//     debugPrint("");
 
 //     if (await canLaunch(url)) {
 //       await launch(url);

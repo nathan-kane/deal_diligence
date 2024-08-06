@@ -6,17 +6,17 @@
 
 // ignore_for_file: dead_code, no_leading_underscores_for_local_identifiers, unnecessary_null_comparison, use_build_context_synchronously
 
-import 'package:deal_diligence/Providers/company_provider.dart';
-import 'package:deal_diligence/Providers/user_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:deal_diligence/screens/main_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deal_diligence/Providers/company_provider.dart';
+import 'package:deal_diligence/Providers/global_provider.dart';
+import 'package:deal_diligence/Providers/user_provider.dart';
+import 'package:deal_diligence/screens/main_screen.dart';
 import 'package:deal_diligence/screens/reset_password.dart';
 import 'package:deal_diligence/screens/user_register_screen.dart';
-import 'package:deal_diligence/Providers/global_provider.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:deal_diligence/screens/widgets/my_appbar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final usersRef = FirebaseFirestore.instance.collection('users');
 final companyRef = FirebaseFirestore.instance.collection('company');
@@ -54,9 +54,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   // }
 
   // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-  //   print('Message received when the app is in the foreground:');
-  //   print('Title: ${message.notification?.title}');
-  //   print('Body: ${message.notification?.body}');
+  //   debugPrint('Message received when the app is in the foreground:');
+  //   debugPrint('Title: ${message.notification?.title}');
+  //   debugPrint('Body: ${message.notification?.body}');
 
   //   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
   //     RemoteNotification? notification = message.notification;
@@ -90,9 +90,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   // });
   // // When the user taps on a notification and the app is opened.
   // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-  //   // print('Message opened from system tray:');
-  //   // print('Title: ${message.notification?.title}');
-  //   // print('Body: ${message.notification?.body}');
+  //   // debugPrint('Message opened from system tray:');
+  //   // debugPrint('Title: ${message.notification?.title}');
+  //   // debugPrint('Body: ${message.notification?.body}');
 
   //   // Add any additional logic for handling the opened notification.
   // });

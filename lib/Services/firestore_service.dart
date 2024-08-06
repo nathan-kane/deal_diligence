@@ -4,18 +4,20 @@
 //  copyright 2023                            *
 //*********************************************
 
+// import "package:firebase_messaging/firebase_messaging.dart";
+import 'dart:io';
+
 //import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import "package:firebase_messaging/firebase_messaging.dart";
-import 'dart:io';
-import 'package:deal_diligence/Providers/global_provider.dart';
-import 'package:deal_diligence/Providers/event_provider.dart';
 import 'package:deal_diligence/Providers/device_tokens.dart';
+import 'package:deal_diligence/Providers/event_provider.dart';
+import 'package:deal_diligence/Providers/global_provider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   //final _auth = FirebaseAuth.instance;
 
   //Save the Users or users to database
@@ -42,7 +44,7 @@ class FirestoreService {
       //Map<String, dynamic> clientMap = client.toMap(client);
       await _db.collection('client').doc(currentClientId).set(client);
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
       return Future.value(null);
     }
   }
@@ -145,11 +147,11 @@ class FirestoreService {
   }
 
 // Link a new User to an existing Company
-  Future<void> linkUserToExistingCompany(String? CompanyId, String currentUid) {
+  Future<void> linkUserToExistingCompany(String? companyId, String currentUid) {
     return _db
         .collection('Users')
         .doc(currentUid)
-        .set({'CompanyId': CompanyId});
+        .set({'CompanyId': companyId});
   }
 
   // Stream<List<Users>> getUsers() {
@@ -243,19 +245,18 @@ class FirestoreService {
     //User user = await _auth.currentUser();
 
     // Get the token for this device
-    String? fcmToken = await _firebaseMessaging.getToken();
+    // TODO(any): Push notifications do not currently work on Safari iOS (see: https://caniuse.com/push-api). Implement this feature some other way.
+    // String? fcmToken = await _firebaseMessaging.getToken();
 
     // Save it to Firestore
-    if (fcmToken != null) {
-      var tokens = _db.collection('users').doc(uId);
+    var tokens = _db.collection('users').doc(uId);
 
-      await tokens.update({
-        'token': fcmToken,
-        'userId': uId,
-        'UserName': userName,
-        'createdAt': FieldValue.serverTimestamp(), // optional
-        'platform': Platform.operatingSystem // optional
-      });
-    }
+    await tokens.update({
+      // 'token': fcmToken,
+      'userId': uId,
+      'UserName': userName,
+      'createdAt': FieldValue.serverTimestamp(), // optional
+      'platform': Platform.operatingSystem // optional
+    });
   }
 }

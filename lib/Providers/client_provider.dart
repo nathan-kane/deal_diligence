@@ -6,12 +6,13 @@
 
 // ignore_for_file: unused_label, unnecessary_null_comparison, unused_local_variable, unused_import
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deal_diligence/Providers/company_provider.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/trxn_provider.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:deal_diligence/Providers/company_provider.dart';
 
 class Client {
   //String? clientId;
@@ -235,7 +236,7 @@ class ClientNotifier extends Notifier<Client> {
         return newDocRef;
         //ref.read(trxnNotifierProvider.notifier).updateClientId(newDocRef!.id);
       } catch (e) {
-        print(e);
+        debugPrint(e.toString());
         return null;
       }
 

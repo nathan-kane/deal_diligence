@@ -5,13 +5,11 @@
 //*********************************************
 
 import 'package:deal_diligence/firebase_options.dart';
-
+import 'package:deal_diligence/screens/login_screen.dart';
 //import 'package:deal_diligence/screens/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:deal_diligence/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:deal_diligence/Services/firebase_api.dart';
 
 //import 'package:flutter_dotenv/flutter_dotenv.dart';
 //import 'package:flutter_stripe/flutter_stripe.dart';
@@ -21,7 +19,6 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FirebaseApi().initNotifications();
 
   // Initialize Stripe API
   //Assign publishable key to flutter_stripe

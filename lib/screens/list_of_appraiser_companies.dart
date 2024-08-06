@@ -8,12 +8,12 @@
 
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deal_diligence/Services/firestore_service.dart';
+import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/appraiser_company_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:deal_diligence/Services/firestore_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deal_diligence/constants.dart' as constants;
 
 final FirestoreService firestoreService = FirestoreService();
 
@@ -132,7 +132,7 @@ class _CompanyDashboardScreenState
               });
             } catch (e) {
               // todo: add better error handling
-              //print(e);
+              //debugPrint(e);
             }
           },
           backgroundColor: constants.kPrimaryColor,

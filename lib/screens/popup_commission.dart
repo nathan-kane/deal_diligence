@@ -17,7 +17,7 @@ class CommissionCalculatorDialog extends StatefulWidget {
   const CommissionCalculatorDialog({required this.salePrice, super.key});
 
   @override
-  _CommissionCalculatorDialogState createState() =>
+  State<CommissionCalculatorDialog> createState() =>
       _CommissionCalculatorDialogState();
 }
 
