@@ -57,8 +57,8 @@ class ChatWidgets {
                 child: Center(
                     child: Text(
                   name,
-                  style:
-                      const TextStyle(height: 1.5, fontSize: 12, color: Colors.white),
+                  style: const TextStyle(
+                      height: 1.5, fontSize: 12, color: Colors.white),
                   overflow: TextOverflow.ellipsis,
                 )))
           ],

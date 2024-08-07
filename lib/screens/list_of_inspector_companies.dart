@@ -10,14 +10,14 @@
 
 // import 'package:deal_diligence/Providers/title_company_provider.dart';
 // import 'package:deal_diligence/Providers/user_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:get/get.dart';
+import 'package:deal_diligence/Services/firestore_service.dart';
+//import 'package:deal_diligence/Providers/global_provider.dart';
+import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/inspector_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-//import 'package:get/get.dart';
-import 'package:deal_diligence/Services/firestore_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:deal_diligence/Providers/global_provider.dart';
-import 'package:deal_diligence/constants.dart' as constants;
 
 final FirestoreService firestoreService = FirestoreService();
 
@@ -139,7 +139,7 @@ class _CompanyDashboardScreenState
               });
             } catch (e) {
               // todo: add better error handling
-              //print(e);
+              //debugPrint(e);
             }
           },
           backgroundColor: constants.kPrimaryColor,

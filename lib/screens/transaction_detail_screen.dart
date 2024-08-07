@@ -8,23 +8,24 @@
 
 import 'dart:async';
 import 'dart:core';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deal_diligence/Providers/client_provider.dart';
+import 'package:deal_diligence/Providers/event_provider.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/trxn_provider.dart';
-import 'package:deal_diligence/Providers/client_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
-import 'package:deal_diligence/Providers/event_provider.dart';
+import 'package:deal_diligence/components/rounded_button.dart';
+import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/list_of_trxns.dart';
 import 'package:deal_diligence/screens/popup_commission.dart';
-import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:deal_diligence/components/rounded_button.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:deal_diligence/screens/property_webview_screen.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/widgets/add_all_calendars.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 String? loggedInUid;
 String? _trxnStatus;
@@ -660,11 +661,11 @@ class _TransactionDetailScreenState
                   clientSnapshot.data()?['email'] ?? "";
             });
           } catch (e) {
-            print(e);
+            debugPrint(e.toString());
           }
         });
       } catch (e) {
-        print(e);
+        debugPrint(e.toString());
       }
     }
   }
@@ -752,7 +753,7 @@ class _TransactionDetailScreenState
           .updateWalkThroughDate(walkThroughDateController.text);
       ref.read(trxnNotifierProvider.notifier).updateTrxnStatus(_trxnStatus);
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -1195,6 +1196,7 @@ class _TransactionDetailScreenState
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
+                    if (!context.mounted) return;
                     if (_date != null && _date != _datePicked) {
                       // Add time to the calendar event
                       TimeOfDay? _timePicked = await showTimePicker(
@@ -1288,6 +1290,7 @@ class _TransactionDetailScreenState
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
+                    if (!context.mounted) return;
                     TimeOfDay? _timePicked = await showTimePicker(
                       context: context,
                       initialTime: TimeOfDay.now(),
@@ -1334,6 +1337,7 @@ class _TransactionDetailScreenState
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
+                    if (!context.mounted) return;
                     TimeOfDay? _timePicked = await showTimePicker(
                       context: context,
                       initialTime: TimeOfDay.now(),
@@ -1379,6 +1383,7 @@ class _TransactionDetailScreenState
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
+                    if (!context.mounted) return;
                     TimeOfDay? _timePicked = await showTimePicker(
                       context: context,
                       initialTime: TimeOfDay.now(),
@@ -1425,6 +1430,7 @@ class _TransactionDetailScreenState
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
+                    if (!context.mounted) return;
                     TimeOfDay? _timePicked = await showTimePicker(
                       context: context,
                       initialTime: TimeOfDay.now(),
@@ -1530,6 +1536,7 @@ class _TransactionDetailScreenState
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
+                    if (!context.mounted) return;
                     TimeOfDay? _timePicked = await showTimePicker(
                       context: context,
                       initialTime: TimeOfDay.now(),
@@ -1646,6 +1653,7 @@ class _TransactionDetailScreenState
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
+                    if (!context.mounted) return;
                     TimeOfDay? _timePicked = await showTimePicker(
                       context: context,
                       initialTime: TimeOfDay.now(),
@@ -1702,6 +1710,7 @@ class _TransactionDetailScreenState
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
+                    if (!context.mounted) return;
                     TimeOfDay? _timePicked = await showTimePicker(
                       context: context,
                       initialTime: TimeOfDay.now(),
@@ -1758,6 +1767,7 @@ class _TransactionDetailScreenState
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
+                    if (!context.mounted) return;
                     TimeOfDay? _timePicked = await showTimePicker(
                       context: context,
                       initialTime: TimeOfDay.now(),
@@ -2102,7 +2112,7 @@ class _TransactionDetailScreenState
                                     ref.read(clientNotifierProvider), false);
                           }
                         } catch (e) {
-                          print('Trxn Detail  $e');
+                          debugPrint('Trxn Detail  $e');
                         }
                       }
 
@@ -2312,6 +2322,7 @@ class _TransactionDetailScreenState
                             ref.read(eventsNotifierProvider));
                       }
 
+                      if (!context.mounted) return;
                       // Navigator.of(context).push(
                       //   MaterialPageRoute(
                       //     builder: (context) => const CompanyDashboardScreen(),
@@ -2323,7 +2334,7 @@ class _TransactionDetailScreenState
                       });
                     } catch (e) {
                       // todo: add better error handling
-                      //print(e);
+                      //debugPrint(e);
                     }
                   },
                 ),
@@ -2356,7 +2367,7 @@ class _TransactionDetailScreenState
                       });
                     } catch (e) {
                       // todo: add better error handling
-                      //print(e);
+                      //debugPrint(e);
                     }
                   },
                 ),
@@ -2377,7 +2388,7 @@ class _TransactionDetailScreenState
                       });
                     } catch (e) {
                       // todo: add better error handling
-                      //print(e);
+                      //debugPrint(e);
                     }
                   },
                 )
@@ -2411,7 +2422,7 @@ class _TransactionDetailScreenState
 //             });
 //           } catch (e) {
 //             // todo: add better error handling
-//             //print(e);
+//             //debugPrint(e);
 //           }
 //         },
 //         backgroundColor: constants.kPrimaryColor,

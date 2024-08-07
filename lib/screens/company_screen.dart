@@ -4,19 +4,19 @@
 //  copyright 2023
 //*********************************************
 
-// ignore_for_file: use_build_context_synchronously, unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison
 
-import 'package:deal_diligence/Providers/global_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Providers/company_provider.dart';
+import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/screens/user_profile_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 // import 'company_dash_board.dart';
 // import 'package:provider/provider.dart';
 // import 'package:deal_diligence/Models/Company.dart';
@@ -246,6 +246,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                           .read(globalsNotifierProvider.notifier)
                           .updatecurrentCompanyState(
                               currentCompanyProfile.get('state'));
+                      if (!context.mounted) return;
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const UserProfileScreen()));
                       setState(() {
@@ -253,7 +254,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                       });
                     } catch (e) {
                       // todo: add better error handling
-                      //print(e);
+                      //debugPrint(e);
                     }
                   },
                 ),
@@ -453,7 +454,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                       });
                     } catch (e) {
                       // todo: add better error handling
-                      // print(e);
+                      // debugPrint(e);
                     }
                   },
                 ),
@@ -478,7 +479,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                             });
                           } catch (e) {
                             // todo: add better error handling
-                            //print(e);
+                            //debugPrint(e);
                           }
                         },
                       )

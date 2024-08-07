@@ -6,15 +6,15 @@
 
 // ignore_for_file: use_build_context_synchronously, unnecessary_null_comparison
 
-import 'package:deal_diligence/Providers/global_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Providers/appraiser_company_provider.dart';
+import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 final appraiserCompanyRef =
     FirebaseFirestore.instance.collection(('appraiserCompany'));
@@ -430,7 +430,7 @@ class _AppraiserCompanyScreenState
                       });
                     } catch (e) {
                       // todo: add better error handling
-                      // print(e);
+                      // debugPrint(e);
                     }
                   },
                 ),
@@ -455,7 +455,7 @@ class _AppraiserCompanyScreenState
                             });
                           } catch (e) {
                             // todo: add better error handling
-                            //print(e);
+                            //debugPrint(e);
                           }
                         },
                       )

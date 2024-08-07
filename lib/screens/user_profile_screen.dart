@@ -6,23 +6,23 @@
 
 // ignore_for_file: no_leading_underscores_for_local_identifiers, use_key_in_widget_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'dart:io';
 import 'package:deal_diligence/Providers/company_provider.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
+import 'package:deal_diligence/components/rounded_button.dart';
+import 'package:deal_diligence/constants.dart' as constants;
+import 'package:deal_diligence/screens/company_screen.dart';
+import 'package:deal_diligence/screens/main_screen.dart';
+import 'package:deal_diligence/screens/widgets/snackbarwidget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:flutter/material.dart';
-import 'package:deal_diligence/components/rounded_button.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deal_diligence/screens/main_screen.dart';
-import 'package:deal_diligence/screens/company_screen.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:deal_diligence/constants.dart' as constants;
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:deal_diligence/screens/widgets/snackbarwidget.dart';
 
 final usersRef = FirebaseFirestore.instance.collection(('users'));
 final companyRef = FirebaseFirestore.instance.collection(('company'));
@@ -307,12 +307,14 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
       await send(message, smtpServer);
 
       //showSnackBar('Invitation email successfully sent');
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar((const SnackBar(
           content: CustomSnackBar(
               snackColor: Colors.red,
               snackMessage: 'Email was sent successfully'))));
     } on MailerException catch (e) {
-      print(e);
+      debugPrint(e.toString());
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar((SnackBar(
           content: CustomSnackBar(
               snackColor: Colors.red,
@@ -656,7 +658,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                           }
                         } catch (error) {
                           var e = error as FirebaseAuthException;
-                          print(e.message!);
+                          debugPrint(e.message!);
                         }
                       } else {
                         ref.read(usersNotifierProvider.notifier).saveUser(
@@ -699,7 +701,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                       });
                     } catch (e) {
                       // todo: add better error handling
-                      //print(e);
+                      //debugPrint(e);
                     }
                   },
                 ),
@@ -734,7 +736,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                             });
                           } catch (e) {
                             // todo: add better error handling
-                            //print(e);
+                            //debugPrint(e);
                           }
                         },
                       )
@@ -770,7 +772,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
       //       });
       //     } catch (e) {
       //       // todo: add better error handling
-      //       //print(e);
+      //       //debugPrint(e);
       //     }
       //   },
       //   backgroundColor: constants.kPrimaryColor,
@@ -787,13 +789,14 @@ class GoogleAuthApi {
   final _googleSignIn = GoogleSignIn();
 
   Future<GoogleSignInAccount?> signIn() async {
-    if (_googleSignIn.isSignedIn == true) {
+    final bool isSignedIn = await _googleSignIn.isSignedIn();
+    if (isSignedIn) {
       return _googleSignIn.currentUser;
     } else {
       try {
         return await _googleSignIn.signIn();
       } catch (e) {
-        print(e);
+        debugPrint(e.toString());
       }
     }
     return null;

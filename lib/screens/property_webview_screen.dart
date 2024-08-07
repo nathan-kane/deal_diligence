@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PropertyWebViewScreenContainer extends StatefulWidget {
-  final url;
+  final String url;
   const PropertyWebViewScreenContainer(this.url, {super.key});
 
   @override

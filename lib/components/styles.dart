@@ -16,7 +16,7 @@ class Styles {
   static messagesCardStyle(check) {
     return BoxDecoration(
       borderRadius: BorderRadius.circular(10),
-      color: check ? Colors.indigo.shade300: Colors.grey.shade300,
+      color: check ? Colors.indigo.shade300 : Colors.grey.shade300,
     );
   }
 
@@ -35,12 +35,14 @@ class Styles {
       suffixIcon: IconButton(onPressed: onSubmit, icon: const Icon(Icons.send)),
     );
   }
+
   static searchTextFieldStyle() {
     return InputDecoration(
       border: InputBorder.none,
       hintText: 'Enter Name',
       contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-      suffixIcon: IconButton(onPressed: (){}, icon: const Icon(Icons.search_rounded)),
+      suffixIcon:
+          IconButton(onPressed: () {}, icon: const Icon(Icons.search_rounded)),
     );
   }
 }

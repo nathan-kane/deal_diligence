@@ -8,17 +8,17 @@
 
 //import 'dart:async';
 //import 'package:add_2_calendar/add_2_calendar.dart';
-import 'package:flutter/material.dart';
-import 'package:deal_diligence/components/rounded_button.dart';
-import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Providers/event_provider.dart';
-import 'package:deal_diligence/screens/appointment_calendar.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:deal_diligence/components/rounded_button.dart';
+import 'package:deal_diligence/constants.dart' as constants;
+import 'package:deal_diligence/screens/appointment_calendar.dart';
 //import 'package:deal_diligence/screens/google_event_add.dart';
 import 'package:deal_diligence/screens/widgets/add_all_calendars.dart';
-import 'package:deal_diligence/constants.dart' as constants;
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 String? currentEventId = "";
 DateTime kNow = DateTime.now();
@@ -545,7 +545,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                       });
                     } catch (e) {
                       // todo: add better error handling
-                      //print(e);
+                      //debugPrint(e);
                     }
                   },
                 ),
@@ -573,7 +573,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                             });
                           } catch (e) {
                             // todo: add better error handling
-                            //print(e);
+                            //debugPrint(e);
                           }
                         },
                       )

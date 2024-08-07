@@ -8,15 +8,16 @@
 
 import 'dart:async';
 import 'dart:collection';
-import 'package:deal_diligence/Providers/event_provider.dart';
-import 'package:flutter/material.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deal_diligence/Providers/event_provider.dart';
+import 'package:deal_diligence/Providers/global_provider.dart';
+import 'package:deal_diligence/Providers/trxn_provider.dart';
+import 'package:deal_diligence/screens/add_event_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:deal_diligence/screens/AddEventScreen.dart';
-import 'package:deal_diligence/Providers/trxn_provider.dart';
-import 'package:deal_diligence/Providers/global_provider.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Example holidays
 final Map<DateTime, List> _holidays = {
@@ -329,7 +330,7 @@ class _AppointmentCalendarScreenState
                   });
                 } catch (e) {
                   // todo: add better error handling
-                  //print(e);
+                  //debugPrint(e);
                 }
               },
               child: const Text('Add Event'),

@@ -1,11 +1,12 @@
-import 'package:flutter/material.dart';
 import 'dart:math';
+
+import 'package:flutter/material.dart';
 
 class MortgageCalculatorScreen extends StatefulWidget {
   const MortgageCalculatorScreen({super.key});
 
   @override
-  _MortgageCalculatorScreenState createState() =>
+  State<MortgageCalculatorScreen> createState() =>
       _MortgageCalculatorScreenState();
 }
 
