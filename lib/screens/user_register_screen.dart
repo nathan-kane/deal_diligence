@@ -14,6 +14,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:deal_diligence/screens/verify_email.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
+import 'package:deal_diligence/stripe_payment.dart';
 
 class UserRegisterScreen extends ConsumerStatefulWidget {
   static const String id = 'registration_screen';
@@ -145,6 +146,10 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                       showSpinner = true;
                     });
                     try {
+                      // Setup payments first
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => const StripePaymentScreen()));
+
                       final newUser =
                           await _auth.createUserWithEmailAndPassword(
                               email: email, password: password);
