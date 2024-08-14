@@ -12,9 +12,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:deal_diligence/screens/verify_email.dart';
+// import 'package:deal_diligence/screens/verify_email.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
-import 'package:deal_diligence/stripe_payment.dart';
+import 'package:deal_diligence/screens/stripe_payment_screen.dart';
 
 class UserRegisterScreen extends ConsumerStatefulWidget {
   static const String id = 'registration_screen';
@@ -27,7 +27,7 @@ class UserRegisterScreen extends ConsumerStatefulWidget {
 }
 
 class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
-  final _auth = FirebaseAuth.instance;
+  // final _auth = FirebaseAuth.instance;
   String? _currentUserState;
 
   List<DropdownMenuItem<String>>? _dropDownState;
@@ -47,13 +47,15 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
   void changedDropDownState(String? selectedState) {
     setState(() {
       _currentUserState = selectedState;
+      ref.read(usersNotifierProvider.notifier).updateState(selectedState!);
+
+      // Remove the globals
       ref
           .read(globalsNotifierProvider.notifier)
-          .updateselectedUserState(selectedState!);
+          .updateselectedUserState(selectedState);
       ref
           .read(globalsNotifierProvider.notifier)
           .updatecurrentUserState(selectedState);
-      ref.read(usersNotifierProvider.notifier).updateState(selectedState);
     });
   }
 
@@ -67,6 +69,8 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
   bool showSpinner = false;
   bool registrationFail = false;
   String errorMessage = "";
+  late String fName;
+  late String lName;
   late String email;
   late String password;
   //String _chosenAgency = "Create New Agency";
@@ -100,6 +104,24 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                 ),
                 const SizedBox(
                   height: 48.0,
+                ),
+                TextField(
+                  keyboardType: TextInputType.name,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    fName = value; // Capture the value entered by the user
+                  },
+                  decoration:
+                      const InputDecoration(hintText: 'First Name'),
+                ),
+                TextField(
+                  keyboardType: TextInputType.name,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    lName = value; // Capture the value entered by the user
+                  },
+                  decoration:
+                      const InputDecoration(hintText: 'Last Name'),
                 ),
                 TextField(
                   keyboardType: TextInputType.emailAddress,
@@ -146,37 +168,43 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                       showSpinner = true;
                     });
                     try {
-                      // Setup payments first
+
+                      /// The actual registration takes place in the StripePaymentScreen file
+                      
+                      ref.read(usersNotifierProvider.notifier).updatefName(fName);
+                      ref.read(usersNotifierProvider.notifier).updatelName(lName);
+
+                      // Setup payments
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => const StripePaymentScreen()));
+                            builder: (context) => StripePaymentScreen(email, password)));
 
-                      final newUser =
-                          await _auth.createUserWithEmailAndPassword(
-                              email: email, password: password);
-                      if (newUser != null) {
-                        ref
-                            .read(globalsNotifierProvider.notifier)
-                            .updatecurrentUid(newUser.user!.uid);
-                        ref
-                            .read(globalsNotifierProvider.notifier)
-                            .updatecurrentUserId(newUser.user!.uid);
-                        ref
-                            .read(globalsNotifierProvider.notifier)
-                            .updatecurrentUEmail(newUser.user!.email);
-                        ref
-                            .read(globalsNotifierProvider.notifier)
-                            .updatenewUser(true);
-                        ref
-                            .read(globalsNotifierProvider.notifier)
-                            .updatenewCompany(true);
+                      // final newUser =
+                      //     await _auth.createUserWithEmailAndPassword(
+                      //         email: email, password: password);
+                      // if (newUser != null) {
+                      //   ref
+                      //       .read(globalsNotifierProvider.notifier)
+                      //       .updatecurrentUid(newUser.user!.uid);
+                      //   ref
+                      //       .read(globalsNotifierProvider.notifier)
+                      //       .updatecurrentUserId(newUser.user!.uid);
+                      //   ref
+                      //       .read(globalsNotifierProvider.notifier)
+                      //       .updatecurrentUEmail(newUser.user!.email);
+                      //   ref
+                      //       .read(globalsNotifierProvider.notifier)
+                      //       .updatenewUser(true);
+                      //   ref
+                      //       .read(globalsNotifierProvider.notifier)
+                      //       .updatenewCompany(true);
 
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => const VerifyEmailScreen()));
-                      } else {
-                        setState(() {
-                          registrationFail = true;
-                        });
-                      }
+                      //   Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      //       builder: (context) => const VerifyEmailScreen()));
+                      // } else {
+                      //   setState(() {
+                      //     registrationFail = true;
+                      //   });
+                      // }
                       setState(() {
                         showSpinner = false;
                       });

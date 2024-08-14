@@ -141,6 +141,10 @@ class UsersNotifier extends Notifier<Users> {
   }
 
   // functions to update class members
+  void updateuserID(String newuserID) {
+    state = state.copyWith(userId: newuserID);
+  }
+
   void updatefName(String newfName) {
     state = state.copyWith(fName: newfName);
   }

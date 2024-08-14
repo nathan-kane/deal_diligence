@@ -61,7 +61,7 @@ var maskFormatter = MaskTextInputFormatter(
     mask: '(###) ###-####', filter: {"#": RegExp(r'[0-9]')});
 
 class TransactionDetailScreen extends ConsumerStatefulWidget {
-  static const String id = 'transaction_detail_screen';
+  //static const String id = 'transaction_detail_screen';
   // final String? trxnId;
   final bool? newTrxn;
   final bool? isNewClient;
