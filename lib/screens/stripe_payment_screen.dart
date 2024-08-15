@@ -62,9 +62,9 @@ class _StripePaymentScreenState extends ConsumerState<StripePaymentScreen> {
                         ref
                             .read(globalsNotifierProvider.notifier)
                             .updatenewUser(true);
-                      //   ref
-                      //       .read(globalsNotifierProvider.notifier)
-                      //       .updatenewCompany(true);
+                        ref
+                            .read(globalsNotifierProvider.notifier)
+                            .updatenewCompany(true);
 
                         /// Send the email verification
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
