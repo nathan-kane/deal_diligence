@@ -19,7 +19,8 @@ class StripePaymentScreen extends ConsumerStatefulWidget {
   const StripePaymentScreen(this.email, this.password, {super.key});
 
   @override
-  ConsumerState<StripePaymentScreen> createState() => _StripePaymentScreenState();
+  ConsumerState<StripePaymentScreen> createState() =>
+      _StripePaymentScreenState();
 }
 
 class _StripePaymentScreenState extends ConsumerState<StripePaymentScreen> {
@@ -50,25 +51,25 @@ class _StripePaymentScreenState extends ConsumerState<StripePaymentScreen> {
                     final newUser = await _auth.createUserWithEmailAndPassword(
                         email: widget.email, password: widget.password);
                     if (newUser != null) {
-                        ref
-                            .read(usersNotifierProvider.notifier)
-                            .updateuserID(newUser.user!.uid);
+                      ref
+                          .read(usersNotifierProvider.notifier)
+                          .updateuserID(newUser.user!.uid);
                       //   ref
                       //       .read(globalsNotifierProvider.notifier)
                       //       .updatecurrentUserId(newUser.user!.uid);
-                        ref
-                            .read(usersNotifierProvider.notifier)
-                            .updateEmail(newUser.user!.email!);
-                        ref
-                            .read(globalsNotifierProvider.notifier)
-                            .updatenewUser(true);
-                        ref
-                            .read(globalsNotifierProvider.notifier)
-                            .updatenewCompany(true);
+                      ref
+                          .read(usersNotifierProvider.notifier)
+                          .updateEmail(newUser.user!.email!);
+                      ref
+                          .read(globalsNotifierProvider.notifier)
+                          .updatenewUser(true);
+                      ref
+                          .read(globalsNotifierProvider.notifier)
+                          .updatenewCompany(true);
 
-                        /// Send the email verification
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => const VerifyEmailScreen()));
+                      /// Send the email verification
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const VerifyEmailScreen()));
                     } else {
                       setState(() {
                         registrationFail = true;
@@ -134,97 +135,93 @@ class _StripePaymentScreenState extends ConsumerState<StripePaymentScreen> {
                           right: 10,
                         ),
                         backgroundColor: Colors.redAccent,
-                      )
-                      )
-                      ); 
+                      )));
                     }
                   }
-                }
-              ),
+                }),
           ],
         ),
       ),
     );
   }
 
- Future<void> makePayment() async { 
-    try { 
-      // Create payment intent data 
-      paymentIntent = await createPaymentIntent('15', 'USD'); 
-      // initialise the payment sheet setup 
-      await Stripe.instance.initPaymentSheet( 
-        paymentSheetParameters: SetupPaymentSheetParameters( 
-          // Client secret key from payment data 
-          paymentIntentClientSecret: paymentIntent!['client_secret'], 
-          googlePay: const PaymentSheetGooglePay( 
-              // Currency and country code is accourding to India 
-              testEnv: true, 
-              currencyCode: "USD", 
-              merchantCountryCode: "US"), 
-          // Merchant Name 
-          merchantDisplayName: 'Deal Diligence', 
-          // return URl if you want to add 
-          // returnURL: 'flutterstripe://redirect', 
-        ), 
-      ); 
-      // Display payment sheet 
-      displayPaymentSheet(); 
-    } catch (e) { 
-      print("exception $e"); 
-  
-      if (e is StripeConfigException) { 
-        print("Stripe exception ${e.message}"); 
-      } else { 
-        print("exception $e"); 
-      } 
-    } 
-  } 
-  
-  displayPaymentSheet() async { 
-    try { 
-      // "Display payment sheet"; 
-      await Stripe.instance.presentPaymentSheet(); 
-      // Show when payment is done 
-      // Displaying snackbar for it 
-      ScaffoldMessenger.of(context).showSnackBar( 
-        const SnackBar(content: Text("Paid successfully")), 
-      ); 
-      paymentIntent = null; 
-    } on StripeException catch (e) { 
-      // If any error comes during payment  
-      // so payment will be cancelled 
-      print('Error: $e'); 
-  
-      ScaffoldMessenger.of(context).showSnackBar( 
-        const SnackBar(content: Text(" Payment Cancelled")), 
-      ); 
-    } catch (e) { 
-      print("Error in displaying"); 
-      print('$e'); 
-    } 
-  } 
-  
-  createPaymentIntent(String amount, String currency) async { 
-    try { 
-      Map<String, dynamic> body = { 
-        'amount': ((int.parse(amount)) * 100).toString(), 
-        'currency': currency, 
-        'payment_method_types[]': 'card', 
-      }; 
-      var secretKey = 
-          dotenv.env["STRIPE_SECRET"]; 
-      var response = await http.post( 
-        Uri.parse('https://api.stripe.com/v1/payment_intents'), 
-        headers: { 
-          'Authorization': 'Bearer $secretKey', 
+  Future<void> makePayment() async {
+    try {
+      // Create payment intent data
+      paymentIntent = await createPaymentIntent('15', 'USD');
+      // initialise the payment sheet setup
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          // Client secret key from payment data
+          paymentIntentClientSecret: paymentIntent!['client_secret'],
+          googlePay: const PaymentSheetGooglePay(
+              // Currency and country code is accourding to India
+              testEnv: true,
+              currencyCode: "USD",
+              merchantCountryCode: "US"),
+          // Merchant Name
+          merchantDisplayName: 'Deal Diligence',
+          // return URl if you want to add
+          // returnURL: 'flutterstripe://redirect',
+        ),
+      );
+      // Display payment sheet
+      displayPaymentSheet();
+    } catch (e) {
+      print("exception $e");
+
+      if (e is StripeConfigException) {
+        print("Stripe exception ${e.message}");
+      } else {
+        print("exception $e");
+      }
+    }
+  }
+
+  displayPaymentSheet() async {
+    try {
+      // "Display payment sheet";
+      await Stripe.instance.presentPaymentSheet();
+      // Show when payment is done
+      // Displaying snackbar for it
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Paid successfully")),
+      );
+      paymentIntent = null;
+    } on StripeException catch (e) {
+      // If any error comes during payment
+      // so payment will be cancelled
+      print('Error: $e');
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(" Payment Cancelled")),
+      );
+    } catch (e) {
+      print("Error in displaying");
+      print('$e');
+    }
+  }
+
+  createPaymentIntent(String amount, String currency) async {
+    try {
+      Map<String, dynamic> body = {
+        'amount': ((int.parse(amount)) * 100).toString(),
+        'currency': currency,
+        'payment_method_types[]': 'card',
+      };
+      var secretKey = dotenv.env["STRIPE_SECRET"];
+      var response = await http.post(
+        Uri.parse('https://api.stripe.com/v1/payment_intents'),
+        headers: {
+          'Authorization': 'Bearer $secretKey',
           'Content-Type': 'application/x-www-form-urlencoded'
-        }, 
-        body: body, 
-      ); 
-      print('Payment Intent Body: ${response.body.toString()}'); 
-      return jsonDecode(response.body.toString()); 
-    } catch (err) { 
-      print('Error charging user: ${err.toString()}'); 
-    } 
-  } 
+        },
+        body: body,
+      );
+      print('Payment Intent Body: ${response.body.toString()}');
+      return jsonDecode(response.body.toString());
+    } catch (err) {
+      print('Error charging user: ${err.toString()}');
+    }
+  }
 }

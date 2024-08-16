@@ -63,6 +63,7 @@ dependencies:
   mailer: ^6.0.1
   google_sign_in: ^6.2.1
   flutter_stripe: ^11.0.0
+  flutter_stripe_web: ^6.0.0
 
 dev_dependencies:
   flutter_test:
