@@ -30,15 +30,18 @@ Future<void> main() async {
       child:
           DealDiligence())); // This allows the entire app to use River_Pod for state management
 }
+   final rootNavigatorKey = GlobalKey<NavigatorState>();
 
 class DealDiligence extends StatelessWidget {
   const DealDiligence({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: const LoginScreen(),
+                  navigatorKey: rootNavigatorKey,
+
     );
   }
 }

@@ -64,6 +64,10 @@ dependencies:
   google_sign_in: ^6.2.1
   flutter_stripe: ^11.0.0
   flutter_stripe_web: ^6.0.0
+  flutter_credit_card:
+  dartz:
+  equatable:
+  fluttertoast:
 
 dev_dependencies:
   flutter_test:
@@ -90,6 +94,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - lib/assets/images/dd_logo.png
+    - lib/assets/images/
     - lib/assets/.env
   #   - images/a_dot_ham.jpeg
 

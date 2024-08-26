@@ -62,7 +62,6 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
   @override
   void initState() {
     super.initState();
-
     _dropDownState = getDropDownState(); // Get the list of states
   }
 
@@ -279,4 +278,6 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
       ),
     );
   }
+
+  
 }
