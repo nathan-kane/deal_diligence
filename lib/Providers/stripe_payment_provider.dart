@@ -16,9 +16,12 @@ import '../screens/stripe_payment_module/model/get_customer_list_response.dart';
 class GetStripeNotifier extends StateNotifier<GetStripeState> {
   final StripeRepository apiServices = StripeHttpApiRepository();
   GetStripeNotifier() : super(const GetStripeState.initial()) {}
-
-  Future<void> getStripeToken(
-      {String? cardNumber, String? month, String? year, String? cvc}) async {
+  Future<bool> getStripeToken(
+      {String? userName,
+      String? cardNumber,
+      String? month,
+      String? year,
+      String? cvc}) async {
     try {
       final response = await apiServices.getToken({
         "card[number]": cardNumber,
@@ -27,95 +30,90 @@ class GetStripeNotifier extends StateNotifier<GetStripeState> {
         "card[cvc]": cvc,
         "auth": ApiURL.publicTestKey
       });
-      await response.fold(
+
+      return await response.fold(
         (failure) async {
           LoadingScreenOL().hide();
           AppToast.toastMessage(failure.message.toString());
+          return false;
         },
         (data) async {
           LoadingScreenOL().hide();
           final card = r.Card.fromMap(data.toMap());
-          // call api/jAM/jamdetail-page/181/
           state = state.copyWith(card: card, id: data.id);
-          print(data.id);
-          addCustomer(source: data.id);
+          return await addCustomer(userName: userName, source: data.id);
         },
-      ).catchError((onError) {
-        LoadingScreenOL().hide();
-        print(onError.toString());
-      });
+      );
     } catch (e) {
       AppToast.toastMessage(e.toString());
       print(e.toString());
+      return false;
     }
   }
 
-  Future<void> addCustomer(
-      {String? description, String? source, String? email}) async {
+  Future<bool> addCustomer(
+      {String? userName,
+      String? description,
+      String? source,
+      String? email}) async {
     try {
       final response = await apiServices.addCustomer({
         "description": description ?? '',
         "source": source,
         "email": email ?? '',
+        "name": userName ?? '',
         "auth": ApiURL.secretKey
       });
-      await response.fold(
+
+      return await response.fold(
         (failure) async {
           LoadingScreenOL().hide();
           AppToast.toastMessage(failure.message.toString());
+          return false;
         },
         (data) async {
           LoadingScreenOL().hide();
           final addCust = AddCustomerResponse.fromMap(data.toMap());
-          // call api/jAM/jamdetail-page/181/
           state = state.copyWith(addCustomerResponse: addCust);
-          payPayment(amount: '100', cust: data.id);
+          return await payPayment(cust: data.id);
         },
-      ).catchError((onError) {
-        LoadingScreenOL().hide();
-        print(onError.toString());
-      });
+      );
     } catch (e) {
       AppToast.toastMessage(e.toString());
       print(e.toString());
+      return false;
     }
   }
 
-  Future<void> payPayment(
-      {String? amount,
-      String? cust,
-      String? description,
-      String? source}) async {
+  Future<bool> payPayment(
+      {String? cust, String? description, String? source}) async {
     try {
       final response = await apiServices.payPayment({
         "description": description ?? '',
-        "amount": amount,
+        "amount": 1500,
         "currency": 'USD',
         "customer": cust,
         if (source != null) 'source': source,
         "auth": ApiURL.secretKey
       });
-      await response.fold(
+
+      return await response.fold(
         (failure) async {
           LoadingScreenOL().hide();
           AppToast.toastMessage(failure.message.toString());
+          return false;
         },
         (data) async {
           LoadingScreenOL().hide();
           final payPayment = PayPaymentRespone.fromMap(data.toMap());
-          // call api/jAM/jamdetail-page/181/
           state = state.copyWith(payPaymentRespone: payPayment);
-          AppToast.toastMessage(data.status.toString());
-          // print(data.id);
+          return true;
         },
-      ).catchError((onError) {
-        LoadingScreenOL().hide();
-        print(onError.toString());
-      });
+      );
     } catch (e) {
       AppToast.toastMessage(e.toString());
-
       print(e.toString());
+      return false;
     }
   }
 
@@ -131,7 +129,6 @@ class GetStripeNotifier extends StateNotifier<GetStripeState> {
         (data) async {
           LoadingScreenOL().hide();
           final customers = GetCustomerListRespone.fromMap(data.toMap());
-          // call api/jAM/jamdetail-page/181/
           state = state.copyWith(getCustomerList: customers);
           getCardList(custId: customers.data!.first.id);
           // AppToast.toastMessage(data.status.toString());
@@ -160,7 +157,6 @@ class GetStripeNotifier extends StateNotifier<GetStripeState> {
         (data) async {
           LoadingScreenOL().hide();
           final cards = GetCardListResponse.fromMap(data.toMap());
-          // call api/jAM/jamdetail-page/181/
           state = state.copyWith(getCardList: cards);
           // AppToast.toastMessage(data.status.toString());
           // print(data.id);

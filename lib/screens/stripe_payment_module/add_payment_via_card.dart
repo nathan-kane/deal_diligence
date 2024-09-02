@@ -1,12 +1,19 @@
+import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/stripe_payment_provider.dart';
+import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/screens/stripe_payment_module/show_card_list.dart';
+import 'package:deal_diligence/screens/verify_email.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddPaymentViaCard extends ConsumerStatefulWidget {
-  const AddPaymentViaCard({super.key});
+  final String email;
+  final String password;
+
+  const AddPaymentViaCard(this.email, this.password, {super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -14,6 +21,10 @@ class AddPaymentViaCard extends ConsumerStatefulWidget {
 }
 
 class AddPaymentViaCardState extends ConsumerState<AddPaymentViaCard> {
+  String errorMessage = "";
+  final _auth = FirebaseAuth.instance;
+  bool registrationFail = false;
+
   bool isLightTheme = false;
   String cardNumber = '';
   String expiryDate = '';
@@ -258,16 +269,108 @@ class AddPaymentViaCardState extends ConsumerState<AddPaymentViaCard> {
     );
   }
 
-  void _onValidate() {
+  void _onValidate() async {
     if (formKey.currentState?.validate() ?? false) {
       // print('valid!');
-      ref.read(getStripeTokenProvider.notifier).getStripeToken(
-          cardNumber: cardNumber,
-          cvc: cvvCode,
-          month: expiryDate.split('/').first,
-          year: expiryDate.split('/').last);
+      var responseData = await ref
+          .read(getStripeTokenProvider.notifier)
+          .getStripeToken(
+              userName: cardHolderName,
+              cardNumber: cardNumber,
+              cvc: cvvCode,
+              month: expiryDate.split('/').first,
+              year: expiryDate.split('/').last);
+      print('+++++$responseData');
+      if (responseData) {
+        handleSuccessResponse();
+      }
     } else {
       print('invalid!');
+    }
+  }
+
+  handleSuccessResponse() async {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Paid successfully")),
+    );
+    try {
+      final newUser = await _auth.createUserWithEmailAndPassword(
+        email: widget.email,
+        password: widget.password,
+      );
+
+      if (newUser != null) {
+        final userNotifier = ref.read(usersNotifierProvider.notifier);
+        final globalsNotifier = ref.read(globalsNotifierProvider.notifier);
+
+        userNotifier.updateuserID(newUser.user!.uid);
+        userNotifier.updateEmail(newUser.user!.email!);
+        globalsNotifier.updatenewUser(true);
+        globalsNotifier.updatenewCompany(true);
+
+        // Navigate to VerifyEmailScreen
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const VerifyEmailScreen(),
+          ),
+        );
+      } else {
+        setState(() {
+          registrationFail = true;
+        });
+      }
+
+      // setState(() {
+      //   showSpinner = false;
+      // });
+    } on FirebaseAuthException catch (error) {
+      switch (error.code) {
+        case "invalid-email":
+          errorMessage = "Your email address appears to be malformed.";
+          break;
+        case "email-already-in-use":
+          errorMessage = "Email is already in use.";
+          break;
+        case "wrong-password":
+          errorMessage = "Your password is wrong.";
+          break;
+        case "weak-password":
+          errorMessage = "Weak password";
+          break;
+        case "user-not-found":
+          errorMessage = "User with this email doesn't exist.";
+          break;
+        case "user-disabled":
+          errorMessage = "User with this email has been disabled.";
+          break;
+        case "too-many-requests":
+          errorMessage = "Too many requests. Try again later.";
+          break;
+        case "operation-not-allowed":
+          errorMessage = "Signing in with Email and Password is not enabled.";
+          break;
+        default:
+          errorMessage = "An undefined Error happened. Please try again.";
+      }
+
+      if (errorMessage.isNotEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Center(
+            child: Text(
+              errorMessage,
+              style: const TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.w900),
+            ),
+          ),
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height - 100,
+            left: 10,
+            right: 10,
+          ),
+          backgroundColor: Colors.redAccent,
+        ));
+      }
     }
   }
 

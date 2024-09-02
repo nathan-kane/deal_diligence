@@ -93,8 +93,9 @@ class ShowCardListState extends ConsumerState<ShowCardList> {
             Spacer(),
             GestureDetector(
               onTap: () {
-                ref.read(getStripeTokenProvider.notifier).payPayment(
-                    amount: '2000', cust: data!.customer, source: data.id);
+                ref
+                    .read(getStripeTokenProvider.notifier)
+                    .payPayment(cust: data!.customer, source: data.id);
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(

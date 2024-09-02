@@ -433,10 +433,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   'New User?  Create Account',
                   style: TextStyle(fontSize: 15, color: Colors.blue),
                 ),
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const AddPaymentViaCard())),
                 // onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                //     builder: (context) => const UserRegisterScreen())),
+                //     builder: (context) => const AddPaymentViaCard())),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const UserRegisterScreen())),
               ),
             ],
           ),
