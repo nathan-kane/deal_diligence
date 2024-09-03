@@ -166,8 +166,6 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                     setState(() {
                       showSpinner = true;
                     });
-                    try {
-
                       /// The actual registration takes place in the StripePaymentScreen file
                       
                       ref.read(usersNotifierProvider.notifier).updatefName(fName);
@@ -176,100 +174,70 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                       // Setup payments
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => StripePaymentScreen(email, password)));
-
-                      // final newUser =
-                      //     await _auth.createUserWithEmailAndPassword(
-                      //         email: email, password: password);
-                      // if (newUser != null) {
-                      //   ref
-                      //       .read(globalsNotifierProvider.notifier)
-                      //       .updatecurrentUid(newUser.user!.uid);
-                      //   ref
-                      //       .read(globalsNotifierProvider.notifier)
-                      //       .updatecurrentUserId(newUser.user!.uid);
-                      //   ref
-                      //       .read(globalsNotifierProvider.notifier)
-                      //       .updatecurrentUEmail(newUser.user!.email);
-                      //   ref
-                      //       .read(globalsNotifierProvider.notifier)
-                      //       .updatenewUser(true);
-                      //   ref
-                      //       .read(globalsNotifierProvider.notifier)
-                      //       .updatenewCompany(true);
-
-                      //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      //       builder: (context) => const VerifyEmailScreen()));
-                      // } else {
-                      //   setState(() {
-                      //     registrationFail = true;
-                      //   });
-                      // }
                       setState(() {
                         showSpinner = false;
                       });
-                    } on FirebaseAuthException catch (error) {
-                      switch (error.code) {
-                        case "ERROR_INVALID_EMAIL":
-                        case "invalid-email":
-                          errorMessage =
-                              "Your email address appears to be malformed.";
-                          break;
-                        case "email-already-in-use":
-                          errorMessage = "Email is already in use.";
-                          break;
-                        case "ERROR_WRONG_PASSWORD":
-                        case "wrong-password":
-                          errorMessage = "Your password is wrong.";
-                          break;
-                        case "weak-password":
-                          errorMessage = "Weak password";
-                          break;
-                        case "ERROR_USER_NOT_FOUND":
-                        case "user-not-found":
-                          errorMessage = "User with this email doesn't exist.";
-                          break;
-                        case "ERROR_USER_DISABLED":
-                        case "user-disabled":
-                          errorMessage =
-                              "User with this email has been disabled.";
-                          break;
-                        case "ERROR_TOO_MANY_REQUESTS":
-                        case "too-many-requests":
-                          errorMessage = "Too many requests. Try again later.";
-                          break;
-                        case "ERROR_OPERATION_NOT_ALLOWED":
-                        case "operation-not-allowed":
-                          errorMessage =
-                              "Signing in with Email and Password is not enabled.";
-                          break;
-                        default:
-                          errorMessage =
-                              "An undefined Error happened. Please try again.";
-                      }
+                    // } on FirebaseAuthException catch (error) {
+                    //   switch (error.code) {
+                    //     case "ERROR_INVALID_EMAIL":
+                    //     case "invalid-email":
+                    //       errorMessage =
+                    //           "Your email address appears to be malformed.";
+                    //       break;
+                    //     case "email-already-in-use":
+                    //       errorMessage = "Email is already in use.";
+                    //       break;
+                    //     case "ERROR_WRONG_PASSWORD":
+                    //     case "wrong-password":
+                    //       errorMessage = "Your password is wrong.";
+                    //       break;
+                    //     case "weak-password":
+                    //       errorMessage = "Weak password";
+                    //       break;
+                    //     case "ERROR_USER_NOT_FOUND":
+                    //     case "user-not-found":
+                    //       errorMessage = "User with this email doesn't exist.";
+                    //       break;
+                    //     case "ERROR_USER_DISABLED":
+                    //     case "user-disabled":
+                    //       errorMessage =
+                    //           "User with this email has been disabled.";
+                    //       break;
+                    //     case "ERROR_TOO_MANY_REQUESTS":
+                    //     case "too-many-requests":
+                    //       errorMessage = "Too many requests. Try again later.";
+                    //       break;
+                    //     case "ERROR_OPERATION_NOT_ALLOWED":
+                    //     case "operation-not-allowed":
+                    //       errorMessage =
+                    //           "Signing in with Email and Password is not enabled.";
+                    //       break;
+                    //     default:
+                    //       errorMessage =
+                    //           "An undefined Error happened. Please try again.";
+                    //   }
 
-                      if (errorMessage != "") {
-                        ScaffoldMessenger.of(context).showSnackBar((SnackBar(
-                          content: Center(
-                            child: Text(
-                              errorMessage,
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w900),
-                            ),
-                          ),
-                          behavior: SnackBarBehavior.floating,
-                          margin: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).size.height - 100,
-                            left: 10,
-                            right: 10,
-                          ),
-                          backgroundColor: Colors.redAccent,
-                        )));
-                      }
-                    }
+                    //   if (errorMessage != "") {
+                    //     ScaffoldMessenger.of(context).showSnackBar((SnackBar(
+                    //       content: Center(
+                    //         child: Text(
+                    //           errorMessage,
+                    //           style: const TextStyle(
+                    //               color: Colors.black,
+                    //               fontWeight: FontWeight.w900),
+                    //         ),
+                    //       ),
+                    //       behavior: SnackBarBehavior.floating,
+                    //       margin: EdgeInsets.only(
+                    //         bottom: MediaQuery.of(context).size.height - 100,
+                    //         left: 10,
+                    //         right: 10,
+                    //       ),
+                    //       backgroundColor: Colors.redAccent,
+                    //     )));
+                    //   }
+                    // }
                   },
-                  // onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                  //     builder: (context) => VerifyEmailScreen())),
                 ),
               ],
             ),

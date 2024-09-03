@@ -7,9 +7,11 @@ import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/screens/stripe_payment_module/add_payment_via_card.dart';
 import 'package:deal_diligence/screens/verify_email.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_stripe/flutter_stripe.dart';
 
@@ -41,16 +43,18 @@ class _StripePaymentScreenState extends ConsumerState<StripePaymentScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Monthly subscription is 15.00 USD'),
+            const Text('Monthly subscription is 49.99 USD'),
             TextButton(
                 child: const Text('Subscribe Now!'),
                 onPressed: () async {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>
-                          AddPaymentViaCard(widget.email, widget.password)));
-                  // await makePayment();
-
-                  /// Register the new user
+                  if (kIsWeb) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            AddPaymentViaCard(widget.email, widget.password)));
+                  } else {
+                    /// Make the payment and register the new user
+                    await makePayment();
+                  }
                 }),
           ],
         ),
@@ -61,7 +65,7 @@ class _StripePaymentScreenState extends ConsumerState<StripePaymentScreen> {
   Future<void> makePayment() async {
     try {
       // Create payment intent data
-      paymentIntent = await createPaymentIntent('15', 'USD');
+      paymentIntent = await createPaymentIntent('4999', 'USD');
       // initialise the payment sheet setup
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
@@ -101,6 +105,91 @@ class _StripePaymentScreenState extends ConsumerState<StripePaymentScreen> {
         const SnackBar(content: Text("Paid successfully")),
       );
       paymentIntent = null;
+
+      /// Register the user
+      /// Register the user now that they have paid
+      try {
+        final newUser = await _auth.createUserWithEmailAndPassword(
+            email: widget.email, password: widget.password);
+        if (newUser != null) {
+          ref
+              .read(usersNotifierProvider.notifier)
+              .updateuserID(newUser.user!.uid);
+          //   ref
+          //       .read(globalsNotifierProvider.notifier)
+          //       .updatecurrentUserId(newUser.user!.uid);
+          ref
+              .read(usersNotifierProvider.notifier)
+              .updateEmail(newUser.user!.email!);
+          ref.read(globalsNotifierProvider.notifier).updatenewUser(true);
+          ref.read(globalsNotifierProvider.notifier).updatenewCompany(true);
+
+          /// Send the email verification
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => const VerifyEmailScreen()));
+        } else {
+          setState(() {
+            registrationFail = true;
+          });
+        }
+        setState(() {
+          showSpinner = false;
+        });
+      } on FirebaseAuthException catch (error) {
+        switch (error.code) {
+          case "ERROR_INVALID_EMAIL":
+          case "invalid-email":
+            errorMessage = "Your email address appears to be malformed.";
+            break;
+          case "email-already-in-use":
+            errorMessage = "Email is already in use.";
+            break;
+          case "ERROR_WRONG_PASSWORD":
+          case "wrong-password":
+            errorMessage = "Your password is wrong.";
+            break;
+          case "weak-password":
+            errorMessage = "Weak password";
+            break;
+          case "ERROR_USER_NOT_FOUND":
+          case "user-not-found":
+            errorMessage = "User with this email doesn't exist.";
+            break;
+          case "ERROR_USER_DISABLED":
+          case "user-disabled":
+            errorMessage = "User with this email has been disabled.";
+            break;
+          case "ERROR_TOO_MANY_REQUESTS":
+          case "too-many-requests":
+            errorMessage = "Too many requests. Try again later.";
+            break;
+          case "ERROR_OPERATION_NOT_ALLOWED":
+          case "operation-not-allowed":
+            errorMessage = "Signing in with Email and Password is not enabled.";
+            break;
+          default:
+            errorMessage = "An undefined Error happened. Please try again.";
+        }
+
+        if (errorMessage != "") {
+          ScaffoldMessenger.of(context).showSnackBar((SnackBar(
+            content: Center(
+              child: Text(
+                errorMessage,
+                style: const TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.w900),
+              ),
+            ),
+            behavior: SnackBarBehavior.floating,
+            margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).size.height - 100,
+              left: 10,
+              right: 10,
+            ),
+            backgroundColor: Colors.redAccent,
+          )));
+        }
+      }
     } on StripeException catch (e) {
       // If any error comes during payment
       // so payment will be cancelled
