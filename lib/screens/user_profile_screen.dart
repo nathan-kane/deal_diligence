@@ -635,7 +635,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                       showSpinner = true;
                     });
                     try {
-                      if (widget.isNewUser!) {
+                      if (ref.read(globalsNotifierProvider).newUser == false) {
                         // Add new user account to Cloud Firestore
                         try {
                           UserCredential result =
@@ -682,7 +682,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                       if (isChecked) {
                         ref
                             .read(globalsNotifierProvider.notifier)
-                            .updateAddCompany(false);
+                            .updatenewClient(true);
                         // ignore: use_build_context_synchronously
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => const CompanyScreen()));

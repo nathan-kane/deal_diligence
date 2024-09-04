@@ -435,8 +435,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 // onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                 //     builder: (context) => const AddPaymentViaCard())),
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const UserRegisterScreen())),
+                onPressed: () {
+                  ref
+                      .read(globalsNotifierProvider.notifier)
+                      .updatenewUser(true);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const UserRegisterScreen()));
+                },
               ),
             ],
           ),

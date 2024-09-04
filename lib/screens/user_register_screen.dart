@@ -105,22 +105,22 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                   height: 48.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   keyboardType: TextInputType.name,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     fName = value; // Capture the value entered by the user
                   },
-                  decoration:
-                      const InputDecoration(hintText: 'First Name'),
+                  decoration: const InputDecoration(hintText: 'First Name'),
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   keyboardType: TextInputType.name,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     lName = value; // Capture the value entered by the user
                   },
-                  decoration:
-                      const InputDecoration(hintText: 'Last Name'),
+                  decoration: const InputDecoration(hintText: 'Last Name'),
                 ),
                 TextField(
                   keyboardType: TextInputType.emailAddress,
@@ -166,17 +166,19 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                     setState(() {
                       showSpinner = true;
                     });
-                      /// The actual registration takes place in the StripePaymentScreen file
-                      
-                      ref.read(usersNotifierProvider.notifier).updatefName(fName);
-                      ref.read(usersNotifierProvider.notifier).updatelName(lName);
 
-                      // Setup payments
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => StripePaymentScreen(email, password)));
-                      setState(() {
-                        showSpinner = false;
-                      });
+                    /// The actual registration takes place in the StripePaymentScreen file
+
+                    ref.read(usersNotifierProvider.notifier).updatefName(fName);
+                    ref.read(usersNotifierProvider.notifier).updatelName(lName);
+
+                    // Setup payments
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) =>
+                            StripePaymentScreen(email, password)));
+                    setState(() {
+                      showSpinner = false;
+                    });
                     // } on FirebaseAuthException catch (error) {
                     //   switch (error.code) {
                     //     case "ERROR_INVALID_EMAIL":
@@ -246,6 +248,4 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
       ),
     );
   }
-
-  
 }
