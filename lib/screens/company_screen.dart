@@ -156,7 +156,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!widget.isNewCompany!) {
+      if (ref.read(globalsNotifierProvider).newCompany == false) {
         getCurrentCompanyProfile();
       }
     });
