@@ -704,10 +704,10 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                             );
                       }
 
-                      ref
-                          .read(globalsNotifierProvider.notifier)
-                          .updatecurrentUserName(
-                              '${fNameController.value.text} ${lNameController.value.text}');
+                      // ref
+                      //     .read(globalsNotifierProvider.notifier)
+                      //     .updatecurrentUserName(
+                      //         '${fNameController.value.text} ${lNameController.value.text}');
                       ref
                           .read(globalsNotifierProvider.notifier)
                           .updatecurrentUserState(_currentUserState!);
@@ -715,7 +715,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                       // ref
                       //     .read(globalsNotifierProvider.notifier)
                       //     .updatetargetScreen(0);
-                      
+
                       if (isChecked) {
                         /// If the user wants to create a new company then execute this
                         ref

@@ -45,7 +45,7 @@ class _StripePaymentScreenState extends ConsumerState<StripePaymentScreen> {
           children: [
             const Text('Monthly subscription is 49.99 USD'),
             TextButton(
-                child: const Text('Subscribe Now!'),
+                child: const Text('Subscribe Now!', style: TextStyle(fontSize: 20,),),
                 onPressed: () async {
                   if (kIsWeb) {
                     Navigator.of(context).push(MaterialPageRoute(
