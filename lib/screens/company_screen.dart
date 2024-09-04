@@ -444,9 +444,6 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                           .read(globalsNotifierProvider.notifier)
                           .updatenewCompany(true);
 
-                      //  This is a new company record but it will already
-                      //  have a document ID that should be used.
-                      //agencyProvider.saveCompany();
                       ref
                           .read(companyNotifierProvider.notifier)
                           .saveCompany(ref);

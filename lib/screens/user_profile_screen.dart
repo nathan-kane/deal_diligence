@@ -351,7 +351,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
-                    ref.read(usersNotifierProvider.notifier).updatefName(value);
+                    // ref.read(usersNotifierProvider.notifier).updatefName(value);
                     newUser.fName = value;
                   },
                   decoration: const InputDecoration(
@@ -366,7 +366,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
-                    ref.read(usersNotifierProvider.notifier).updatelName(value);
+                    // ref.read(usersNotifierProvider.notifier).updatelName(value);
                     newUser.lName = value;
                   },
                   decoration: const InputDecoration(
@@ -497,7 +497,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
-                    ref.read(usersNotifierProvider.notifier).updateCity(value);
+                    // ref.read(usersNotifierProvider.notifier).updateCity(value);
                     newUser.city = value;
                   },
                   decoration: const InputDecoration(
@@ -570,7 +570,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     email = value; // Capture the value entered by the user
-                    ref.read(usersNotifierProvider.notifier).updateEmail(value);
+                    // ref.read(usersNotifierProvider.notifier).updateEmail(value);
                     newUser.email = value;
                   },
                   decoration:
@@ -662,9 +662,41 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                           debugPrint(e.message!);
                         }
                       } else {
+                        /// Populate the provider with data entered in the page
                         ref
-                            .read(globalsNotifierProvider.notifier)
-                            .updatenewUser(false);
+                            .read(usersNotifierProvider.notifier)
+                            .updatefName(fNameController.value.text);
+                        ref
+                            .read(usersNotifierProvider.notifier)
+                            .updatelName(lNameController.value.text);
+                        ref
+                            .read(usersNotifierProvider.notifier)
+                            .updateaddress1(address1Controller.value.text);
+                        ref
+                            .read(usersNotifierProvider.notifier)
+                            .updateaddress2(address2Controller.value.text);
+                        ref
+                            .read(usersNotifierProvider.notifier)
+                            .updateState(stateController.value.text);
+                        ref
+                            .read(usersNotifierProvider.notifier)
+                            .updateZipcode(zipController.value.text);
+                        ref
+                            .read(usersNotifierProvider.notifier)
+                            .updateCellPhone(cellPhoneController.value.text);
+                        ref
+                            .read(usersNotifierProvider.notifier)
+                            .updateOfficePhone(officePhoneController.value.text);
+                        ref
+                            .read(usersNotifierProvider.notifier)
+                            .updateEmail(emailController.value.text);
+                        ref
+                            .read(usersNotifierProvider.notifier)
+                            .updateMlsId(mlsController.value.text);
+                        ref
+                            .read(usersNotifierProvider.notifier)
+                            .updateMls(mlsController.value.text);
+
                         ref.read(usersNotifierProvider.notifier).saveUser(
                               //ref.read(companyNotifierProvider),
                               ref.read(globalsNotifierProvider),
@@ -672,9 +704,6 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                             );
                       }
 
-                      ref.read(usersNotifierProvider.notifier).updatefName(fNameController.value.text);
-                      ref.read(usersNotifierProvider.notifier).updatelName(lNameController.value.text);
-                      ref.read(usersNotifierProvider.notifier).updateState(_currentUserState!);
                       ref
                           .read(globalsNotifierProvider.notifier)
                           .updatecurrentUserName(
@@ -683,10 +712,12 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                           .read(globalsNotifierProvider.notifier)
                           .updatecurrentUserState(_currentUserState!);
                       //await _firestoreService.saveDeviceToken(ref);
-                      ref
-                          .read(globalsNotifierProvider.notifier)
-                          .updatetargetScreen(0);
+                      // ref
+                      //     .read(globalsNotifierProvider.notifier)
+                      //     .updatetargetScreen(0);
+                      
                       if (isChecked) {
+                        /// If the user wants to create a new company then execute this
                         ref
                             .read(globalsNotifierProvider.notifier)
                             .updatenewClient(true);

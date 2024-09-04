@@ -220,12 +220,12 @@ class CompanyNotifier extends Notifier<Company> {
       try {
         DocumentReference? newDocRef =
             await firestoreService.saveNewCompany(toMap(newCompany)); 
-        /// Set the new company ID in the new User Model
-        ref.read(usersNotifierProvider.notifier).updateCompanyId(newDocRef as String);
-        /// Now save the update to the user record
+        /// Link the new user with the new company by inserting the 
+        /// new companyId into the new user provider
+        ref.read(usersNotifierProvider.notifier).updateCompanyId(newDocRef!.id);
+        /// Now save the updated user data to the db
         ref.read(usersNotifierProvider.notifier).saveUser(ref.read(globalsNotifierProvider), ref.read(usersNotifierProvider));
         return newDocRef;
-        //ref.read(trxnNotifierProvider.notifier).updateClientId(newDocRef!.id);
       } catch (e) {
         debugPrint(e.toString());
         return null;
