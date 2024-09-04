@@ -207,7 +207,7 @@ class _StripePaymentScreenState extends ConsumerState<StripePaymentScreen> {
   createPaymentIntent(String amount, String currency) async {
     try {
       Map<String, dynamic> body = {
-        'amount': ((int.parse(amount)) * 100).toString(),
+        'amount': ((int.parse(amount))).toString(),
         'currency': currency,
         'payment_method_types[]': 'card',
       };
