@@ -476,6 +476,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: address2Controller,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
@@ -654,13 +655,16 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                 );
 
                             // Send email to new user with their default password
-                            sendNewUserEmail();
+                            /// sendNewUserEmail();
                           }
                         } catch (error) {
                           var e = error as FirebaseAuthException;
                           debugPrint(e.message!);
                         }
                       } else {
+                        ref
+                            .read(globalsNotifierProvider.notifier)
+                            .updatenewUser(false);
                         ref.read(usersNotifierProvider.notifier).saveUser(
                               //ref.read(companyNotifierProvider),
                               ref.read(globalsNotifierProvider),
@@ -668,6 +672,9 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                             );
                       }
 
+                      ref.read(usersNotifierProvider.notifier).updatefName(fNameController.value.text);
+                      ref.read(usersNotifierProvider.notifier).updatelName(lNameController.value.text);
+                      ref.read(usersNotifierProvider.notifier).updateState(_currentUserState!);
                       ref
                           .read(globalsNotifierProvider.notifier)
                           .updatecurrentUserName(
@@ -692,9 +699,10 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                             builder: (context) => const MainScreen()));
                       }
 
-                      ref.read(usersNotifierProvider.notifier).saveFcmToken(
-                          ref.read(globalsNotifierProvider).currentUserId!,
-                          '${ref.read(usersNotifierProvider).fName} ${ref.read(usersNotifierProvider).lName!}');
+                      /// iOS does not support push notifications so this code is not needed for now
+                      // ref.read(usersNotifierProvider.notifier).saveFcmToken(
+                      //     ref.read(globalsNotifierProvider).currentUserId!,
+                      //     '${ref.read(usersNotifierProvider).fName} ${ref.read(usersNotifierProvider).lName!}');
 
                       setState(() {
                         showSpinner = false;

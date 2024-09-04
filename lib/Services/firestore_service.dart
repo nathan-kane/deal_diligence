@@ -101,8 +101,13 @@ class FirestoreService {
     await _db.collection('company').doc(companyId).set(company);
   }
 
-  Future<void> saveNewCompany(company) {
-    return _db.collection('company').add(company);
+  Future<DocumentReference?> saveNewCompany(company) async {
+    try {
+      DocumentReference docRef = await _db.collection('company').add(company);
+      return docRef;
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<void> saveUserFcmTokenId(String userId, String fcmTokenId) async {

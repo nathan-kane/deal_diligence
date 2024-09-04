@@ -362,7 +362,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                 //   height: 8.0,
                 // ),
                 RoundedButton(
-                  title: 'Save Appraiser Company',
+                  title: 'Save Client',
                   colour: Colors.blueAccent,
                   onPressed: () async {
                     setState(() {

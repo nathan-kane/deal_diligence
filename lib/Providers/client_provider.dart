@@ -233,6 +233,7 @@ class ClientNotifier extends Notifier<Client> {
       try {
         DocumentReference? newDocRef =
             await firestoreService.saveNewClient(toMap(newClient));
+            client.updateClientId = newDocRef;
         return newDocRef;
         //ref.read(trxnNotifierProvider.notifier).updateClientId(newDocRef!.id);
       } catch (e) {

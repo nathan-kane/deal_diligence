@@ -272,6 +272,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: companyNameController,
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.center,
@@ -287,6 +288,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: address1Controller,
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.center,
@@ -302,6 +304,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: address2Controller,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
@@ -316,6 +319,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                   height: 8.0,
                 ),
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   controller: cityController,
                   keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,
