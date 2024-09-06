@@ -696,17 +696,15 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                               ref.read(globalsNotifierProvider),
                               ref.read(usersNotifierProvider), true
                             );
-
-                        //ref.read(usersNotifierProvider.notifier).updateuserID(docRef!.id);
                       }
 
                       // ref
                       //     .read(globalsNotifierProvider.notifier)
                       //     .updatecurrentUserName(
                       //         '${fNameController.value.text} ${lNameController.value.text}');
-                      ref
-                          .read(globalsNotifierProvider.notifier)
-                          .updatecurrentUserState(_currentUserState!);
+                      // ref
+                      //     .read(globalsNotifierProvider.notifier)
+                      //     .updatecurrentUserState(_currentUserState!);
                       //await _firestoreService.saveDeviceToken(ref);
                       // ref
                       //     .read(globalsNotifierProvider.notifier)
@@ -716,7 +714,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                         /// If the user wants to create a new company then execute this
                         ref
                             .read(globalsNotifierProvider.notifier)
-                            .updatenewClient(true);
+                            .updatenewCompany(true);
                         // ignore: use_build_context_synchronously
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => const CompanyScreen()));
