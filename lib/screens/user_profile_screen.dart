@@ -8,7 +8,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'dart:io';
-import 'package:deal_diligence/Providers/company_provider.dart';
+//import 'package:deal_diligence/Providers/company_provider.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
@@ -93,17 +93,9 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
     String currentCompanyId = ref.read(globalsNotifierProvider).companyId!;
 
     if (ref.read(globalsNotifierProvider).newUser == true) {
-      emailController.text = "";
-      fNameController.text = "";
-      lNameController.text = "";
-      address1Controller.text = ref.read(companyNotifierProvider).address1!;
-      address2Controller.text = ref.read(companyNotifierProvider).address2!;
-      cityController.text = ref.read(companyNotifierProvider).city!;
-      zipController.text = ref.read(companyNotifierProvider).zipCode!;
-      cellPhoneController.text = ref.read(companyNotifierProvider).cellPhone!;
-      officePhoneController.text =
-          ref.read(companyNotifierProvider).officePhone!;
-      companyController.text = ref.read(companyNotifierProvider).companyName!;
+      fNameController.text = ref.read(usersNotifierProvider).fName!;
+      lNameController.text = ref.read(usersNotifierProvider).lName!;
+      emailController.text = ref.read(usersNotifierProvider).email!;
     } else {
       final DocumentSnapshot currentUserProfile = await usersRef
           .doc(ref.read(globalsNotifierProvider).currentUserId)
@@ -264,9 +256,9 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
 
   @override
   void initState() {
-    if (ref.read(globalsNotifierProvider).newUser == false) {
+    //if (ref.read(globalsNotifierProvider).newUser == false) {
       getCurrentUserProfile();
-    }
+    //}
 
     if (ref.read(globalsNotifierProvider).currentUserState == "" ||
         ref.read(globalsNotifierProvider).currentUserState == null) {
@@ -292,8 +284,8 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   }
 
   Future sendNewUserEmail() async {
-    final api = GoogleAuthApi();
-    final googleUser = await api.signIn();
+    //final api = GoogleAuthApi();
+    //final googleUser = await api.signIn();
     const accessToken = '';
 
     final smtpServer = gmailSaslXoauth2('nkane1234@gmail.com', accessToken);
@@ -566,6 +558,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   height: 8.0,
                 ),
                 TextField(
+                  controller: emailController,
                   keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
@@ -651,7 +644,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                             ref.read(usersNotifierProvider.notifier).saveUser(
                                   //ref.read(companyNotifierProvider),
                                   ref.read(globalsNotifierProvider),
-                                  newUser,
+                                  newUser, false
                                 );
 
                             // Send email to new user with their default password
@@ -697,11 +690,14 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                             .read(usersNotifierProvider.notifier)
                             .updateMls(mlsController.value.text);
 
+                        /// Create new user record
                         ref.read(usersNotifierProvider.notifier).saveUser(
                               //ref.read(companyNotifierProvider),
                               ref.read(globalsNotifierProvider),
-                              ref.read(usersNotifierProvider),
+                              ref.read(usersNotifierProvider), true
                             );
+
+                        //ref.read(usersNotifierProvider.notifier).updateuserID(docRef!.id);
                       }
 
                       // ref

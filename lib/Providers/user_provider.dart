@@ -70,6 +70,7 @@ class Users {
     String? deviceToken,
   }) {
     return Users(
+      userId: userId ?? this.userId,
       fName: fName ?? this.fName,
       lName: lName ?? this.lName,
       address1: address1 ?? this.address1,
@@ -211,12 +212,12 @@ class UsersNotifier extends Notifier<Users> {
 
   Map<String, dynamic> toMap(Users user) {
     return {
+      'userId': user.userId,
       'cellPhone': user.cellPhone,
       'address1': user.address1,
       'address2': user.address2,
       'company': user.companyName,
       'companyId': user.companyId,
-      'userId': user.userId,
       'city': user.city,
       'fName': user.fName,
       'lName': user.lName,
@@ -257,8 +258,8 @@ class UsersNotifier extends Notifier<Users> {
     firestoreService.saveDeviceToken(userId, userName);
   }
 
-  saveUser(globals, user) async {
-    if (ref.watch(globalsNotifierProvider).newUser == true) {
+  saveUser(globals, user, bool newUser) async {
+    if (newUser == true) {
       // final DocumentSnapshot currentCompanyProfile =
       final newUser = Users(
         userId: user.userId,
@@ -279,11 +280,12 @@ class UsersNotifier extends Notifier<Users> {
         businessType: user.businessType,
         deviceToken: user.deviceToken,
       );
-      firestoreService.saveNewUser(toMap(newUser));
-      ref.read(globalsNotifierProvider.notifier).updatenewUser(false);
+      firestoreService.saveNewUser(toMap(newUser), ref.read(globalsNotifierProvider).currentUserId!);
     } else {
+
+      /// This is an existing user
       final DocumentSnapshot currentuserProfile =
-          await userDB.doc(user.UserId).get();
+          await userDB.doc(user.userId).get();
 
       var newUser = Users(
           userId: ref.read(globalsNotifierProvider).currentUid,
@@ -333,6 +335,8 @@ class UsersNotifier extends Notifier<Users> {
 
       firestoreService.saveUser(
           newUser, ref.read(globalsNotifierProvider).currentUserId!);
+
+      return null;
     }
   }
 

@@ -20,9 +20,17 @@ class FirestoreService {
   // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   //final _auth = FirebaseAuth.instance;
 
-  //Save the Users or users to database
-  Future<void> saveNewUser(users) {
-    return _db.collection('users').add(users);
+  /// Create a new user record using the userID obtained from the Google 
+  /// registration process
+  saveNewUser(users, String currentUid) async {
+    try {
+      _db.collection('users').doc(currentUid).set(users);
+      // DocumentReference docRef = await _db.collection('users').add(users);
+      // return docRef;
+    } catch (e) {
+      return null;
+    }
+     
   }
 
   Future<void> saveUser(users, String currentUid) {

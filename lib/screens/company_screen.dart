@@ -9,6 +9,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Providers/company_provider.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
+import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
@@ -444,9 +445,25 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                           .read(globalsNotifierProvider.notifier)
                           .updatenewCompany(true);
 
-                      ref
+                      /// Save the new company and get the new company ID
+                      /// We will also save the company ID to the user record
+                      /// to link the user to the company
+                      var docRef = await ref
                           .read(companyNotifierProvider.notifier)
                           .saveCompany(ref);
+
+                      /// Link the new user with the new company by inserting the
+                      /// new companyId into the new user provider
+                      ref
+                          .read(usersNotifierProvider.notifier)
+                          .updateCompanyId(docRef!.id);
+
+                      /// Now save the updated user data to the user record
+                      ref.read(usersNotifierProvider.notifier).saveUser(
+                          ref.read(globalsNotifierProvider),
+                          ref.read(usersNotifierProvider),
+                          false);
+
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (context) => const UserProfileScreen()));
 
