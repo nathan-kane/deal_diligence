@@ -146,17 +146,17 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                 const SizedBox(
                   height: 8.0,
                 ),
-                Center(
-                  child: DropdownButton(
-                    value: _currentUserState,
-                    items: _dropDownState,
-                    hint: const Text('Choose State'),
-                    onChanged: changedDropDownState,
-                  ),
-                ),
-                const SizedBox(
-                  height: 24.0,
-                ),
+                // Center(
+                //   child: DropdownButton(
+                //     value: _currentUserState,
+                //     items: _dropDownState,
+                //     hint: const Text('Choose State'),
+                //     onChanged: changedDropDownState,
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 24.0,
+                // ),
                 TextButton(
                   child: const Text(
                     'Register',
