@@ -284,36 +284,36 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
     _dropDownState = getDropDownState(); // Get the list of states
   }
 
-  Future sendNewUserEmail() async {
-    //final api = GoogleAuthApi();
-    //final googleUser = await api.signIn();
-    const accessToken = '';
+  // Future sendNewUserEmail() async {
+  //   //final api = GoogleAuthApi();
+  //   //final googleUser = await api.signIn();
+  //   const accessToken = '';
 
-    final smtpServer = gmailSaslXoauth2('nkane1234@gmail.com', accessToken);
-    final message = Message()
-      ..from = const Address("nkane1234@gmail.com", "Deal Diligence")
-      ..recipients = ['nkane1234@gmail.com']
-      ..subject = "Welcome to Deal Diligence"
-      ..text = "Welcome to Deal Diligence. Your password is D3@lDiligence";
+  //   final smtpServer = gmailSaslXoauth2('nkane1234@gmail.com', accessToken);
+  //   final message = Message()
+  //     ..from = const Address("nkane1234@gmail.com", "Deal Diligence")
+  //     ..recipients = ['nkane1234@gmail.com']
+  //     ..subject = "Welcome to Deal Diligence"
+  //     ..text = "Welcome to Deal Diligence. Your password is D3@lDiligence";
 
-    try {
-      await send(message, smtpServer);
+  //   try {
+  //     await send(message, smtpServer);
 
-      //showSnackBar('Invitation email successfully sent');
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar((const SnackBar(
-          content: CustomSnackBar(
-              snackColor: Colors.red,
-              snackMessage: 'Email was sent successfully'))));
-    } on MailerException catch (e) {
-      debugPrint(e.toString());
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar((SnackBar(
-          content: CustomSnackBar(
-              snackColor: Colors.red,
-              snackMessage: 'Email did not sent, $e'))));
-    }
-  }
+  //     //showSnackBar('Invitation email successfully sent');
+  //     if (!mounted) return;
+  //     ScaffoldMessenger.of(context).showSnackBar((const SnackBar(
+  //         content: CustomSnackBar(
+  //             snackColor: Colors.red,
+  //             snackMessage: 'Email was sent successfully'))));
+  //   } on MailerException catch (e) {
+  //     debugPrint(e.toString());
+  //     if (!mounted) return;
+  //     ScaffoldMessenger.of(context).showSnackBar((SnackBar(
+  //         content: CustomSnackBar(
+  //             snackColor: Colors.red,
+  //             snackMessage: 'Email did not sent, $e'))));
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -29,7 +29,7 @@ class Users {
   String? mlsId;
   String? mls;
   String? businessType;
-  String? deviceToken;
+  //String? deviceToken;
 
   Users(
       {this.userId,
@@ -47,8 +47,8 @@ class Users {
       this.companyName,
       this.mlsId,
       this.mls,
-      this.businessType,
-      this.deviceToken});
+      this.businessType});
+      //this.deviceToken});
 
   Users copyWith({
     String? userId,
@@ -67,7 +67,7 @@ class Users {
     String? mlsId,
     String? mls,
     String? businessType,
-    String? deviceToken,
+    //String? deviceToken,
   }) {
     return Users(
       userId: userId ?? this.userId,
@@ -86,7 +86,7 @@ class Users {
       mlsId: mlsId ?? this.mlsId,
       mls: mls ?? this.mls,
       businessType: businessType ?? this.businessType,
-      deviceToken: deviceToken ?? this.deviceToken,
+      //deviceToken: deviceToken ?? this.deviceToken,
     );
   }
 }
@@ -115,7 +115,7 @@ class UsersNotifier extends Notifier<Users> {
   String mlsId = '';
   String mls = '';
   String businessType = '';
-  String deviceToken = '';
+  //String deviceToken = '';
 
   @override
   Users build() {
@@ -137,7 +137,7 @@ class UsersNotifier extends Notifier<Users> {
       mlsId: '',
       mls: '',
       businessType: '',
-      deviceToken: '',
+      //deviceToken: '',
     );
   }
 
@@ -206,9 +206,9 @@ class UsersNotifier extends Notifier<Users> {
     state = state.copyWith(businessType: newBusinessType);
   }
 
-  void updateDeviceToken(String newDeviceToken) {
-    state = state.copyWith(deviceToken: newDeviceToken);
-  }
+  // void updateDeviceToken(String newDeviceToken) {
+  //   state = state.copyWith(deviceToken: newDeviceToken);
+  // }
 
   Map<String, dynamic> toMap(Users user) {
     return {
@@ -227,8 +227,8 @@ class UsersNotifier extends Notifier<Users> {
       'mls': user.mls,
       'mlsId': user.mlsId,
       'email': user.email,
-      'businessType': user.businessType,
-      'deviceToken': user.deviceToken
+      'businessType': user.businessType
+      //'deviceToken': user.deviceToken
     };
   }
 
@@ -248,15 +248,15 @@ class UsersNotifier extends Notifier<Users> {
         mls = firestore['mls'],
         mlsId = firestore['mlsId'],
         email = firestore['email'],
-        businessType = firestore['businessType'],
-        deviceToken = firestore['deviceToken'];
+        businessType = firestore['businessType'];
+        //deviceToken = firestore['deviceToken'];
 
 // **************************************************
 
-  saveFcmToken(String userId, String userName) {
-    //firestoreService.saveUserFcmTokenId(userId, fcmTokenId);
-    firestoreService.saveDeviceToken(userId, userName);
-  }
+  // saveFcmToken(String userId, String userName) {
+  //   //firestoreService.saveUserFcmTokenId(userId, fcmTokenId);
+  //   firestoreService.saveDeviceToken(userId, userName);
+  // }
 
   saveUser(globals, user, bool newUser) async {
     if (newUser == true) {
@@ -278,7 +278,7 @@ class UsersNotifier extends Notifier<Users> {
         companyName: user.companyName,
         email: user.email,
         businessType: user.businessType,
-        deviceToken: user.deviceToken,
+        //deviceToken: user.deviceToken,
       );
       firestoreService.saveNewUser(
           toMap(newUser), ref.read(globalsNotifierProvider).currentUserId!);
@@ -328,10 +328,10 @@ class UsersNotifier extends Notifier<Users> {
           mlsId: ref.read(globalsNotifierProvider).mlsId,
           mls: (state.mls != null && state.mls != "")
               ? state.mls
-              : currentuserProfile.get('mls'),
-          deviceToken: (state.deviceToken != null && state.deviceToken != "")
-              ? state.deviceToken
-              : currentuserProfile.get('deviceToken'));
+              : currentuserProfile.get('mls'));
+          // deviceToken: (state.deviceToken != null && state.deviceToken != "")
+          //     ? state.deviceToken
+          //     : currentuserProfile.get('deviceToken'));
       businessType:
       ref.read(globalsNotifierProvider).userBusinessType;
 

@@ -186,16 +186,16 @@ class FirestoreService {
   //       .toList());
   // }
 
-  Stream<List<Device>> getDeviceToken(Ref ref) {
-    return _db
-        .collection('users')
-        .doc(ref.read(globalsNotifierProvider).currentUserId)
-        .collection('device')
-        .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((document) => Device.fromFirestore(document.data()))
-            .toList());
-  }
+  // Stream<List<Device>> getDeviceToken(Ref ref) {
+  //   return _db
+  //       .collection('users')
+  //       .doc(ref.read(globalsNotifierProvider).currentUserId)
+  //       .collection('device')
+  //       .snapshots()
+  //       .map((snapshot) => snapshot.docs
+  //           .map((document) => Device.fromFirestore(document.data()))
+  //           .toList());
+  // }
 
   Stream<QuerySnapshot> getCompanyTrxns(String companyId) async* {
     yield* FirebaseFirestore.instance
@@ -252,7 +252,7 @@ class FirestoreService {
   }
 
   /// Get the token, save it to the database for current user
-  Future<void> saveDeviceToken(String uId, String userName) async {
+  //Future<void> saveDeviceToken(String uId, String userName) async {
     // Get the current user
     //String? uid = ref.read(globalsNotifierProvider).currentUid;
     //User user = await _auth.currentUser();
@@ -262,14 +262,14 @@ class FirestoreService {
     // String? fcmToken = await _firebaseMessaging.getToken();
 
     // Save it to Firestore
-    var tokens = _db.collection('users').doc(uId);
+    //var tokens = _db.collection('users').doc(uId);
 
-    await tokens.update({
-      // 'token': fcmToken,
-      'userId': uId,
-      'UserName': userName,
-      'createdAt': FieldValue.serverTimestamp(), // optional
-      'platform': Platform.operatingSystem // optional
-    });
-  }
+    // await tokens.update({
+    //   // 'token': fcmToken,
+    //   'userId': uId,
+    //   'UserName': userName,
+    //   'createdAt': FieldValue.serverTimestamp(), // optional
+    //   'platform': Platform.operatingSystem // optional
+    // });
+  //}
 }
