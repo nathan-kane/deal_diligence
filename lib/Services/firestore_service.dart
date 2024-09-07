@@ -119,7 +119,7 @@ class FirestoreService {
     return _db
         .collection('company')
         .doc(companyId)
-        .collection('trxns')
+        .collection('trxns') 
         .doc(trxnId)
         .set(trxns);
   }
