@@ -287,7 +287,7 @@ class UsersNotifier extends Notifier<Users> {
       final DocumentSnapshot currentuserProfile =
           await userDB.doc(user.userId).get();
 
-      var newUser = Users(
+      final newUser = Users(
           userId: ref.read(globalsNotifierProvider).currentUid,
           fName: (state.fName != null && state.fName != "")
               ? state.fName
@@ -307,9 +307,6 @@ class UsersNotifier extends Notifier<Users> {
           userState: (userState != null && userState != "")
               ? userState
               : currentuserProfile.get('state'),
-          /*state: (globals.selectedState != null)
-              ? globals.selectedState
-              : globals.currentuserState,*/
           zipCode: (state.zipCode != null && state.zipCode != "")
               ? state.zipCode
               : currentuserProfile.get('zipCode'),
@@ -325,6 +322,9 @@ class UsersNotifier extends Notifier<Users> {
           companyName: (state.companyName != null && state.companyName != "")
               ? state.companyName
               : currentuserProfile.get('company'),
+          email: (state.email != null && state.email != "")
+              ? state.email
+              : currentuserProfile.get('email'),
           mlsId: ref.read(globalsNotifierProvider).mlsId,
           mls: (state.mls != null && state.mls != "")
               ? state.mls
@@ -336,7 +336,7 @@ class UsersNotifier extends Notifier<Users> {
       ref.read(globalsNotifierProvider).userBusinessType;
 
       firestoreService.saveUser(
-          newUser, ref.read(globalsNotifierProvider).currentUserId!);
+          toMap(newUser), ref.read(globalsNotifierProvider).currentUserId!);
 
       return null;
     }
