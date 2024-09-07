@@ -12,7 +12,7 @@ import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/screens/main_screen.dart';
 import 'package:deal_diligence/screens/reset_password.dart';
-import 'package:deal_diligence/screens/stripe_payment_module/add_payment_via_card.dart';
+//import 'package:deal_diligence/screens/stripe_payment_module/add_payment_via_card.dart';
 import 'package:deal_diligence/screens/user_register_screen.dart';
 import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -178,15 +178,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       ref
           .read(usersNotifierProvider.notifier)
           .updateEmail(_currentUserProfile.get('email'));
-      ref
-          .read(usersNotifierProvider.notifier)
-          .updateDeviceToken(_currentUserProfile.get('token'));
+      // ref
+      //     .read(usersNotifierProvider.notifier)
+      //     .updateDeviceToken(_currentUserProfile.get('token'));
     }
 
     // Save the device token just in case the user is using a different device
-    ref.read(usersNotifierProvider.notifier).saveFcmToken(
-        ref.read(globalsNotifierProvider).currentUserId!,
-        '${ref.read(usersNotifierProvider).fName} ${ref.read(usersNotifierProvider).lName!}');
+    // ref.read(usersNotifierProvider.notifier).saveFcmToken(
+    //     ref.read(globalsNotifierProvider).currentUserId!,
+    //     '${ref.read(usersNotifierProvider).fName} ${ref.read(usersNotifierProvider).lName!}');
 
     final DocumentSnapshot _currentCompanyProfile =
         await companyRef.doc(ref.read(globalsNotifierProvider).companyId).get();
@@ -317,9 +317,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ref
                             .read(globalsNotifierProvider.notifier)
                             .updatecurrentUEmail(_auth.currentUser!.email);
-                        ref
-                            .read(globalsNotifierProvider.notifier)
-                            .updatetargetScreen(0);
 
                         await getCurrentUserName();
                         Navigator.push(
