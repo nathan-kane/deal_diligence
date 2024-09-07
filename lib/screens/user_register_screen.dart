@@ -8,7 +8,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:deal_diligence/constants.dart' as constants;
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -146,17 +146,17 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                 const SizedBox(
                   height: 8.0,
                 ),
-                Center(
-                  child: DropdownButton(
-                    value: _currentUserState,
-                    items: _dropDownState,
-                    hint: const Text('Choose State'),
-                    onChanged: changedDropDownState,
-                  ),
-                ),
-                const SizedBox(
-                  height: 24.0,
-                ),
+                // Center(
+                //   child: DropdownButton(
+                //     value: _currentUserState,
+                //     items: _dropDownState,
+                //     hint: const Text('Choose State'),
+                //     onChanged: changedDropDownState,
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 24.0,
+                // ),
                 TextButton(
                   child: const Text(
                     'Register',
@@ -171,6 +171,9 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
 
                     ref.read(usersNotifierProvider.notifier).updatefName(fName);
                     ref.read(usersNotifierProvider.notifier).updatelName(lName);
+                    ref.read(usersNotifierProvider.notifier).updateEmail(email);
+
+                    ref.read(globalsNotifierProvider.notifier).updatenewUser(true);
 
                     // Setup payments
                     Navigator.of(context).pushReplacement(MaterialPageRoute(

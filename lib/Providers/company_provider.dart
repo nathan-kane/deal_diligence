@@ -191,7 +191,7 @@ class CompanyNotifier extends Notifier<Company> {
   //   _website = agency.website;
   // }
 
-  saveCompany(WidgetRef ref, [companyId]) async {
+  Future<DocumentReference?> saveCompany(WidgetRef ref, [companyId]) async {
     //globals.agencyId = name;
     //ref.read(globalsNotifierProvider.notifier).updatecompanyId(name);
     //final CompanyVals = ref.watch(companyNotifierProvider);
@@ -212,19 +212,23 @@ class CompanyNotifier extends Notifier<Company> {
     // If the agency is a new agency retrieve the agency
     // document ID and save it to a new agent document
     if (ref.read(globalsNotifierProvider).newCompany == true) {
-
       ref.read(globalsNotifierProvider.notifier).updatenewCompany(false);
 
       //firestoreService.saveNewCompany(toMap(newCompany));
 
       try {
         DocumentReference? newDocRef =
-            await firestoreService.saveNewCompany(toMap(newCompany)); 
-        /// Link the new user with the new company by inserting the 
-        /// new companyId into the new user provider
-        ref.read(usersNotifierProvider.notifier).updateCompanyId(newDocRef!.id);
-        /// Now save the updated user data to the db
-        ref.read(usersNotifierProvider.notifier).saveUser(ref.read(globalsNotifierProvider), ref.read(usersNotifierProvider));
+            await firestoreService.saveNewCompany(toMap(newCompany));
+
+        // /// Link the new user with the new company by inserting the
+        // /// new companyId into the new user provider
+        // ref.read(usersNotifierProvider.notifier).updateCompanyId(newDocRef!.id);
+
+        // /// Now save the updated user data to the db
+        // ref.read(usersNotifierProvider.notifier).saveUser(
+        //     ref.read(globalsNotifierProvider),
+        //     ref.read(usersNotifierProvider),
+        //     false);
         return newDocRef;
       } catch (e) {
         debugPrint(e.toString());
