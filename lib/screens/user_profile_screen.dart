@@ -7,6 +7,7 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, use_key_in_widget_constructors
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deal_diligence/Providers/company_provider.dart';
 //import 'dart:io';
 //import 'package:deal_diligence/Providers/company_provider.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
@@ -111,12 +112,12 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
       cityController.text = currentUserProfile['city'] ?? "";
       //stateController.text = currentAgentProfile.data()['state'];
       _currentUserState = currentUserProfile['state'] ?? "";
-      if (currentUserProfile.get('state') == "" ||
-          currentUserProfile.get('state') == null) {
-        //_currentCompanyState = globals.currentAgentState;
-      } else {
-        //_currentCompanyState = currentUserProfile['state'] ?? "";
-      }
+      // if (currentUserProfile.get('state') == "" ||
+      //     currentUserProfile.get('state') == null) {
+      //   //_currentCompanyState = globals.currentAgentState;
+      // } else {
+      //   //_currentCompanyState = currentUserProfile['state'] ?? "";
+      // }
 
       zipController.text = currentUserProfile['zipCode'].toString();
       cellPhoneController.text = currentUserProfile['cellPhone'] ?? "";
@@ -257,7 +258,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   @override
   void initState() {
     //if (ref.read(globalsNotifierProvider).newUser == false) {
-      getCurrentUserProfile();
+    getCurrentUserProfile();
     //}
 
     if (ref.read(globalsNotifierProvider).currentUserState == "" ||
@@ -266,8 +267,8 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
     } else {
       _currentUserState = ref.read(globalsNotifierProvider).currentUserState;
     }
-    if (ref.read(globalsNotifierProvider).companyId != "") {
-      _selectedCompany = ref.read(globalsNotifierProvider).companyId;
+    if (ref.read(usersNotifierProvider).companyId != "") {
+      _selectedCompany = ref.read(usersNotifierProvider).companyId;
     }
 
     // _currentCompanyState =
@@ -629,9 +630,48 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                       showSpinner = true;
                     });
                     try {
+                      /// Populate the provider with data entered in the page
+                      ref
+                          .read(usersNotifierProvider.notifier)
+                          .updatefName(fNameController.value.text);
+                      ref
+                          .read(usersNotifierProvider.notifier)
+                          .updatelName(lNameController.value.text);
+                      ref
+                          .read(usersNotifierProvider.notifier)
+                          .updateaddress1(address1Controller.value.text);
+                      ref
+                          .read(usersNotifierProvider.notifier)
+                          .updateaddress2(address2Controller.value.text);
+                      ref
+                          .read(usersNotifierProvider.notifier)
+                          .updateCity(cityController.value.text);
+                      // ref
+                      //     .read(usersNotifierProvider.notifier)
+                      //     .updateState(sele);
+                      ref
+                          .read(usersNotifierProvider.notifier)
+                          .updateZipcode(zipController.value.text);
+                      ref
+                          .read(usersNotifierProvider.notifier)
+                          .updateCellPhone(cellPhoneController.value.text);
+                      ref
+                          .read(usersNotifierProvider.notifier)
+                          .updateOfficePhone(officePhoneController.value.text);
+                      ref
+                          .read(usersNotifierProvider.notifier)
+                          .updateEmail(emailController.value.text);
+                      // ref
+                      //     .read(usersNotifierProvider.notifier)
+                      //     .updateMlsId(mlsController.value.text);
+                      // ref
+                      //     .read(usersNotifierProvider.notifier)
+                      //     .updateMls(mlsController.value.text);
+
                       if (ref.read(globalsNotifierProvider).newUser == false) {
                         // Add new user account to Cloud Firestore
                         try {
+                          /// Send welcome email to new user
                           UserCredential result =
                               await _auth.createUserWithEmailAndPassword(
                                   email: email, password: "D3@lDiligence");
@@ -642,10 +682,9 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                             //return user;
 
                             ref.read(usersNotifierProvider.notifier).saveUser(
-                                  //ref.read(companyNotifierProvider),
-                                  ref.read(globalsNotifierProvider),
-                                  newUser, false
-                                );
+                                ref.read(globalsNotifierProvider),
+                                newUser,
+                                false);
 
                             // Send email to new user with their default password
                             /// sendNewUserEmail();
@@ -654,48 +693,24 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                           var e = error as FirebaseAuthException;
                           debugPrint(e.message!);
                         }
-                      } else {
-                        /// Populate the provider with data entered in the page
-                        ref
-                            .read(usersNotifierProvider.notifier)
-                            .updatefName(fNameController.value.text);
-                        ref
-                            .read(usersNotifierProvider.notifier)
-                            .updatelName(lNameController.value.text);
-                        ref
-                            .read(usersNotifierProvider.notifier)
-                            .updateaddress1(address1Controller.value.text);
-                        ref
-                            .read(usersNotifierProvider.notifier)
-                            .updateaddress2(address2Controller.value.text);
-                        ref
-                            .read(usersNotifierProvider.notifier)
-                            .updateState(stateController.value.text);
-                        ref
-                            .read(usersNotifierProvider.notifier)
-                            .updateZipcode(zipController.value.text);
-                        ref
-                            .read(usersNotifierProvider.notifier)
-                            .updateCellPhone(cellPhoneController.value.text);
-                        ref
-                            .read(usersNotifierProvider.notifier)
-                            .updateOfficePhone(officePhoneController.value.text);
-                        ref
-                            .read(usersNotifierProvider.notifier)
-                            .updateEmail(emailController.value.text);
-                        ref
-                            .read(usersNotifierProvider.notifier)
-                            .updateMlsId(mlsController.value.text);
-                        ref
-                            .read(usersNotifierProvider.notifier)
-                            .updateMls(mlsController.value.text);
 
-                        /// Create new user record
+                        /// The user has selected an existing company so add it to the provider
+                        ref
+                            .read(usersNotifierProvider.notifier)
+                            .updateCompanyId(_selectedCompany!);
+
+                        /// Save the existing user information to the DB
                         ref.read(usersNotifierProvider.notifier).saveUser(
-                              //ref.read(companyNotifierProvider),
-                              ref.read(globalsNotifierProvider),
-                              ref.read(usersNotifierProvider), true
-                            );
+                            ref.read(globalsNotifierProvider),
+                            ref.read(usersNotifierProvider),
+                            false);
+                      } else {
+                        /// The user wants to create a new company and be associated with it
+                        ref.read(usersNotifierProvider.notifier).saveUser(
+                            //ref.read(companyNotifierProvider),
+                            ref.read(globalsNotifierProvider),
+                            ref.read(usersNotifierProvider),
+                            true);
                       }
 
                       // ref
@@ -710,15 +725,27 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                       //     .read(globalsNotifierProvider.notifier)
                       //     .updatetargetScreen(0);
 
+                      /// check if the user wants to create a new company
                       if (isChecked) {
                         /// If the user wants to create a new company then execute this
                         ref
                             .read(globalsNotifierProvider.notifier)
                             .updatenewCompany(true);
+
                         // ignore: use_build_context_synchronously
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => const CompanyScreen()));
                       } else {
+                        /// The user has selected an existing company so add it to the provider
+                        ref
+                            .read(usersNotifierProvider.notifier)
+                            .updateCompanyId(_selectedCompany!);
+
+                        /// User is linking to an existing company
+                        ref.read(usersNotifierProvider.notifier).saveUser(
+                            ref.read(globalsNotifierProvider),
+                            ref.read(usersNotifierProvider),
+                            false);
                         // ignore: use_build_context_synchronously
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => const MainScreen()));

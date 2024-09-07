@@ -280,9 +280,9 @@ class UsersNotifier extends Notifier<Users> {
         businessType: user.businessType,
         deviceToken: user.deviceToken,
       );
-      firestoreService.saveNewUser(toMap(newUser), ref.read(globalsNotifierProvider).currentUserId!);
+      firestoreService.saveNewUser(
+          toMap(newUser), ref.read(globalsNotifierProvider).currentUserId!);
     } else {
-
       /// This is an existing user
       final DocumentSnapshot currentuserProfile =
           await userDB.doc(user.userId).get();
@@ -319,10 +319,12 @@ class UsersNotifier extends Notifier<Users> {
           officePhone: (state.officePhone != null && state.officePhone != "")
               ? state.officePhone
               : currentuserProfile.get('officePhone'),
-          companyId: companyId,
+          companyId: (state.companyId != null && state.companyId != "")
+              ? state.companyId
+              : currentuserProfile.get('companyId'),
           companyName: (state.companyName != null && state.companyName != "")
               ? state.companyName
-              : currentuserProfile.get('Company'),
+              : currentuserProfile.get('company'),
           mlsId: ref.read(globalsNotifierProvider).mlsId,
           mls: (state.mls != null && state.mls != "")
               ? state.mls
