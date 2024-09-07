@@ -397,6 +397,11 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                             ref
                                 .read(globalsNotifierProvider.notifier)
                                 .updatecompanyId(companyValue!);
+
+                            /// Put the selected company ID into the new user provider
+                            ref
+                                .read(usersNotifierProvider.notifier)
+                                .updateCompanyId(_selectedCompany!);
                           });
                           newUser.companyId = companyValue;
                         },
@@ -442,15 +447,15 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                 const SizedBox(
                   height: 8.0,
                 ),
-                DropdownButton(
-                  value: _currentUserState,
-                  items: _dropDownState,
-                  hint: const Text('Choose Business Type'),
-                  onChanged: changedDropDownBusinessType,
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                // DropdownButton(
+                //   value: _currentUserState,
+                //   items: _dropDownState,
+                //   hint: const Text('Choose Business Type'),
+                //   onChanged: changedDropDownBusinessType,
+                // ),
+                // const SizedBox(
+                //   height: 8.0,
+                // ),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: address1Controller,
@@ -564,7 +569,6 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     email = value; // Capture the value entered by the user
-                    // ref.read(usersNotifierProvider.notifier).updateEmail(value);
                     newUser.email = value;
                   },
                   decoration:
@@ -608,9 +612,12 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                             ref
                                 .read(globalsNotifierProvider.notifier)
                                 .updatemlsId(mlsValue!);
+
+                            /// Put the MLS ID in the user provider
                             ref
                                 .read(usersNotifierProvider.notifier)
                                 .updateMlsId(mlsValue);
+                            /// Put the MLS name into the user provider
                             ref
                                 .read(usersNotifierProvider.notifier)
                                 .updateMls(mlsValue);
@@ -646,9 +653,6 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                       ref
                           .read(usersNotifierProvider.notifier)
                           .updateCity(cityController.value.text);
-                      // ref
-                      //     .read(usersNotifierProvider.notifier)
-                      //     .updateState(sele);
                       ref
                           .read(usersNotifierProvider.notifier)
                           .updateZipcode(zipController.value.text);
@@ -661,13 +665,9 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                       ref
                           .read(usersNotifierProvider.notifier)
                           .updateEmail(emailController.value.text);
-                      // ref
-                      //     .read(usersNotifierProvider.notifier)
-                      //     .updateMlsId(mlsController.value.text);
-                      // ref
-                      //     .read(usersNotifierProvider.notifier)
-                      //     .updateMls(mlsController.value.text);
 
+                      /// If the user is NOT a new user then save all the data
+                      /// on the screen to the database
                       if (ref.read(globalsNotifierProvider).newUser == false) {
                         // Add new user account to Cloud Firestore
                         try {
@@ -712,18 +712,6 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                             ref.read(usersNotifierProvider),
                             true);
                       }
-
-                      // ref
-                      //     .read(globalsNotifierProvider.notifier)
-                      //     .updatecurrentUserName(
-                      //         '${fNameController.value.text} ${lNameController.value.text}');
-                      // ref
-                      //     .read(globalsNotifierProvider.notifier)
-                      //     .updatecurrentUserState(_currentUserState!);
-                      //await _firestoreService.saveDeviceToken(ref);
-                      // ref
-                      //     .read(globalsNotifierProvider.notifier)
-                      //     .updatetargetScreen(0);
 
                       /// check if the user wants to create a new company
                       if (isChecked) {
