@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
 
 import 'dart:convert';
-import 'dart:developer';
+//import 'dart:developer';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/screens/stripe_payment_module/add_payment_via_card.dart';
@@ -13,7 +13,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_stripe/flutter_stripe.dart';
+//import 'package:flutter_stripe/flutter_stripe.dart';
 
 class StripePaymentScreen extends ConsumerStatefulWidget {
   final String email;
@@ -115,9 +115,9 @@ class _StripePaymentScreenState extends ConsumerState<StripePaymentScreen> {
           ref
               .read(usersNotifierProvider.notifier)
               .updateuserID(newUser.user!.uid);
-          //   ref
-          //       .read(globalsNotifierProvider.notifier)
-          //       .updatecurrentUserId(newUser.user!.uid);
+            ref
+                .read(globalsNotifierProvider.notifier)
+                .updatecurrentUserId(newUser.user!.uid);
           ref
               .read(usersNotifierProvider.notifier)
               .updateEmail(newUser.user!.email!);

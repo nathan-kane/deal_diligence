@@ -9,10 +9,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Providers/company_provider.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
+import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
+import 'package:deal_diligence/screens/main_screen.dart';
 import 'package:deal_diligence/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -444,11 +446,38 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                           .read(globalsNotifierProvider.notifier)
                           .updatenewCompany(true);
 
-                      ref
+                      /// Save the new company and get the new company ID
+                      /// We will also save the company ID to the user record
+                      /// to link the user to the company
+                      var docRef = await ref
                           .read(companyNotifierProvider.notifier)
                           .saveCompany(ref);
+
+                      /// Link the new user with the new company by inserting the
+                      /// new companyId into the new user provider
+                      ref
+                          .read(usersNotifierProvider.notifier)
+                          .updateCompanyId(docRef!.id);
+
+                      /// Add the company name to the user provider
+                      ref
+                          .read(usersNotifierProvider.notifier)
+                          .updateCompanyName(companyNameController.value.text);
+
+                      /// Add the new company id to the global provider for use in list_of_trxn.dart
+                      ref
+                          .read(globalsNotifierProvider.notifier)
+                          .updatecompanyId(docRef.id);
+
+                      /// Now save the updated user data to the user record
+                      ref.read(usersNotifierProvider.notifier).saveUser(
+                          ref.read(globalsNotifierProvider),
+                          ref.read(usersNotifierProvider),
+                          false);
+
+                      /// Navigate to the main screen
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => const UserProfileScreen()));
+                          builder: (context) => const MainScreen()));
 
                       setState(() {
                         showSpinner = false;

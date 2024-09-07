@@ -70,6 +70,7 @@ class Users {
     String? deviceToken,
   }) {
     return Users(
+      userId: userId ?? this.userId,
       fName: fName ?? this.fName,
       lName: lName ?? this.lName,
       address1: address1 ?? this.address1,
@@ -211,12 +212,12 @@ class UsersNotifier extends Notifier<Users> {
 
   Map<String, dynamic> toMap(Users user) {
     return {
+      'userId': user.userId,
       'cellPhone': user.cellPhone,
       'address1': user.address1,
       'address2': user.address2,
       'company': user.companyName,
       'companyId': user.companyId,
-      'userId': user.userId,
       'city': user.city,
       'fName': user.fName,
       'lName': user.lName,
@@ -257,8 +258,8 @@ class UsersNotifier extends Notifier<Users> {
     firestoreService.saveDeviceToken(userId, userName);
   }
 
-  saveUser(globals, user) async {
-    if (ref.watch(globalsNotifierProvider).newUser == true) {
+  saveUser(globals, user, bool newUser) async {
+    if (newUser == true) {
       // final DocumentSnapshot currentCompanyProfile =
       final newUser = Users(
         userId: user.userId,
@@ -279,13 +280,14 @@ class UsersNotifier extends Notifier<Users> {
         businessType: user.businessType,
         deviceToken: user.deviceToken,
       );
-      firestoreService.saveNewUser(toMap(newUser));
-      ref.read(globalsNotifierProvider.notifier).updatenewUser(false);
+      firestoreService.saveNewUser(
+          toMap(newUser), ref.read(globalsNotifierProvider).currentUserId!);
     } else {
+      /// This is an existing user
       final DocumentSnapshot currentuserProfile =
-          await userDB.doc(user.UserId).get();
+          await userDB.doc(user.userId).get();
 
-      var newUser = Users(
+      final newUser = Users(
           userId: ref.read(globalsNotifierProvider).currentUid,
           fName: (state.fName != null && state.fName != "")
               ? state.fName
@@ -305,9 +307,6 @@ class UsersNotifier extends Notifier<Users> {
           userState: (userState != null && userState != "")
               ? userState
               : currentuserProfile.get('state'),
-          /*state: (globals.selectedState != null)
-              ? globals.selectedState
-              : globals.currentuserState,*/
           zipCode: (state.zipCode != null && state.zipCode != "")
               ? state.zipCode
               : currentuserProfile.get('zipCode'),
@@ -317,10 +316,15 @@ class UsersNotifier extends Notifier<Users> {
           officePhone: (state.officePhone != null && state.officePhone != "")
               ? state.officePhone
               : currentuserProfile.get('officePhone'),
-          companyId: companyId,
+          companyId: (state.companyId != null && state.companyId != "")
+              ? state.companyId
+              : currentuserProfile.get('companyId'),
           companyName: (state.companyName != null && state.companyName != "")
               ? state.companyName
-              : currentuserProfile.get('Company'),
+              : currentuserProfile.get('company'),
+          email: (state.email != null && state.email != "")
+              ? state.email
+              : currentuserProfile.get('email'),
           mlsId: ref.read(globalsNotifierProvider).mlsId,
           mls: (state.mls != null && state.mls != "")
               ? state.mls
@@ -332,7 +336,9 @@ class UsersNotifier extends Notifier<Users> {
       ref.read(globalsNotifierProvider).userBusinessType;
 
       firestoreService.saveUser(
-          newUser, ref.read(globalsNotifierProvider).currentUserId!);
+          toMap(newUser), ref.read(globalsNotifierProvider).currentUserId!);
+
+      return null;
     }
   }
 
