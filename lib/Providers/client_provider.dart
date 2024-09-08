@@ -233,7 +233,7 @@ class ClientNotifier extends Notifier<Client> {
       try {
         DocumentReference? newDocRef =
             await firestoreService.saveNewClient(toMap(newClient));
-            client.updateClientId = newDocRef;
+            //client.updateClientId = newDocRef;
         return newDocRef;
         //ref.read(trxnNotifierProvider.notifier).updateClientId(newDocRef!.id);
       } catch (e) {
@@ -244,7 +244,7 @@ class ClientNotifier extends Notifier<Client> {
       //ref.read(globalsNotifierProvider.notifier).updatenewClient(false);
     } else {
       final DocumentSnapshot currentClientProfile =
-          await clientDB.doc(client.clientId).get();
+          await clientDB.doc(clientId).get();
 
       var newClient = Client(
           fName: (state.fName != null && state.fName != "")

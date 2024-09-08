@@ -40,7 +40,7 @@ class FirestoreService {
   Future<DocumentReference?> saveNewClient(client) async {
     try {
       DocumentReference docRef = await _db.collection('client').add(client);
-      // Enter your Update doc code
+      /// Return the new DocumentReference for the new client
       return docRef;
     } catch (e) {
       return null;

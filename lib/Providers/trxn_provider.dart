@@ -267,6 +267,10 @@ class TrxnNotifier extends Notifier<Trxn> {
     state = state.copyWith(companyId: newCompanyId);
   }
 
+  void updateUserId(String newUserId) {
+    state = state.copyWith(userId: newUserId);
+  }
+
   void updateClientId(String newClientId) {
     state = state.copyWith(clientId: newClientId);
   }

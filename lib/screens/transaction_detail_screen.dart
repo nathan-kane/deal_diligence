@@ -18,6 +18,7 @@ import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/list_of_trxns.dart';
+import 'package:deal_diligence/screens/main_screen.dart';
 import 'package:deal_diligence/screens/popup_commission.dart';
 import 'package:deal_diligence/screens/property_webview_screen.dart';
 import 'package:deal_diligence/screens/widgets/add_all_calendars.dart';
@@ -695,9 +696,9 @@ class _TransactionDetailScreenState
     ref
         .read(clientNotifierProvider.notifier)
         .updateEmail(clientEmailController.text);
-    if (_clientId != null && _clientId != "") {
-      ref.read(clientNotifierProvider.notifier).updateClientId(_clientId!);
-    }
+    // if (_clientId != null && _clientId != "") {
+    //   ref.read(clientNotifierProvider.notifier).updateClientId(_clientId!);
+    // }
   }
 
   populateTrxnProvider() {
@@ -705,7 +706,17 @@ class _TransactionDetailScreenState
       ref
           .read(trxnNotifierProvider.notifier)
           .updateCompanyid(ref.read(globalsNotifierProvider).companyId!);
-      ref.read(trxnNotifierProvider.notifier).updateClientId(docRef!.id);
+
+      /// Only populate the clientID if it is blank
+      if (ref.read(trxnNotifierProvider).clientId == null ||
+          ref.read(trxnNotifierProvider).clientId == "") {
+        ref
+            .read(trxnNotifierProvider.notifier)
+            .updateClientId(ref.read(clientNotifierProvider).clientId!);
+      }
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateUserId(ref.read(usersNotifierProvider).userId!);
       ref
           .read(trxnNotifierProvider.notifier)
           .updatePropertyAddress(propertyAddressController.text);
@@ -951,6 +962,7 @@ class _TransactionDetailScreenState
                                 labelText: 'Cell Phone'),
                           ),
                           TextField(
+                            inputFormatters: [maskFormatter],
                             textCapitalization: TextCapitalization.words,
                             keyboardType: TextInputType.text,
                             controller: clientHomePhoneController,
@@ -2096,15 +2108,31 @@ class _TransactionDetailScreenState
                       if (bClientChanged == true) {
                         populateClientProvider();
                         try {
-                          // Save the client information first
-
+                          /// Save the client information for the trxn
                           if (ref.read(clientNotifierProvider).clientId ==
                                   null ||
                               ref.read(clientNotifierProvider).clientId == "") {
-                            docRef = await ref
+                            /// Save the client record and get the client DocumentReference in return
+                            var docRef = await ref
                                 .read(clientNotifierProvider.notifier)
                                 .saveClient(ref.read(clientNotifierProvider),
-                                    widget.isNewClient);
+                                    true);
+
+                            /// Add the new clientId to the client provider
+                            ref
+                                .read(clientNotifierProvider.notifier)
+                                .updateClientId(docRef!.id);
+
+                            /// Update the client record with the new clientId
+                            ref
+                                .read(clientNotifierProvider.notifier)
+                                .saveClient(
+                                    ref.read(clientNotifierProvider), false, docRef.id);
+
+                            /// Add the new client ID to the trxn provider to be saved
+                            ref
+                                .read(trxnNotifierProvider.notifier)
+                                .updateClientId(docRef!.id);
                           } else {
                             ref
                                 .read(clientNotifierProvider.notifier)
@@ -2112,7 +2140,7 @@ class _TransactionDetailScreenState
                                     ref.read(clientNotifierProvider), false);
                           }
                         } catch (e) {
-                          debugPrint('Trxn Detail  $e');
+                          debugPrint('Trxn Detail:  $e');
                         }
                       }
 
@@ -2359,7 +2387,7 @@ class _TransactionDetailScreenState
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const CompanyDashboardScreen(),
+                          builder: (context) => const MainScreen(),
                         ),
                       );
                       setState(() {

@@ -296,6 +296,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 20.0,),
               ElevatedButton(
                   onPressed: () async {
                     setState(() {

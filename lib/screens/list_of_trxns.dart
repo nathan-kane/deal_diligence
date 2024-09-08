@@ -61,7 +61,7 @@ class _CompanyDashboardScreenState
           child: FutureBuilder<QuerySnapshot?>(
             future: FirebaseFirestore.instance
                 .collection('company')
-                .doc(ref.read(globalsNotifierProvider).companyId)
+                .doc(ref.read(usersNotifierProvider).companyId) 
                 .collection('trxns')
                 .where("trxnStatus", isNotEqualTo: "Archived")
                 .get(),
