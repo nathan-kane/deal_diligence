@@ -82,7 +82,7 @@ class _TransactionDetailScreenState
     extends ConsumerState<TransactionDetailScreen> {
   StreamProvider<List<Trxn>>? streamProvider;
   final _db = FirebaseFirestore.instance;
-  String? _clientType;
+  //String? _clientType;
   String? _clientId;
 
   DocumentReference? docRef;
@@ -296,8 +296,10 @@ class _TransactionDetailScreenState
     setState(() {
       _currentClientType = selectedClientType;
     });
+
+    /// ClientType is part of the transaction, NOT client
     ref
-        .read(clientNotifierProvider.notifier)
+        .read(trxnNotifierProvider.notifier)
         .updateClientType(selectedClientType!);
   }
 
@@ -306,8 +308,8 @@ class _TransactionDetailScreenState
       _currentTrxnStatus = selectedTrxnStatus;
     });
     ref
-        .read(clientNotifierProvider.notifier)
-        .updateClientType(selectedTrxnStatus!);
+        .read(trxnNotifierProvider.notifier)
+        .updateTrxnStatus(selectedTrxnStatus!);
   }
 
   void changedDropDownAgency(String? selectedCompany) {
@@ -428,8 +430,7 @@ class _TransactionDetailScreenState
             .doc(ref.read(globalsNotifierProvider).currentTrxnId)
             .snapshots()
             .listen((trxnSnapshot) {
-          clientTypeController.text = trxnSnapshot.data()?['clientType'] ?? "";
-          _clientType = trxnSnapshot.data()?['clientType'] ?? "";
+          //clientTypeController.text = trxnSnapshot.data()?['clientType'] ?? "";
 
           _clientId = trxnSnapshot.data()?['clientId'] ?? "";
           ref.read(trxnNotifierProvider.notifier).updateClientId(_clientId!);
@@ -611,50 +612,47 @@ class _TransactionDetailScreenState
             walkThroughDateController.text = "";
           }
 
-          if (trxnSnapshot.data()?['titleCompanyId'] == "" ||
-              trxnSnapshot.data()?['titleCompanyId'] == null) {
-            _selectedTitleCompany = "Select Title Company";
-          } else {
-            _selectedTitleCompany = trxnSnapshot.data()?['titleCompanyId'];
-          }
-
-          if (trxnSnapshot.data()?['mortgageCompanyId'] == "" ||
-              trxnSnapshot.data()?['mortgageCompanyId'] == null) {
-            _selectedMortgageCompany = "Select Mortgage Company";
-          } else {
-            _selectedMortgageCompany =
-                trxnSnapshot.data()?['mortgageCompanyId'];
-          }
-
-          if (trxnSnapshot.data()?['otherAgentCompanyId'] == "" ||
-              trxnSnapshot.data()?['otherAgentCompanyId'] == null) {
-            _selectedOtherAgentCompany = "Select Other Agency";
-          } else {
-            _selectedOtherAgentCompany =
-                trxnSnapshot.data()?['otherAgentCompanyId'];
-          }
-
-          if (trxnSnapshot.data()?['otherPartyTitleCompanyId'] == "" ||
-              trxnSnapshot.data()?['otherPartyTitleCompanyId'] == null) {
-            _selectedOtherTitleCompany = "Select Other Title Company";
-          } else {
-            _selectedOtherTitleCompany =
-                trxnSnapshot.data()?['otherPartyTitleCompanyId'];
-          }
-
-          trxnStatusController.text = trxnSnapshot.data()?['trxnStatus'] ?? "";
-          ref
-              .read(trxnNotifierProvider.notifier)
-              .updateTrxnStatus(trxnStatusController.text);
-          trxnIdController.text = trxnSnapshot.data()?['trxnId'] ?? "";
-
-          _trxnStatus = trxnSnapshot.data()?['trxnStatus'] ?? "Select Status";
-          _clientType =
-              trxnSnapshot.data()?['clientType'] ?? 'Select Client Type';
-          _selectedCompany = trxnSnapshot.data()?['companyId'] ?? "";
-          _selectedUser = trxnSnapshot.data()?['userId'] ?? "";
-          _selectedClientState = trxnSnapshot.data()?['clientState'] ?? "";
           setState(() {
+            if (trxnSnapshot.data()?['titleCompanyId'] == "" ||
+                trxnSnapshot.data()?['titleCompanyId'] == null) {
+              _selectedTitleCompany = "Select Title Company";
+            } else {
+              _selectedTitleCompany = trxnSnapshot.data()?['titleCompanyId'];
+            }
+
+            if (trxnSnapshot.data()?['mortgageCompanyId'] == "" ||
+                trxnSnapshot.data()?['mortgageCompanyId'] == null) {
+              _selectedMortgageCompany = "Select Mortgage Company";
+            } else {
+              _selectedMortgageCompany =
+                  trxnSnapshot.data()?['mortgageCompanyId'];
+            }
+
+            if (trxnSnapshot.data()?['otherAgentCompanyId'] == "" ||
+                trxnSnapshot.data()?['otherAgentCompanyId'] == null) {
+              _selectedOtherAgentCompany = "Select Other Agency";
+            } else {
+              _selectedOtherAgentCompany =
+                  trxnSnapshot.data()?['otherAgentCompanyId'];
+            }
+
+            if (trxnSnapshot.data()?['otherPartyTitleCompanyId'] == "" ||
+                trxnSnapshot.data()?['otherPartyTitleCompanyId'] == null) {
+              _selectedOtherTitleCompany = "Select Other Title Company";
+            } else {
+              _selectedOtherTitleCompany =
+                  trxnSnapshot.data()?['otherPartyTitleCompanyId'];
+            }
+
+            trxnIdController.text = trxnSnapshot.data()?['trxnId'] ?? "";
+
+            _currentClientType =
+                trxnSnapshot.data()?['clientType'] ?? 'Select Client Type';
+            _selectedCompany = trxnSnapshot.data()?['companyId'] ?? "";
+            _selectedUser = trxnSnapshot.data()?['userId'] ?? "";
+            _selectedClientState = trxnSnapshot.data()?['clientState'] ?? "";
+            _currentTrxnStatus =
+                trxnSnapshot.data()?['trxnStatus'] ?? "Select Status";
             if (trxnSnapshot.data()?['propertyState'] == null ||
                 trxnSnapshot.data()?['propertyState'] == "") {
               _currentPropertyState = "Choose State";
@@ -662,6 +660,10 @@ class _TransactionDetailScreenState
               _currentPropertyState = trxnSnapshot.data()?['propertyState'];
             }
           });
+
+          ref
+              .read(trxnNotifierProvider.notifier)
+              .updateTrxnStatus(_currentTrxnStatus);
 
           // Get the client data
           try {
@@ -688,24 +690,24 @@ class _TransactionDetailScreenState
                 } else {
                   _currentClientState = clientSnapshot.data()?['clientState'];
                 }
-              });
+              //});
 
-              setState(() {
-                if (clientSnapshot.data()?['clientType'] == null ||
-                    clientSnapshot.data()?['clientType'] == "") {
-                  _currentClientType = "Choose Client Type";
-                } else {
-                  _currentClientType = clientSnapshot.data()?['clientType'];
-                }
-              });
+              //setState(() {
+                // if (clientSnapshot.data()?['clientType'] == null ||
+                //     clientSnapshot.data()?['clientType'] == "") {
+                //   _currentClientType = "Choose Client Type";
+                // } else {
+                //   _currentClientType = clientSnapshot.data()?['clientType'];
+                // }
+              //});
 
-              setState(() {
-                if (clientSnapshot.data()?['trxnStatus'] == null ||
-                    clientSnapshot.data()?['trxnStatus'] == "") {
-                  _currentTrxnStatus = "Select Status";
-                } else {
-                  _currentTrxnStatus = clientSnapshot.data()?['trxnStatus'];
-                }
+              //setState(() {
+                // if (clientSnapshot.data()?['trxnStatus'] == null ||
+                //     clientSnapshot.data()?['trxnStatus'] == "") {
+                //   _currentTrxnStatus = "Select Status";
+                // } else {
+                //   _currentTrxnStatus = clientSnapshot.data()?['trxnStatus'];
+                // }
               });
 
               clientCellPhoneController.text =
@@ -749,16 +751,16 @@ class _TransactionDetailScreenState
         .updateAddress1(clientAddress1Controller.text);
     ref
         .read(clientNotifierProvider.notifier)
+        .updateAddress2(clientAddress2Controller.text);
+    ref
+        .read(clientNotifierProvider.notifier)
         .updateCity(clientCityController.text);
     ref
         .read(clientNotifierProvider.notifier)
         .updateClientState(_currentClientState!);
     ref
         .read(clientNotifierProvider.notifier)
-        .updateClientType(_currentClientType!);
-    ref
-        .read(clientNotifierProvider.notifier)
-        .updateClientType(_currentTrxnStatus!);    
+        .updateZipcode(propertyZipcodeController.text);
     ref
         .read(clientNotifierProvider.notifier)
         .updateCellPhone(clientCellPhoneController.text);
@@ -786,6 +788,9 @@ class _TransactionDetailScreenState
             .read(trxnNotifierProvider.notifier)
             .updateClientId(ref.read(clientNotifierProvider).clientId!);
       }
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateClientType(_currentClientType!);
       ref
           .read(trxnNotifierProvider.notifier)
           .updateUserId(ref.read(usersNotifierProvider).userId!);
@@ -834,7 +839,9 @@ class _TransactionDetailScreenState
       ref
           .read(trxnNotifierProvider.notifier)
           .updateWalkThroughDate(walkThroughDateController.text);
-      ref.read(trxnNotifierProvider.notifier).updateTrxnStatus(_trxnStatus);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateTrxnStatus(_currentTrxnStatus);
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -2136,32 +2143,6 @@ class _TransactionDetailScreenState
                   hint: const Text('Select Status'),
                   onChanged: changedDropDownTrxnStatus,
                 ),
-                // DropdownButton<String>(
-                //   hint: const Text('Please choose transaction status'),
-                //   value: _trxnStatus,
-                //   onChanged: (_value) {
-                //     setState(() {
-                //       _trxnStatus = _value;
-                //       // ref
-                //       //     .read(trxnNotifierProvider.notifier)
-                //       //     .updateTrxnStatus(_value);
-                //     });
-                //   },
-                //   items: <String>[
-                //     'Select Status',
-                //     'Prospect',
-                //     'Listed',
-                //     'Under Contract',
-                //     'On Hold',
-                //     'Closed',
-                //     'Archived'
-                //   ].map<DropdownMenuItem<String>>((String _value) {
-                //     return DropdownMenuItem<String>(
-                //       value: _value,
-                //       child: Text(_value),
-                //     );
-                //   }).toList(),
-                // ),
                 RoundedButton(
                   title: 'Save',
                   colour: Colors.blueAccent,
@@ -2171,8 +2152,12 @@ class _TransactionDetailScreenState
                     });
 
                     try {
+                      /// ////////////////////////////////
+                      /// Save the client data
                       if (bClientChanged == true) {
+                        /// Gather the data from the client text controllers
                         populateClientProvider();
+
                         try {
                           /// Save the client information for the trxn
                           if (ref.read(clientNotifierProvider).clientId ==
@@ -2200,6 +2185,7 @@ class _TransactionDetailScreenState
                                 .read(trxnNotifierProvider.notifier)
                                 .updateClientId(docRef!.id);
                           } else {
+                            /// Update the existing Transaction record
                             ref
                                 .read(clientNotifierProvider.notifier)
                                 .saveClient(
@@ -2210,7 +2196,8 @@ class _TransactionDetailScreenState
                         }
                       }
 
-                      // Save the Trxn
+                      /// /////////////////////////
+                      /// Save the Trxn
                       populateTrxnProvider();
 
                       ref.read(trxnNotifierProvider.notifier).saveTrxn(
