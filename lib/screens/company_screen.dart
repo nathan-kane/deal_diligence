@@ -11,7 +11,6 @@ import 'package:deal_diligence/Providers/company_provider.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/main_screen.dart';
@@ -19,9 +18,6 @@ import 'package:deal_diligence/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-// import 'company_dash_board.dart';
-// import 'package:provider/provider.dart';
-// import 'package:deal_diligence/Models/Company.dart';
 
 final companyRef = FirebaseFirestore.instance.collection(('company'));
 var maskFormatter = MaskTextInputFormatter(
@@ -33,8 +29,6 @@ class CompanyScreen extends ConsumerStatefulWidget {
 
   const CompanyScreen([this.isNewCompany, this.company]);
   final Company? company;
-
-  //AgencyScreen([this.agency]);
 
   @override
   ConsumerState<CompanyScreen> createState() => _CompanyScreenState();
@@ -176,15 +170,12 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
     final firestoreService = FirestoreService();
 
     return Scaffold(
-      //appBar: CustomAppBar(),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
-              //mainAxisAlignment: MainAxisAlignment.center,
-              //crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 const Text(
                   'Company Profile',

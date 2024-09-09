@@ -28,6 +28,7 @@ class Client {
   String? email;
   String? userCompanyId;
   String? userId;
+  String? clientType;
   String? clientId; // This is needed when a new client is added from a new Trxn
 
   Client(
@@ -44,6 +45,7 @@ class Client {
       this.email,
       this.userCompanyId,
       this.userId,
+      this.clientType,
       this.clientId});
 
   Client copyWith(
@@ -60,6 +62,7 @@ class Client {
       String? email,
       String? userCompanyId,
       String? userId,
+      String? clientType,
       String? clientId}) {
     return Client(
       fName: fName ?? this.fName,
@@ -74,6 +77,7 @@ class Client {
       email: email ?? this.email,
       userCompanyId: userCompanyId ?? this.userCompanyId,
       userId: userId ?? this.userId,
+      clientType: clientType ?? this.clientType,
       clientId: clientId ?? this.clientId,
     );
   }
@@ -100,6 +104,7 @@ class ClientNotifier extends Notifier<Client> {
   String email = '';
   String userCompanyId = '';
   String userId = '';
+  String clientType = "";
   String clientId = '';
 
   @override
@@ -118,6 +123,7 @@ class ClientNotifier extends Notifier<Client> {
       email: '',
       userCompanyId: '',
       userId: '',
+      clientType: '',
       clientId: '',
     );
   }
@@ -175,6 +181,10 @@ class ClientNotifier extends Notifier<Client> {
     state = state.copyWith(clientId: newClientId);
   }
 
+  void updateClientType(String newClientType) {
+    state = state.copyWith(clientType: newClientType);
+  }
+
   Map<String, dynamic> toMap(Client client) {
     return {
       'cellPhone': client.cellPhone,
@@ -189,6 +199,7 @@ class ClientNotifier extends Notifier<Client> {
       'email': client.email,
       'agentCompanyId': client.userCompanyId,
       'userId': client.userId,
+      'clientType': client.clientType,
       'clientId': client.clientId,
     };
   }
@@ -204,7 +215,8 @@ class ClientNotifier extends Notifier<Client> {
         clientState = firestore['clientState'],
         zipCode = firestore['zipCode'],
         email = firestore['email'],
-        clientId = firestore['clientId'];
+        clientId = firestore['clientId'],
+        clientType = firestore['clientType'];
   // userCompanyId = firestore['userCompanyId'];
   // userId = firestore['userId'];
 
@@ -227,13 +239,14 @@ class ClientNotifier extends Notifier<Client> {
         email: client.email,
         userCompanyId: ref.read(globalsNotifierProvider).companyId,
         userId: ref.read(globalsNotifierProvider).currentUserId,
+        clientType: client.clientType,
         clientId: client.clientId,
       );
 
       try {
         DocumentReference? newDocRef =
             await firestoreService.saveNewClient(toMap(newClient));
-            //client.updateClientId = newDocRef;
+        //client.updateClientId = newDocRef;
         return newDocRef;
         //ref.read(trxnNotifierProvider.notifier).updateClientId(newDocRef!.id);
       } catch (e) {
@@ -281,6 +294,9 @@ class ClientNotifier extends Notifier<Client> {
           clientId: (state.clientId != null && state.clientId != "")
               ? state.clientId
               : currentClientProfile.get('clientId'),
+          clientType: (state.clientType != null && state.clientType != "")
+              ? state.clientType
+              : currentClientProfile.get('clientType'),
           homePhone: (state.homePhone != null && state.homePhone != "")
               ? state.homePhone
               : currentClientProfile.get('homePhone'));

@@ -51,6 +51,16 @@ const List kBusinessType = [
 
 const List kFrequencyList = ['daily', 'weekly', 'monthly', 'yearly'];
 
+const List kTrxnStatus = ['Select Status',
+                    'Prospect',
+                    'Listed',
+                    'Under Contract',
+                    'On Hold',
+                    'Closed',
+                    'Archived'];
+
+const List kClientType = ['Choose Client Type', 'Buyer', 'Seller'];
+
 const List kStates = [
   'Choose State',
   'AL',

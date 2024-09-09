@@ -17,7 +17,7 @@ import 'package:deal_diligence/Providers/trxn_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
-import 'package:deal_diligence/screens/list_of_trxns.dart';
+//import 'package:deal_diligence/screens/list_of_trxns.dart';
 import 'package:deal_diligence/screens/main_screen.dart';
 import 'package:deal_diligence/screens/popup_commission.dart';
 import 'package:deal_diligence/screens/property_webview_screen.dart';
@@ -34,6 +34,8 @@ String? _companyId;
 String? _selectedCompany;
 String? _selectedUser;
 String? _selectedClientState;
+String? _selectedClientType;
+String? _selectedTrxnStatus;
 String? _selectedInspectorCompany;
 String? _selectedAppraiserCompany;
 String? _selectedOtherAgentCompany;
@@ -42,6 +44,8 @@ String? _selectedMortgageCompany;
 String? _selectedOtherTitleCompany;
 String? _currentPropertyState;
 String? _currentClientState;
+String? _currentClientType;
+String? _currentTrxnStatus;
 
 // List<DropdownMenuItem<String>> propertyStateItems = [];
 // List<DropdownMenuItem<String>> clientStateItems = [];
@@ -78,6 +82,7 @@ class _TransactionDetailScreenState
     extends ConsumerState<TransactionDetailScreen> {
   StreamProvider<List<Trxn>>? streamProvider;
   final _db = FirebaseFirestore.instance;
+  String? _clientType;
   String? _clientId;
 
   DocumentReference? docRef;
@@ -92,7 +97,7 @@ class _TransactionDetailScreenState
   bool _hasCellNumber = false;
   bool _hasHomeNumber = false;
   String? _mlsSearchLink;
-  String _clientType = 'Select Client Type';
+  //String _clientType = 'Select Client Type';
   double commission = 0.0;
   late final StreamSubscription _trxnStream;
   late final StreamSubscription _clientStream;
@@ -202,12 +207,16 @@ class _TransactionDetailScreenState
     super.initState();
 
     _dropDownState = getDropDownState();
+    _dropdownClientType = getDropDownClientType();
+    _dropdownTrxnStatusList = getDropDownTrxnStatus();
     _selectedUser = 'Select Agent';
   }
 
   String _currentStatus = "Select Status";
 
   List<DropdownMenuItem<String>>? _dropDownState;
+  List<DropdownMenuItem<String>>? _dropdownClientType;
+  List<DropdownMenuItem<String>>? _dropdownTrxnStatusList;
 
   List<DropdownMenuItem<String>> getDropDownState() {
     List<DropdownMenuItem<String>> items = [];
@@ -216,6 +225,30 @@ class _TransactionDetailScreenState
           value: state,
           child: Text(
             state,
+          )));
+    }
+    return items;
+  }
+
+  List<DropdownMenuItem<String>> getDropDownClientType() {
+    List<DropdownMenuItem<String>> items = [];
+    for (String clientType in constants.kClientType /* as Iterable<String>*/) {
+      items.add(DropdownMenuItem(
+          value: clientType,
+          child: Text(
+            clientType,
+          )));
+    }
+    return items;
+  }
+
+  List<DropdownMenuItem<String>> getDropDownTrxnStatus() {
+    List<DropdownMenuItem<String>> items = [];
+    for (String trxnStatus in constants.kTrxnStatus /* as Iterable<String>*/) {
+      items.add(DropdownMenuItem(
+          value: trxnStatus,
+          child: Text(
+            trxnStatus,
           )));
     }
     return items;
@@ -249,20 +282,33 @@ class _TransactionDetailScreenState
         .updateselectedTrxnState(selectedState!);
   }
 
-  void changedClientDropDownState(String? selectedState) {
+  void changedClientDropDownState(String? selectedClientState) {
     setState(() {
-      _currentClientState = selectedState;
+      _currentClientState = selectedClientState;
     });
     bClientChanged = true;
-    ref.read(clientNotifierProvider.notifier).updateClientState(selectedState!);
+    ref
+        .read(clientNotifierProvider.notifier)
+        .updateClientState(selectedClientState!);
   }
 
-  // void changedDropDownClientType(String selectedClientType) {
-  //   setState(() {
-  //     _clientType = selectedClientType;
-  //   });
-  //   //globals.selectedTrxnState = selectedClientType;
-  // }
+  void changedDropDownClientType(String? selectedClientType) {
+    setState(() {
+      _currentClientType = selectedClientType;
+    });
+    ref
+        .read(clientNotifierProvider.notifier)
+        .updateClientType(selectedClientType!);
+  }
+
+  void changedDropDownTrxnStatus(String? selectedTrxnStatus) {
+    setState(() {
+      _currentTrxnStatus = selectedTrxnStatus;
+    });
+    ref
+        .read(clientNotifierProvider.notifier)
+        .updateClientType(selectedTrxnStatus!);
+  }
 
   void changedDropDownAgency(String? selectedCompany) {
     setState(() {
@@ -365,6 +411,8 @@ class _TransactionDetailScreenState
         _selectedOtherAgentCompany = null;
         _selectedOtherTitleCompany = null;
         _currentClientState = null;
+        _currentClientType = null;
+        _currentTrxnStatus = null;
       });
     } else {
       // Populate controllers when transaction exists
@@ -517,7 +565,7 @@ class _TransactionDetailScreenState
             inspectionDateController.text = "";
           }
 
-          // Initialize the appraiser dropdownbutton
+          /// Initialize the appraiser dropdownbutton
           if (trxnSnapshot.data()?['appraiserCompanyId'] == "" ||
               trxnSnapshot.data()?['appraiserCompanyId'] == null) {
             _selectedAppraiserCompany = "Select Appraiser";
@@ -635,10 +683,28 @@ class _TransactionDetailScreenState
               setState(() {
                 if (clientSnapshot.data()?['clientState'] == null ||
                     clientSnapshot.data()?['clientState'] == "") {
-                  _currentClientState = "Choose State";
+                  _currentClientState = "Choose Client State";
                   //clientStateController.text = "AL";
                 } else {
                   _currentClientState = clientSnapshot.data()?['clientState'];
+                }
+              });
+
+              setState(() {
+                if (clientSnapshot.data()?['clientType'] == null ||
+                    clientSnapshot.data()?['clientType'] == "") {
+                  _currentClientType = "Choose Client Type";
+                } else {
+                  _currentClientType = clientSnapshot.data()?['clientType'];
+                }
+              });
+
+              setState(() {
+                if (clientSnapshot.data()?['trxnStatus'] == null ||
+                    clientSnapshot.data()?['trxnStatus'] == "") {
+                  _currentTrxnStatus = "Select Status";
+                } else {
+                  _currentTrxnStatus = clientSnapshot.data()?['trxnStatus'];
                 }
               });
 
@@ -687,6 +753,12 @@ class _TransactionDetailScreenState
     ref
         .read(clientNotifierProvider.notifier)
         .updateClientState(_currentClientState!);
+    ref
+        .read(clientNotifierProvider.notifier)
+        .updateClientType(_currentClientType!);
+    ref
+        .read(clientNotifierProvider.notifier)
+        .updateClientType(_currentTrxnStatus!);    
     ref
         .read(clientNotifierProvider.notifier)
         .updateCellPhone(clientCellPhoneController.text);
@@ -808,50 +880,52 @@ class _TransactionDetailScreenState
                 const SizedBox(
                   height: 8.0,
                 ),
-                // Container(
-                //   /* Populate the Agent dropdown only if
-                //        there is an agency to associate the agent with.
-                //      */
-                //   child: _currentCompany != null && _currentCompany != ""
-                //       ? StreamBuilder(
-                //           stream: _db
-                //               .collection('users')
-                //               .where('companyId', isEqualTo: _currentCompany)
-                //               .snapshots(),
-                //           builder:
-                //               (BuildContext context, AsyncSnapshot snapshot) {
-                //             List<DropdownMenuItem<String>> userItems = [];
-                //             if (snapshot.hasData) {
-                //               final userList = snapshot.data.docs;
-                //               for (var user in userList) {
-                //                 userItems.add(
-                //                   DropdownMenuItem(
-                //                     value: user.id,
-                //                     child: Text(
-                //                       user['fName'] + '' + user['lName'],
-                //                     ),
-                //                   ),
-                //                 );
-                //               }
-                //             } else {
-                //               return const CircularProgressIndicator();
-                //             }
-                //             return DropdownButton<String>(
-                //               hint: const Text("Select User"),
-                //               value: _selectedUser,
-                //               onChanged: (userValue) {
-                //                 setState(() {
-                //                   _selectedUser = userValue;
-                //                   ref
-                //                       .read(globalsNotifierProvider.notifier)
-                //                       .updatecurrentUserId(userValue!);
-                //                 });
-                //               },
-                //               items: userItems,
-                //             );
-                //           })
-                //       : const Text('No users yet'),
-                // ),
+                Container(
+                  /* Populate the Agent dropdown only if
+                       there is an agency to associate the agent with.
+                     */
+                  child: _currentCompany != null && _currentCompany != ""
+                      ? StreamBuilder(
+                          stream: _db
+                              .collection('users')
+                              .where('companyId', isEqualTo: _currentCompany)
+                              .snapshots(),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            List<DropdownMenuItem<String>> userItems = [];
+                            if (snapshot.hasData) {
+                              final userList = snapshot.data.docs;
+                              for (var user in userList) {
+                                userItems.add(
+                                  DropdownMenuItem(
+                                    value: user.id,
+                                    child: Text(
+                                      user['fName'] + '' + user['lName'],
+                                    ),
+                                  ),
+                                );
+                              }
+                            } else {
+                              return const CircularProgressIndicator();
+                            }
+                            return DropdownButton<String>(
+                              hint: const Text("Select User"),
+                              value: _selectedUser,
+                              onChanged: (userValue) {
+                                setState(() {
+                                  _selectedUser = userValue;
+                                  ref
+                                      .read(globalsNotifierProvider.notifier)
+                                      .updatecurrentUserId(userValue!);
+                                });
+                              },
+                              items: userItems,
+                            );
+                          })
+                      : const Text('No users yet'),
+                ),
+
+                /// Display the client information in a collapsable panel
                 Card(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -942,7 +1016,7 @@ class _TransactionDetailScreenState
                           DropdownButton(
                             value: _currentClientState,
                             items: _dropDownState,
-                            hint: const Text('Choose State'),
+                            hint: const Text('Choose Client State'),
                             onChanged: changedClientDropDownState,
                           ),
                           TextField(
@@ -1062,30 +1136,16 @@ class _TransactionDetailScreenState
                     ],
                   ),
                 ),
-                // Row(
-                //   children: [
-                //     const Text('Client Type:   '),
-                //     DropdownButton<String>(
-                //       value: _clientType,
-                //       hint: const Text('Client Type'),
-                //       onChanged: (_value) {
-                //         setState(() {
-                //           _clientType = _value!;
-                //         });
-                //       },
-                //       items: <String>[
-                //         'Select Client Type',
-                //         'Buyer',
-                //         'Seller'
-                //       ].map<DropdownMenuItem<String>>((String clientTypeList) {
-                //         return DropdownMenuItem<String>(
-                //           value: clientTypeList,
-                //           child: Text(clientTypeList),
-                //         );
-                //       }).toList(),
-                //     ),
-                //   ],
-                // ),
+
+                /// //////////////////////////////////////
+                DropdownButton(
+                  value: _currentClientType,
+                  items: _dropdownClientType,
+                  hint: const Text('Choose Client Type'),
+                  onChanged: changedDropDownClientType,
+                ),
+
+                /// ////////////////////////////////////////
                 const SizedBox(
                   height: 8.0,
                 ),
@@ -2070,32 +2130,38 @@ class _TransactionDetailScreenState
                 const SizedBox(
                   height: 8.0,
                 ),
-                DropdownButton<String>(
-                  hint: const Text('Please choose transaction status'),
-                  value: _trxnStatus,
-                  onChanged: (_value) {
-                    setState(() {
-                      _trxnStatus = _value;
-                      ref
-                          .read(trxnNotifierProvider.notifier)
-                          .updateTrxnStatus(_value);
-                    });
-                  },
-                  items: <String>[
-                    'Select Status',
-                    'Prospect',
-                    'Listed',
-                    'Under Contract',
-                    'On Hold',
-                    'Closed',
-                    'Archived'
-                  ].map<DropdownMenuItem<String>>((String _value) {
-                    return DropdownMenuItem<String>(
-                      value: _value,
-                      child: Text(_value),
-                    );
-                  }).toList(),
+                DropdownButton(
+                  value: _currentTrxnStatus,
+                  items: _dropdownTrxnStatusList,
+                  hint: const Text('Select Status'),
+                  onChanged: changedDropDownTrxnStatus,
                 ),
+                // DropdownButton<String>(
+                //   hint: const Text('Please choose transaction status'),
+                //   value: _trxnStatus,
+                //   onChanged: (_value) {
+                //     setState(() {
+                //       _trxnStatus = _value;
+                //       // ref
+                //       //     .read(trxnNotifierProvider.notifier)
+                //       //     .updateTrxnStatus(_value);
+                //     });
+                //   },
+                //   items: <String>[
+                //     'Select Status',
+                //     'Prospect',
+                //     'Listed',
+                //     'Under Contract',
+                //     'On Hold',
+                //     'Closed',
+                //     'Archived'
+                //   ].map<DropdownMenuItem<String>>((String _value) {
+                //     return DropdownMenuItem<String>(
+                //       value: _value,
+                //       child: Text(_value),
+                //     );
+                //   }).toList(),
+                // ),
                 RoundedButton(
                   title: 'Save',
                   colour: Colors.blueAccent,
@@ -2115,8 +2181,8 @@ class _TransactionDetailScreenState
                             /// Save the client record and get the client DocumentReference in return
                             var docRef = await ref
                                 .read(clientNotifierProvider.notifier)
-                                .saveClient(ref.read(clientNotifierProvider),
-                                    true);
+                                .saveClient(
+                                    ref.read(clientNotifierProvider), true);
 
                             /// Add the new clientId to the client provider
                             ref
@@ -2126,8 +2192,8 @@ class _TransactionDetailScreenState
                             /// Update the client record with the new clientId
                             ref
                                 .read(clientNotifierProvider.notifier)
-                                .saveClient(
-                                    ref.read(clientNotifierProvider), false, docRef.id);
+                                .saveClient(ref.read(clientNotifierProvider),
+                                    false, docRef.id);
 
                             /// Add the new client ID to the trxn provider to be saved
                             ref

@@ -16,13 +16,13 @@ import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/company_screen.dart';
 import 'package:deal_diligence/screens/main_screen.dart';
-import 'package:deal_diligence/screens/widgets/snackbarwidget.dart';
+//import 'package:deal_diligence/screens/widgets/snackbarwidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server.dart';
+// import 'package:mailer/mailer.dart';
+// import 'package:mailer/smtp_server.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 final usersRef = FirebaseFirestore.instance.collection(('users'));
