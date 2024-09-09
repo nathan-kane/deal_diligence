@@ -66,8 +66,6 @@ var maskFormatter = MaskTextInputFormatter(
     mask: '(###) ###-####', filter: {"#": RegExp(r'[0-9]')});
 
 class TransactionDetailScreen extends ConsumerStatefulWidget {
-  //static const String id = 'transaction_detail_screen';
-  // final String? trxnId;
   final bool? newTrxn;
   final bool? isNewClient;
 
@@ -82,7 +80,7 @@ class _TransactionDetailScreenState
     extends ConsumerState<TransactionDetailScreen> {
   StreamProvider<List<Trxn>>? streamProvider;
   final _db = FirebaseFirestore.instance;
-  //String? _clientType;
+
   String? _clientId;
 
   DocumentReference? docRef;
@@ -199,7 +197,6 @@ class _TransactionDetailScreenState
 
   @override
   void initState() {
-    //final GlobalProvider = ref.read(globalsNotifierProvider);
     _currentCompany = ref.read(globalsNotifierProvider).companyId;
     _currentUser = ref.read(globalsNotifierProvider).currentUserId;
 
@@ -686,28 +683,9 @@ class _TransactionDetailScreenState
                 if (clientSnapshot.data()?['clientState'] == null ||
                     clientSnapshot.data()?['clientState'] == "") {
                   _currentClientState = "Choose Client State";
-                  //clientStateController.text = "AL";
                 } else {
                   _currentClientState = clientSnapshot.data()?['clientState'];
                 }
-              //});
-
-              //setState(() {
-                // if (clientSnapshot.data()?['clientType'] == null ||
-                //     clientSnapshot.data()?['clientType'] == "") {
-                //   _currentClientType = "Choose Client Type";
-                // } else {
-                //   _currentClientType = clientSnapshot.data()?['clientType'];
-                // }
-              //});
-
-              //setState(() {
-                // if (clientSnapshot.data()?['trxnStatus'] == null ||
-                //     clientSnapshot.data()?['trxnStatus'] == "") {
-                //   _currentTrxnStatus = "Select Status";
-                // } else {
-                //   _currentTrxnStatus = clientSnapshot.data()?['trxnStatus'];
-                // }
               });
 
               clientCellPhoneController.text =
@@ -770,9 +748,6 @@ class _TransactionDetailScreenState
     ref
         .read(clientNotifierProvider.notifier)
         .updateEmail(clientEmailController.text);
-    // if (_clientId != null && _clientId != "") {
-    //   ref.read(clientNotifierProvider.notifier).updateClientId(_clientId!);
-    // }
   }
 
   populateTrxnProvider() {
@@ -842,6 +817,7 @@ class _TransactionDetailScreenState
       ref
           .read(trxnNotifierProvider.notifier)
           .updateTrxnStatus(_currentTrxnStatus);
+      ref.read(trxnNotifierProvider.notifier).updateOtherAgentCompanyId(_selectedOtherAgentCompany!);
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -2047,11 +2023,12 @@ class _TransactionDetailScreenState
                                 otherCompanyItems[0].value,
                             onChanged: (otherCompanyValue) {
                               setState(() {
-                                _selectedCompany = otherCompanyValue;
-                                // ref
-                                //     .read(globalsNotifierProvider.notifier)
-                                //     .updatecompanyId(companyValue!);
+                                _selectedOtherAgentCompany = otherCompanyValue;
                               });
+                              ref
+                                  .read(trxnNotifierProvider.notifier)
+                                  .updateOtherAgentCompanyId(
+                                      _selectedOtherAgentCompany!);
                             },
                             items: otherCompanyItems,
                           );
