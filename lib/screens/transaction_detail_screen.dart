@@ -442,8 +442,6 @@ class _TransactionDetailScreenState
           ref
               .read(trxnNotifierProvider.notifier)
               .updatePropertyCity(propertyCityController.text);
-          propertyStateController.text =
-              trxnSnapshot.data()?['propertyState'] ?? "";
           ref
               .read(trxnNotifierProvider.notifier)
               .updatePropertyState(propertyStateController.text);
@@ -641,6 +639,13 @@ class _TransactionDetailScreenState
                   trxnSnapshot.data()?['otherPartyTitleCompanyId'];
             }
 
+            if (trxnSnapshot.data()?['propertyState'] == "" ||
+                trxnSnapshot.data()?['propertyState'] == null) {
+              _currentPropertyState = "Select State";
+            } else {
+              _currentPropertyState = trxnSnapshot.data()?['propertyState'];
+            }
+
             trxnIdController.text = trxnSnapshot.data()?['trxnId'] ?? "";
 
             _currentClientType =
@@ -817,7 +822,15 @@ class _TransactionDetailScreenState
       ref
           .read(trxnNotifierProvider.notifier)
           .updateTrxnStatus(_currentTrxnStatus);
-      ref.read(trxnNotifierProvider.notifier).updateOtherAgentCompanyId(_selectedOtherAgentCompany!);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateOtherAgentCompanyId(_selectedOtherAgentCompany!);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateMortgageCompanyId(_selectedMortgageCompany!);
+      ref.read(trxnNotifierProvider.notifier).updateTitleCompanyId(_selectedTitleCompany!);
+      ref.read(trxnNotifierProvider.notifier).updateOtherPartyTitleCompanyId(_selectedOtherTitleCompany!);
+      ref.read(trxnNotifierProvider.notifier).updateAppraiserCompanyId(_selectedAppraiserCompany!);
     } catch (e) {
       debugPrint(e.toString());
     }
