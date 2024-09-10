@@ -104,24 +104,31 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                 const SizedBox(
                   height: 48.0,
                 ),
-                TextField(
-                  textCapitalization: TextCapitalization.words,
-                  keyboardType: TextInputType.name,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    fName = value; // Capture the value entered by the user
-                  },
-                  decoration: const InputDecoration(hintText: 'First Name'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Expanded(child: TextField(
+                      textCapitalization: TextCapitalization.words,
+                      keyboardType: TextInputType.name,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        fName = value; // Capture the value entered by the user
+                      },
+                      decoration: const InputDecoration(hintText: 'First Name'),
+                    ),),
+                    Expanded(child: TextField(
+                      textCapitalization: TextCapitalization.words,
+                      keyboardType: TextInputType.name,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        lName = value; // Capture the value entered by the user
+                      },
+                      decoration: const InputDecoration(hintText: 'Last Name'),
+                    ),)
+                    
+                  ],
                 ),
-                TextField(
-                  textCapitalization: TextCapitalization.words,
-                  keyboardType: TextInputType.name,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    lName = value; // Capture the value entered by the user
-                  },
-                  decoration: const InputDecoration(hintText: 'Last Name'),
-                ),
+
                 TextField(
                   keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,
@@ -173,7 +180,9 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                     ref.read(usersNotifierProvider.notifier).updatelName(lName);
                     ref.read(usersNotifierProvider.notifier).updateEmail(email);
 
-                    ref.read(globalsNotifierProvider.notifier).updatenewUser(true);
+                    ref
+                        .read(globalsNotifierProvider.notifier)
+                        .updatenewUser(true);
 
                     // Setup payments
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
