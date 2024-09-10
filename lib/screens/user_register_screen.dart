@@ -7,7 +7,7 @@
 // ignore_for_file: use_build_context_synchronously, unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
-import 'package:deal_diligence/constants.dart' as constants;
+//import 'package:deal_diligence/constants.dart' as constants;
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,25 +28,25 @@ class UserRegisterScreen extends ConsumerStatefulWidget {
 
 class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
   // final _auth = FirebaseAuth.instance;
-  String? _currentUserState;
+  //String? _currentUserState;
 
-  List<DropdownMenuItem<String>>? _dropDownState;
+  //List<DropdownMenuItem<String>>? _dropDownState;
 
-  List<DropdownMenuItem<String>> getDropDownState() {
-    List<DropdownMenuItem<String>> items = [];
-    for (String state in constants.kStates) {
-      items.add(DropdownMenuItem(
-          value: state,
-          child: Text(
-            state,
-          )));
-    }
-    return items;
-  }
+  // List<DropdownMenuItem<String>> getDropDownState() {
+  //   List<DropdownMenuItem<String>> items = [];
+  //   for (String state in constants.kStates) {
+  //     items.add(DropdownMenuItem(
+  //         value: state,
+  //         child: Text(
+  //           state,
+  //         )));
+  //   }
+  //   return items;
+  // }
 
   void changedDropDownState(String? selectedState) {
     setState(() {
-      _currentUserState = selectedState;
+      //_currentUserState = selectedState;
       ref.read(usersNotifierProvider.notifier).updateState(selectedState!);
 
       // Remove the globals
@@ -62,7 +62,7 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
   @override
   void initState() {
     super.initState();
-    _dropDownState = getDropDownState(); // Get the list of states
+    //_dropDownState = getDropDownState(); // Get the list of states
   }
 
   bool showSpinner = false;

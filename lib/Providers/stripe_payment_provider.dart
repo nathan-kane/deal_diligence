@@ -1,3 +1,9 @@
+//*********************************************
+//  Deal Diligence was designed and created by      *
+//  Nathan Kane                               *
+//  copyright 2023                            *
+//*********************************************
+
 import 'package:deal_diligence/components/app_toast.dart';
 import 'package:deal_diligence/components/custom_loading.dart';
 import 'package:deal_diligence/core_data/index.dart';

@@ -10,7 +10,6 @@ import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AppraiserCompany {
-  //String? appraiserCompanyId;
   String? appraiserCompanyName;
   String? primaryContact;
   String? address1;
@@ -105,10 +104,7 @@ class AppraiserCompanyNotifier extends Notifier<AppraiserCompany> {
   String? email;
   String? website;
 
-  // Update functions
-  // void updateAppraiserId(String newappraiserId) {
-  //   state = state.copyWith(appraiserId: newappraiserId);
-  // }
+  /// Update functions
 
   void updateAppraiserCompanyName(String newAppraiserCompanyName) {
     state = state.copyWith(appraiserCompanyName: newAppraiserCompanyName);
@@ -186,9 +182,6 @@ class AppraiserCompanyNotifier extends Notifier<AppraiserCompany> {
   }
 
   saveAppraiserCompany(appraiserCompany, [appraiserCompanyId]) {
-    //globals.agencyId = name;
-    //ref.read(globalsNotifierProvider.notifier).updateappraiserId(name);
-    //final AppraiserVals = ref.watch(appraiserCompanyNotifierProvider);
 
     var newAppraiserCompany = AppraiserCompany(
         // appraiserCompanyId:
@@ -210,7 +203,6 @@ class AppraiserCompanyNotifier extends Notifier<AppraiserCompany> {
     if (appraiserCompanyId == "" || appraiserCompanyId == null) {
       firestoreService.saveNewAppraiserCompany(toMap(newAppraiserCompany));
 
-      //ref.read(globalsNotifierProvider.notifier).updateappraiserId(id);
       ref
           .read(globalsNotifierProvider.notifier)
           .updateIsNewAppraiserCompany(false);
