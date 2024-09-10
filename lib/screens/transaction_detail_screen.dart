@@ -22,6 +22,7 @@ import 'package:deal_diligence/screens/main_screen.dart';
 import 'package:deal_diligence/screens/popup_commission.dart';
 import 'package:deal_diligence/screens/property_webview_screen.dart';
 import 'package:deal_diligence/screens/widgets/add_all_calendars.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -46,9 +47,6 @@ String? _currentPropertyState;
 String? _currentClientState;
 String? _currentClientType;
 String? _currentTrxnStatus;
-
-// List<DropdownMenuItem<String>> propertyStateItems = [];
-// List<DropdownMenuItem<String>> clientStateItems = [];
 
 // Variables telling if a date has been changed so it can be set on the calendar
 bool bContractDate = false;
@@ -91,6 +89,7 @@ class _TransactionDetailScreenState
   String? _clientHomePhoneNumber;
   String? _propertyMLSNbr;
   bool _hasMLSNumber = false;
+  bool _dontShowOnWeb = false;
   bool _hasContractPrice = false;
   bool _hasCellNumber = false;
   bool _hasHomeNumber = false;
@@ -364,6 +363,8 @@ class _TransactionDetailScreenState
     } else {
       _hasContractPrice = false;
     }
+
+    _dontShowOnWeb = !kIsWeb;
     //}
   }
 
@@ -828,9 +829,15 @@ class _TransactionDetailScreenState
       ref
           .read(trxnNotifierProvider.notifier)
           .updateMortgageCompanyId(_selectedMortgageCompany!);
-      ref.read(trxnNotifierProvider.notifier).updateTitleCompanyId(_selectedTitleCompany!);
-      ref.read(trxnNotifierProvider.notifier).updateOtherPartyTitleCompanyId(_selectedOtherTitleCompany!);
-      ref.read(trxnNotifierProvider.notifier).updateAppraiserCompanyId(_selectedAppraiserCompany!);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateTitleCompanyId(_selectedTitleCompany!);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateOtherPartyTitleCompanyId(_selectedOtherTitleCompany!);
+      ref
+          .read(trxnNotifierProvider.notifier)
+          .updateAppraiserCompanyId(_selectedAppraiserCompany!);
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -1047,70 +1054,74 @@ class _TransactionDetailScreenState
                                 hintText: 'Home Phone',
                                 labelText: 'Home Phone'),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Column(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.message),
-                                    iconSize: 25,
-                                    color: Colors.blueAccent,
-                                    tooltip: 'Text Client',
-                                    onPressed: () {
-                                      setState(() {
-                                        _launched = _makeCallOrSendText(
-                                            'sms:$_clientCellPhoneNumber');
-                                      });
-                                    },
-                                  ),
-                                  const Text('Text'),
-                                  const SizedBox(
-                                    height: 8.0,
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.add_call),
-                                    iconSize: 25,
-                                    color: Colors.blueAccent,
-                                    tooltip: 'Call Cell',
-                                    onPressed: () {
-                                      setState(() {
-                                        _launched = _makeCallOrSendText(
-                                            'tel:$_clientCellPhoneNumber');
-                                      });
-                                    },
-                                  ),
-                                  const Text('Call Cell'),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.add_call),
-                                    iconSize: 25,
-                                    color: Colors.blueAccent,
-                                    tooltip: 'Call Home',
-                                    onPressed: () {
-                                      setState(() {
-                                        _launched = _makeCallOrSendText(
-                                            'tel:$_clientHomePhoneNumber');
-                                      });
-                                    },
-                                  ),
-                                  const Text('Call Home'),
-                                  const SizedBox(
-                                    height: 8.0,
-                                  ),
-                                ],
-                              ),
-                            ],
+
+                          /// Hide this row if on the web because they don't work on web
+                          Visibility(
+                            visible: _dontShowOnWeb,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Column(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.message),
+                                      iconSize: 25,
+                                      color: Colors.blueAccent,
+                                      tooltip: 'Text Client',
+                                      onPressed: () {
+                                        setState(() {
+                                          _launched = _makeCallOrSendText(
+                                              'sms:$_clientCellPhoneNumber');
+                                        });
+                                      },
+                                    ),
+                                    const Text('Text'),
+                                    const SizedBox(
+                                      height: 8.0,
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.add_call),
+                                      iconSize: 25,
+                                      color: Colors.blueAccent,
+                                      tooltip: 'Call Cell',
+                                      onPressed: () {
+                                        setState(() {
+                                          _launched = _makeCallOrSendText(
+                                              'tel:$_clientCellPhoneNumber');
+                                        });
+                                      },
+                                    ),
+                                    const Text('Call Cell'),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.add_call),
+                                      iconSize: 25,
+                                      color: Colors.blueAccent,
+                                      tooltip: 'Call Home',
+                                      onPressed: () {
+                                        setState(() {
+                                          _launched = _makeCallOrSendText(
+                                              'tel:$_clientHomePhoneNumber');
+                                        });
+                                      },
+                                    ),
+                                    const Text('Call Home'),
+                                    const SizedBox(
+                                      height: 8.0,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                          // Row(
-                          //   children: [
+
                           TextField(
                             textCapitalization: TextCapitalization.words,
                             keyboardType: TextInputType.text,
