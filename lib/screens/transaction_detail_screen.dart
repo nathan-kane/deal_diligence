@@ -17,6 +17,7 @@ import 'package:deal_diligence/Providers/trxn_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
+import 'package:deal_diligence/screens/google_event_add.dart';
 //import 'package:deal_diligence/screens/list_of_trxns.dart';
 import 'package:deal_diligence/screens/main_screen.dart';
 import 'package:deal_diligence/screens/popup_commission.dart';
@@ -78,6 +79,7 @@ class _TransactionDetailScreenState
     extends ConsumerState<TransactionDetailScreen> {
   StreamProvider<List<Trxn>>? streamProvider;
   final _db = FirebaseFirestore.instance;
+  CalendarClient calendarClient = CalendarClient();
 
   String? _clientId;
 
@@ -2209,13 +2211,11 @@ class _TransactionDetailScreenState
                       // Add dates to calendar
                       if (bContractDate) {
                         bContractDate = false;
-                        //FIX THIS
-                        // String title =
-                        //     'Contract Date for ${ref.read(trxnNotifierProvider).clientLName}';
-                        //FIX THIS
-                        // ref
-                        //     .read(eventsNotifierProvider.notifier)
-                        //     .updateEventname(title);
+                        String title =
+                            'Contract Date for ${ref.read(clientNotifierProvider).lName}';
+                        ref
+                            .read(eventsNotifierProvider.notifier)
+                            .updateEventname(title);
                         String? desc =
                             '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
                         ref
@@ -2226,6 +2226,14 @@ class _TransactionDetailScreenState
                         ref
                             .read(eventsNotifierProvider.notifier)
                             .updateEventDate(DateTime.parse(eventDate));
+
+                        /// Using the Google Calendar API
+                        // var _eventName = ref.read(eventsNotifierProvider);
+                        // DateTime endDate = _eventName.eventStartTime!.add(const Duration(minutes: 30));
+                        // calendarClient.insert(_eventName.eventName,
+                        //     _eventName.eventDate, _eventName.eventStartTime, endDate);
+
+                        /// Using the add_2_calendar widget
                         AddEventsToAllCalendars.addEvent(
                             ref.read(eventsNotifierProvider));
                       }
@@ -2415,8 +2423,8 @@ class _TransactionDetailScreenState
                         showSpinner = false;
                       });
                     } catch (e) {
-                      // todo: add better error handling
-                      //debugPrint(e);
+                      //todo: add better error handling
+                      debugPrint(e as String?);
                     }
                   },
                 ),

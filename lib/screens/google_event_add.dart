@@ -5,7 +5,8 @@
 //*********************************************
 
 import 'dart:developer';
-
+import 'dart:io';
+//import 'package:deal_diligence/secrets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:googleapis/calendar/v3.dart';
 //import 'package:flutter/material.dart';
@@ -16,48 +17,62 @@ class CalendarClient {
   static const _scopes = [CalendarApi.calendarScope];
 
   insert(title, eventDate, startTime, endTime) {
-    var clientID = ClientId(
-        "394692266013-e6a6302lhm59fuldi009203ah20tps32.apps.googleusercontent.com",
-        "");
-    clientViaUserConsent(clientID, _scopes, prompt).then((AuthClient client) {
-      var calendar = CalendarApi(client);
-      calendar.calendarList
-          .list()
-          .then((value) => debugPrint("VAL________$value"));
+    var clientID;
 
-      String calendarId = "primary";
-      Event event = Event(); // Create object of event
+    if (kIsWeb) {
+      clientID = ClientId(
+          "394692266013-pj87pfid8p2l955nmua43sd6v3g5aqu3.apps.googleusercontent.com",
+          "");
+    } else if (Platform.isAndroid) {
+      /// Android
+      clientID = ClientId(
+          "394692266013-e6a6302lhm59fuldi009203ah20tps32.apps.googleusercontent.com",
+          "");
+    } else if (Platform.isIOS) {}
 
-      event.summary = title;
+    try {
+      clientViaUserConsent(clientID, _scopes, prompt).then((AuthClient client) async {
+        var calendar = CalendarApi(client);
+        // calendar.calendarList
+        //     .list()
+        //     .then((value) => debugPrint("VAL________$value"));
 
-      EventDateTime start = EventDateTime();
-      start.dateTime = startTime;
-      start.timeZone = "GMT+05:00";
-      event.start = start;
+        // String calendarId = "primary";
+        // Event event = Event(); // Create object of event
 
-      EventDateTime end = EventDateTime();
-      end.timeZone = "GMT+05:00";
-      end.dateTime = endTime;
-      event.end = end;
-      try {
-        calendar.events.insert(event, calendarId).then((value) {
-          debugPrint("ADDEDDD_________________${value.status}");
-          if (value.status == "confirmed") {
-            log('Event added in google calendar');
-          } else {
-            log("Unable to add event in google calendar");
-          }
-        });
-      } catch (e) {
-        log('Error creating event $e');
-      }
-    });
+        // event.summary = title;
+
+        // EventDateTime start = EventDateTime();
+        // start.dateTime = startTime;
+        // start.timeZone = "GMT+05:00";
+        // event.start = start;
+
+        // EventDateTime end = EventDateTime();
+        // end.timeZone = "GMT+05:00";
+        // end.dateTime = endTime;
+        // event.end = end;
+        // try {
+        //   calendar.events.insert(event, calendarId).then((value) {
+        //     debugPrint("ADDEDDD_________________${value.status}");
+        //     if (value.status == "confirmed") {
+        //       log('Event added in google calendar');
+        //     } else {
+        //       log("Unable to add event in google calendar");
+        //     }
+        //   });
+        // } catch (e) {
+        //   log('Error creating event $e');
+        // }
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   void prompt(String url) async {
-    debugPrint("Please go to the following URL and grant access:");
-    debugPrint("  => $url");
-    debugPrint("");
+    // debugPrint("Please go to the following URL and grant access:");
+    // debugPrint("  => $url");
+    // debugPrint("");
 
     if (await canLaunchUrl(url as Uri)) {
       await launchUrl(url as Uri);

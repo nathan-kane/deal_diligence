@@ -43,9 +43,18 @@ class _StripePaymentScreenState extends ConsumerState<StripePaymentScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Monthly subscription is 49.99 USD'),
+            const Text(
+              'Monthly subscription is 49.99 USD',
+              style: TextStyle(color: Colors.blueAccent),
+            ),
             TextButton(
-                child: const Text('Subscribe Now!', style: TextStyle(fontSize: 20,),),
+                child: const Text(
+                  'Subscribe Now!',
+                  style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.blueAccent,
+                  ),
+                ),
                 onPressed: () async {
                   if (kIsWeb) {
                     Navigator.of(context).push(MaterialPageRoute(
@@ -115,9 +124,9 @@ class _StripePaymentScreenState extends ConsumerState<StripePaymentScreen> {
           ref
               .read(usersNotifierProvider.notifier)
               .updateuserID(newUser.user!.uid);
-            ref
-                .read(globalsNotifierProvider.notifier)
-                .updatecurrentUserId(newUser.user!.uid);
+          ref
+              .read(globalsNotifierProvider.notifier)
+              .updatecurrentUserId(newUser.user!.uid);
           ref
               .read(usersNotifierProvider.notifier)
               .updateEmail(newUser.user!.email!);
