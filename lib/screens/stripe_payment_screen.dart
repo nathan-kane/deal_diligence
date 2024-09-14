@@ -45,13 +45,14 @@ class _StripePaymentScreenState extends ConsumerState<StripePaymentScreen> {
           children: [
             const Text(
               'Monthly subscription is 49.99 USD',
-              style: TextStyle(color: Colors.blueAccent),
+              style: TextStyle(color: Color.fromARGB(255, 151, 186, 246)),
             ),
             TextButton(
                 child: const Text(
                   'Subscribe Now!',
                   style: TextStyle(
                     fontSize: 30,
+                    fontWeight: FontWeight.bold,
                     color: Colors.blueAccent,
                   ),
                 ),

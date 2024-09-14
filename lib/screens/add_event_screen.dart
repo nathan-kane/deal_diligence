@@ -501,7 +501,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                       showSpinner = true;
                     });
                     try {
-                      // Save event date and end of recurrence date to state
+                      /// Save event date and end of recurrence date to state
                       ref
                           .read(eventsNotifierProvider.notifier)
                           .updateEventDate(eventStartDate);
@@ -511,15 +511,19 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                       ref
                           .read(globalsNotifierProvider.notifier)
                           .updatenewEvent(true);
+
+                      /// Save the event to the db document
                       if (currentEventId != null && currentEventId != '') {
                         ref.read(eventsNotifierProvider.notifier).saveEvent(
                             ref.read(eventsNotifierProvider), currentEventId);
                       } else {
+                        /// This is a new event
                         ref
                             .read(eventsNotifierProvider.notifier)
                             .updateEventDescription(
                                 eventDescriptionController.text);
-
+                                
+                        /// Save the new event to the db document
                         ref.read(eventsNotifierProvider.notifier).saveEvent(
                             ref.read(eventsNotifierProvider),
                             eventDescriptionController
