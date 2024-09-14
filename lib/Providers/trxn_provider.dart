@@ -35,9 +35,9 @@ class Trxn {
   String? titleCompanyId;
   String? mortgageCompanyId;
   String? otherAgentCompanyId;
-  String? otherAgentPhone;
-  String? otherAgentEmail;
-  String? otherPartyClient;
+  // String? otherAgentPhone;
+  // String? otherAgentEmail;
+  // String? otherPartyClient;
   String? otherPartyTitleCompanyId;
   String? trxnStatus;
   //var uuId = Uuid();
@@ -68,9 +68,9 @@ class Trxn {
     this.titleCompanyId,
     this.mortgageCompanyId,
     this.otherAgentCompanyId,
-    this.otherAgentPhone,
-    this.otherAgentEmail,
-    this.otherPartyClient,
+    // this.otherAgentPhone,
+    // this.otherAgentEmail,
+    // this.otherPartyClient,
     this.otherPartyTitleCompanyId,
     this.trxnStatus,
     //this.uuId = Uuid(),
@@ -135,9 +135,9 @@ class Trxn {
       titleCompanyId: titleCompanyId ?? this.titleCompanyId,
       mortgageCompanyId: mortgageCompanyId ?? this.mortgageCompanyId,
       otherAgentCompanyId: otherAgentCompanyId ?? this.otherAgentCompanyId,
-      otherAgentPhone: otherAgentPhone ?? this.otherAgentPhone,
-      otherAgentEmail: otherAgentEmail ?? this.otherAgentEmail,
-      otherPartyClient: otherPartyClient ?? this.otherPartyClient,
+      // otherAgentPhone: otherAgentPhone ?? this.otherAgentPhone,
+      // otherAgentEmail: otherAgentEmail ?? this.otherAgentEmail,
+      // otherPartyClient: otherPartyClient ?? this.otherPartyClient,
       otherPartyTitleCompanyId:
           otherPartyTitleCompanyId ?? this.otherPartyTitleCompanyId,
       trxnStatus: trxnStatus ?? this.trxnStatus,
@@ -219,9 +219,9 @@ class TrxnNotifier extends Notifier<Trxn> {
       titleCompanyId: '',
       mortgageCompanyId: '',
       otherAgentCompanyId: '',
-      otherAgentPhone: '',
-      otherAgentEmail: '',
-      otherPartyClient: '',
+      // otherAgentPhone: '',
+      // otherAgentEmail: '',
+      // otherPartyClient: '',
       otherPartyTitleCompanyId: '',
       trxnStatus: '',
     );
@@ -408,9 +408,9 @@ class TrxnNotifier extends Notifier<Trxn> {
       'titleCompanyId': trxn.titleCompanyId,
       'mortgageCompanyId': trxn.mortgageCompanyId,
       'otherAgentCompanyId': trxn.otherAgentCompanyId,
-      'otherAgentPhone': trxn.otherAgentPhone,
-      'otherAgentEmail': trxn.otherAgentEmail,
-      'otherPartyClient': trxn.otherPartyClient,
+      // 'otherAgentPhone': trxn.otherAgentPhone,
+      // 'otherAgentEmail': trxn.otherAgentEmail,
+      // 'otherPartyClient': trxn.otherPartyClient,
       'otherPartyTitleCompanyId': trxn.otherPartyTitleCompanyId,
       'trxnStatus': trxn.trxnStatus
     };
@@ -454,10 +454,10 @@ class TrxnNotifier extends Notifier<Trxn> {
         titleCompanyId: refTrxn.titleCompanyId,
         mortgageCompanyId: refTrxn.mortgageCompanyId,
         otherAgentCompanyId: refTrxn.otherAgentCompanyId,
-        otherAgentPhone: refTrxn.otherAgentPhone,
-        otherAgentEmail: refTrxn.otherAgentEmail,
+        // otherAgentPhone: refTrxn.otherAgentPhone,
+        // otherAgentEmail: refTrxn.otherAgentEmail,
         otherPartyTitleCompanyId: refTrxn.otherPartyTitleCompanyId,
-        otherPartyClient: refTrxn.otherPartyClient,
+        // otherPartyClient: refTrxn.otherPartyClient,
         trxnStatus: refTrxn.trxnStatus);
 
     if (isNewTrxn == true) {

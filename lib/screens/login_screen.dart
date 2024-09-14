@@ -256,7 +256,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(
-                height: 48.0,
+                height: 50,
               ),
               TextField(
                 autofocus: true,

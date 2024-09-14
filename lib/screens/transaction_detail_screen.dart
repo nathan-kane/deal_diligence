@@ -935,7 +935,7 @@ class _TransactionDetailScreenState
                           })
                       : const Text('No users yet'),
                 ),
-
+                const SizedBox(height: 30,),
                 /// Display the client information in a collapsable panel
                 Card(
                   child: Column(
@@ -1152,6 +1152,7 @@ class _TransactionDetailScreenState
                   ),
                 ),
 
+                const SizedBox(height: 30,),
                 /// //////////////////////////////////////
                 DropdownButton(
                   value: _currentClientType,
