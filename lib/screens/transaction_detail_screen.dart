@@ -207,7 +207,7 @@ class _TransactionDetailScreenState
     _dropDownState = getDropDownState();
     _dropdownClientType = getDropDownClientType();
     _dropdownTrxnStatusList = getDropDownTrxnStatus();
-    _selectedUser = 'Select Agent';
+    _selectedUser = 'Select User';
   }
 
   String _currentStatus = "Select Status";
@@ -413,7 +413,7 @@ class _TransactionDetailScreenState
         _selectedOtherAgentCompany = null;
         _selectedOtherTitleCompany = null;
         _currentClientState = null;
-        _currentClientType = null;
+        _currentClientType = 'Choose Client Type';
         _currentTrxnStatus = null;
       });
     } else {
@@ -654,7 +654,7 @@ class _TransactionDetailScreenState
             _currentClientType =
                 trxnSnapshot.data()?['clientType'] ?? 'Select Client Type';
             _selectedCompany = trxnSnapshot.data()?['companyId'] ?? "";
-            _selectedUser = trxnSnapshot.data()?['userId'] ?? "";
+            _selectedUser = trxnSnapshot.data()?['userId'] ?? "Select User";
             _selectedClientState = trxnSnapshot.data()?['clientState'] ?? "";
             _currentTrxnStatus =
                 trxnSnapshot.data()?['trxnStatus'] ?? "Select Status";
@@ -898,6 +898,12 @@ class _TransactionDetailScreenState
                           builder:
                               (BuildContext context, AsyncSnapshot snapshot) {
                             List<DropdownMenuItem<String>> userItems = [];
+                            userItems.add(
+                              const DropdownMenuItem<String>(
+                                value: 'Select User',
+                                child: Text('Select User'),
+                              ),
+                            );
                             if (snapshot.hasData) {
                               final userList = snapshot.data.docs;
                               for (var user in userList) {
@@ -1704,7 +1710,8 @@ class _TransactionDetailScreenState
                         });
                         return DropdownButton<String>(
                           hint: const Text("Select Appraiser"),
-                          value: _selectedAppraiserCompany,
+                          value: _selectedAppraiserCompany ??
+                              appraiserCompanyItems[0].value,
                           onChanged: (appraiserCompanyValue) {
                             setState(() {
                               _selectedAppraiserCompany = appraiserCompanyValue;
@@ -2229,9 +2236,13 @@ class _TransactionDetailScreenState
 
                         /// Using the Google Calendar API
                         var _eventName = ref.read(eventsNotifierProvider);
-                        DateTime endDate = _eventName.eventStartTime!.add(const Duration(minutes: 30));
-                        calendarClient.insert(_eventName.eventName,
-                            _eventName.eventDate, _eventName.eventStartTime, endDate);
+                        DateTime endDate = _eventName.eventStartTime!
+                            .add(const Duration(minutes: 30));
+                        calendarClient.insert(
+                            _eventName.eventName,
+                            _eventName.eventDate,
+                            _eventName.eventStartTime,
+                            endDate);
 
                         /// Using the add_2_calendar widget
                         // AddEventsToAllCalendars.addEvent(
