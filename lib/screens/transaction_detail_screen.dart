@@ -2228,14 +2228,14 @@ class _TransactionDetailScreenState
                             .updateEventDate(DateTime.parse(eventDate));
 
                         /// Using the Google Calendar API
-                        // var _eventName = ref.read(eventsNotifierProvider);
-                        // DateTime endDate = _eventName.eventStartTime!.add(const Duration(minutes: 30));
-                        // calendarClient.insert(_eventName.eventName,
-                        //     _eventName.eventDate, _eventName.eventStartTime, endDate);
+                        var _eventName = ref.read(eventsNotifierProvider);
+                        DateTime endDate = _eventName.eventStartTime!.add(const Duration(minutes: 30));
+                        calendarClient.insert(_eventName.eventName,
+                            _eventName.eventDate, _eventName.eventStartTime, endDate);
 
                         /// Using the add_2_calendar widget
-                        AddEventsToAllCalendars.addEvent(
-                            ref.read(eventsNotifierProvider));
+                        // AddEventsToAllCalendars.addEvent(
+                        //     ref.read(eventsNotifierProvider));
                       }
 
                       if (bTwofouraSellerDisclosureDeadline) {
