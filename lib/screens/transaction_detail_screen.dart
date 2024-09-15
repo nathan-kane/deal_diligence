@@ -935,7 +935,10 @@ class _TransactionDetailScreenState
                           })
                       : const Text('No users yet'),
                 ),
-                const SizedBox(height: 30,),
+                const SizedBox(
+                  height: 30,
+                ),
+
                 /// Display the client information in a collapsable panel
                 Card(
                   child: Column(
@@ -1152,7 +1155,10 @@ class _TransactionDetailScreenState
                   ),
                 ),
 
-                const SizedBox(height: 30,),
+                const SizedBox(
+                  height: 30,
+                ),
+
                 /// //////////////////////////////////////
                 DropdownButton(
                   value: _currentClientType,
@@ -1291,25 +1297,26 @@ class _TransactionDetailScreenState
                         context: context,
                         initialTime: TimeOfDay.now(),
                       );
-                      // if (_timePicked != null) {
-                      //   _eventTime = _timePicked;
-                      // }
+                      DateTime tempTime = DateFormat("hh:mm").parse(
+                          '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
+                      var timeFormat = DateFormat("h:mm a");
                       setState(() {
                         contractDateController.text =
-                            DateFormat("EE  MM-dd-yyyy").format(_datePicked!);
+                            '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
                         ref
                             .read(trxnNotifierProvider.notifier)
                             .updateContractDate(_datePicked.toString());
                         _selectedDate = _datePicked;
+
+                        bContractDate = true;
+                        eventDatePicked = DateTime(
+                          _datePicked!.year,
+                          _datePicked.month,
+                          _datePicked.day,
+                          _timePicked!.hour,
+                          _timePicked.minute,
+                        );
                       });
-                      bContractDate = true;
-                      eventDatePicked = DateTime(
-                        _datePicked!.year,
-                        _datePicked.month,
-                        _datePicked.day,
-                        _timePicked!.hour,
-                        _timePicked.minute,
-                      );
                     }
                   },
                   onChanged: (value) {
@@ -1379,28 +1386,32 @@ class _TransactionDetailScreenState
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
                     if (!context.mounted) return;
-                    TimeOfDay? _timePicked = await showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay.now(),
-                    );
+
                     if (_date != null && _date != _datePicked) {
+                      TimeOfDay? _timePicked = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      );
+                      DateTime tempTime = DateFormat("hh:mm").parse(
+                          '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
+                      var timeFormat = DateFormat("h:mm a");
                       setState(() {
                         sellerDisclosure24aController.text =
-                            DateFormat("EE  MM-dd-yyyy").format(_datePicked!);
+                            '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
                         ref
                             .read(trxnNotifierProvider.notifier)
                             .updateSellerDisclosure24a(_datePicked.toString());
                         _selectedDate = _datePicked;
                       });
+                      bTwofouraSellerDisclosureDeadline = true;
+                      eventDatePicked = DateTime(
+                        _datePicked!.year,
+                        _datePicked.month,
+                        _datePicked.day,
+                        _timePicked!.hour,
+                        _timePicked.minute,
+                      );
                     }
-                    bTwofouraSellerDisclosureDeadline = true;
-                    eventDatePicked = DateTime(
-                      _datePicked!.year,
-                      _datePicked.month,
-                      _datePicked.day,
-                      _timePicked!.hour,
-                      _timePicked.minute,
-                    );
                   },
                   onChanged: (value) {
                     bTwofouraSellerDisclosureDeadline = true;
@@ -1426,28 +1437,32 @@ class _TransactionDetailScreenState
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
                     if (!context.mounted) return;
-                    TimeOfDay? _timePicked = await showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay.now(),
-                    );
+
                     if (_date != null && _date != _datePicked) {
+                      TimeOfDay? _timePicked = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      );
+                      DateTime tempTime = DateFormat("hh:mm").parse(
+                          '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
+                      var timeFormat = DateFormat("h:mm a");
                       setState(() {
                         dueDiligence24bController.text =
-                            DateFormat("EE  MM-dd-yyyy").format(_datePicked!);
+                            '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
                         ref
                             .read(trxnNotifierProvider.notifier)
                             .updateDueDiligence24b(_datePicked.toString());
                         _selectedDate = _datePicked;
                       });
+                      bTwofourbDueDiligenceDeadline = true;
+                      eventDatePicked = DateTime(
+                        _datePicked!.year,
+                        _datePicked.month,
+                        _datePicked.day,
+                        _timePicked!.hour,
+                        _timePicked.minute,
+                      );
                     }
-                    bTwofourbDueDiligenceDeadline = true;
-                    eventDatePicked = DateTime(
-                      _datePicked!.year,
-                      _datePicked.month,
-                      _datePicked.day,
-                      _timePicked!.hour,
-                      _timePicked.minute,
-                    );
                   },
                   onChanged: (value) {
                     ref
@@ -1472,28 +1487,32 @@ class _TransactionDetailScreenState
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
                     if (!context.mounted) return;
-                    TimeOfDay? _timePicked = await showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay.now(),
-                    );
+
                     if (_date != null && _date != _datePicked) {
+                      TimeOfDay? _timePicked = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      );
+                      DateTime tempTime = DateFormat("hh:mm").parse(
+                          '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
+                      var timeFormat = DateFormat("h:mm a");
                       setState(() {
                         financing2cController.text =
-                            DateFormat("EE  MM-dd-yyyy").format(_datePicked!);
+                            '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
                         ref
                             .read(trxnNotifierProvider.notifier)
                             .updateFinancing24c(_datePicked.toString());
                         _selectedDate = _datePicked;
                       });
+                      bTwofourcFinancingAndAppraisalDeadline = true;
+                      eventDatePicked = DateTime(
+                        _datePicked!.year,
+                        _datePicked.month,
+                        _datePicked.day,
+                        _timePicked!.hour,
+                        _timePicked.minute,
+                      );
                     }
-                    bTwofourcFinancingAndAppraisalDeadline = true;
-                    eventDatePicked = DateTime(
-                      _datePicked!.year,
-                      _datePicked.month,
-                      _datePicked.day,
-                      _timePicked!.hour,
-                      _timePicked.minute,
-                    );
                   },
                   onChanged: (value) {
                     bTwofourbDueDiligenceDeadline = true;
@@ -1519,28 +1538,32 @@ class _TransactionDetailScreenState
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
                     if (!context.mounted) return;
-                    TimeOfDay? _timePicked = await showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay.now(),
-                    );
+
                     if (_date != null && _date != _datePicked) {
+                      TimeOfDay? _timePicked = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      );
+                      DateTime tempTime = DateFormat("hh:mm").parse(
+                          '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
+                      var timeFormat = DateFormat("h:mm a");
                       setState(() {
                         settlement24dController.text =
-                            DateFormat("EE  MM-dd-yyyy").format(_datePicked!);
+                            '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
                         ref
                             .read(trxnNotifierProvider.notifier)
                             .updateSettlement24d(_datePicked.toString());
                         _selectedDate = _datePicked;
                       });
+                      btwofourdSettlementDeadline = true;
+                      eventDatePicked = DateTime(
+                        _datePicked!.year,
+                        _datePicked.month,
+                        _datePicked.day,
+                        _timePicked!.hour,
+                        _timePicked.minute,
+                      );
                     }
-                    btwofourdSettlementDeadline = true;
-                    eventDatePicked = DateTime(
-                      _datePicked!.year,
-                      _datePicked.month,
-                      _datePicked.day,
-                      _timePicked!.hour,
-                      _timePicked.minute,
-                    );
                   },
                   onChanged: (value) {
                     bTwofourcFinancingAndAppraisalDeadline = true;
@@ -1625,28 +1648,33 @@ class _TransactionDetailScreenState
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
                     if (!context.mounted) return;
-                    TimeOfDay? _timePicked = await showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay.now(),
-                    );
+
                     if (_date != null && _date != _datePicked) {
+                      TimeOfDay? _timePicked = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      );
+                      DateTime tempTime = DateFormat("hh:mm").parse(
+                          '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
+                      var timeFormat = DateFormat("h:mm a");
                       setState(() {
                         inspectionDateController.text =
-                            DateFormat("EE  MM-dd-yyyy").format(_datePicked!);
+                            '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
                         ref
                             .read(trxnNotifierProvider.notifier)
                             .updateInspectionDate(_datePicked.toString());
                         _selectedDate = _datePicked;
                       });
+                      bInspectionDate = true;
+                      eventDatePicked = DateTime(
+                        _datePicked!.year,
+                        _datePicked.month,
+                        _datePicked.day,
+                        _timePicked!.hour,
+                        _timePicked.minute,
+                      );
                     }
-                    bInspectionDate = true;
-                    eventDatePicked = DateTime(
-                      _datePicked!.year,
-                      _datePicked.month,
-                      _datePicked.day,
-                      _timePicked!.hour,
-                      _timePicked.minute,
-                    ); /*
+                    /*
                       var date = await (showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
@@ -1743,28 +1771,33 @@ class _TransactionDetailScreenState
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
                     if (!context.mounted) return;
-                    TimeOfDay? _timePicked = await showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay.now(),
-                    );
+
                     if (_date != null && _date != _datePicked) {
+                      TimeOfDay? _timePicked = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      );
+                      DateTime tempTime = DateFormat("hh:mm").parse(
+                          '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
+                      var timeFormat = DateFormat("h:mm a");
                       setState(() {
                         appraisalDateController.text =
-                            DateFormat("EE  MM-dd-yyyy").format(_datePicked!);
+                            '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
                         ref
                             .read(trxnNotifierProvider.notifier)
                             .updateAppraisalDate(_datePicked.toString());
                         _selectedDate = _datePicked;
                       });
+                      bAppraisalDate = true;
+                      eventDatePicked = DateTime(
+                        _datePicked!.year,
+                        _datePicked.month,
+                        _datePicked.day,
+                        _timePicked!.hour,
+                        _timePicked.minute,
+                      );
                     }
-                    bAppraisalDate = true;
-                    eventDatePicked = DateTime(
-                      _datePicked!.year,
-                      _datePicked.month,
-                      _datePicked.day,
-                      _timePicked!.hour,
-                      _timePicked.minute,
-                    );
+
                     /*
                       var date = await (showDatePicker(
                           context: context,
@@ -1800,28 +1833,33 @@ class _TransactionDetailScreenState
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
                     if (!context.mounted) return;
-                    TimeOfDay? _timePicked = await showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay.now(),
-                    );
+
                     if (_date != null && _date != _datePicked) {
+                      TimeOfDay? _timePicked = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      );
+                      DateTime tempTime = DateFormat("hh:mm").parse(
+                          '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
+                      var timeFormat = DateFormat("h:mm a");
                       setState(() {
                         closingDateController.text =
-                            DateFormat("EE  MM-dd-yyyy").format(_datePicked!);
+                            '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
                         ref
                             .read(trxnNotifierProvider.notifier)
                             .updateClosingDate(_datePicked.toString());
                         _selectedDate = _datePicked;
                       });
+                      bClosingDate = true;
+                      eventDatePicked = DateTime(
+                        _datePicked!.year,
+                        _datePicked.month,
+                        _datePicked.day,
+                        _timePicked!.hour,
+                        _timePicked.minute,
+                      );
                     }
-                    bClosingDate = true;
-                    eventDatePicked = DateTime(
-                      _datePicked!.year,
-                      _datePicked.month,
-                      _datePicked.day,
-                      _timePicked!.hour,
-                      _timePicked.minute,
-                    );
+
                     /*
                       var date = await (showDatePicker(
                           context: context,
@@ -1857,28 +1895,32 @@ class _TransactionDetailScreenState
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
                     if (!context.mounted) return;
-                    TimeOfDay? _timePicked = await showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay.now(),
-                    );
+
                     if (_date != null && _date != _datePicked) {
+                      TimeOfDay? _timePicked = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      );
+                      DateTime tempTime = DateFormat("hh:mm").parse(
+                          '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
+                      var timeFormat = DateFormat("h:mm a");
                       setState(() {
                         walkThroughDateController.text =
-                            DateFormat("EE  MM-dd-yyyy").format(_datePicked!);
+                            '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
                         ref
                             .read(trxnNotifierProvider.notifier)
                             .updateWalkThroughDate(_datePicked.toString());
                         _selectedDate = _datePicked;
                       });
+                      bFinalWalkThrough = true;
+                      eventDatePicked = DateTime(
+                        _datePicked!.year,
+                        _datePicked.month,
+                        _datePicked.day,
+                        _timePicked!.hour,
+                        _timePicked.minute,
+                      );
                     }
-                    bFinalWalkThrough = true;
-                    eventDatePicked = DateTime(
-                      _datePicked!.year,
-                      _datePicked.month,
-                      _datePicked.day,
-                      _timePicked!.hour,
-                      _timePicked.minute,
-                    );
                   },
                   onChanged: (value) {
                     bFinalWalkThrough = true;
