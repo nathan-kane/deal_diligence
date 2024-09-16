@@ -2288,8 +2288,8 @@ class _TransactionDetailScreenState
                             endDate);
 
                         /// Using the add_2_calendar widget
-                        // AddEventsToAllCalendars.addEvent(
-                        //     ref.read(eventsNotifierProvider));
+                        AddEventsToAllCalendars.addEvent(
+                            ref.read(eventsNotifierProvider));
                       }
 
                       if (bTwofouraSellerDisclosureDeadline) {
