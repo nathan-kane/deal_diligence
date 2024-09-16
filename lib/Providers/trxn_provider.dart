@@ -436,7 +436,7 @@ class TrxnNotifier extends Notifier<Trxn> {
         clientType: refTrxn.clientType,
         propertyAddress: refTrxn.propertyAddress,
         propertyCity: refTrxn.propertyCity,
-        propertyState: ref.read(globalsNotifierProvider).selectedTrxnState,
+        propertyState: refTrxn.propertyState,
         propertyZipcode: refTrxn.propertyZipcode,
         mlsNumber: refTrxn.mlsNumber,
         contractDate: refTrxn.contractDate,

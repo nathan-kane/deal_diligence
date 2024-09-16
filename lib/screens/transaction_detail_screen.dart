@@ -275,9 +275,7 @@ class _TransactionDetailScreenState
     setState(() {
       _currentPropertyState = selectedState;
     });
-    ref
-        .read(globalsNotifierProvider.notifier)
-        .updateselectedTrxnState(selectedState!);
+    ref.read(trxnNotifierProvider.notifier).updatePropertyState(_currentPropertyState!);
   }
 
   void changedClientDropDownState(String? selectedClientState) {
@@ -415,6 +413,7 @@ class _TransactionDetailScreenState
         _currentClientState = null;
         _currentClientType = 'Choose Client Type';
         _currentTrxnStatus = null;
+        _currentPropertyState = "Choose State";
       });
     } else {
       // Populate controllers when transaction exists
@@ -445,6 +444,12 @@ class _TransactionDetailScreenState
           ref
               .read(trxnNotifierProvider.notifier)
               .updatePropertyCity(propertyCityController.text);
+          if (trxnSnapshot.data()?['propertyState'] == "" ||
+              trxnSnapshot.data()?['propertyState'] == null) {
+            _currentPropertyState = "Choose State";
+          } else {
+            _currentPropertyState = trxnSnapshot.data()?['propertyState'];
+          }
           ref
               .read(trxnNotifierProvider.notifier)
               .updatePropertyState(propertyStateController.text);
@@ -642,13 +647,6 @@ class _TransactionDetailScreenState
                   trxnSnapshot.data()?['otherPartyTitleCompanyId'];
             }
 
-            if (trxnSnapshot.data()?['propertyState'] == "" ||
-                trxnSnapshot.data()?['propertyState'] == null) {
-              _currentPropertyState = "Select State";
-            } else {
-              _currentPropertyState = trxnSnapshot.data()?['propertyState'];
-            }
-
             trxnIdController.text = trxnSnapshot.data()?['trxnId'] ?? "";
 
             _currentClientType =
@@ -658,19 +656,17 @@ class _TransactionDetailScreenState
             _selectedClientState = trxnSnapshot.data()?['clientState'] ?? "";
             _currentTrxnStatus =
                 trxnSnapshot.data()?['trxnStatus'] ?? "Select Status";
-            if (trxnSnapshot.data()?['propertyState'] == null ||
-                trxnSnapshot.data()?['propertyState'] == "") {
-              _currentPropertyState = "Choose State";
-            } else {
-              _currentPropertyState = trxnSnapshot.data()?['propertyState'];
-            }
           });
 
           ref
               .read(trxnNotifierProvider.notifier)
+              .updatePropertyState(_currentPropertyState!);
+          ref
+              .read(trxnNotifierProvider.notifier)
               .updateTrxnStatus(_currentTrxnStatus);
 
-          // Get the client data
+          //////////////////////////////////////////////////
+          /// Get the client data
           try {
             _clientStream = _db
                 .collection('client')

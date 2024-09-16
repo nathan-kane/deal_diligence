@@ -15,6 +15,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
+import 'package:intl/intl.dart';
 
 final FirestoreService firestoreService = FirestoreService();
 
@@ -32,6 +33,7 @@ class _CompanyDashboardScreenState
     extends ConsumerState<CompanyDashboardScreen> {
   bool showSpinner = false;
   bool isLoaded = false;
+  final moneyFormat = NumberFormat("#,##0.00", "en_US");
 
   setGlobals(String? Id) {
     ref.read(globalsNotifierProvider.notifier).updatenewTrxn(false);
@@ -61,7 +63,7 @@ class _CompanyDashboardScreenState
           child: FutureBuilder<QuerySnapshot?>(
             future: FirebaseFirestore.instance
                 .collection('company')
-                .doc(ref.read(usersNotifierProvider).companyId) 
+                .doc(ref.read(usersNotifierProvider).companyId)
                 .collection('trxns')
                 .where("trxnStatus", isNotEqualTo: "Archived")
                 .get(),
