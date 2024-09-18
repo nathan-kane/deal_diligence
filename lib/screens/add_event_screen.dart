@@ -512,7 +512,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                           .read(globalsNotifierProvider.notifier)
                           .updatenewEvent(true);
 
-                      /// Save the event to the db document
+                      // /// Save the event to the db document
                       if (currentEventId != null && currentEventId != '') {
                         ref.read(eventsNotifierProvider.notifier).saveEvent(
                             ref.read(eventsNotifierProvider), currentEventId);
@@ -537,8 +537,10 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                         //     minutes:
                         //         int.parse(eventDurationController.text)));
 
-                        AddEventsToAllCalendars.addEvent(
+                        AddEventsToAllCalendars().addEvent2(
                             ref.read(eventsNotifierProvider));
+
+                                                    // AddEventsToAllCalendars().addEvent2();
                       }
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) =>

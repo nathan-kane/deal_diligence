@@ -98,8 +98,8 @@ class _TransactionDetailScreenState
   String? _mlsSearchLink;
   //String _clientType = 'Select Client Type';
   double commission = 0.0;
-  late final StreamSubscription _trxnStream;
-  late final StreamSubscription _clientStream;
+  StreamSubscription? _trxnStream;
+  StreamSubscription? _clientStream;
   DateTime eventDatePicked = DateTime.now();
 
   final clientFNameController = TextEditingController();
@@ -158,9 +158,12 @@ class _TransactionDetailScreenState
     walkThroughDateController.dispose();
     trxnStatusController.dispose();
     trxnIdController.dispose();
-
-    _clientStream.cancel();
-    _trxnStream.cancel();
+    if (_clientStream != null) {
+      _clientStream?.cancel();
+    }
+    if (_clientStream != null) {
+      _trxnStream?.cancel();
+    }
     super.dispose();
   }
 
@@ -198,11 +201,11 @@ class _TransactionDetailScreenState
 
   @override
   void initState() {
+    super.initState();
     _currentCompany = ref.read(globalsNotifierProvider).companyId;
     _currentUser = ref.read(globalsNotifierProvider).currentUserId;
 
     getTrxn();
-    super.initState();
 
     _dropDownState = getDropDownState();
     _dropdownClientType = getDropDownClientType();
@@ -275,7 +278,9 @@ class _TransactionDetailScreenState
     setState(() {
       _currentPropertyState = selectedState;
     });
-    ref.read(trxnNotifierProvider.notifier).updatePropertyState(_currentPropertyState!);
+    ref
+        .read(trxnNotifierProvider.notifier)
+        .updatePropertyState(_currentPropertyState!);
   }
 
   void changedClientDropDownState(String? selectedClientState) {

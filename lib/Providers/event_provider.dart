@@ -24,7 +24,7 @@ class Events {
   String? userId;
   String? companyId;
   String? frequency;
-  int? occurences;
+  int? occurrences;
   DateTime? recurrenceEndDate;
   int interval = 1;
   String? rRule;
@@ -41,7 +41,7 @@ class Events {
     this.userId,
     this.companyId,
     this.frequency,
-    this.occurences,
+    this.occurrences,
     this.recurrenceEndDate,
     this.interval = 1,
     this.rRule,
@@ -62,7 +62,7 @@ class Events {
       userId: doc['userId'],
       companyId: doc['companyId'],
       frequency: doc['frequency'],
-      occurences: doc['occurences'],
+      occurrences: doc['occurences'],
       recurrenceEndDate: (doc['recurrenceEndDate'] as Timestamp).toDate(),
       interval: doc['interval'],
       rRule: doc['rRule'],
@@ -81,7 +81,7 @@ class Events {
       'agentId': userId,
       'agencyId': companyId,
       'frequency': frequency,
-      'occurences': occurences,
+      'occurences': occurrences,
       'recurrenceEndDate': recurrenceEndDate,
       'interval': interval,
       'rRule': rRule,
@@ -115,7 +115,7 @@ class Events {
       userId: userId ?? this.userId,
       companyId: companyId ?? this.companyId,
       frequency: frequency ?? this.frequency,
-      occurences: occurences ?? this.occurences,
+      occurrences: occurences ?? this.occurrences,
       recurrenceEndDate: recurrenceEndDate ?? this.recurrenceEndDate,
       interval: interval,
       rRule: rRule ?? this.rRule,
@@ -143,7 +143,7 @@ class EventsNotifier extends Notifier<Events> {
       userId: '',
       companyId: '',
       frequency: '',
-      occurences: 1,
+      occurrences: 1,
       recurrenceEndDate: DateTime.now(),
       interval: 1,
       rRule: '',
@@ -242,7 +242,7 @@ class EventsNotifier extends Notifier<Events> {
         companyId: ref.read(globalsNotifierProvider).companyId,
         userId: ref.read(globalsNotifierProvider).currentUserId,
         frequency: events.frequency,
-        occurences: events.occurences,
+        occurrences: events.occurrences,
         recurrenceEndDate: events.recurrenceEndDate,
         rRule: events.rRule);
 
