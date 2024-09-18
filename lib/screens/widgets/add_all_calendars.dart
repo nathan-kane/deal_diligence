@@ -31,7 +31,7 @@ class AddEventsToAllCalendars {
 
   void addEvent2(Events eventCal) async {
     if (!kIsWeb) {
-      // Add2Calendar.addEvent2Cal(buildEvent(event));
+      Add2Calendar.addEvent2Cal(buildEvent(eventCal));
     } else {
       try {
         final signInAccountSilently = await _googleSignIn.signInSilently();
@@ -47,20 +47,7 @@ class AddEventsToAllCalendars {
             "primary"; // Use 'primary' for the default calendar.
         const String url =
             'https://www.googleapis.com/calendar/v3/calendars/$calendarId/events';
-        // final event = {
-        //   "summary": eventCal.eventName,
-        //   "description": eventCal.eventDescription,
-        //   "start": {
-        //     "dateTime": eventCal.eventStartTime?.toUtc().toIso8601String(),
-        //     "timeZone": "UTC"
-        //   },
-        //   "end": {
-        //     "dateTime": eventCal.eventStartTime?.add(Duration(minutes: int.parse(eventCal.eventDuration ?? "0")))
-        //         .toUtc()
-        //         .toIso8601String(),
-        //     "timeZone": "UTC"
-        //   },
-        // };
+        
         final event = {
           "summary": eventCal.eventName,
           "description": eventCal.eventDescription,
@@ -80,15 +67,7 @@ class AddEventsToAllCalendars {
           "recurrence": [
             "RRULE:FREQ=DAILY;INTERVAL=${eventCal.interval};COUNT=${eventCal.occurrences}"
           ], // Recurrence rule: daily with interval and occurrences
-          // "reminders": {
-          //   "useDefault": false,
-          //   "overrides": [
-          //     {
-          //       "method": "popup",
-          //       "minutes": eventCal.frequency ?? 10
-          //     }, // Reminder with interval
-          //   ],
-          // },
+          
         };
 
         final response = await http.post(
