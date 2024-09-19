@@ -314,7 +314,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             .updatecurrentUid(_auth.currentUser!.uid);
                         ref
                             .read(globalsNotifierProvider.notifier)
-                            .updatecurrentUserId(_auth.currentUser!.uid);
+                            .updateCurrentUserId(_auth.currentUser!.uid);
                         ref
                             .read(globalsNotifierProvider.notifier)
                             .updatecurrentUEmail(_auth.currentUser!.email);

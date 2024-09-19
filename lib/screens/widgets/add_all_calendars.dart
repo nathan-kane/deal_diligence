@@ -9,40 +9,35 @@ import 'dart:convert';
 import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:deal_diligence/Providers/event_provider.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 
 final GoogleSignIn _googleSignIn = GoogleSignIn(
   clientId:
-      '394692266013-pj87pfid8p2l955nmua43sd6v3g5aqu3.apps.googleusercontent.com',
+      dotenv.env["GOOGLE_CALENDAR_CLIENT_ID"],
   scopes: [
     'https://www.googleapis.com/auth/calendar',
   ],
 );
 
 class AddEventsToAllCalendars {
-  GoogleSignInAuthentication? _auth;
 
-  static void addEvent(Events event) async {
-    if (!kIsWeb) {
-      Add2Calendar.addEvent2Cal(buildEvent(event));
-    }
-  }
-
-  void addEvent2(Events eventCal) async {
+  static void addEvent(Events eventCal) async {
+  GoogleSignInAuthentication? auth;
     if (!kIsWeb) {
       Add2Calendar.addEvent2Cal(buildEvent(eventCal));
-    } else {
+    } else{
       try {
         final signInAccountSilently = await _googleSignIn.signInSilently();
         if (signInAccountSilently != null) {
-          _auth = await signInAccountSilently.authentication;
+          auth = await signInAccountSilently.authentication;
         } else {
           final signInAccount = await _googleSignIn.signIn();
-          _auth = await signInAccount?.authentication;
+          auth = await signInAccount?.authentication;
         }
 
-        if (_auth == null) return;
+        if (auth == null) return;
         const String calendarId =
             "primary"; // Use 'primary' for the default calendar.
         const String url =
@@ -73,7 +68,7 @@ class AddEventsToAllCalendars {
         final response = await http.post(
           Uri.parse(url),
           headers: {
-            'Authorization': 'Bearer ${_auth!.accessToken}',
+            'Authorization': 'Bearer ${auth.accessToken}',
             'Content-Type': 'application/json',
           },
           body: jsonEncode(event),
@@ -88,7 +83,7 @@ class AddEventsToAllCalendars {
         rethrow;
       }
     }
-  }
+    }
 
   static Event buildEvent(Events event) {
     Frequency freq = Frequency.yearly;

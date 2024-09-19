@@ -165,7 +165,7 @@ class EventsNotifier extends Notifier<Events> {
   int interval = 1;
   String? rRule;
 
-  void updateEventname(String? newEventName) {
+  void updateEventName(String? newEventName) {
     state = state.copyWith(eventName: newEventName);
   }
 
@@ -197,7 +197,7 @@ class EventsNotifier extends Notifier<Events> {
     state = state.copyWith(frequency: newFrequency);
   }
 
-  void updateOccurences(int? newOccurences) {
+  void updateOccurrences(int? newOccurences) {
     state = state.copyWith(occurences: newOccurences);
   }
 
@@ -249,7 +249,7 @@ class EventsNotifier extends Notifier<Events> {
     if (eventId != null && eventId != '') {
       firestoreService.saveEvent(
           newEvent, ref, eventId); // Update existing event
-      ref.read(globalsNotifierProvider.notifier).updatenewEvent(false);
+      ref.read(globalsNotifierProvider.notifier).updateNewEvent(false);
     } else {
       firestoreService.saveEvent(newEvent, ref); // Create new event
     }

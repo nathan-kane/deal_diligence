@@ -44,7 +44,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
   final eventDateController = TextEditingController();
   final eventDescriptionController = TextEditingController();
   final eventLocationController = TextEditingController();
-  final eventOccurencesController = TextEditingController();
+  final eventOccurrencesController = TextEditingController();
   final eventIntervalController = TextEditingController();
   final eventRecurrenceEndDateController = TextEditingController();
   String? selectedFrequency = 'Select';
@@ -57,7 +57,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
     eventDurationController.dispose();
     eventDateController.dispose();
     eventDescriptionController.dispose();
-    eventOccurencesController.dispose();
+    eventOccurrencesController.dispose();
     eventIntervalController.dispose();
     eventRecurrenceEndDateController.dispose();
 
@@ -184,7 +184,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   onChanged: (value) {
                     ref
                         .read(eventsNotifierProvider.notifier)
-                        .updateEventname(value);
+                        .updateEventName(value);
                   },
                   decoration: const InputDecoration(
                       hintText: 'Event Name*', labelText: 'Event Name*'),
@@ -366,16 +366,16 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   }).toList(),
                 ),
                 TextField(
-                  controller: eventOccurencesController,
+                  controller: eventOccurrencesController,
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     ref
                         .read(eventsNotifierProvider.notifier)
-                        .updateOccurences(int.parse(value));
+                        .updateOccurrences(int.parse(value));
                   },
                   decoration: const InputDecoration(
-                      hintText: 'Occurences', labelText: 'Occurences'),
+                      hintText: 'Occurrences', labelText: 'Occurrences'),
                 ),
                 TextField(
                   controller: eventRecurrenceEndDateController,
@@ -510,7 +510,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                           .updateRecurrenceEndDate(recurrenceEndDate);
                       ref
                           .read(globalsNotifierProvider.notifier)
-                          .updatenewEvent(true);
+                          .updateNewEvent(true);
 
                       // /// Save the event to the db document
                       if (currentEventId != null && currentEventId != '') {
@@ -537,7 +537,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                         //     minutes:
                         //         int.parse(eventDurationController.text)));
 
-                        AddEventsToAllCalendars().addEvent2(
+                        AddEventsToAllCalendars.addEvent(
                             ref.read(eventsNotifierProvider));
 
                                                     // AddEventsToAllCalendars().addEvent2();

@@ -240,7 +240,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
       newUser.companyId = selectedCompany;
       ref
           .read(globalsNotifierProvider.notifier)
-          .updateselectedCompany(selectedCompany!);
+          .updateSelectedCompany(selectedCompany!);
       ref
           .read(globalsNotifierProvider.notifier)
           .updatecurrentCompanyName(selectedCompany);
@@ -771,7 +771,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                 ref.watch(globalsNotifierProvider).currentUid);
                             ref
                                 .read(globalsNotifierProvider.notifier)
-                                .updatetargetScreen(2);
+                                .updateTargetScreen(2);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

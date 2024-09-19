@@ -69,7 +69,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
     await user!.reload();
     if (user!.emailVerified) {
       ref.read(globalsNotifierProvider.notifier).updatecurrentUid(user!.uid);
-      ref.read(globalsNotifierProvider.notifier).updatecurrentUserId(user!.uid);
+      ref.read(globalsNotifierProvider.notifier).updateCurrentUserId(user!.uid);
       timer.cancel();
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const UserProfileScreen()));

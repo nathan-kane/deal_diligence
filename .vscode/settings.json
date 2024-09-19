@@ -1,4 +1,20 @@
 {
     "java.configuration.updateBuildConfiguration": "automatic",
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.compile.nullAnalysis.mode": "automatic",
+    "cSpell.words": [
+        "autofocus",
+        "changeappraisal",
+        "changeclosing",
+        "changeinspection",
+        "colour",
+        "datetime",
+        "dont",
+        "dotenv",
+        "Firestore",
+        "riverpod",
+        "RRULE",
+        "trxn",
+        "trxns",
+        "updateevent"
+    ]
 }

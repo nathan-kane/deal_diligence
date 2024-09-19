@@ -51,10 +51,10 @@ String? _currentTrxnStatus;
 
 // Variables telling if a date has been changed so it can be set on the calendar
 bool bContractDate = false;
-bool bTwofouraSellerDisclosureDeadline = false;
-bool bTwofourbDueDiligenceDeadline = false;
-bool bTwofourcFinancingAndAppraisalDeadline = false;
-bool btwofourdSettlementDeadline = false;
+bool bTwoFourASellerDisclosureDeadline = false;
+bool bTwoFourBDueDiligenceDeadline = false;
+bool bTwoFourCFinancingAndAppraisalDeadline = false;
+bool bTwoFourDSettlementDeadline = false;
 bool bInspectionDate = false;
 bool bAppraisalDate = false;
 bool bClosingDate = false;
@@ -116,7 +116,7 @@ class _TransactionDetailScreenState
   final propertyAddressController = TextEditingController();
   final propertyCityController = TextEditingController();
   final propertyStateController = TextEditingController();
-  final propertyZipcodeController = TextEditingController();
+  final propertyZipCodeController = TextEditingController();
   final mlsNumberController = TextEditingController();
   final contractDateController = TextEditingController();
   final contractPriceController = TextEditingController();
@@ -144,7 +144,7 @@ class _TransactionDetailScreenState
     propertyAddressController.dispose();
     propertyCityController.dispose();
     propertyStateController.dispose();
-    propertyZipcodeController.dispose();
+    propertyZipCodeController.dispose();
     mlsNumberController.dispose();
     contractDateController.dispose();
     contractPriceController.dispose();
@@ -179,7 +179,7 @@ class _TransactionDetailScreenState
   String? propertyAddress = "";
   String? propertyCity = "";
   String? propertyState = "";
-  int? propertyZipcode = 0;
+  int? propertyZipCode = 0;
   String? mlsNumber = "";
   String? contractDate = "";
   int? contractPrice = 0;
@@ -319,7 +319,7 @@ class _TransactionDetailScreenState
     });
     ref
         .read(globalsNotifierProvider.notifier)
-        .updateselectedCompany(selectedCompany!);
+        .updateSelectedCompany(selectedCompany!);
   }
 
   void changedDropDownUser(String? selectedUser) {
@@ -328,7 +328,7 @@ class _TransactionDetailScreenState
     });
     ref
         .read(globalsNotifierProvider.notifier)
-        .updateselectedUser(selectedUser!);
+        .updateSelectedUser(selectedUser!);
   }
 
   void changedDropDownStatus(String selectedStatus) {
@@ -393,7 +393,7 @@ class _TransactionDetailScreenState
       propertyAddressController.text = "";
       propertyCityController.text = "";
       propertyStateController.text = "";
-      propertyZipcodeController.text = "";
+      propertyZipCodeController.text = "";
       mlsNumberController.text = "";
       contractDateController.text = "";
       contractPriceController.text = "";
@@ -458,11 +458,11 @@ class _TransactionDetailScreenState
           ref
               .read(trxnNotifierProvider.notifier)
               .updatePropertyState(propertyStateController.text);
-          propertyZipcodeController.text =
+          propertyZipCodeController.text =
               trxnSnapshot.data()?['propertyZipcode'] ?? "";
           ref
               .read(trxnNotifierProvider.notifier)
-              .updatePropertyZipcode(propertyZipcodeController.text);
+              .updatePropertyZipCode(propertyZipCodeController.text);
           mlsNumberController.text = trxnSnapshot.data()?['mlsNumber'] ?? "";
           ref
               .read(trxnNotifierProvider.notifier)
@@ -574,7 +574,7 @@ class _TransactionDetailScreenState
             inspectionDateController.text = "";
           }
 
-          /// Initialize the appraiser dropdownbutton
+          /// Initialize the appraiser drop down button
           if (trxnSnapshot.data()?['appraiserCompanyId'] == "" ||
               trxnSnapshot.data()?['appraiserCompanyId'] == null) {
             _selectedAppraiserCompany = "Select Appraiser";
@@ -729,10 +729,10 @@ class _TransactionDetailScreenState
   populateClientProvider() {
     ref
         .read(clientNotifierProvider.notifier)
-        .updatefName(clientFNameController.text);
+        .updateFName(clientFNameController.text);
     ref
         .read(clientNotifierProvider.notifier)
-        .updatelName(clientLNameController.text);
+        .updateLName(clientLNameController.text);
     ref
         .read(clientNotifierProvider.notifier)
         .updateAddress1(clientAddress1Controller.text);
@@ -747,7 +747,7 @@ class _TransactionDetailScreenState
         .updateClientState(_currentClientState!);
     ref
         .read(clientNotifierProvider.notifier)
-        .updateZipcode(propertyZipcodeController.text);
+        .updateZipCode(propertyZipCodeController.text);
     ref
         .read(clientNotifierProvider.notifier)
         .updateCellPhone(clientCellPhoneController.text);
@@ -763,7 +763,7 @@ class _TransactionDetailScreenState
     try {
       ref
           .read(trxnNotifierProvider.notifier)
-          .updateCompanyid(ref.read(globalsNotifierProvider).companyId!);
+          .updateCompanyId(ref.read(globalsNotifierProvider).companyId!);
 
       /// Only populate the clientID if it is blank
       if (ref.read(trxnNotifierProvider).clientId == null ||
@@ -789,7 +789,7 @@ class _TransactionDetailScreenState
           .updatePropertyState(_currentPropertyState!);
       ref
           .read(trxnNotifierProvider.notifier)
-          .updatePropertyZipcode(propertyZipcodeController.text);
+          .updatePropertyZipCode(propertyZipCodeController.text);
       ref
           .read(trxnNotifierProvider.notifier)
           .updateMlsNumber(mlsNumberController.text);
@@ -928,7 +928,7 @@ class _TransactionDetailScreenState
                                   _selectedUser = userValue;
                                   ref
                                       .read(globalsNotifierProvider.notifier)
-                                      .updatecurrentUserId(userValue!);
+                                      .updateCurrentUserId(userValue!);
                                 });
                               },
                               items: userItems,
@@ -940,7 +940,7 @@ class _TransactionDetailScreenState
                   height: 30,
                 ),
 
-                /// Display the client information in a collapsable panel
+                /// Display the client information in a collapsible panel
                 Card(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -964,7 +964,7 @@ class _TransactionDetailScreenState
                             onChanged: (value) {
                               ref
                                   .read(clientNotifierProvider.notifier)
-                                  .updatefName(value);
+                                  .updateFName(value);
                               bClientChanged = true;
                             },
                             decoration: const InputDecoration(
@@ -979,7 +979,7 @@ class _TransactionDetailScreenState
                             onChanged: (value) {
                               ref
                                   .read(clientNotifierProvider.notifier)
-                                  .updatelName(value);
+                                  .updateLName(value);
                               bClientChanged = true;
                             },
                             decoration: const InputDecoration(
@@ -1217,12 +1217,12 @@ class _TransactionDetailScreenState
                 ),
                 TextField(
                   keyboardType: TextInputType.number,
-                  controller: propertyZipcodeController,
+                  controller: propertyZipCodeController,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     ref
                         .read(trxnNotifierProvider.notifier)
-                        .updatePropertyZipcode(value); //, loggedInUid);
+                        .updatePropertyZipCode(value); //, loggedInUid);
                   },
                   decoration: const InputDecoration(
                       hintText: 'Property Zip Code',
@@ -1311,10 +1311,10 @@ class _TransactionDetailScreenState
 
                         bContractDate = true;
                         eventDatePicked = DateTime(
-                          _datePicked!.year,
+                          _datePicked.year,
                           _datePicked.month,
                           _datePicked.day,
-                          _timePicked!.hour,
+                          _timePicked.hour,
                           _timePicked.minute,
                         );
                       });
@@ -1404,18 +1404,18 @@ class _TransactionDetailScreenState
                             .updateSellerDisclosure24a(_datePicked.toString());
                         _selectedDate = _datePicked;
                       });
-                      bTwofouraSellerDisclosureDeadline = true;
+                      bTwoFourASellerDisclosureDeadline = true;
                       eventDatePicked = DateTime(
                         _datePicked!.year,
                         _datePicked.month,
                         _datePicked.day,
-                        _timePicked!.hour,
+                        _timePicked.hour,
                         _timePicked.minute,
                       );
                     }
                   },
                   onChanged: (value) {
-                    bTwofouraSellerDisclosureDeadline = true;
+                    bTwoFourASellerDisclosureDeadline = true;
                     ref
                         .read(trxnNotifierProvider.notifier)
                         .updateSellerDisclosure24a(value);
@@ -1455,12 +1455,12 @@ class _TransactionDetailScreenState
                             .updateDueDiligence24b(_datePicked.toString());
                         _selectedDate = _datePicked;
                       });
-                      bTwofourbDueDiligenceDeadline = true;
+                      bTwoFourBDueDiligenceDeadline = true;
                       eventDatePicked = DateTime(
                         _datePicked!.year,
                         _datePicked.month,
                         _datePicked.day,
-                        _timePicked!.hour,
+                        _timePicked.hour,
                         _timePicked.minute,
                       );
                     }
@@ -1505,18 +1505,18 @@ class _TransactionDetailScreenState
                             .updateFinancing24c(_datePicked.toString());
                         _selectedDate = _datePicked;
                       });
-                      bTwofourcFinancingAndAppraisalDeadline = true;
+                      bTwoFourCFinancingAndAppraisalDeadline = true;
                       eventDatePicked = DateTime(
                         _datePicked!.year,
                         _datePicked.month,
                         _datePicked.day,
-                        _timePicked!.hour,
+                        _timePicked.hour,
                         _timePicked.minute,
                       );
                     }
                   },
                   onChanged: (value) {
-                    bTwofourbDueDiligenceDeadline = true;
+                    bTwoFourBDueDiligenceDeadline = true;
                     ref
                         .read(trxnNotifierProvider.notifier)
                         .updateFinancing24c(value);
@@ -1556,18 +1556,18 @@ class _TransactionDetailScreenState
                             .updateSettlement24d(_datePicked.toString());
                         _selectedDate = _datePicked;
                       });
-                      btwofourdSettlementDeadline = true;
+                      bTwoFourDSettlementDeadline = true;
                       eventDatePicked = DateTime(
                         _datePicked!.year,
                         _datePicked.month,
                         _datePicked.day,
-                        _timePicked!.hour,
+                        _timePicked.hour,
                         _timePicked.minute,
                       );
                     }
                   },
                   onChanged: (value) {
-                    bTwofourcFinancingAndAppraisalDeadline = true;
+                    bTwoFourCFinancingAndAppraisalDeadline = true;
                     ref
                         .read(trxnNotifierProvider.notifier)
                         .updateSettlement24d(value);
@@ -1671,7 +1671,7 @@ class _TransactionDetailScreenState
                         _datePicked!.year,
                         _datePicked.month,
                         _datePicked.day,
-                        _timePicked!.hour,
+                        _timePicked.hour,
                         _timePicked.minute,
                       );
                     }
@@ -1794,7 +1794,7 @@ class _TransactionDetailScreenState
                         _datePicked!.year,
                         _datePicked.month,
                         _datePicked.day,
-                        _timePicked!.hour,
+                        _timePicked.hour,
                         _timePicked.minute,
                       );
                     }
@@ -1856,7 +1856,7 @@ class _TransactionDetailScreenState
                         _datePicked!.year,
                         _datePicked.month,
                         _datePicked.day,
-                        _timePicked!.hour,
+                        _timePicked.hour,
                         _timePicked.minute,
                       );
                     }
@@ -1918,7 +1918,7 @@ class _TransactionDetailScreenState
                         _datePicked!.year,
                         _datePicked.month,
                         _datePicked.day,
-                        _timePicked!.hour,
+                        _timePicked.hour,
                         _timePicked.minute,
                       );
                     }
@@ -2237,7 +2237,7 @@ class _TransactionDetailScreenState
                             /// Add the new client ID to the trxn provider to be saved
                             ref
                                 .read(trxnNotifierProvider.notifier)
-                                .updateClientId(docRef!.id);
+                                .updateClientId(docRef.id);
                           } else {
                             /// Update the existing Transaction record
                             ref
@@ -2266,7 +2266,7 @@ class _TransactionDetailScreenState
                             'Contract Date for ${ref.read(clientNotifierProvider).lName}';
                         ref
                             .read(eventsNotifierProvider.notifier)
-                            .updateEventname(title);
+                            .updateEventName(title);
                         String? desc =
                             '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
                         ref
@@ -2293,8 +2293,8 @@ class _TransactionDetailScreenState
                             ref.read(eventsNotifierProvider));
                       }
 
-                      if (bTwofouraSellerDisclosureDeadline) {
-                        bTwofouraSellerDisclosureDeadline = false;
+                      if (bTwoFourASellerDisclosureDeadline) {
+                        bTwoFourASellerDisclosureDeadline = false;
                         //FIX THIS
                         // String title =
                         //     '24a Seller Disclosure Deadline for ${ref.read(trxnNotifierProvider).clientLName}';
@@ -2315,15 +2315,15 @@ class _TransactionDetailScreenState
                         AddEventsToAllCalendars.addEvent(
                             ref.read(eventsNotifierProvider));
                       }
-                      if (bTwofourbDueDiligenceDeadline) {
-                        bTwofourbDueDiligenceDeadline = false;
+                      if (bTwoFourBDueDiligenceDeadline) {
+                        bTwoFourBDueDiligenceDeadline = false;
                         //FIX THIS
                         // String title =
                         //     '24b Due Diligence Deadline for ${ref.read(trxnNotifierProvider).clientLName}';
                         //FIX THIS
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
-                        //     .updateEventname(title);
+                        //     .updateEventName(title);
                         String? desc =
                             '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
                         ref
@@ -2337,14 +2337,14 @@ class _TransactionDetailScreenState
                         AddEventsToAllCalendars.addEvent(
                             ref.read(eventsNotifierProvider));
                       }
-                      if (bTwofourcFinancingAndAppraisalDeadline) {
-                        bTwofourcFinancingAndAppraisalDeadline = false;
+                      if (bTwoFourCFinancingAndAppraisalDeadline) {
+                        bTwoFourCFinancingAndAppraisalDeadline = false;
                         // String title =
                         //     '24c Financing and Appraisal Deadline for ${ref.read(trxnNotifierProvider).clientLName}';
                         //FIX THIS
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
-                        //     .updateEventname(title);
+                        //     .updateEventName(title);
                         String? desc =
                             '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
                         ref
@@ -2358,15 +2358,15 @@ class _TransactionDetailScreenState
                         AddEventsToAllCalendars.addEvent(
                             ref.read(eventsNotifierProvider));
                       }
-                      if (btwofourdSettlementDeadline) {
-                        btwofourdSettlementDeadline = false;
+                      if (bTwoFourDSettlementDeadline) {
+                        bTwoFourDSettlementDeadline = false;
                         //FIX THIS
                         // String title =
                         //     '24d Settlement Deadline for ${ref.read(trxnNotifierProvider).clientLName}';
                         //FIX THIS
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
-                        //     .updateEventname(title);
+                        //     .updateEventName(title);
                         String? desc =
                             '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
                         ref
@@ -2388,7 +2388,7 @@ class _TransactionDetailScreenState
                         //FIX THIS
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
-                        //     .updateEventname(title);
+                        //     .updateEventName(title);
                         String? desc =
                             '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
                         ref
@@ -2410,7 +2410,7 @@ class _TransactionDetailScreenState
                         //FIX THIS
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
-                        //     .updateEventname(title);
+                        //     .updateEventName(title);
                         String? desc =
                             '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
                         ref
@@ -2431,7 +2431,7 @@ class _TransactionDetailScreenState
                         //     'Closing Date for ${ref.read(trxnNotifierProvider).clientLName}';
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
-                        //     .updateEventname(title);
+                        //     .updateEventName(title);
                         String? desc =
                             '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
                         ref
@@ -2452,7 +2452,7 @@ class _TransactionDetailScreenState
                         //     'Final Walkthrough Date for ${ref.read(trxnNotifierProvider).clientLName}';
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
-                        //     .updateEventname(title);
+                        //     .updateEventName(title);
                         String? desc =
                             '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
                         ref
@@ -2499,7 +2499,7 @@ class _TransactionDetailScreenState
                           _selectedCompany!);
                       ref
                           .read(globalsNotifierProvider.notifier)
-                          .updatetargetScreen(0);
+                          .updateTargetScreen(0);
                       Navigator.pop(context);
                       Navigator.push(
                         context,
@@ -2526,7 +2526,7 @@ class _TransactionDetailScreenState
                     try {
                       ref
                           .read(globalsNotifierProvider.notifier)
-                          .updatetargetScreen(0);
+                          .updateTargetScreen(0);
                       Navigator.pop(context);
                       setState(() {
                         showSpinner = false;
@@ -2553,7 +2553,7 @@ class _TransactionDetailScreenState
 //                 ref.read(trxnNotifierProvider),
 //                 ref.read(globalsNotifierProvider).companyId!,
 //                 widget.newTrxn!);
-//             ref.read(globalsNotifierProvider.notifier).updatetargetScreen(0);
+//             ref.read(globalsNotifierProvider.notifier).updateTargetScreen(0);
 //             Navigator.pop(context);
 // /*
 //             Navigator.push(

@@ -263,7 +263,7 @@ class TrxnNotifier extends Notifier<Trxn> {
   String? trxnStatus;
 
   // functions to update class members
-  void updateCompanyid(String newCompanyId) {
+  void updateCompanyId(String newCompanyId) {
     state = state.copyWith(companyId: newCompanyId);
   }
 
@@ -292,7 +292,7 @@ class TrxnNotifier extends Notifier<Trxn> {
   }
 
   // Convert String to int
-  void updatePropertyZipcode(String newPropertyZipcode) {
+  void updatePropertyZipCode(String newPropertyZipcode) {
     state = state.copyWith(propertyZipcode: newPropertyZipcode);
   }
 
