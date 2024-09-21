@@ -14,6 +14,7 @@ import 'package:deal_diligence/screens/list_of_mortgage_companies.dart';
 import 'package:deal_diligence/screens/list_of_title_companies.dart';
 import 'package:deal_diligence/screens/login_screen.dart';
 import 'package:deal_diligence/screens/mortgage_calculator.dart';
+import 'package:deal_diligence/screens/privacy_policy_screen.dart';
 import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:deal_diligence/screens/appointment_calendar.dart';
@@ -194,7 +195,7 @@ class SideDrawer extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(
-                  Icons.account_balance,
+                  Icons.person_outline_sharp,
                   color: Colors.lightBlueAccent,
                 ),
                 title: const Text('View Clients'),
@@ -210,7 +211,7 @@ class SideDrawer extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(
-                  Icons.add_business,
+                  Icons.attach_money,
                   color: Colors.lightBlueAccent,
                 ),
                 title: const Text('View Title Companies'),
@@ -253,7 +254,7 @@ class SideDrawer extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(
-                  Icons.add_circle_outline,
+                  Icons.insights_sharp,
                   color: Colors.lightBlueAccent,
                 ),
                 title: const Text('View Inspector Companies'),
@@ -288,7 +289,7 @@ class SideDrawer extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(
-                  Icons.calculate,
+                  Icons.currency_exchange,
                   color: Colors.blueAccent,
                 ),
                 title: const Text('Pricing'),
@@ -299,6 +300,21 @@ class SideDrawer extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) =>
                               const MortgageCalculatorScreen()));
+                },
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.private_connectivity,
+                  color: Colors.blueAccent,
+                ),
+                title: const Text('Privacy Policy'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const PrivacyPolicyScreen()));
                 },
               ),
               ListTile(
