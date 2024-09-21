@@ -200,7 +200,7 @@ class SideDrawer extends StatelessWidget {
                 ),
                 title: const Text('View Clients'),
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.pop(context); 
                   Navigator.push(
                     context,
                     MaterialPageRoute(
