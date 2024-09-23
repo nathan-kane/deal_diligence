@@ -102,6 +102,16 @@ class _TransactionDetailScreenState
   StreamSubscription? _clientStream;
   DateTime eventDatePicked = DateTime.now();
 
+  DateTime contractDatePicked = DateTime.now();
+  DateTime sellerDisclosureDatePicked = DateTime.now();
+  DateTime dueDilienceDatePicked = DateTime.now();
+  DateTime financingAppraisalDatePicked = DateTime.now();
+  DateTime settlementDatePicked = DateTime.now();
+  DateTime inspectionDatePicked = DateTime.now();
+  DateTime appraisalDatePicked = DateTime.now();
+  DateTime closingDatePicked = DateTime.now();
+  DateTime walkThroughDatePicked = DateTime.now();
+
   final clientFNameController = TextEditingController();
   final clientLNameController = TextEditingController();
   final clientAddress1Controller = TextEditingController();
@@ -1292,7 +1302,9 @@ class _TransactionDetailScreenState
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2040)));
                     if (!context.mounted) return;
-                    if (_date != null && _date != _datePicked) {
+                    if (_date != null &&
+                        _datePicked != null &&
+                        _date != _datePicked) {
                       // Add time to the calendar event
                       TimeOfDay? _timePicked = await showTimePicker(
                         context: context,
@@ -1303,7 +1315,7 @@ class _TransactionDetailScreenState
                       var timeFormat = DateFormat("h:mm a");
                       setState(() {
                         contractDateController.text =
-                            '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
+                            '${DateFormat("EE  MM-dd-yyyy").format(_datePicked)} ${timeFormat.format(tempTime)}';
                         ref
                             .read(trxnNotifierProvider.notifier)
                             .updateContractDate(_datePicked.toString());
@@ -1311,6 +1323,13 @@ class _TransactionDetailScreenState
 
                         bContractDate = true;
                         eventDatePicked = DateTime(
+                          _datePicked.year,
+                          _datePicked.month,
+                          _datePicked.day,
+                          _timePicked.hour,
+                          _timePicked.minute,
+                        );
+                        contractDatePicked = DateTime(
                           _datePicked.year,
                           _datePicked.month,
                           _datePicked.day,
@@ -1412,6 +1431,13 @@ class _TransactionDetailScreenState
                         _timePicked.hour,
                         _timePicked.minute,
                       );
+                      sellerDisclosureDatePicked = DateTime(
+                        _datePicked.year,
+                        _datePicked.month,
+                        _datePicked.day,
+                        _timePicked.hour,
+                        _timePicked.minute,
+                      );
                     }
                   },
                   onChanged: (value) {
@@ -1458,6 +1484,13 @@ class _TransactionDetailScreenState
                       bTwoFourBDueDiligenceDeadline = true;
                       eventDatePicked = DateTime(
                         _datePicked!.year,
+                        _datePicked.month,
+                        _datePicked.day,
+                        _timePicked.hour,
+                        _timePicked.minute,
+                      );
+                      dueDilienceDatePicked = DateTime(
+                        _datePicked.year,
                         _datePicked.month,
                         _datePicked.day,
                         _timePicked.hour,
@@ -1513,6 +1546,13 @@ class _TransactionDetailScreenState
                         _timePicked.hour,
                         _timePicked.minute,
                       );
+                      financingAppraisalDatePicked = DateTime(
+                        _datePicked.year,
+                        _datePicked.month,
+                        _datePicked.day,
+                        _timePicked.hour,
+                        _timePicked.minute,
+                      );
                     }
                   },
                   onChanged: (value) {
@@ -1559,6 +1599,13 @@ class _TransactionDetailScreenState
                       bTwoFourDSettlementDeadline = true;
                       eventDatePicked = DateTime(
                         _datePicked!.year,
+                        _datePicked.month,
+                        _datePicked.day,
+                        _timePicked.hour,
+                        _timePicked.minute,
+                      );
+                      settlementDatePicked = DateTime(
+                        _datePicked.year,
                         _datePicked.month,
                         _datePicked.day,
                         _timePicked.hour,
@@ -1669,6 +1716,13 @@ class _TransactionDetailScreenState
                       bInspectionDate = true;
                       eventDatePicked = DateTime(
                         _datePicked!.year,
+                        _datePicked.month,
+                        _datePicked.day,
+                        _timePicked.hour,
+                        _timePicked.minute,
+                      );
+                      inspectionDatePicked = DateTime(
+                        _datePicked.year,
                         _datePicked.month,
                         _datePicked.day,
                         _timePicked.hour,
@@ -1797,6 +1851,13 @@ class _TransactionDetailScreenState
                         _timePicked.hour,
                         _timePicked.minute,
                       );
+                      appraisalDatePicked = DateTime(
+                        _datePicked.year,
+                        _datePicked.month,
+                        _datePicked.day,
+                        _timePicked.hour,
+                        _timePicked.minute,
+                      );
                     }
 
                     /*
@@ -1859,6 +1920,13 @@ class _TransactionDetailScreenState
                         _timePicked.hour,
                         _timePicked.minute,
                       );
+                      closingDatePicked = DateTime(
+                        _datePicked.year,
+                        _datePicked.month,
+                        _datePicked.day,
+                        _timePicked.hour,
+                        _timePicked.minute,
+                      );
                     }
 
                     /*
@@ -1916,6 +1984,13 @@ class _TransactionDetailScreenState
                       bFinalWalkThrough = true;
                       eventDatePicked = DateTime(
                         _datePicked!.year,
+                        _datePicked.month,
+                        _datePicked.day,
+                        _timePicked.hour,
+                        _timePicked.minute,
+                      );
+                      walkThroughDatePicked = DateTime(
+                        _datePicked.year,
                         _datePicked.month,
                         _datePicked.day,
                         _timePicked.hour,
@@ -2279,25 +2354,23 @@ class _TransactionDetailScreenState
                             .updateEventDate(DateTime.parse(eventDate));
 
                         /// Using the Google Calendar API
-                        var _eventName = ref.read(eventsNotifierProvider);
-                        DateTime endDate = _eventName.eventStartTime!
-                            .add(const Duration(minutes: 30));
-                        calendarClient.insert(
-                            _eventName.eventName,
-                            _eventName.eventDate,
-                            _eventName.eventStartTime,
-                            endDate);
+                        ///
+                        // var _eventName = ref.read(eventsNotifierProvider);
+                        // DateTime endDate = _eventName.eventStartTime!
+                        //     .add(const Duration(minutes: 30));
 
                         /// Using the add_2_calendar widget
-                        AddEventsToAllCalendars.addEvent(
-                            ref.read(eventsNotifierProvider));
+                        AddEventsToAllCalendars.addMultipleEvent(Events(
+                            eventName: title,
+                            eventDate: contractDatePicked,
+                            eventDescription: desc));
                       }
 
                       if (bTwoFourASellerDisclosureDeadline) {
                         bTwoFourASellerDisclosureDeadline = false;
                         //FIX THIS
-                        // String title =
-                        //     '24a Seller Disclosure Deadline for ${ref.read(trxnNotifierProvider).clientLName}';
+                        String title =
+                            '24a Seller Disclosure Deadline';
                         //FIX THIS
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
@@ -2312,14 +2385,16 @@ class _TransactionDetailScreenState
                         ref
                             .read(eventsNotifierProvider.notifier)
                             .updateEventDate(DateTime.parse(eventDate));
-                        AddEventsToAllCalendars.addEvent(
-                            ref.read(eventsNotifierProvider));
+                        AddEventsToAllCalendars.addMultipleEvent(Events(
+                            eventName: title,
+                            eventDate: sellerDisclosureDatePicked,
+                            eventDescription: desc));
                       }
                       if (bTwoFourBDueDiligenceDeadline) {
                         bTwoFourBDueDiligenceDeadline = false;
                         //FIX THIS
-                        // String title =
-                        //     '24b Due Diligence Deadline for ${ref.read(trxnNotifierProvider).clientLName}';
+                        String title =
+                            '24b Due Diligence Deadline}';
                         //FIX THIS
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
@@ -2334,13 +2409,15 @@ class _TransactionDetailScreenState
                         ref
                             .read(eventsNotifierProvider.notifier)
                             .updateEventDate(DateTime.parse(eventDate));
-                        AddEventsToAllCalendars.addEvent(
-                            ref.read(eventsNotifierProvider));
+                        AddEventsToAllCalendars.addMultipleEvent(Events(
+                            eventName: title,
+                            eventDate: dueDilienceDatePicked,
+                            eventDescription: desc));
                       }
                       if (bTwoFourCFinancingAndAppraisalDeadline) {
                         bTwoFourCFinancingAndAppraisalDeadline = false;
-                        // String title =
-                        //     '24c Financing and Appraisal Deadline for ${ref.read(trxnNotifierProvider).clientLName}';
+                        String title =
+                            '24c Financing and Appraisal Deadline';
                         //FIX THIS
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
@@ -2355,14 +2432,16 @@ class _TransactionDetailScreenState
                         ref
                             .read(eventsNotifierProvider.notifier)
                             .updateEventDate(DateTime.parse(eventDate));
-                        AddEventsToAllCalendars.addEvent(
-                            ref.read(eventsNotifierProvider));
+                        AddEventsToAllCalendars.addMultipleEvent(Events(
+                            eventName: title,
+                            eventDate: financingAppraisalDatePicked,
+                            eventDescription: desc));
                       }
                       if (bTwoFourDSettlementDeadline) {
                         bTwoFourDSettlementDeadline = false;
                         //FIX THIS
-                        // String title =
-                        //     '24d Settlement Deadline for ${ref.read(trxnNotifierProvider).clientLName}';
+                        String title =
+                            '24d Settlement Deadline';
                         //FIX THIS
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
@@ -2377,14 +2456,16 @@ class _TransactionDetailScreenState
                         ref
                             .read(eventsNotifierProvider.notifier)
                             .updateEventDate(DateTime.parse(eventDate));
-                        AddEventsToAllCalendars.addEvent(
-                            ref.read(eventsNotifierProvider));
+                        AddEventsToAllCalendars.addMultipleEvent(Events(
+                            eventName: title,
+                            eventDate: settlementDatePicked,
+                            eventDescription: desc));
                       }
                       if (bInspectionDate) {
                         bInspectionDate = false;
                         //FIX THIS
-                        // String title =
-                        //     'Inspection Date for ${ref.read(trxnNotifierProvider).clientLName}';
+                        String title =
+                            'Inspection Date';
                         //FIX THIS
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
@@ -2399,14 +2480,16 @@ class _TransactionDetailScreenState
                         ref
                             .read(eventsNotifierProvider.notifier)
                             .updateEventDate(DateTime.parse(eventDate));
-                        AddEventsToAllCalendars.addEvent(
-                            ref.read(eventsNotifierProvider));
+                        AddEventsToAllCalendars.addMultipleEvent(Events(
+                            eventName: title,
+                            eventDate: inspectionDatePicked,
+                            eventDescription: desc));
                       }
                       if (bAppraisalDate) {
                         bAppraisalDate = false;
                         //FIX THIS
-                        // String title =
-                        //     'Appraisal Date for ${ref.read(trxnNotifierProvider).clientLName}';
+                        String title =
+                            'Appraisal Date';
                         //FIX THIS
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
@@ -2421,14 +2504,16 @@ class _TransactionDetailScreenState
                         ref
                             .read(eventsNotifierProvider.notifier)
                             .updateEventDate(DateTime.parse(eventDate));
-                        AddEventsToAllCalendars.addEvent(
-                            ref.read(eventsNotifierProvider));
+                        AddEventsToAllCalendars.addMultipleEvent(Events(
+                            eventName: title,
+                            eventDate: appraisalDatePicked,
+                            eventDescription: desc));
                       }
                       if (bClosingDate) {
                         bClosingDate = false;
                         //FIX THIS
-                        // String title =
-                        //     'Closing Date for ${ref.read(trxnNotifierProvider).clientLName}';
+                        String title =
+                            'Closing Date';
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
                         //     .updateEventName(title);
@@ -2442,14 +2527,16 @@ class _TransactionDetailScreenState
                         ref
                             .read(eventsNotifierProvider.notifier)
                             .updateEventDate(DateTime.parse(eventDate));
-                        AddEventsToAllCalendars.addEvent(
-                            ref.read(eventsNotifierProvider));
+                        AddEventsToAllCalendars.addMultipleEvent(Events(
+                            eventName: title,
+                            eventDate: closingDatePicked,
+                            eventDescription: desc));
                       }
                       if (bFinalWalkThrough) {
                         bFinalWalkThrough = false;
                         //FIX THIS
-                        // String title =
-                        //     'Final Walkthrough Date for ${ref.read(trxnNotifierProvider).clientLName}';
+                        String title =
+                            'Final Walkthrough';
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
                         //     .updateEventName(title);
@@ -2463,8 +2550,10 @@ class _TransactionDetailScreenState
                         ref
                             .read(eventsNotifierProvider.notifier)
                             .updateEventDate(DateTime.parse(eventDate));
-                        AddEventsToAllCalendars.addEvent(
-                            ref.read(eventsNotifierProvider));
+                        AddEventsToAllCalendars.addMultipleEvent(Events(
+                            eventName: title,
+                            eventDate: walkThroughDatePicked,
+                            eventDescription: desc));
                       }
 
                       if (!context.mounted) return;

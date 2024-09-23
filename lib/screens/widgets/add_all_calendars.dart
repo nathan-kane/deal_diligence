@@ -14,20 +14,20 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 
 final GoogleSignIn _googleSignIn = GoogleSignIn(
-  clientId:
-      dotenv.env["GOOGLE_CALENDAR_CLIENT_ID"],
+  clientId: dotenv.env["GOOGLE_CALENDAR_CLIENT_ID"],
   scopes: [
     'https://www.googleapis.com/auth/calendar',
   ],
 );
 
 class AddEventsToAllCalendars {
-
+  static GoogleSignInAuthentication? auth;
   static void addEvent(Events eventCal) async {
-  GoogleSignInAuthentication? auth;
+    // Define your custom format using DateFormat
+    GoogleSignInAuthentication? auth;
     if (!kIsWeb) {
       Add2Calendar.addEvent2Cal(buildEvent(eventCal));
-    } else{
+    } else {
       try {
         final signInAccountSilently = await _googleSignIn.signInSilently();
         if (signInAccountSilently != null) {
@@ -42,19 +42,22 @@ class AddEventsToAllCalendars {
             "primary"; // Use 'primary' for the default calendar.
         const String url =
             'https://www.googleapis.com/calendar/v3/calendars/$calendarId/events';
-        
+        debugPrint("EventDate: ${eventCal.eventDate?.toIso8601String()}");
+        debugPrint("EventDuration: ${eventCal.eventDuration}");
         final event = {
           "summary": eventCal.eventName,
           "description": eventCal.eventDescription,
           "location": eventCal.location, // Add location
           "start": {
-            "dateTime": eventCal.eventStartTime?.toUtc().toIso8601String(),
+            "dateTime": eventCal.eventDate?.toUtc().toIso8601String(),
             "timeZone": "UTC",
           },
           "end": {
-            "dateTime": eventCal.eventStartTime
-                ?.add(
-                    Duration(minutes: int.parse(eventCal.eventDuration ?? "0")))
+            "dateTime": eventCal.eventDate
+                ?.add(Duration(
+                    minutes: int.parse(eventCal.eventDuration != ""
+                        ? eventCal.eventDuration ?? "30"
+                        : '30')))
                 .toUtc()
                 .toIso8601String(),
             "timeZone": "UTC",
@@ -62,7 +65,6 @@ class AddEventsToAllCalendars {
           "recurrence": [
             "RRULE:FREQ=DAILY;INTERVAL=${eventCal.interval};COUNT=${eventCal.occurrences}"
           ], // Recurrence rule: daily with interval and occurrences
-          
         };
 
         final response = await http.post(
@@ -83,7 +85,74 @@ class AddEventsToAllCalendars {
         rethrow;
       }
     }
+  }
+
+  static Future<void> addMultipleEvent(Events eventCal) async {
+    // Define your custom format using DateFormat
+
+    if (!kIsWeb) {
+      // for (var eventCal in eventsList) {
+        Add2Calendar.addEvent2Cal(buildEvent(eventCal));
+      // }
+    } else {
+      try {
+        if (auth == null) {
+          final signInAccountSilently = await _googleSignIn.signInSilently();
+          if (signInAccountSilently != null) {
+            auth = await signInAccountSilently.authentication;
+          } else {
+            final signInAccount = await _googleSignIn.signIn();
+            auth = await signInAccount?.authentication;
+          }
+        }
+
+        if (auth == null) return;
+
+        // for (var eventCal in eventsList) {
+          const String calendarId =
+              "primary"; // Use 'primary' for the default calendar.
+          const String url =
+              'https://www.googleapis.com/calendar/v3/calendars/$calendarId/events';
+          final event = {
+            "summary": eventCal.eventName,
+            "description": eventCal.eventDescription,
+            "location": eventCal.location, // Add location
+            "start": {
+              "dateTime": eventCal.eventDate?.toUtc().toIso8601String(),
+              "timeZone": "UTC",
+            },
+            "end": {
+              "dateTime": eventCal.eventDate
+                  ?.add(Duration(
+                      minutes: int.parse(eventCal.eventDuration != ""
+                          ? eventCal.eventDuration ?? "30"
+                          : '30')))
+                  .toUtc()
+                  .toIso8601String(),
+              "timeZone": "UTC",
+            }, // Recurrence rule: daily with interval and occurrences
+          };
+
+          final response = await http.post(
+            Uri.parse(url),
+            headers: {
+              'Authorization': 'Bearer ${auth?.accessToken}',
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode(event),
+          );
+          if (response.statusCode == 200) {
+            debugPrint('Event created successfully');
+          } else {
+            debugPrint('Error creating event: ${response.statusCode}');
+          }
+        // }
+      } catch (e) {
+        debugPrint("RethrowError: ${e.toString()}");
+        rethrow;
+      }
     }
+  }
 
   static Event buildEvent(Events event) {
     Frequency freq = Frequency.yearly;
