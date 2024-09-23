@@ -2394,7 +2394,7 @@ class _TransactionDetailScreenState
                         bTwoFourBDueDiligenceDeadline = false;
                         //FIX THIS
                         String title =
-                            '24b Due Diligence Deadline}';
+                            '24b Due Diligence Deadline';
                         //FIX THIS
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
