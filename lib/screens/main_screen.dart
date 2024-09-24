@@ -15,7 +15,9 @@ import 'package:deal_diligence/screens/list_of_title_companies.dart';
 import 'package:deal_diligence/screens/login_screen.dart';
 import 'package:deal_diligence/screens/mortgage_calculator.dart';
 import 'package:deal_diligence/screens/privacy_policy_screen.dart';
+import 'package:deal_diligence/screens/property_webview_screen.dart';
 import 'package:deal_diligence/screens/widgets/my_appbar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:deal_diligence/screens/appointment_calendar.dart';
 import 'package:deal_diligence/screens/transaction_detail_screen.dart';
@@ -200,7 +202,7 @@ class SideDrawer extends StatelessWidget {
                 ),
                 title: const Text('View Clients'),
                 onTap: () {
-                  Navigator.pop(context); 
+                  Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -309,12 +311,16 @@ class SideDrawer extends StatelessWidget {
                 ),
                 title: const Text('Privacy Policy'),
                 onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const PrivacyPolicyScreen()));
+                  if (kIsWeb) {
+                    const PropertyWebViewScreenContainer('https://dealdiligencecentral.com/privacy_policy.html');
+                  } else {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const PrivacyPolicyScreen()));
+                  }
+                  ;
                 },
               ),
               ListTile(
