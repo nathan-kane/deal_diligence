@@ -14,8 +14,9 @@ import 'package:deal_diligence/screens/list_of_mortgage_companies.dart';
 import 'package:deal_diligence/screens/list_of_title_companies.dart';
 import 'package:deal_diligence/screens/login_screen.dart';
 import 'package:deal_diligence/screens/mortgage_calculator.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:deal_diligence/screens/privacy_policy_screen.dart';
-import 'package:deal_diligence/screens/property_webview_screen.dart';
+//import 'package:deal_diligence/screens/property_webview_screen.dart';
 import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +47,9 @@ final auth = FirebaseAuth.instance;
 String? userFName = "";
 String? userLName = "";
 String? userEmail = "";
+
+final Uri _privacyURI =
+    Uri.parse('https://dealdiligencecentral.com/privacy_policy.html');
 
 Future<void> signOut() async {
   await auth.signOut();
@@ -81,7 +85,7 @@ class MainScreenState extends ConsumerState<MainScreen> {
     return Scaffold(
       appBar: const CustomAppBar(),
       body: Container(child: appScreens[_pageIndex]),
-      drawer: const SideDrawer(),
+      drawer: SideDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
         selectedIconTheme: const IconThemeData(color: Colors.red),
@@ -122,7 +126,7 @@ class MainScreenState extends ConsumerState<MainScreen> {
 }
 
 class SideDrawer extends StatelessWidget {
-  const SideDrawer({super.key});
+  SideDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -312,7 +316,8 @@ class SideDrawer extends StatelessWidget {
                 title: const Text('Privacy Policy'),
                 onTap: () {
                   if (kIsWeb) {
-                    const PropertyWebViewScreenContainer('https://dealdiligencecentral.com/privacy_policy.html');
+                    _launchInBrowser();
+                    //launchUrl(uri.parse('https://dealdiligencecentral.com/privacy_policy.html'));
                   } else {
                     Navigator.pop(context);
                     Navigator.push(
@@ -320,7 +325,6 @@ class SideDrawer extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => const PrivacyPolicyScreen()));
                   }
-                  ;
                 },
               ),
               ListTile(
@@ -345,5 +349,11 @@ class SideDrawer extends StatelessWidget {
         ],
       )),
     );
+  }
+
+  Future<void> _launchInBrowser() async {
+    if (!await launchUrl(_privacyURI)) {
+      throw Exception('Could not launch $_privacyURI');
+    }
   }
 }
