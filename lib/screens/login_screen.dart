@@ -18,11 +18,14 @@ import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final usersRef = FirebaseFirestore.instance.collection('users');
 final companyRef = FirebaseFirestore.instance.collection('company');
 final mlsRef = FirebaseFirestore.instance.collection('mls');
 final _db = FirebaseFirestore.instance;
+final Uri _privacyURI =
+    Uri.parse('https://dealdiligencecentral.com/privacy_policy.html');
 
 class LoginScreen extends ConsumerStatefulWidget {
   static const String id = 'login_screen';
@@ -296,7 +299,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20.0,),
+              const SizedBox(
+                height: 20.0,
+              ),
               ElevatedButton(
                   onPressed: () async {
                     setState(() {
@@ -441,10 +446,31 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       builder: (context) => const UserRegisterScreen()));
                 },
               ),
+              const SizedBox(
+                height: 40,
+              ),
+              TextButton(
+                child: const Text(
+                  'Privacy Policy',
+                  style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline),
+                ),
+                onPressed: () {
+                  _launchInBrowser();
+                },
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _launchInBrowser() async {
+    if (!await launchUrl(_privacyURI)) {
+      throw Exception('Could not launch $_privacyURI');
+    }
   }
 }

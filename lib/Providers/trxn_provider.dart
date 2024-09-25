@@ -35,9 +35,6 @@ class Trxn {
   String? titleCompanyId;
   String? mortgageCompanyId;
   String? otherAgentCompanyId;
-  // String? otherAgentPhone;
-  // String? otherAgentEmail;
-  // String? otherPartyClient;
   String? otherPartyTitleCompanyId;
   String? trxnStatus;
   //var uuId = Uuid();
@@ -68,9 +65,6 @@ class Trxn {
     this.titleCompanyId,
     this.mortgageCompanyId,
     this.otherAgentCompanyId,
-    // this.otherAgentPhone,
-    // this.otherAgentEmail,
-    // this.otherPartyClient,
     this.otherPartyTitleCompanyId,
     this.trxnStatus,
     //this.uuId = Uuid(),

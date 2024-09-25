@@ -97,10 +97,12 @@ class _TransactionDetailScreenState
   bool _hasHomeNumber = false;
   String? _mlsSearchLink;
   //String _clientType = 'Select Client Type';
-  double commission = 0.0;
+  String strCommission = "0.0";
+  // String? textCommission; // This holds the formatted commission value
   StreamSubscription? _trxnStream;
   StreamSubscription? _clientStream;
   DateTime eventDatePicked = DateTime.now();
+  final NumberFormat currencyFormatter = NumberFormat.currency(symbol: '\$');
 
   DateTime contractDatePicked = DateTime.now();
   DateTime sellerDisclosureDatePicked = DateTime.now();
@@ -214,6 +216,8 @@ class _TransactionDetailScreenState
     super.initState();
     _currentCompany = ref.read(globalsNotifierProvider).companyId;
     _currentUser = ref.read(globalsNotifierProvider).currentUserId;
+    String textCurrency = contractPriceController.text;
+    contractPriceController.text = _formatCurrency(textCurrency);
 
     getTrxn();
 
@@ -263,6 +267,24 @@ class _TransactionDetailScreenState
           )));
     }
     return items;
+  }
+
+  String _formatCurrency(String textCurrency) {
+    //String textContractPrice = contractPriceController.text;
+
+    /// Format the contract price
+    String numericCurrency = textCurrency.replaceAll(RegExp(r'[^\d]'), '');
+    if (numericCurrency.isNotEmpty) {
+      double value = double.parse(numericCurrency) / 100;
+      String formattedText = currencyFormatter.format(value);
+      if (formattedText != null) {
+        return formattedText;
+      } else {
+        return "\$0.00";
+      }
+    } else {
+      return "\$0.00";
+    }
   }
 
   Future<void> _launchURL(Uri url) async {
@@ -501,15 +523,23 @@ class _TransactionDetailScreenState
           if (trxnSnapshot.data()?['contractPrice'] != null &&
               trxnSnapshot.data()?['contractPrice'] != "") {
             _hasContractPrice = true;
-            var strCommission = trxnSnapshot.data()?['contractPrice'];
-            commission = .03 * double.parse(strCommission);
+
+            /// Get the commission from the contract price
+            var textCommission = trxnSnapshot.data()?['contractPrice'];
+            double dblCommission = .03 * double.parse(textCommission);
+            strCommission = _formatCurrency(dblCommission.toString());
+            // try {
+            //   commission = double.parse(strCommission);
+            // } catch (e) {
+            //   print(e);
+            // }
           } else {
             _hasContractPrice = false;
           }
           contractPriceController.text =
               trxnSnapshot.data()?['contractPrice'] == null
                   ? 'n/a'
-                  : trxnSnapshot.data()?['contractPrice'] ?? "";
+                  : _formatCurrency(trxnSnapshot.data()!['contractPrice']) ?? "";
           ref
               .read(trxnNotifierProvider.notifier)
               .updateContractPrice(contractPriceController.text);
@@ -806,9 +836,13 @@ class _TransactionDetailScreenState
       ref
           .read(trxnNotifierProvider.notifier)
           .updateContractDate(contractDateController.text);
+
+      /// Get just the numbers from the contract price to save to db
+      String contractPriceStr =
+          contractPriceController.text.replaceAll(RegExp(r'[^0-9]'), '');
       ref
           .read(trxnNotifierProvider.notifier)
-          .updateContractPrice(contractPriceController.text);
+          .updateContractPrice(contractPriceStr);
       ref
           .read(trxnNotifierProvider.notifier)
           .updateSellerDisclosure24a(sellerDisclosure24aController.text);
@@ -1376,7 +1410,7 @@ class _TransactionDetailScreenState
                         children: [
                           TextButton(
                             child: Text(
-                              '3% Commission: \$$commission',
+                              '3% Commission: ${_formatCurrency(strCommission)}',
                               style: const TextStyle(fontSize: 15),
                             ),
                             onPressed: () {
@@ -2369,8 +2403,7 @@ class _TransactionDetailScreenState
                       if (bTwoFourASellerDisclosureDeadline) {
                         bTwoFourASellerDisclosureDeadline = false;
                         //FIX THIS
-                        String title =
-                            '24a Seller Disclosure Deadline';
+                        String title = '24a Seller Disclosure Deadline';
                         //FIX THIS
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
@@ -2393,8 +2426,7 @@ class _TransactionDetailScreenState
                       if (bTwoFourBDueDiligenceDeadline) {
                         bTwoFourBDueDiligenceDeadline = false;
                         //FIX THIS
-                        String title =
-                            '24b Due Diligence Deadline';
+                        String title = '24b Due Diligence Deadline';
                         //FIX THIS
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
@@ -2416,8 +2448,7 @@ class _TransactionDetailScreenState
                       }
                       if (bTwoFourCFinancingAndAppraisalDeadline) {
                         bTwoFourCFinancingAndAppraisalDeadline = false;
-                        String title =
-                            '24c Financing and Appraisal Deadline';
+                        String title = '24c Financing and Appraisal Deadline';
                         //FIX THIS
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
@@ -2440,8 +2471,7 @@ class _TransactionDetailScreenState
                       if (bTwoFourDSettlementDeadline) {
                         bTwoFourDSettlementDeadline = false;
                         //FIX THIS
-                        String title =
-                            '24d Settlement Deadline';
+                        String title = '24d Settlement Deadline';
                         //FIX THIS
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
@@ -2464,8 +2494,7 @@ class _TransactionDetailScreenState
                       if (bInspectionDate) {
                         bInspectionDate = false;
                         //FIX THIS
-                        String title =
-                            'Inspection Date';
+                        String title = 'Inspection Date';
                         //FIX THIS
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
@@ -2488,8 +2517,7 @@ class _TransactionDetailScreenState
                       if (bAppraisalDate) {
                         bAppraisalDate = false;
                         //FIX THIS
-                        String title =
-                            'Appraisal Date';
+                        String title = 'Appraisal Date';
                         //FIX THIS
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
@@ -2512,8 +2540,7 @@ class _TransactionDetailScreenState
                       if (bClosingDate) {
                         bClosingDate = false;
                         //FIX THIS
-                        String title =
-                            'Closing Date';
+                        String title = 'Closing Date';
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
                         //     .updateEventName(title);
@@ -2535,8 +2562,7 @@ class _TransactionDetailScreenState
                       if (bFinalWalkThrough) {
                         bFinalWalkThrough = false;
                         //FIX THIS
-                        String title =
-                            'Final Walkthrough';
+                        String title = 'Final Walkthrough';
                         // ref
                         //     .read(eventsNotifierProvider.notifier)
                         //     .updateEventName(title);

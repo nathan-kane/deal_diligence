@@ -313,7 +313,11 @@ class SideDrawer extends StatelessWidget {
                   Icons.private_connectivity,
                   color: Colors.blueAccent,
                 ),
-                title: const Text('Privacy Policy'),
+                title: const Text(
+                  'Privacy Policy',
+                  style: TextStyle(
+                      color: Colors.blue, decoration: TextDecoration.underline),
+                ),
                 onTap: () {
                   if (kIsWeb) {
                     _launchInBrowser();
