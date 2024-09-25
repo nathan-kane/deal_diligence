@@ -129,11 +129,11 @@ class ClientNotifier extends Notifier<Client> {
   }
 
   // functions to update class members
-  void updatefName(String newfName) {
+  void updateFName(String newfName) {
     state = state.copyWith(fName: newfName);
   }
 
-  void updatelName(String newlName) {
+  void updateLName(String newlName) {
     state = state.copyWith(lName: newlName);
   }
 
@@ -153,7 +153,7 @@ class ClientNotifier extends Notifier<Client> {
     state = state.copyWith(clientState: newClientState);
   }
 
-  void updateZipcode(String newZipcode) {
+  void updateZipCode(String newZipcode) {
     state = state.copyWith(zipCode: newZipcode);
   }
 

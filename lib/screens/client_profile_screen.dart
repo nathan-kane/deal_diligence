@@ -118,13 +118,13 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
 
       // Populate the state Notifier Provider with the current values
       ClientNotifier clientProvider = ref.read(clientNotifierProvider.notifier);
-      clientProvider.updatefName(clientFNameController.text);
-      clientProvider.updatelName(clientLNameController.text);
+      clientProvider.updateFName(clientFNameController.text);
+      clientProvider.updateLName(clientLNameController.text);
       clientProvider.updateAddress1(address1Controller.text);
       clientProvider.updateAddress2(address2Controller.text);
       clientProvider.updateCity(cityController.text);
       clientProvider.updateClientState(clientStateController.text);
-      clientProvider.updateZipcode(zipController.text);
+      clientProvider.updateZipCode(zipController.text);
       clientProvider.updateCellPhone(cellPhoneController.text);
       clientProvider.updateHomePhone(homePhoneController.text);
       clientProvider.updateEmail(emailController.text);
@@ -209,7 +209,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                   onChanged: (value) {
                     ref
                         .read(clientNotifierProvider.notifier)
-                        .updatefName(value);
+                        .updateFName(value);
                   },
                   decoration: const InputDecoration(
                       hintText: 'First Name', labelText: 'First Name'),
@@ -225,7 +225,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                   onChanged: (value) {
                     ref
                         .read(clientNotifierProvider.notifier)
-                        .updatelName(value);
+                        .updateLName(value);
                   },
                   decoration: const InputDecoration(
                       hintText: 'Last Name', labelText: 'Last Name'),
@@ -294,7 +294,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                   onChanged: (value) {
                     ref
                         .read(clientNotifierProvider.notifier)
-                        .updateZipcode(value);
+                        .updateZipCode(value);
                   },
                   decoration: const InputDecoration(
                       hintText: 'Zip Code', labelText: 'Zip Code'),

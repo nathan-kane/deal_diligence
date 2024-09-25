@@ -212,7 +212,7 @@ class GlobalsNotifier extends Notifier<Globals> {
     state = state.copyWith(currentCompanyState: newcurrentCompanyState);
   }
 
-  void updatecurrentUserId(String newcurrentUserId) {
+  void updateCurrentUserId(String newcurrentUserId) {
     state = state.copyWith(currentUserId: newcurrentUserId);
   }
 
@@ -236,11 +236,11 @@ class GlobalsNotifier extends Notifier<Globals> {
     state = state.copyWith(selectedTrxnState: newselectedTrxnState);
   }
 
-  void updateselectedCompany(String newselectedCompany) {
+  void updateSelectedCompany(String newselectedCompany) {
     state = state.copyWith(selectedCompany: newselectedCompany);
   }
 
-  void updateselectedUser(String newselectedUser) {
+  void updateSelectedUser(String newselectedUser) {
     state = state.copyWith(selectedUser: newselectedUser);
   }
 
@@ -248,11 +248,11 @@ class GlobalsNotifier extends Notifier<Globals> {
     state = state.copyWith(userBusinessType: newUserBusinessType);
   }
 
-  void updatetargetScreen(int newtargetScreen) {
+  void updateTargetScreen(int newtargetScreen) {
     state = state.copyWith(targetScreen: newtargetScreen);
   }
 
-  void updatenewEvent(bool newNewEvent) {
+  void updateNewEvent(bool newNewEvent) {
     state = state.copyWith(newEvent: newNewEvent);
   }
 

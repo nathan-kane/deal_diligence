@@ -35,9 +35,6 @@ class Trxn {
   String? titleCompanyId;
   String? mortgageCompanyId;
   String? otherAgentCompanyId;
-  // String? otherAgentPhone;
-  // String? otherAgentEmail;
-  // String? otherPartyClient;
   String? otherPartyTitleCompanyId;
   String? trxnStatus;
   //var uuId = Uuid();
@@ -68,9 +65,6 @@ class Trxn {
     this.titleCompanyId,
     this.mortgageCompanyId,
     this.otherAgentCompanyId,
-    // this.otherAgentPhone,
-    // this.otherAgentEmail,
-    // this.otherPartyClient,
     this.otherPartyTitleCompanyId,
     this.trxnStatus,
     //this.uuId = Uuid(),
@@ -263,7 +257,7 @@ class TrxnNotifier extends Notifier<Trxn> {
   String? trxnStatus;
 
   // functions to update class members
-  void updateCompanyid(String newCompanyId) {
+  void updateCompanyId(String newCompanyId) {
     state = state.copyWith(companyId: newCompanyId);
   }
 
@@ -292,7 +286,7 @@ class TrxnNotifier extends Notifier<Trxn> {
   }
 
   // Convert String to int
-  void updatePropertyZipcode(String newPropertyZipcode) {
+  void updatePropertyZipCode(String newPropertyZipcode) {
     state = state.copyWith(propertyZipcode: newPropertyZipcode);
   }
 

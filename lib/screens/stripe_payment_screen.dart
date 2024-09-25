@@ -127,7 +127,7 @@ class _StripePaymentScreenState extends ConsumerState<StripePaymentScreen> {
               .updateuserID(newUser.user!.uid);
           ref
               .read(globalsNotifierProvider.notifier)
-              .updatecurrentUserId(newUser.user!.uid);
+              .updateCurrentUserId(newUser.user!.uid);
           ref
               .read(usersNotifierProvider.notifier)
               .updateEmail(newUser.user!.email!);

@@ -320,7 +320,7 @@ class _AppointmentCalendarScreenState
                 try {
                   ref
                       .read(globalsNotifierProvider.notifier)
-                      .updatenewEvent(true);
+                      .updateNewEvent(true);
 
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => AddEventScreen()));
@@ -469,7 +469,7 @@ class _AppointmentCalendarScreenState
                     onTap: () {
                       ref
                           .read(globalsNotifierProvider.notifier)
-                          .updatenewEvent(false);
+                          .updateNewEvent(false);
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => AddEventScreen()));
                     },
