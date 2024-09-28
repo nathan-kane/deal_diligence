@@ -7,6 +7,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MortgageCalculatorScreen extends StatefulWidget {
   const MortgageCalculatorScreen({super.key});
@@ -33,7 +34,7 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.symmetric(horizontal: 30.sp),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

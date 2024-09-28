@@ -9,11 +9,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/inspector_provider.dart';
-import 'package:deal_diligence/Services/firestore_service.dart';
+//import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 final inspectorCompanyRef =
@@ -38,7 +39,7 @@ class InspectorCompanyScreen extends ConsumerStatefulWidget {
 
 class _InspectorCompanyScreenState
     extends ConsumerState<InspectorCompanyScreen> {
-  final _db = FirebaseFirestore.instance;
+  //final _db = FirebaseFirestore.instance;
 
   final inspectorCompanyNameController = TextEditingController();
   final primaryContactController = TextEditingController();
@@ -82,7 +83,7 @@ class _InspectorCompanyScreenState
   String? email;
   String? website;
   String? _currentInspectorCompanyState;
-  String? _currentInspectorCompanyName;
+  //String? _currentInspectorCompanyName;
 
   getCurrentInspectorCompanyProfile() async {
     if (ref.read(globalsNotifierProvider).companyId == null ||
@@ -206,7 +207,7 @@ class _InspectorCompanyScreenState
   Widget build(BuildContext context) {
     // Get the stream of agents created in main.dart
     // final agencyProvider = Provider.of<AgencyProvider>(context);
-    final firestoreService = FirestoreService();
+    //final firestoreService = FirestoreService();
 
     return Scaffold(
       //appBar: CustomAppBar(),
@@ -214,7 +215,7 @@ class _InspectorCompanyScreenState
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.symmetric(horizontal: 30.sp),
             child: Column(
               //mainAxisAlignment: MainAxisAlignment.center,
               //crossAxisAlignment: CrossAxisAlignment.stretch,

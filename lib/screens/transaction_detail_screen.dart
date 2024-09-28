@@ -26,6 +26,7 @@ import 'package:deal_diligence/screens/widgets/add_all_calendars.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -539,7 +540,8 @@ class _TransactionDetailScreenState
           contractPriceController.text =
               trxnSnapshot.data()?['contractPrice'] == null
                   ? 'n/a'
-                  : _formatCurrency(trxnSnapshot.data()!['contractPrice']) ?? "";
+                  : _formatCurrency(trxnSnapshot.data()!['contractPrice']) ??
+                      "";
           ref
               .read(trxnNotifierProvider.notifier)
               .updateContractPrice(contractPriceController.text);
@@ -908,27 +910,22 @@ class _TransactionDetailScreenState
         child: SingleChildScrollView(
           reverse: true,
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.symmetric(horizontal: 40.sp),
             child: Column(
               children: <Widget>[
-                const Text(
-                  'Transaction Details',
-                  style: TextStyle(
-                    fontSize: 30,
-                  ),
-                ),
-                const SizedBox(
-                  height: 30.0,
+                const Text('Transaction Details',),
+                SizedBox(
+                  height: 30.sp,
                 ),
                 const Text(
                   'Select User',
                   style: TextStyle(
-                    fontSize: 20,
+                    
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                const SizedBox(
-                  height: 8.0,
+                SizedBox(
+                  height: 8.sp,
                 ),
                 Container(
                   /* Populate the Agent dropdown only if
@@ -980,8 +977,8 @@ class _TransactionDetailScreenState
                           })
                       : const Text('No users yet'),
                 ),
-                const SizedBox(
-                  height: 30,
+                SizedBox(
+                  height: 30.sp,
                 ),
 
                 /// Display the client information in a collapsible panel
@@ -997,7 +994,7 @@ class _TransactionDetailScreenState
                         title: const Text(
                           'Client Information',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
+                              fontWeight: FontWeight.bold, fontSize: 20.0),
                         ),
                         children: [
                           TextField(

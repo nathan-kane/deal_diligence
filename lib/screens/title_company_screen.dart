@@ -9,11 +9,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/title_company_provider.dart';
-import 'package:deal_diligence/Services/firestore_service.dart';
+//import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 final titleCompanyRef = FirebaseFirestore.instance.collection(('titleCompany'));
@@ -35,7 +36,7 @@ class TitleCompanyScreen extends ConsumerStatefulWidget {
 }
 
 class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
-  final _db = FirebaseFirestore.instance;
+  //final _db = FirebaseFirestore.instance;
   String? titleCompanyId;
 
   final titleCompanyNameController = TextEditingController();
@@ -80,7 +81,7 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
   String? email;
   String? website;
   String? _currentTitleCompanyState;
-  String? _currentTitleCompanyName;
+  //String? _currentTitleCompanyName;
 
   getCurrentTitleCompanyProfile() async {
     if (widget.titleCompanyId == null || widget.titleCompanyId == "") {
@@ -193,7 +194,7 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
   Widget build(BuildContext context) {
     // Get the stream of agents created in main.dart
     // final agencyProvider = Provider.of<AgencyProvider>(context);
-    final firestoreService = FirestoreService();
+    //final firestoreService = FirestoreService();
 
     return Scaffold(
       //appBar: CustomAppBar(),
@@ -201,7 +202,7 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.symmetric(horizontal: 30.sp),
             child: Column(
               //mainAxisAlignment: MainAxisAlignment.center,
               //crossAxisAlignment: CrossAxisAlignment.stretch,

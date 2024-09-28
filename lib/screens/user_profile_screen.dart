@@ -7,7 +7,7 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, use_key_in_widget_constructors
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deal_diligence/Providers/company_provider.dart';
+//import 'package:deal_diligence/Providers/company_provider.dart';
 //import 'dart:io';
 //import 'package:deal_diligence/Providers/company_provider.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
@@ -20,6 +20,7 @@ import 'package:deal_diligence/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:mailer/mailer.dart';
 // import 'package:mailer/smtp_server.dart';
@@ -325,7 +326,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.symmetric(horizontal: 30.sp),
             child: Column(
               children: <Widget>[
                 const Text(

@@ -17,6 +17,7 @@ import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/title_company_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 final FirestoreService firestoreService = FirestoreService();
 
@@ -53,17 +54,14 @@ class _CompanyDashboardScreenState
           child: FutureBuilder<QuerySnapshot?>(
               future:
                   FirebaseFirestore.instance.collection('titleCompany').get(),
-              // .doc(ref.read(globalsNotifierProvider).companyId)
-              // .collection('trxns')
-              // .where("trxnStatus", isNotEqualTo: "Archived")
-              // .get(),
+
               builder: (context, snapshot) {
                 return snapshot.hasData
                     ? ListView.builder(
                         itemCount: snapshot.data?.size,
                         itemBuilder: (context, index) {
                           return Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.symmetric(horizontal: 30.sp),
                             child: ListTile(
                               isThreeLine: true,
                               title: Row(

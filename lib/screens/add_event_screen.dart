@@ -18,6 +18,7 @@ import 'package:deal_diligence/screens/appointment_calendar.dart';
 import 'package:deal_diligence/screens/widgets/add_all_calendars.dart'; 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 String? currentEventId = "";
@@ -163,7 +164,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.symmetric(horizontal: 30.sp),
             child: Column(
               children: <Widget>[
                 const Text(
