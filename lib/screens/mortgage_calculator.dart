@@ -31,78 +31,80 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
       appBar: AppBar(
         title: const Text('Mortgage Calculator'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            TextField(
-              decoration: const InputDecoration(labelText: 'Loan Amount (\$)'),
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                setState(() {
-                  loanAmount = double.parse(value);
-                });
-              },
-            ),
-            TextField(
-              decoration: const InputDecoration(labelText: 'Interest Rate (%)'),
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                setState(() {
-                  interestRate = double.parse(value);
-                });
-              },
-            ),
-            TextField(
-              decoration: const InputDecoration(labelText: 'Loan Term (years)'),
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                setState(() {
-                  loanTerm = int.parse(value);
-                });
-              },
-            ),
-            TextField(
-              decoration:
-                  const InputDecoration(labelText: 'Homeowners Insurance'),
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                setState(() {
-                  homeOwnersInsurance = double.parse(value);
-                });
-              },
-            ),
-            TextField(
-              decoration:
-                  const InputDecoration(labelText: 'Taxes and other fees'),
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                setState(() {
-                  taxesAndOtherFees = double.parse(value);
-                });
-              },
-            ),
-            TextField(
-              decoration: const InputDecoration(labelText: 'HOA'),
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                setState(() {
-                  hOA = double.parse(value);
-                });
-              },
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: calculatePayment,
-              child: const Text('Calculate'),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'Monthly Payment: \$${monthlyPayment.toStringAsFixed(2)}',
-              style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
-          ],
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TextField(
+                decoration: const InputDecoration(labelText: 'Loan Amount (\$)'),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  setState(() {
+                    loanAmount = double.parse(value);
+                  });
+                },
+              ),
+              TextField(
+                decoration: const InputDecoration(labelText: 'Interest Rate (%)'),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  setState(() {
+                    interestRate = double.parse(value);
+                  });
+                },
+              ),
+              TextField(
+                decoration: const InputDecoration(labelText: 'Loan Term (years)'),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  setState(() {
+                    loanTerm = int.parse(value);
+                  });
+                },
+              ),
+              TextField(
+                decoration:
+                    const InputDecoration(labelText: 'Homeowners Insurance'),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  setState(() {
+                    homeOwnersInsurance = double.parse(value);
+                  });
+                },
+              ),
+              TextField(
+                decoration:
+                    const InputDecoration(labelText: 'Taxes and other fees'),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  setState(() {
+                    taxesAndOtherFees = double.parse(value);
+                  });
+                },
+              ),
+              TextField(
+                decoration: const InputDecoration(labelText: 'HOA'),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  setState(() {
+                    hOA = double.parse(value);
+                  });
+                },
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: calculatePayment,
+                child: const Text('Calculate'),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'Monthly Payment: \$${monthlyPayment.toStringAsFixed(2)}',
+                style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
         ),
       ),
     );

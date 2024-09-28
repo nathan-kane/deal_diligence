@@ -43,14 +43,16 @@ class _PropertyWebViewScreenContainerState
       //           fit: BoxFit.cover, height: 56),
       //     ],
       //   ),
-      body: Column(
-        children: [
-          Expanded(
-            child: WebViewWidget(
-              controller: controller,
-            ),
-          )
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: WebViewWidget(
+                controller: controller,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
