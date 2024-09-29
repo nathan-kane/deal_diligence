@@ -272,7 +272,7 @@ class _AppointmentCalendarScreenState
         backgroundColor: Colors.white,
         resizeToAvoidBottomInset: false,
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30.sp),
+          padding: EdgeInsets.symmetric(horizontal: 40.sp),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
