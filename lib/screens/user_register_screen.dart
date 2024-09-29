@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 // import 'package:deal_diligence/screens/verify_email.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
@@ -83,7 +84,7 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
         child: ModalProgressHUD(
           inAsyncCall: showSpinner,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            padding: EdgeInsets.symmetric(horizontal: 30.sp),
             // Set the logo below
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -17,6 +17,7 @@ import 'package:deal_diligence/screens/main_screen.dart';
 import 'package:deal_diligence/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 final companyRef = FirebaseFirestore.instance.collection(('company'));
@@ -174,7 +175,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.symmetric(horizontal: 30.sp),
             child: Column(
               children: <Widget>[
                 const Text(

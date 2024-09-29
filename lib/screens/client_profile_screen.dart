@@ -9,11 +9,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Providers/client_provider.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
-import 'package:deal_diligence/Services/firestore_service.dart';
+//import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 final appraiserCompanyRef = FirebaseFirestore.instance.collection(('client'));
@@ -36,7 +37,7 @@ class ClientProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
-  final _db = FirebaseFirestore.instance;
+  //final _db = FirebaseFirestore.instance;
 
   final clientFNameController = TextEditingController();
   final clientLNameController = TextEditingController();
@@ -178,7 +179,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
   Widget build(BuildContext context) {
     // Get the stream of agents created in main.dart
     // final agencyProvider = Provider.of<AgencyProvider>(context);
-    final firestoreService = FirestoreService();
+    //final firestoreService = FirestoreService();
 
     return Scaffold(
       //appBar: CustomAppBar(),
@@ -186,7 +187,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.symmetric(horizontal: 20.sp),
             child: Column(
               //mainAxisAlignment: MainAxisAlignment.center,
               //crossAxisAlignment: CrossAxisAlignment.stretch,

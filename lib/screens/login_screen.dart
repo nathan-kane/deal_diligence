@@ -18,6 +18,7 @@ import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 final usersRef = FirebaseFirestore.instance.collection('users');
@@ -243,64 +244,76 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       resizeToAvoidBottomInset: false, // This fixes the keyboard white space
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30),
+          padding: EdgeInsets.symmetric(horizontal: 30.sp, vertical: 0.sp),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               const Text(
-                'Login',
+                'User Login',
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.w900,
-                  fontSize: 40.0,
+                  fontSize: 25.0,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(
-                height: 50,
+              SizedBox(
+                height: 50.h,
               ),
-              TextField(
-                autofocus: true,
-                keyboardType: TextInputType.emailAddress,
-                textAlign: TextAlign.center,
-                onChanged: (value) {
-                  email = value;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  errorText: loginFail ? 'incorrect email' : null,
+              Container(
+                color: Colors.grey,
+                child: TextField(
+                  //style: TextStyle(fontSize: 12.sp),
+                  autofocus: true,
+                  keyboardType: TextInputType.emailAddress,
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
+                    border: InputBorder.none,
+                    hintText: 'Email',
+                    errorText: loginFail ? 'incorrect email' : null,
+                  ),
+                  onChanged: (value) {
+                    email = value;
+                  },
                 ),
               ),
-              const SizedBox(
-                height: 8.0,
+              SizedBox(
+                height: 8.h,
               ),
-              TextField(
-                obscureText: passwordVisible,
-                textAlign: TextAlign.center,
-                onChanged: (value) {
-                  password = value;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  errorText: loginFail ? 'incorrect passwowrd' : null,
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(
-                        () {
-                          passwordVisible = !passwordVisible;
-                        },
-                      );
-                    },
-                    icon: Icon(passwordVisible
-                        ? Icons.visibility
-                        : Icons.visibility_off),
+              Container(
+                color: Colors.grey,
+                child: TextField(
+                  //style: TextStyle(fontSize: 12.sp),
+                  obscureText: passwordVisible,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    password = value;
+                  },
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 30.w),
+                    border: InputBorder.none,
+                    hintText: 'Password',
+                    errorText: loginFail ? 'incorrect passwowrd' : null,
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(
+                          () {
+                            passwordVisible = !passwordVisible;
+                          },
+                        );
+                      },
+                      icon: Icon(passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off),
+                    ),
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 20.0,
+              SizedBox(
+                height: 20.h,
               ),
               ElevatedButton(
                   onPressed: () async {
@@ -393,14 +406,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               errorMessage,
                               style: const TextStyle(
                                   color: Colors.black,
+                                  //fontSize: 11.sp,
                                   fontWeight: FontWeight.w900),
                             ),
                           ),
                           behavior: SnackBarBehavior.floating,
                           margin: EdgeInsets.only(
                             bottom: MediaQuery.of(context).size.height - 100,
-                            left: 10,
-                            right: 10,
+                            left: 20.sp,
+                            right: 20.sp,
                           ),
                           backgroundColor: Colors.redAccent,
                         )));
@@ -410,31 +424,30 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                   ),
                   child: const Text(
                     "Login",
                     style: TextStyle(
                         fontWeight: FontWeight.w900,
-                        color: Colors.black,
-                        fontSize: 15),
+                        color: Colors.black),
                   )),
               TextButton(
                 child: const Text(
                   'Forgot Password',
-                  style: TextStyle(fontSize: 15),
+                  //style: TextStyle(fontSize: 10.sp),
                 ),
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const ResetPasswordScreen())),
               ),
-              const SizedBox(
-                height: 100.0,
+              SizedBox(
+                height: 70.h,
               ),
               TextButton(
                 child: const Text(
                   'New User?  Create Account',
-                  style: TextStyle(fontSize: 15, color: Colors.blue),
+                  style: TextStyle(color: Colors.blue),
                 ),
                 // onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                 //     builder: (context) => const AddPaymentViaCard())),
@@ -446,14 +459,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       builder: (context) => const UserRegisterScreen()));
                 },
               ),
-              const SizedBox(
-                height: 40,
+              SizedBox(
+                height: 40.h,
               ),
               TextButton(
                 child: const Text(
                   'Privacy Policy',
                   style: TextStyle(
-                      fontSize: 15,
+                      //fontSize: 10.sp,
                       color: Colors.blue,
                       decoration: TextDecoration.underline),
                 ),

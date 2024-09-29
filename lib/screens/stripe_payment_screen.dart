@@ -39,34 +39,36 @@ class _StripePaymentScreenState extends ConsumerState<StripePaymentScreen> {
       appBar: AppBar(
         title: const Text('Subscription Payment'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Monthly subscription is 49.99 USD',
-              style: TextStyle(color: Color.fromARGB(255, 151, 186, 246)),
-            ),
-            TextButton(
-                child: const Text(
-                  'Subscribe Now!',
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blueAccent,
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Monthly subscription is 49.99 USD',
+                style: TextStyle(color: Color.fromARGB(255, 151, 186, 246)),
+              ),
+              TextButton(
+                  child: const Text(
+                    'Subscribe Now!',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueAccent,
+                    ),
                   ),
-                ),
-                onPressed: () async {
-                  if (kIsWeb) {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            AddPaymentViaCard(widget.email, widget.password)));
-                  } else {
-                    /// Make the payment and register the new user
-                    await makePayment();
-                  }
-                }),
-          ],
+                  onPressed: () async {
+                    if (kIsWeb) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              AddPaymentViaCard(widget.email, widget.password)));
+                    } else {
+                      /// Make the payment and register the new user
+                      await makePayment();
+                    }
+                  }),
+            ],
+          ),
         ),
       ),
     );

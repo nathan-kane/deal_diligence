@@ -84,7 +84,7 @@ class MainScreenState extends ConsumerState<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(),
-      body: Container(child: appScreens[_pageIndex]),
+      body: SafeArea(child: Container(child: appScreens[_pageIndex])),
       drawer: SideDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,

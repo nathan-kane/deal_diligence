@@ -16,6 +16,7 @@ import 'package:deal_diligence/Providers/trxn_provider.dart';
 import 'package:deal_diligence/screens/add_event_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -270,75 +271,78 @@ class _AppointmentCalendarScreenState
         //appBar: CustomAppBar(),
         backgroundColor: Colors.white,
         resizeToAvoidBottomInset: false,
-        body: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            StreamBuilder<QuerySnapshot>(
-              // Get all the events starting from current month - 3
-              // to current month + 12
-              stream: _db
-                  .collection('users')
-                  .doc(ref.read(globalsNotifierProvider).currentUserId)
-                  .collection('events')
-                  .where('eventDate', isGreaterThanOrEqualTo: kFirstDay)
-                  .where('eventDate', isLessThanOrEqualTo: kLastDay)
-                  .snapshots(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                // Handle any errors
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Text('Error fetching data: ${snapshot.error}'),
-                  );
-                }
-
-                // Handle loading data
-                debugPrint('Data: ${snapshot.data}');
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-                    List<Events> eventsList = [];
-                    for (var snapshotEvent in snapshot.data!.docs) {
-                      Events event = Events.fromJson(
-                          snapshotEvent.id, snapshotEvent.data());
-                      eventsList.add(event);
-                    }
-                    return _buildTableCalendar(eventsList);
-                  } else {
-                    return _buildTableCalendar();
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40.sp),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              StreamBuilder<QuerySnapshot>(
+                // Get all the events starting from current month - 3
+                // to current month + 12
+                stream: _db
+                    .collection('users')
+                    .doc(ref.read(globalsNotifierProvider).currentUserId)
+                    .collection('events')
+                    .where('eventDate', isGreaterThanOrEqualTo: kFirstDay)
+                    .where('eventDate', isLessThanOrEqualTo: kLastDay)
+                    .snapshots(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  // Handle any errors
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error fetching data: ${snapshot.error}'),
+                    );
                   }
-                }
-              },
-            ),
-            const SizedBox(height: 8.0),
-            //_buildButtons(),
-            ElevatedButton(
-              onPressed: () async {
-                setState(() {
-                  showSpinner = true;
-                });
-                try {
-                  ref
-                      .read(globalsNotifierProvider.notifier)
-                      .updateNewEvent(true);
-
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => AddEventScreen()));
-
+          
+                  // Handle loading data
+                  debugPrint('Data: ${snapshot.data}');
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else {
+                    if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+                      List<Events> eventsList = [];
+                      for (var snapshotEvent in snapshot.data!.docs) {
+                        Events event = Events.fromJson(
+                            snapshotEvent.id, snapshotEvent.data());
+                        eventsList.add(event);
+                      }
+                      return _buildTableCalendar(eventsList);
+                    } else {
+                      return _buildTableCalendar();
+                    }
+                  }
+                },
+              ),
+              const SizedBox(height: 8.0),
+              //_buildButtons(),
+              ElevatedButton(
+                onPressed: () async {
                   setState(() {
-                    showSpinner = false;
+                    showSpinner = true;
                   });
-                } catch (e) {
-                  // todo: add better error handling
-                  //debugPrint(e);
-                }
-              },
-              child: const Text('Add Event'),
-            ),
-            const SizedBox(height: 8.0),
-            // Build the event list below the calendar if events exist
-            Expanded(child: _buildEventList()),
-          ],
+                  try {
+                    ref
+                        .read(globalsNotifierProvider.notifier)
+                        .updateNewEvent(true);
+          
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => AddEventScreen()));
+          
+                    setState(() {
+                      showSpinner = false;
+                    });
+                  } catch (e) {
+                    // todo: add better error handling
+                    //debugPrint(e);
+                  }
+                },
+                child: const Text('Add Event'),
+              ),
+              const SizedBox(height: 8.0),
+              // Build the event list below the calendar if events exist
+              Expanded(child: _buildEventList()),
+            ],
+          ),
         ),
       ),
     );

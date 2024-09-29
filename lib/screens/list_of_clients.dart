@@ -14,6 +14,7 @@ import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/client_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 final FirestoreService firestoreService = FirestoreService();
 
@@ -43,7 +44,7 @@ class _ClientsScreenState extends ConsumerState<ListOfClientsScreen> {
                         itemCount: snapshot.data?.size,
                         itemBuilder: (context, index) {
                           return Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.symmetric(horizontal: 30.sp),
                             child: ListTile(
                               isThreeLine: true,
                               title: Row(

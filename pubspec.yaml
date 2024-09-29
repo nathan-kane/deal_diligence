@@ -68,6 +68,7 @@ dependencies:
   dartz:
   equatable:
   fluttertoast:
+  flutter_screenutil: ^5.9.3
 
 dev_dependencies:
   flutter_test:

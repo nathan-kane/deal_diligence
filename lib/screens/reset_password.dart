@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 //import 'package:deal_diligence/components/rounded_button.dart';
 // import 'package:deal_diligence/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 //import 'package:deal_diligence/screens/agent_dash_board.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
@@ -37,42 +38,45 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       backgroundColor: Colors.white,
       //appBar: CustomAppBar(),
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            const Text(
-              'Reset Password',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w900,
-                fontSize: 40.0,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30.sp),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              const Text(
+                'Reset Password',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 40.0,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(
-              height: 48.0,
-            ),
-            TextField(
-              autofocus: true,
-              keyboardType: TextInputType.emailAddress,
-              textAlign: TextAlign.center,
-              onChanged: (value) {
-                _email = value;
-              },
-              decoration: const InputDecoration(hintText: 'Enter your email'),
-            ),
-            const SizedBox(
-              height: 8.0,
-            ),
-            RoundedButton(
-                title: 'Send Reset Password Request',
-                colour: Colors.lightBlueAccent,
-                onPressed: () {
-                  _auth.sendPasswordResetEmail(email: _email);
-                  Navigator.of(context).pop();
-                }),
-          ],
+              const SizedBox(
+                height: 48.0,
+              ),
+              TextField(
+                autofocus: true,
+                keyboardType: TextInputType.emailAddress,
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  _email = value;
+                },
+                decoration: const InputDecoration(hintText: 'Enter your email'),
+              ),
+              const SizedBox(
+                height: 8.0,
+              ),
+              RoundedButton(
+                  title: 'Send Reset Password Request',
+                  colour: Colors.lightBlueAccent,
+                  onPressed: () {
+                    _auth.sendPasswordResetEmail(email: _email);
+                    Navigator.of(context).pop();
+                  }),
+            ],
+          ),
         ),
       ),
     );

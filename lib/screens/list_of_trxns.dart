@@ -15,6 +15,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 final FirestoreService firestoreService = FirestoreService();
@@ -54,6 +55,26 @@ class _CompanyDashboardScreenState
     return clientName;
   }
 
+  final NumberFormat currencyFormatter = NumberFormat.currency(symbol: '\$');
+
+  String _formatCurrency(String textCurrency) {
+    //String textContractPrice = contractPriceController.text;
+
+    /// Format the contract price
+    String numericCurrency = textCurrency.replaceAll(RegExp(r'[^\d]'), '');
+    if (numericCurrency.isNotEmpty) {
+      double value = double.parse(numericCurrency) / 100;
+      String formattedText = currencyFormatter.format(value);
+      if (formattedText != null) {
+        return formattedText;
+      } else {
+        return "\$0.00";
+      }
+    } else {
+      return "\$0.00";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -73,7 +94,7 @@ class _CompanyDashboardScreenState
                       itemCount: snapshot.data?.size,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(10.sp),
                           child: FutureBuilder<String?>(
                             future: GetClientName(
                                 snapshot.data?.docs[index]['clientId']),
@@ -91,13 +112,15 @@ class _CompanyDashboardScreenState
                                         // Replace 'INSERT CLIENT NAME HERE' with retrieved client name
                                         clientSnapshot.data!,
                                         style: const TextStyle(
-                                            fontWeight: FontWeight.w900,
-                                            color: Colors.blueAccent),
+                                            fontWeight: FontWeight.bold,
+                                            //fontSize: 5.sp,
+                                            color: Color.fromARGB(255, 4, 93, 248)),
                                       ),
                                     ],
                                   ),
                                   subtitle: Text.rich(
                                     TextSpan(
+                                      //style: TextStyle(fontSize: 10.sp),
                                       text:
                                           '${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
                                           '${snapshot.data?.docs[index]['propertyCity'] ?? 'n/a'}, '
@@ -105,16 +128,19 @@ class _CompanyDashboardScreenState
                                       children: <TextSpan>[
                                         TextSpan(
                                           text:
-                                              '\nPrice: ${snapshot.data?.docs[index]['contractPrice'] ?? 'n/a'}\nStatus: ${snapshot.data?.docs[index]['trxnStatus'] ?? 'n/a'}',
+                                              '\nPrice: ${_formatCurrency(snapshot.data?.docs[index]['contractPrice']) ?? 'n/a'}\nStatus: ${snapshot.data?.docs[index]['trxnStatus'] ?? 'n/a'}',
                                           style: const TextStyle(
                                               fontWeight: FontWeight.w900,
-                                              color: Colors.blueGrey),
+                                              //fontSize: 5.sp,
+                                              color: Colors.black),
                                         )
                                       ],
                                     ),
                                   ),
                                   trailing: Text(
-                                      'MLS#: ${snapshot.data?.docs[index]['mlsNumber'] ?? 'n/a'}\n${snapshot.data?.docs[index]['clientType']}'),
+                                    'MLS#: ${snapshot.data?.docs[index]['mlsNumber'] ?? 'n/a'}\n${snapshot.data?.docs[index]['clientType']}',
+                                    //style: TextStyle(fontSize: 5.sp),
+                                  ),
                                   onTap: () {
                                     setGlobals(snapshot.data?.docs[index].id);
 
@@ -128,14 +154,20 @@ class _CompanyDashboardScreenState
                                   },
                                 );
                               } else {
-                                return const Text('No Client Data');
+                                return const Text(
+                                  'No Client Available',
+                                  //style: TextStyle(fontSize: 7.sp),
+                                );
                               }
                             },
                           ),
                         );
                       },
                     )
-                  : const Text('No Date');
+                  : const Text(
+                      'No Transaction Data',
+                      //style: TextStyle(fontSize: 7.sp),
+                    );
             },
           ),
         ),

@@ -9,6 +9,7 @@ import 'package:deal_diligence/screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -37,11 +38,13 @@ class DealDiligence extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const LoginScreen(),
-                  navigatorKey: rootNavigatorKey,
-
+    return ScreenUtilInit(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: const LoginScreen(),
+                    navigatorKey: rootNavigatorKey,
+      
+      ),
     );
   }
 }
