@@ -14,6 +14,7 @@ import 'package:deal_diligence/screens/list_of_mortgage_companies.dart';
 import 'package:deal_diligence/screens/list_of_title_companies.dart';
 import 'package:deal_diligence/screens/login_screen.dart';
 import 'package:deal_diligence/screens/mortgage_calculator.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:deal_diligence/screens/privacy_policy_screen.dart';
 //import 'package:deal_diligence/screens/property_webview_screen.dart';
@@ -106,13 +107,13 @@ class MainScreenState extends ConsumerState<MainScreen> {
           }
         },
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.house), label: "Home"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.add_business_outlined), label: "Trxn"),
+              icon: FaIcon(FontAwesomeIcons.fileInvoiceDollar), label: "Trxn"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today), label: "Calendar"),
+              icon: FaIcon(FontAwesomeIcons.calendar), label: "Calendar"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.people), label: "User Profile"),
+              icon: FaIcon(FontAwesomeIcons.person), label: "User Profile"),
           BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
         ],
       ),
@@ -216,10 +217,7 @@ class SideDrawer extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: const Icon(
-                  Icons.attach_money,
-                  color: Colors.lightBlueAccent,
-                ),
+                leading: const FaIcon(FontAwesomeIcons.businessTime),
                 title: const Text('View Title Companies'),
                 onTap: () {
                   Navigator.pop(context);
@@ -239,10 +237,7 @@ class SideDrawer extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: const Icon(
-                  Icons.add_home,
-                  color: Colors.lightBlueAccent,
-                ),
+                leading: const FaIcon(FontAwesomeIcons.personWalking),
                 title: const Text('View Appraiser Companies'),
                 onTap: () {
                   Navigator.pop(context);
@@ -259,10 +254,7 @@ class SideDrawer extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: const Icon(
-                  Icons.insights_sharp,
-                  color: Colors.lightBlueAccent,
-                ),
+                leading: const FaIcon(FontAwesomeIcons.peopleCarryBox),
                 title: const Text('View Inspector Companies'),
                 onTap: () {
                   Navigator.pop(context);
@@ -279,10 +271,7 @@ class SideDrawer extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: const Icon(
-                  Icons.calculate,
-                  color: Colors.blueAccent,
-                ),
+                leading: const FaIcon(FontAwesomeIcons.calculator),
                 title: const Text('Mortgage Calculator'),
                 onTap: () {
                   Navigator.pop(context);
@@ -294,10 +283,7 @@ class SideDrawer extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: const Icon(
-                  Icons.currency_exchange,
-                  color: Colors.blueAccent,
-                ),
+                leading: const FaIcon(FontAwesomeIcons.dollarSign),
                 title: const Text('Pricing'),
                 onTap: () {
                   Navigator.pop(context);
@@ -309,10 +295,7 @@ class SideDrawer extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: const Icon(
-                  Icons.private_connectivity,
-                  color: Colors.blueAccent,
-                ),
+                leading: const FaIcon(FontAwesomeIcons.lock),
                 title: const Text(
                   'Privacy Policy',
                   style: TextStyle(
