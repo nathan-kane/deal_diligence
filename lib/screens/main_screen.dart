@@ -14,6 +14,7 @@ import 'package:deal_diligence/screens/list_of_mortgage_companies.dart';
 import 'package:deal_diligence/screens/list_of_title_companies.dart';
 import 'package:deal_diligence/screens/login_screen.dart';
 import 'package:deal_diligence/screens/mortgage_calculator.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:deal_diligence/screens/privacy_policy_screen.dart';
 //import 'package:deal_diligence/screens/property_webview_screen.dart';
@@ -47,6 +48,7 @@ final auth = FirebaseAuth.instance;
 String? userFName = "";
 String? userLName = "";
 String? userEmail = "";
+bool _showOnWeb = false;
 
 final Uri _privacyURI =
     Uri.parse('https://dealdiligencecentral.com/privacy_policy.html');
@@ -64,6 +66,7 @@ class MainScreenState extends ConsumerState<MainScreen> {
     userFName = ref.read(usersNotifierProvider).fName;
     userLName = ref.read(usersNotifierProvider).lName;
     userEmail = ref.read(usersNotifierProvider).email;
+    setVisibility();
   }
 
   final List<Widget> appScreens = [
@@ -74,6 +77,13 @@ class MainScreenState extends ConsumerState<MainScreen> {
     const ChatScreen(),
   ];
 
+  setVisibility() {
+    if (kIsWeb) {
+      _showOnWeb = false;
+    } else {
+      _showOnWeb = true;
+    }
+  }
   // void onItemTapped(int index) {
   //   setState(() {
   //     _pageIndex = index;
@@ -105,14 +115,19 @@ class MainScreenState extends ConsumerState<MainScreen> {
             ref.read(globalsNotifierProvider.notifier).updatenewUser(false);
           }
         },
+
+        ///
+        /// Bottom Navigation Bar items
+        ///
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.add_business_outlined), label: "Trxn"),
+              icon: FaIcon(FontAwesomeIcons.house), label: "Home"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today), label: "Calendar"),
+              icon: FaIcon(FontAwesomeIcons.fileInvoiceDollar), label: "Trxn"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.people), label: "User Profile"),
+              icon: FaIcon(FontAwesomeIcons.calendar), label: "Calendar"),
+          BottomNavigationBarItem(
+              icon: FaIcon(FontAwesomeIcons.person), label: "User Profile"),
           BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
         ],
       ),
@@ -125,6 +140,9 @@ class MainScreenState extends ConsumerState<MainScreen> {
   }
 }
 
+///
+/// Side drawer menu items
+///
 class SideDrawer extends StatelessWidget {
   SideDrawer({super.key});
 
@@ -216,10 +234,7 @@ class SideDrawer extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: const Icon(
-                  Icons.attach_money,
-                  color: Colors.lightBlueAccent,
-                ),
+                leading: const FaIcon(FontAwesomeIcons.businessTime),
                 title: const Text('View Title Companies'),
                 onTap: () {
                   Navigator.pop(context);
@@ -239,10 +254,7 @@ class SideDrawer extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: const Icon(
-                  Icons.add_home,
-                  color: Colors.lightBlueAccent,
-                ),
+                leading: const FaIcon(FontAwesomeIcons.personWalking),
                 title: const Text('View Appraiser Companies'),
                 onTap: () {
                   Navigator.pop(context);
@@ -259,10 +271,7 @@ class SideDrawer extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: const Icon(
-                  Icons.insights_sharp,
-                  color: Colors.lightBlueAccent,
-                ),
+                leading: const FaIcon(FontAwesomeIcons.peopleCarryBox),
                 title: const Text('View Inspector Companies'),
                 onTap: () {
                   Navigator.pop(context);
@@ -279,10 +288,7 @@ class SideDrawer extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: const Icon(
-                  Icons.calculate,
-                  color: Colors.blueAccent,
-                ),
+                leading: const FaIcon(FontAwesomeIcons.calculator),
                 title: const Text('Mortgage Calculator'),
                 onTap: () {
                   Navigator.pop(context);
@@ -294,10 +300,7 @@ class SideDrawer extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: const Icon(
-                  Icons.currency_exchange,
-                  color: Colors.blueAccent,
-                ),
+                leading: const FaIcon(FontAwesomeIcons.dollarSign),
                 title: const Text('Pricing'),
                 onTap: () {
                   Navigator.pop(context);
@@ -308,28 +311,30 @@ class SideDrawer extends StatelessWidget {
                               const MortgageCalculatorScreen()));
                 },
               ),
-              ListTile(
-                leading: const Icon(
-                  Icons.private_connectivity,
-                  color: Colors.blueAccent,
+              Visibility(
+                visible: _showOnWeb, // Turn this off for web users
+                child: ListTile(
+                  leading: const FaIcon(FontAwesomeIcons.lock),
+                  title: const Text(
+                    'Privacy Policy',
+                    style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline),
+                  ),
+                  onTap: () {
+                    if (kIsWeb) {
+                      _launchInBrowser();
+                      //launchUrl(uri.parse('https://dealdiligencecentral.com/privacy_policy.html'));
+                    } else {
+                      Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const PrivacyPolicyScreen()));
+                    }
+                  },
                 ),
-                title: const Text(
-                  'Privacy Policy',
-                  style: TextStyle(
-                      color: Colors.blue, decoration: TextDecoration.underline),
-                ),
-                onTap: () {
-                  if (kIsWeb) {
-                    _launchInBrowser();
-                    //launchUrl(uri.parse('https://dealdiligencecentral.com/privacy_policy.html'));
-                  } else {
-                    Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const PrivacyPolicyScreen()));
-                  }
-                },
               ),
               ListTile(
                 leading: const Icon(

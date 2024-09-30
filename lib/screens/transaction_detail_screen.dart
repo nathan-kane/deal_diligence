@@ -913,7 +913,7 @@ class _TransactionDetailScreenState
             padding: EdgeInsets.symmetric(horizontal: 40.sp),
             child: Column(
               children: <Widget>[
-                const Text('Transaction Details',),
+                Text('Transaction Details', style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.bold,)),
                 SizedBox(
                   height: 30.sp,
                 ),
