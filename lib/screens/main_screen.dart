@@ -48,7 +48,6 @@ final auth = FirebaseAuth.instance;
 String? userFName = "";
 String? userLName = "";
 String? userEmail = "";
-bool _showOnWeb = false;
 
 final Uri _privacyURI =
     Uri.parse('https://dealdiligencecentral.com/privacy_policy.html');
@@ -66,7 +65,6 @@ class MainScreenState extends ConsumerState<MainScreen> {
     userFName = ref.read(usersNotifierProvider).fName;
     userLName = ref.read(usersNotifierProvider).lName;
     userEmail = ref.read(usersNotifierProvider).email;
-    setVisibility();
   }
 
   final List<Widget> appScreens = [
@@ -77,13 +75,6 @@ class MainScreenState extends ConsumerState<MainScreen> {
     const ChatScreen(),
   ];
 
-  setVisibility() {
-    if (kIsWeb) {
-      _showOnWeb = false;
-    } else {
-      _showOnWeb = true;
-    }
-  }
   // void onItemTapped(int index) {
   //   setState(() {
   //     _pageIndex = index;
@@ -311,30 +302,27 @@ class SideDrawer extends StatelessWidget {
                               const MortgageCalculatorScreen()));
                 },
               ),
-              Visibility(
-                visible: _showOnWeb, // Turn this off for web users
-                child: ListTile(
-                  leading: const FaIcon(FontAwesomeIcons.lock),
-                  title: const Text(
-                    'Privacy Policy',
-                    style: TextStyle(
-                        color: Colors.blue,
-                        decoration: TextDecoration.underline),
-                  ),
-                  onTap: () {
-                    if (kIsWeb) {
-                      _launchInBrowser();
-                      //launchUrl(uri.parse('https://dealdiligencecentral.com/privacy_policy.html'));
-                    } else {
-                      Navigator.pop(context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const PrivacyPolicyScreen()));
-                    }
-                  },
+              ListTile(
+                leading: const FaIcon(FontAwesomeIcons.lock),
+                title: const Text(
+                  'Privacy Policy',
+                  style: TextStyle(
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline),
                 ),
+                onTap: () {
+                  if (kIsWeb) {
+                    _launchInBrowser();
+                    //launchUrl(uri.parse('https://dealdiligencecentral.com/privacy_policy.html'));
+                  } else {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const PrivacyPolicyScreen()));
+                  }
+                },
               ),
               ListTile(
                 leading: const Icon(

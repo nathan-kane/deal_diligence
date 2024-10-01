@@ -16,6 +16,7 @@ import 'package:deal_diligence/screens/reset_password.dart';
 import 'package:deal_diligence/screens/user_register_screen.dart';
 import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -462,17 +463,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               SizedBox(
                 height: 40.h,
               ),
-              TextButton(
-                child: const Text(
-                  'Privacy Policy',
-                  style: TextStyle(
-                      //fontSize: 10.sp,
-                      color: Colors.blue,
-                      decoration: TextDecoration.underline),
+              Visibility(
+                visible: !kIsWeb,
+                child: TextButton(
+                  child: const Text(
+                    'Privacy Policy',
+                    style: TextStyle(
+                        //fontSize: 10.sp,
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline),
+                  ),
+                  onPressed: () {
+                    _launchInBrowser();
+                  },
                 ),
-                onPressed: () {
-                  _launchInBrowser();
-                },
               ),
             ],
           ),
