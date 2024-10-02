@@ -251,12 +251,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              const Text(
+              Text(
                 'User Login',
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.w900,
-                  fontSize: 25.0,
+                  fontSize: 25.sp,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -428,16 +428,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     "Login",
                     style: TextStyle(
+                        fontSize: 10.sp,
                         fontWeight: FontWeight.w900,
                         color: Colors.black),
                   )),
               TextButton(
-                child: const Text(
+                child: Text(
                   'Forgot Password',
-                  //style: TextStyle(fontSize: 10.sp),
+                  style: TextStyle(fontSize: 10.sp),
                 ),
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const ResetPasswordScreen())),

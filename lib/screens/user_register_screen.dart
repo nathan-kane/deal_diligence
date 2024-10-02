@@ -90,21 +90,16 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                const Center(
+                Center(
                     child: Text(
                   'User Registration',
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w900,
-                    fontSize: 30.0,
+                    fontSize: 30.sp,
                   ),
                 )),
-                const SizedBox(
-                  height: 48.0,
-                ),
-                const SizedBox(
-                  height: 48.0,
-                ),
+                SizedBox(height: 96.h,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
@@ -139,9 +134,7 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                   decoration:
                       const InputDecoration(hintText: 'Enter your email'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   obscureText: true,
                   textAlign: TextAlign.center,
@@ -151,9 +144,7 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                   decoration:
                       const InputDecoration(hintText: 'Enter a new password'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 // Center(
                 //   child: DropdownButton(
                 //     value: _currentUserState,
@@ -166,9 +157,9 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                 //   height: 24.0,
                 // ),
                 TextButton(
-                  child: const Text(
+                  child: Text(
                     'Register',
-                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                    style: TextStyle(fontSize: 15.sp, color: Colors.blue),
                   ),
                   onPressed: () async {
                     setState(() {
@@ -192,66 +183,6 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                     setState(() {
                       showSpinner = false;
                     });
-                    // } on FirebaseAuthException catch (error) {
-                    //   switch (error.code) {
-                    //     case "ERROR_INVALID_EMAIL":
-                    //     case "invalid-email":
-                    //       errorMessage =
-                    //           "Your email address appears to be malformed.";
-                    //       break;
-                    //     case "email-already-in-use":
-                    //       errorMessage = "Email is already in use.";
-                    //       break;
-                    //     case "ERROR_WRONG_PASSWORD":
-                    //     case "wrong-password":
-                    //       errorMessage = "Your password is wrong.";
-                    //       break;
-                    //     case "weak-password":
-                    //       errorMessage = "Weak password";
-                    //       break;
-                    //     case "ERROR_USER_NOT_FOUND":
-                    //     case "user-not-found":
-                    //       errorMessage = "User with this email doesn't exist.";
-                    //       break;
-                    //     case "ERROR_USER_DISABLED":
-                    //     case "user-disabled":
-                    //       errorMessage =
-                    //           "User with this email has been disabled.";
-                    //       break;
-                    //     case "ERROR_TOO_MANY_REQUESTS":
-                    //     case "too-many-requests":
-                    //       errorMessage = "Too many requests. Try again later.";
-                    //       break;
-                    //     case "ERROR_OPERATION_NOT_ALLOWED":
-                    //     case "operation-not-allowed":
-                    //       errorMessage =
-                    //           "Signing in with Email and Password is not enabled.";
-                    //       break;
-                    //     default:
-                    //       errorMessage =
-                    //           "An undefined Error happened. Please try again.";
-                    //   }
-
-                    //   if (errorMessage != "") {
-                    //     ScaffoldMessenger.of(context).showSnackBar((SnackBar(
-                    //       content: Center(
-                    //         child: Text(
-                    //           errorMessage,
-                    //           style: const TextStyle(
-                    //               color: Colors.black,
-                    //               fontWeight: FontWeight.w900),
-                    //         ),
-                    //       ),
-                    //       behavior: SnackBarBehavior.floating,
-                    //       margin: EdgeInsets.only(
-                    //         bottom: MediaQuery.of(context).size.height - 100,
-                    //         left: 10,
-                    //         right: 10,
-                    //       ),
-                    //       backgroundColor: Colors.redAccent,
-                    //     )));
-                    //   }
-                    // }
                   },
                 ),
               ],

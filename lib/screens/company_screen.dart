@@ -185,9 +185,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                const SizedBox(
-                  height: 30.0,
-                ),
+                SizedBox(height: 30.h,),
                 const Text(
                   'Select your company',
                   style: TextStyle(
@@ -195,9 +193,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 StreamBuilder(
                     stream: _db.collection('company').snapshots(),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -252,9 +248,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                     }
                   },
                 ),
-                const SizedBox(
-                  height: 20.0,
-                ),
+                SizedBox(height: 20.h,),
                 const Text(
                   'or add new company',
                   style: TextStyle(
@@ -262,9 +256,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: companyNameController,
@@ -278,9 +270,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Company Name', labelText: 'Company Name'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: address1Controller,
@@ -294,9 +284,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Address 1', labelText: 'Address 1'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: address2Controller,
@@ -309,9 +297,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Address 2', labelText: 'Address 2'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: cityController,
@@ -338,18 +324,14 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                   decoration: const InputDecoration(
                       hintText: 'City', labelText: 'City'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 DropdownButton(
                   value: _currentCompanyState,
                   items: _dropDownState,
                   hint: const Text('Choose State'),
                   onChanged: changedDropDownState,
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   controller: zipController,
                   keyboardType: TextInputType.phone,
@@ -362,9 +344,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Zip Code', labelText: 'Zip Code'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   inputFormatters: [maskFormatter],
                   controller: cellPhoneController,
@@ -378,9 +358,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Cell Phone', labelText: 'Cell Phone'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   inputFormatters: [maskFormatter],
                   controller: officePhoneController,
@@ -394,9 +372,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Office Phone', labelText: 'Office Phone'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -409,9 +385,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Email', labelText: 'Email'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   controller: websiteController,
                   textAlign: TextAlign.center,
@@ -423,9 +397,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Website', labelText: 'Website'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 RoundedButton(
                   title: 'Save new company',
                   colour: Colors.blueAccent,
@@ -480,9 +452,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                     }
                   },
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 (widget != null)
                     ? RoundedButton(
                         title: 'Delete',

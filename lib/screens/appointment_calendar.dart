@@ -313,7 +313,7 @@ class _AppointmentCalendarScreenState
                   }
                 },
               ),
-              const SizedBox(height: 8.0),
+              SizedBox(height: 8.sp),
               //_buildButtons(),
               ElevatedButton(
                 onPressed: () async {
@@ -338,7 +338,7 @@ class _AppointmentCalendarScreenState
                 },
                 child: const Text('Add Event'),
               ),
-              const SizedBox(height: 8.0),
+              SizedBox(height: 8.sp),
               // Build the event list below the calendar if events exist
               Expanded(child: _buildEventList()),
             ],
@@ -446,7 +446,7 @@ class _AppointmentCalendarScreenState
               itemCount: doc.length,
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: EdgeInsets.all(20.sp),
                   child: ListTile(
                     isThreeLine: true,
                     title: Text(

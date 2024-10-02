@@ -5,6 +5,7 @@
 //*********************************************
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CommissionCalculatorPopup {
   static void showCommissionCalculator(BuildContext context, double salePrice) {
@@ -56,15 +57,15 @@ class _CommissionCalculatorDialogState
             decoration: const InputDecoration(labelText: 'Commission Rate (%)'),
             keyboardType: TextInputType.number,
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.sp),
           ElevatedButton(
             onPressed: calculateCommission,
             child: const Text('Calculate Commission'),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.sp),
           Text(
             'Commission: \$${commission.toStringAsFixed(2)}',
-            style: const TextStyle(fontSize: 18),
+            style: TextStyle(fontSize: 18.sp),
           ),
         ],
       ),

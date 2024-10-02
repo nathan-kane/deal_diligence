@@ -15,6 +15,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 //import 'package:deal_diligence/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 //import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 import 'package:intl/intl.dart';
 
@@ -28,9 +29,9 @@ class ChatScreen extends ConsumerStatefulWidget {
 class _ChatScreenState extends ConsumerState<ChatScreen> {
   var roomId;
 
-  void setUpPushNotifcations() {
-    // TODO(any): Push notifications do not currently work on Safari iOS (see: https://caniuse.com/push-api). Implement this feature some other way.
-  }
+  // void setUpPushNotifcations() {
+  //   // TODO(any): Push notifications do not currently work on Safari iOS (see: https://caniuse.com/push-api). Implement this feature some other way.
+  // }
 
   // void setUpPushNotifications() async {
   //   final fcm = FirebaseMessaging.instance;
@@ -57,7 +58,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(18.0),
+              padding: EdgeInsets.all(18.sp),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -84,7 +85,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                         .toDate()*/
                                     DateTime.now())}',
                                 style: Styles.h1().copyWith(
-                                    fontSize: 12,
+                                    fontSize: 12.sp,
                                     fontWeight: FontWeight.normal,
                                     color: Colors.white70),
                               );

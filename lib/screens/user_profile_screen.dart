@@ -329,15 +329,13 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
             padding: EdgeInsets.symmetric(horizontal: 30.sp),
             child: Column(
               children: <Widget>[
-                const Text(
+                Text(
                   'User Profile',
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 30.sp,
                   ),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 // Email entry text field
                 TextField(
                   textCapitalization: TextCapitalization.words,
@@ -351,9 +349,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   decoration: const InputDecoration(
                       hintText: 'First Name', labelText: 'First Name'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: lNameController,
@@ -366,9 +362,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Last Name', labelText: 'Last Name'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 StreamBuilder<QuerySnapshot>(
                     // Get a list of available companies to assign the new user to a company
                     stream: _db.collection('company').snapshots(),
@@ -409,18 +403,16 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                         items: companyItems,
                       );
                     }),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 Column(
                   children: <Widget>[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Expanded(
+                        Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(20.0),
-                            child: Text(
+                            padding: EdgeInsets.all(20.sp),
+                            child: const Text(
                               'Add a Company? ',
                               style: TextStyle(
                                 color: Colors.blue,
@@ -430,7 +422,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(20.0),
+                            padding: EdgeInsets.all(20.sp),
                             child: Checkbox(
                               value: isChecked,
                               onChanged: (bool? value) {
@@ -445,9 +437,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 // DropdownButton(
                 //   value: _currentUserState,
                 //   items: _dropDownState,
@@ -471,9 +461,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Address 1', labelText: 'Address 1'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: address2Controller,
@@ -487,9 +475,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Address 2', labelText: 'Address 2'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: cityController,
@@ -502,18 +488,14 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   decoration: const InputDecoration(
                       hintText: 'City', labelText: 'City'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 DropdownButton(
                   value: _currentUserState,
                   items: _dropDownState,
                   hint: const Text('Choose State'),
                   onChanged: changedDropDownState,
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   controller: zipController,
                   keyboardType: TextInputType.number,
@@ -527,9 +509,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Zip Code', labelText: 'Zip Code'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   inputFormatters: [maskFormatter],
                   controller: cellPhoneController,
@@ -544,9 +524,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Cell Phone', labelText: 'Cell Phone'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   inputFormatters: [maskFormatter],
                   controller: officePhoneController,
@@ -561,9 +539,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Office Phone', labelText: 'Office Phone'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -575,9 +551,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   decoration:
                       const InputDecoration(hintText: 'Enter your email'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 StreamBuilder(
                     stream: _db
                         .collection('mls')
@@ -627,9 +601,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                         items: mlsItems,
                       );
                     }),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 RoundedButton(
                   title: 'Save',
                   colour: Colors.blueAccent,
@@ -754,9 +726,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                     }
                   },
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
 
                 // ignore: unnecessary_null_comparison
                 (widget != null)

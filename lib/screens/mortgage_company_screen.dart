@@ -14,6 +14,7 @@ import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 final mortgageCompanyRef =
@@ -195,7 +196,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
   Widget build(BuildContext context) {
     // Get the stream of agents created in main.dart
     // final agencyProvider = Provider.of<AgencyProvider>(context);
-    final firestoreService = FirestoreService();
+    //final firestoreService = FirestoreService();
 
     return Scaffold(
       //appBar: CustomAppBar(),
@@ -203,21 +204,19 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.symmetric(horizontal: 20.sp),
             child: Column(
               //mainAxisAlignment: MainAxisAlignment.center,
               //crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                const Text(
+                Text(
                   'Mortgage Company Profile',
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 30.sp,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                const SizedBox(
-                  height: 30.0,
-                ),
+                SizedBox(height: 30.sp,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: mortgageCompanyNameController,
@@ -232,9 +231,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                       hintText: 'Mortgage Company Name',
                       labelText: 'Mortgage Company Name'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: primaryContactController,
@@ -249,9 +246,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                       hintText: 'Primary Contact',
                       labelText: 'Primary Contact'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: address1Controller,
@@ -265,9 +260,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Address 1', labelText: 'Address 1'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: address2Controller,
@@ -280,9 +273,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Address 2', labelText: 'Address 2'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: cityController,
@@ -309,18 +300,14 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                   decoration: const InputDecoration(
                       hintText: 'City', labelText: 'City'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 DropdownButton(
                   value: _currentMortgageCompanyState,
                   items: _dropDownState,
                   hint: const Text('Choose State'),
                   onChanged: changedDropDownState,
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 TextField(
                   controller: zipController,
                   keyboardType: TextInputType.phone,
@@ -333,9 +320,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Zip Code', labelText: 'Zip Code'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 TextField(
                   inputFormatters: [maskFormatter],
                   controller: cellPhoneController,
@@ -349,9 +334,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Cell Phone', labelText: 'Cell Phone'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 TextField(
                   inputFormatters: [maskFormatter],
                   controller: officePhoneController,
@@ -365,9 +348,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Office Phone', labelText: 'Office Phone'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 TextField(
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -380,9 +361,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Email', labelText: 'Email'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 TextField(
                   controller: websiteController,
                   textAlign: TextAlign.center,
@@ -394,9 +373,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Website', labelText: 'Website'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 RoundedButton(
                   title: 'Save Mortgage Company',
                   colour: Colors.blueAccent,
@@ -436,9 +413,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                     }
                   },
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 (widget != null)
                     ? RoundedButton(
                         title: 'Delete',

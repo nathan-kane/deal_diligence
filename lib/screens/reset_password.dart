@@ -44,18 +44,16 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              const Text(
+              Text(
                 'Reset Password',
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.w900,
-                  fontSize: 40.0,
+                  fontSize: 40.sp,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(
-                height: 48.0,
-              ),
+              SizedBox(height: 48.h,),
               TextField(
                 autofocus: true,
                 keyboardType: TextInputType.emailAddress,
@@ -65,9 +63,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 },
                 decoration: const InputDecoration(hintText: 'Enter your email'),
               ),
-              const SizedBox(
-                height: 8.0,
-              ),
+              SizedBox(height: 8.h,),
               RoundedButton(
                   title: 'Send Reset Password Request',
                   colour: Colors.lightBlueAccent,

@@ -15,7 +15,7 @@ import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/appointment_calendar.dart';
 //import 'package:deal_diligence/screens/google_event_add.dart';
-import 'package:deal_diligence/screens/widgets/add_all_calendars.dart'; 
+import 'package:deal_diligence/screens/widgets/add_all_calendars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -174,8 +174,8 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                const SizedBox(
-                  height: 30.0,
+                SizedBox(
+                  height: 30.sp,
                 ),
                 TextField(
                   controller: eventNameController,
@@ -190,8 +190,8 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Event Name*', labelText: 'Event Name*'),
                 ),
-                const SizedBox(
-                  height: 8.0,
+                SizedBox(
+                  height: 8.sp,
                 ),
                 TextField(
                   controller: eventDateController,
@@ -232,9 +232,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                     labelText: 'Event Date*',
                   ),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 TextField(
                   controller: eventStartTimeController,
                   keyboardType: TextInputType.text,
@@ -289,9 +287,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                     labelText: 'Start Time*',
                   ),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 TextField(
                   controller: eventDurationController,
                   textAlign: TextAlign.center,
@@ -304,9 +300,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                       hintText: 'Duration (mins)*',
                       labelText: 'Duration (mins)*'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 TextField(
                   controller: eventDescriptionController,
                   keyboardType: TextInputType.text,
@@ -338,9 +332,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   '---- RECURRING EVENT ----',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 DropdownButton<String>(
                   hint: const Text('Select Frequency'),
                   value: _currentFrequency,
@@ -444,7 +436,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                     ),
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.all(20.0),
+                        padding: EdgeInsets.all(20.sp),
                         child: Checkbox(
                           value: isAllDay,
                           onChanged: (bool? value) {
@@ -478,7 +470,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                     ),
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.all(20.0),
+                        padding: EdgeInsets.all(20.sp),
                         child: Checkbox(
                           value: isChecked,
                           onChanged: (bool? value) {
@@ -523,7 +515,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                             .read(eventsNotifierProvider.notifier)
                             .updateEventDescription(
                                 eventDescriptionController.text);
-                                
+
                         /// Save the new event to the db document
                         ref.read(eventsNotifierProvider.notifier).saveEvent(
                             ref.read(eventsNotifierProvider),
@@ -541,7 +533,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                         AddEventsToAllCalendars.addEvent(
                             ref.read(eventsNotifierProvider));
 
-                                                    // AddEventsToAllCalendars().addEvent2();
+                        // AddEventsToAllCalendars().addEvent2();
                       }
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) =>
@@ -556,9 +548,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                     }
                   },
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 (widget != null)
                     ? RoundedButton(
                         title: 'Delete',

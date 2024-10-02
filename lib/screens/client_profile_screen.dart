@@ -215,9 +215,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                   decoration: const InputDecoration(
                       hintText: 'First Name', labelText: 'First Name'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: clientLNameController,
@@ -231,9 +229,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Last Name', labelText: 'Last Name'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: address1Controller,
@@ -247,9 +243,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Address 1', labelText: 'Address 1'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: address2Controller,
@@ -262,9 +256,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Address 2', labelText: 'Address 2'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: cityController,
@@ -276,18 +268,14 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                   decoration: const InputDecoration(
                       hintText: 'City', labelText: 'City'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 DropdownButton(
                   value: _currentClientState,
                   items: _dropDownState,
                   hint: const Text('Choose State'),
                   onChanged: changedDropDownState,
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 TextField(
                   controller: zipController,
                   keyboardType: TextInputType.phone,
@@ -300,9 +288,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Zip Code', labelText: 'Zip Code'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 TextField(
                   inputFormatters: [maskFormatter],
                   controller: cellPhoneController,
@@ -316,9 +302,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Cell Phone', labelText: 'Cell Phone'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 TextField(
                   inputFormatters: [maskFormatter],
                   controller: homePhoneController,
@@ -332,9 +316,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Office Phone', labelText: 'Office Phone'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 TextField(
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -347,9 +329,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                   decoration: const InputDecoration(
                       hintText: 'Email', labelText: 'Email'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 // TextField(
                 //   controller: websiteController,
                 //   textAlign: TextAlign.center,
@@ -398,9 +378,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                     }
                   },
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.sp,),
                 (widget != null)
                     ? RoundedButton(
                         title: 'Delete Appraiser Company',

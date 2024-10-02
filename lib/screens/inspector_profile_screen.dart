@@ -227,9 +227,7 @@ class _InspectorCompanyScreenState
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                const SizedBox(
-                  height: 30.0,
-                ),
+                SizedBox(height: 30.h,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: inspectorCompanyNameController,
@@ -244,9 +242,7 @@ class _InspectorCompanyScreenState
                       hintText: 'Inspector Company Name',
                       labelText: 'Inspector Company Name'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: primaryContactController,
@@ -261,9 +257,7 @@ class _InspectorCompanyScreenState
                       hintText: 'Primary Contact',
                       labelText: 'Primary Contact'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: address1Controller,
@@ -277,9 +271,7 @@ class _InspectorCompanyScreenState
                   decoration: const InputDecoration(
                       hintText: 'Address 1', labelText: 'Address 1'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: address2Controller,
@@ -292,9 +284,7 @@ class _InspectorCompanyScreenState
                   decoration: const InputDecoration(
                       hintText: 'Address 2', labelText: 'Address 2'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: cityController,
@@ -308,18 +298,14 @@ class _InspectorCompanyScreenState
                   decoration: const InputDecoration(
                       hintText: 'City', labelText: 'City'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 DropdownButton(
                   value: _currentInspectorCompanyState,
                   items: _dropDownState,
                   hint: const Text('Choose State'),
                   onChanged: changedDropDownState,
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   controller: zipController,
                   keyboardType: TextInputType.phone,
@@ -332,9 +318,7 @@ class _InspectorCompanyScreenState
                   decoration: const InputDecoration(
                       hintText: 'Zip Code', labelText: 'Zip Code'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   inputFormatters: [maskFormatter],
                   controller: cellPhoneController,
@@ -348,9 +332,7 @@ class _InspectorCompanyScreenState
                   decoration: const InputDecoration(
                       hintText: 'Cell Phone', labelText: 'Cell Phone'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   inputFormatters: [maskFormatter],
                   controller: officePhoneController,
@@ -364,9 +346,7 @@ class _InspectorCompanyScreenState
                   decoration: const InputDecoration(
                       hintText: 'Office Phone', labelText: 'Office Phone'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -379,9 +359,7 @@ class _InspectorCompanyScreenState
                   decoration: const InputDecoration(
                       hintText: 'Email', labelText: 'Email'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 TextField(
                   controller: websiteController,
                   textAlign: TextAlign.center,
@@ -393,9 +371,7 @@ class _InspectorCompanyScreenState
                   decoration: const InputDecoration(
                       hintText: 'Website', labelText: 'Website'),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 RoundedButton(
                   title: 'Save Inspector Company',
                   colour: Colors.blueAccent,
@@ -435,9 +411,7 @@ class _InspectorCompanyScreenState
                     }
                   },
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                SizedBox(height: 8.h,),
                 (widget != null)
                     ? RoundedButton(
                         title: 'Delete Inspector Company',
