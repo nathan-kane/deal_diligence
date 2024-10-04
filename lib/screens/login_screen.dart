@@ -12,7 +12,6 @@ import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/screens/main_screen.dart';
 import 'package:deal_diligence/screens/reset_password.dart';
-//import 'package:deal_diligence/screens/stripe_payment_module/add_payment_via_card.dart';
 import 'package:deal_diligence/screens/user_register_screen.dart';
 import 'package:deal_diligence/screens/widgets/my_appbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -245,7 +244,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       resizeToAvoidBottomInset: false, // This fixes the keyboard white space
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30.sp, vertical: 0.sp),
+          padding: EdgeInsets.symmetric(horizontal: 50.sp, vertical: 0.sp),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
