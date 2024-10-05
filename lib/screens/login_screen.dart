@@ -263,14 +263,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 height: 50.h,
               ),
               Container(
-                color: Colors.grey,
+                padding: EdgeInsets.symmetric(horizontal: 30.w),
+                color: Colors.white,
                 child: TextField(
-                  //style: TextStyle(fontSize: 12.sp),
                   autofocus: true,
                   keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
+                    filled: true,
+                    fillColor: const Color.fromARGB(255, 255, 237, 211),
                     border: InputBorder.none,
                     hintText: 'Email',
                     errorText: loginFail ? 'incorrect email' : null,
@@ -284,16 +285,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 height: 8.h,
               ),
               Container(
-                color: Colors.grey,
+                padding: EdgeInsets.symmetric(horizontal: 30.w),
+                color: Colors.white,
                 child: TextField(
-                  //style: TextStyle(fontSize: 12.sp),
                   obscureText: passwordVisible,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     password = value;
                   },
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 30.w),
+                    filled: true,
+                    fillColor: const Color.fromARGB(255, 255, 237, 211),
                     border: InputBorder.none,
                     hintText: 'Password',
                     errorText: loginFail ? 'incorrect passwowrd' : null,
@@ -315,7 +317,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               SizedBox(
                 height: 20.h,
               ),
-              ElevatedButton(
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 30.w),
+                child: ElevatedButton(
                   onPressed: () async {
                     setState(() {
                       showSpinner = true;
@@ -324,7 +328,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       UserCredential userCredential =
                           await _auth.signInWithEmailAndPassword(
                               email: email, password: password);
-
+                
                       if (userCredential != null) {
                         // Set the global state
                         ref
@@ -336,7 +340,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ref
                             .read(globalsNotifierProvider.notifier)
                             .updatecurrentUEmail(_auth.currentUser!.email);
-
+                
                         await getCurrentUserName();
                         Navigator.push(
                           context,
@@ -373,8 +377,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             break;
                           case "ERROR_USER_NOT_FOUND":
                           case "user-not-found":
-                            errorMessage =
-                                "User with this email doesn't exist.";
+                            errorMessage = "User with this email doesn't exist.";
                             break;
                           case "ERROR_USER_DISABLED":
                           case "user-disabled":
@@ -383,8 +386,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             break;
                           case "ERROR_TOO_MANY_REQUESTS":
                           case "too-many-requests":
-                            errorMessage =
-                                "Too many requests. Try again later.";
+                            errorMessage = "Too many requests. Try again later.";
                             break;
                           case "ERROR_OPERATION_NOT_ALLOWED":
                           case "operation-not-allowed":
@@ -398,7 +400,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       } else {
                         errorMessage = error.toString();
                       }
-
+                
                       if (errorMessage != "") {
                         ScaffoldMessenger.of(context).showSnackBar((SnackBar(
                           content: Center(
@@ -427,17 +429,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     "Login",
                     style: TextStyle(
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.black),
-                  )),
+                        fontWeight: FontWeight.w900, color: Colors.black),
+                  ),
+                ),
+              ),
               TextButton(
-                child: Text(
+                child: const Text(
                   'Forgot Password',
-                  style: TextStyle(fontSize: 10.sp),
+                  style: TextStyle(color: Colors.blue),
                 ),
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const ResetPasswordScreen())),
