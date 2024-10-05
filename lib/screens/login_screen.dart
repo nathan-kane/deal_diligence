@@ -41,6 +41,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool showSpinner = false;
   final _auth = FirebaseAuth.instance;
   bool passwordVisible = false;
+  double margins = 0.w;
 
 /* =========================================================== */
 
@@ -110,6 +111,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     super.initState();
     passwordVisible = true;
 
+    /// Set the margins for web and mobile
+    if (kIsWeb) {
+      margins = 80.w;
+    } else {
+      margins = 10.w;
+    }
     //initNotifications();
   }
 
@@ -244,7 +251,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       resizeToAvoidBottomInset: false, // This fixes the keyboard white space
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 50.sp, vertical: 0.sp),
+          padding: EdgeInsets.symmetric(horizontal: 20.sp, vertical: 0.sp),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -263,7 +270,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 height: 50.h,
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 30.w),
+                padding: EdgeInsets.symmetric(horizontal: margins),
                 color: Colors.white,
                 child: TextField(
                   autofocus: true,
@@ -285,7 +292,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 height: 8.h,
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 30.w),
+                padding: EdgeInsets.symmetric(horizontal: margins),
                 color: Colors.white,
                 child: TextField(
                   obscureText: passwordVisible,
@@ -318,7 +325,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 height: 20.h,
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 30.w),
+                padding: EdgeInsets.symmetric(horizontal: margins),
                 child: ElevatedButton(
                   onPressed: () async {
                     setState(() {
@@ -328,7 +335,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       UserCredential userCredential =
                           await _auth.signInWithEmailAndPassword(
                               email: email, password: password);
-                
+
                       if (userCredential != null) {
                         // Set the global state
                         ref
@@ -340,7 +347,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ref
                             .read(globalsNotifierProvider.notifier)
                             .updatecurrentUEmail(_auth.currentUser!.email);
-                
+
                         await getCurrentUserName();
                         Navigator.push(
                           context,
@@ -377,7 +384,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             break;
                           case "ERROR_USER_NOT_FOUND":
                           case "user-not-found":
-                            errorMessage = "User with this email doesn't exist.";
+                            errorMessage =
+                                "User with this email doesn't exist.";
                             break;
                           case "ERROR_USER_DISABLED":
                           case "user-disabled":
@@ -386,7 +394,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             break;
                           case "ERROR_TOO_MANY_REQUESTS":
                           case "too-many-requests":
-                            errorMessage = "Too many requests. Try again later.";
+                            errorMessage =
+                                "Too many requests. Try again later.";
                             break;
                           case "ERROR_OPERATION_NOT_ALLOWED":
                           case "operation-not-allowed":
@@ -400,7 +409,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       } else {
                         errorMessage = error.toString();
                       }
-                
+
                       if (errorMessage != "") {
                         ScaffoldMessenger.of(context).showSnackBar((SnackBar(
                           content: Center(

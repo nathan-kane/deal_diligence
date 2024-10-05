@@ -113,14 +113,13 @@ class _CompanyDashboardScreenState
                                         clientSnapshot.data!,
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            //fontSize: 5.sp,
                                             color: Color.fromARGB(255, 4, 93, 248)),
                                       ),
                                     ],
                                   ),
                                   subtitle: Text.rich(
                                     TextSpan(
-                                      //style: TextStyle(fontSize: 10.sp),
+                                      style: const TextStyle(fontWeight: FontWeight.bold),
                                       text:
                                           '${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
                                           '${snapshot.data?.docs[index]['propertyCity'] ?? 'n/a'}, '
@@ -130,8 +129,7 @@ class _CompanyDashboardScreenState
                                           text:
                                               '\nPrice: ${_formatCurrency(snapshot.data?.docs[index]['contractPrice']) ?? 'n/a'}\nStatus: ${snapshot.data?.docs[index]['trxnStatus'] ?? 'n/a'}',
                                           style: const TextStyle(
-                                              fontWeight: FontWeight.w900,
-                                              //fontSize: 5.sp,
+                                              fontWeight: FontWeight.bold,
                                               color: Colors.black),
                                         )
                                       ],
@@ -139,7 +137,7 @@ class _CompanyDashboardScreenState
                                   ),
                                   trailing: Text(
                                     'MLS#: ${snapshot.data?.docs[index]['mlsNumber'] ?? 'n/a'}\n${snapshot.data?.docs[index]['clientType']}',
-                                    //style: TextStyle(fontSize: 5.sp),
+                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
                                   ),
                                   onTap: () {
                                     setGlobals(snapshot.data?.docs[index].id);
