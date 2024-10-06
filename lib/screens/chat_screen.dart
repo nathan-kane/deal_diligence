@@ -58,7 +58,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.all(18.sp),
+              padding: EdgeInsets.symmetric(horizontal: 50.sp),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -85,7 +85,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                         .toDate()*/
                                     DateTime.now())}',
                                 style: Styles.h1().copyWith(
-                                    fontSize: 12.sp,
+                                    fontSize: 6.sp,
                                     fontWeight: FontWeight.normal,
                                     color: Colors.white70),
                               );

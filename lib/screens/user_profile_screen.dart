@@ -326,13 +326,13 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.sp),
+            padding: EdgeInsets.symmetric(horizontal: 50.sp),
             child: Column(
               children: <Widget>[
                 Text(
                   'User Profile',
                   style: TextStyle(
-                    fontSize: 30.sp,
+                    fontSize: 14.sp,
                   ),
                 ),
                 SizedBox(height: 8.h,),

@@ -178,18 +178,18 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
             padding: EdgeInsets.symmetric(horizontal: 30.sp),
             child: Column(
               children: <Widget>[
-                const Text(
+                Text(
                   'Company Profile',
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
                 SizedBox(height: 30.h,),
-                const Text(
+                Text(
                   'Select your company',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 6.sp,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -249,10 +249,10 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                   },
                 ),
                 SizedBox(height: 20.h,),
-                const Text(
-                  'or add new company',
+                Text(
+                  'or add a new company',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 6.sp,
                     fontWeight: FontWeight.w700,
                   ),
                 ),

@@ -910,17 +910,20 @@ class _TransactionDetailScreenState
         child: SingleChildScrollView(
           reverse: true,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 40.sp),
+            padding: EdgeInsets.symmetric(horizontal: 50.sp),
             child: Column(
               children: <Widget>[
-                Text('Transaction Details', style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.bold,)),
+                Text('Transaction Details',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                    )),
                 SizedBox(
                   height: 30.sp,
                 ),
                 const Text(
                   'Select User',
                   style: TextStyle(
-                    
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -983,217 +986,220 @@ class _TransactionDetailScreenState
 
                 /// Display the client information in a collapsible panel
                 Card(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    //mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      ExpansionTile(
-                        subtitle: Text(
-                            '${clientFNameController.text} ${clientLNameController.text}'),
-                        title: const Text(
-                          'Client Information',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20.0),
-                        ),
-                        children: [
-                          TextField(
-                            textCapitalization: TextCapitalization.words,
-                            keyboardType: TextInputType.text,
-                            controller: clientFNameController,
-                            textAlign: TextAlign.center,
-                            onChanged: (value) {
-                              ref
-                                  .read(clientNotifierProvider.notifier)
-                                  .updateFName(value);
-                              bClientChanged = true;
-                            },
-                            decoration: const InputDecoration(
-                                hintText: 'Client First Name',
-                                labelText: 'Client First Name'),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 30.sp),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      //mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        ExpansionTile(
+                          subtitle: Text(
+                              '${clientFNameController.text} ${clientLNameController.text}'),
+                          title: Text(
+                            'Client Information',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 8.sp),
                           ),
-                          TextField(
-                            textCapitalization: TextCapitalization.words,
-                            keyboardType: TextInputType.text,
-                            controller: clientLNameController,
-                            textAlign: TextAlign.center,
-                            onChanged: (value) {
-                              ref
-                                  .read(clientNotifierProvider.notifier)
-                                  .updateLName(value);
-                              bClientChanged = true;
-                            },
-                            decoration: const InputDecoration(
-                                hintText: 'Client Last Name',
-                                labelText: 'Client Last Name'),
-                          ),
-                          TextField(
-                            textCapitalization: TextCapitalization.words,
-                            keyboardType: TextInputType.text,
-                            controller: clientAddress1Controller,
-                            textAlign: TextAlign.center,
-                            onChanged: (value) {
-                              ref
-                                  .read(clientNotifierProvider.notifier)
-                                  .updateAddress1(value);
-                              bClientChanged = true;
-                            },
-                            decoration: const InputDecoration(
-                                hintText: 'Address 1', labelText: 'Address 1'),
-                          ),
-                          TextField(
-                            textCapitalization: TextCapitalization.words,
-                            keyboardType: TextInputType.text,
-                            controller: clientAddress2Controller,
-                            textAlign: TextAlign.center,
-                            onChanged: (value) {
-                              ref
-                                  .read(clientNotifierProvider.notifier)
-                                  .updateAddress2(value);
-                              bClientChanged = true;
-                            },
-                            decoration: const InputDecoration(
-                                hintText: 'Address 2', labelText: 'Address 2'),
-                          ),
-                          TextField(
-                            textCapitalization: TextCapitalization.words,
-                            keyboardType: TextInputType.text,
-                            controller: clientCityController,
-                            textAlign: TextAlign.center,
-                            onChanged: (value) {
-                              ref
-                                  .read(clientNotifierProvider.notifier)
-                                  .updateCity(value);
-                              bClientChanged = true;
-                            },
-                            decoration: const InputDecoration(
-                                hintText: 'City', labelText: 'City'),
-                          ),
-                          DropdownButton(
-                            value: _currentClientState,
-                            items: _dropDownState,
-                            hint: const Text('Choose Client State'),
-                            onChanged: changedClientDropDownState,
-                          ),
-                          TextField(
-                            inputFormatters: [maskFormatter],
-                            textCapitalization: TextCapitalization.words,
-                            keyboardType: TextInputType.text,
-                            controller: clientCellPhoneController,
-                            textAlign: TextAlign.center,
-                            onChanged: (value) {
-                              ref
-                                  .read(clientNotifierProvider.notifier)
-                                  .updateCellPhone(value);
-                              bClientChanged = true;
-                            },
-                            decoration: const InputDecoration(
-                                hintText: 'Cell Phone',
-                                labelText: 'Cell Phone'),
-                          ),
-                          TextField(
-                            inputFormatters: [maskFormatter],
-                            textCapitalization: TextCapitalization.words,
-                            keyboardType: TextInputType.text,
-                            controller: clientHomePhoneController,
-                            textAlign: TextAlign.center,
-                            onChanged: (value) {
-                              ref
-                                  .read(clientNotifierProvider.notifier)
-                                  .updateHomePhone(value);
-                              bClientChanged = true;
-                            },
-                            decoration: const InputDecoration(
-                                hintText: 'Home Phone',
-                                labelText: 'Home Phone'),
-                          ),
-
-                          /// Hide this row if on the web because they don't work on web
-                          Visibility(
-                            visible: _dontShowOnWeb,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Column(
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.message),
-                                      iconSize: 25,
-                                      color: Colors.blueAccent,
-                                      tooltip: 'Text Client',
-                                      onPressed: () {
-                                        setState(() {
-                                          _launched = _makeCallOrSendText(
-                                              'sms:$_clientCellPhoneNumber');
-                                        });
-                                      },
-                                    ),
-                                    const Text('Text'),
-                                    const SizedBox(
-                                      height: 8.0,
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.add_call),
-                                      iconSize: 25,
-                                      color: Colors.blueAccent,
-                                      tooltip: 'Call Cell',
-                                      onPressed: () {
-                                        setState(() {
-                                          _launched = _makeCallOrSendText(
-                                              'tel:$_clientCellPhoneNumber');
-                                        });
-                                      },
-                                    ),
-                                    const Text('Call Cell'),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.add_call),
-                                      iconSize: 25,
-                                      color: Colors.blueAccent,
-                                      tooltip: 'Call Home',
-                                      onPressed: () {
-                                        setState(() {
-                                          _launched = _makeCallOrSendText(
-                                              'tel:$_clientHomePhoneNumber');
-                                        });
-                                      },
-                                    ),
-                                    const Text('Call Home'),
-                                    const SizedBox(
-                                      height: 8.0,
-                                    ),
-                                  ],
-                                ),
-                              ],
+                          children: [
+                            TextField(
+                              textCapitalization: TextCapitalization.words,
+                              keyboardType: TextInputType.text,
+                              controller: clientFNameController,
+                              textAlign: TextAlign.center,
+                              onChanged: (value) {
+                                ref
+                                    .read(clientNotifierProvider.notifier)
+                                    .updateFName(value);
+                                bClientChanged = true;
+                              },
+                              decoration: const InputDecoration(
+                                  hintText: 'Client First Name',
+                                  labelText: 'Client First Name'),
                             ),
-                          ),
-
-                          TextField(
-                            textCapitalization: TextCapitalization.words,
-                            keyboardType: TextInputType.text,
-                            controller: clientEmailController,
-                            textAlign: TextAlign.center,
-                            onChanged: (value) {
-                              ref
-                                  .read(clientNotifierProvider.notifier)
-                                  .updateEmail(value);
-                              bClientChanged = true;
-                            },
-                            decoration: const InputDecoration(
-                                hintText: 'Email', labelText: 'Email'),
-                          ),
-                          //   ],
-                          // ),
-                        ],
-                      ),
-                    ],
+                            TextField(
+                              textCapitalization: TextCapitalization.words,
+                              keyboardType: TextInputType.text,
+                              controller: clientLNameController,
+                              textAlign: TextAlign.center,
+                              onChanged: (value) {
+                                ref
+                                    .read(clientNotifierProvider.notifier)
+                                    .updateLName(value);
+                                bClientChanged = true;
+                              },
+                              decoration: const InputDecoration(
+                                  hintText: 'Client Last Name',
+                                  labelText: 'Client Last Name'),
+                            ),
+                            TextField(
+                              textCapitalization: TextCapitalization.words,
+                              keyboardType: TextInputType.text,
+                              controller: clientAddress1Controller,
+                              textAlign: TextAlign.center,
+                              onChanged: (value) {
+                                ref
+                                    .read(clientNotifierProvider.notifier)
+                                    .updateAddress1(value);
+                                bClientChanged = true;
+                              },
+                              decoration: const InputDecoration(
+                                  hintText: 'Address 1', labelText: 'Address 1'),
+                            ),
+                            TextField(
+                              textCapitalization: TextCapitalization.words,
+                              keyboardType: TextInputType.text,
+                              controller: clientAddress2Controller,
+                              textAlign: TextAlign.center,
+                              onChanged: (value) {
+                                ref
+                                    .read(clientNotifierProvider.notifier)
+                                    .updateAddress2(value);
+                                bClientChanged = true;
+                              },
+                              decoration: const InputDecoration(
+                                  hintText: 'Address 2', labelText: 'Address 2'),
+                            ),
+                            TextField(
+                              textCapitalization: TextCapitalization.words,
+                              keyboardType: TextInputType.text,
+                              controller: clientCityController,
+                              textAlign: TextAlign.center,
+                              onChanged: (value) {
+                                ref
+                                    .read(clientNotifierProvider.notifier)
+                                    .updateCity(value);
+                                bClientChanged = true;
+                              },
+                              decoration: const InputDecoration(
+                                  hintText: 'City', labelText: 'City'),
+                            ),
+                            DropdownButton(
+                              value: _currentClientState,
+                              items: _dropDownState,
+                              hint: const Text('Choose Client State'),
+                              onChanged: changedClientDropDownState,
+                            ),
+                            TextField(
+                              inputFormatters: [maskFormatter],
+                              textCapitalization: TextCapitalization.words,
+                              keyboardType: TextInputType.text,
+                              controller: clientCellPhoneController,
+                              textAlign: TextAlign.center,
+                              onChanged: (value) {
+                                ref
+                                    .read(clientNotifierProvider.notifier)
+                                    .updateCellPhone(value);
+                                bClientChanged = true;
+                              },
+                              decoration: const InputDecoration(
+                                  hintText: 'Cell Phone',
+                                  labelText: 'Cell Phone'),
+                            ),
+                            TextField(
+                              inputFormatters: [maskFormatter],
+                              textCapitalization: TextCapitalization.words,
+                              keyboardType: TextInputType.text,
+                              controller: clientHomePhoneController,
+                              textAlign: TextAlign.center,
+                              onChanged: (value) {
+                                ref
+                                    .read(clientNotifierProvider.notifier)
+                                    .updateHomePhone(value);
+                                bClientChanged = true;
+                              },
+                              decoration: const InputDecoration(
+                                  hintText: 'Home Phone',
+                                  labelText: 'Home Phone'),
+                            ),
+                    
+                            /// Hide this row if on the web because they don't work on web
+                            Visibility(
+                              visible: _dontShowOnWeb,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Column(
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(Icons.message),
+                                        iconSize: 25,
+                                        color: Colors.blueAccent,
+                                        tooltip: 'Text Client',
+                                        onPressed: () {
+                                          setState(() {
+                                            _launched = _makeCallOrSendText(
+                                                'sms:$_clientCellPhoneNumber');
+                                          });
+                                        },
+                                      ),
+                                      const Text('Text'),
+                                      const SizedBox(
+                                        height: 8.0,
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(Icons.add_call),
+                                        iconSize: 25,
+                                        color: Colors.blueAccent,
+                                        tooltip: 'Call Cell',
+                                        onPressed: () {
+                                          setState(() {
+                                            _launched = _makeCallOrSendText(
+                                                'tel:$_clientCellPhoneNumber');
+                                          });
+                                        },
+                                      ),
+                                      const Text('Call Cell'),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(Icons.add_call),
+                                        iconSize: 25,
+                                        color: Colors.blueAccent,
+                                        tooltip: 'Call Home',
+                                        onPressed: () {
+                                          setState(() {
+                                            _launched = _makeCallOrSendText(
+                                                'tel:$_clientHomePhoneNumber');
+                                          });
+                                        },
+                                      ),
+                                      const Text('Call Home'),
+                                      const SizedBox(
+                                        height: 8.0,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                    
+                            TextField(
+                              textCapitalization: TextCapitalization.words,
+                              keyboardType: TextInputType.text,
+                              controller: clientEmailController,
+                              textAlign: TextAlign.center,
+                              onChanged: (value) {
+                                ref
+                                    .read(clientNotifierProvider.notifier)
+                                    .updateEmail(value);
+                                bClientChanged = true;
+                              },
+                              decoration: const InputDecoration(
+                                  hintText: 'Email', labelText: 'Email'),
+                            ),
+                            //   ],
+                            // ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
 

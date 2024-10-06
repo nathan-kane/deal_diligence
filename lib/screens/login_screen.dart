@@ -41,7 +41,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool showSpinner = false;
   final _auth = FirebaseAuth.instance;
   bool passwordVisible = false;
-  double margins = 0.w;
+  //double margins = 0.w;
 
 /* =========================================================== */
 
@@ -112,11 +112,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     passwordVisible = true;
 
     /// Set the margins for web and mobile
-    if (kIsWeb) {
-      margins = 80.w;
-    } else {
-      margins = 10.w;
-    }
+    // if (kIsWeb) {
+    //   margins = 80.w;
+    // } else {
+    //   margins = 10.w;
+    // }
     //initNotifications();
   }
 
@@ -251,7 +251,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       resizeToAvoidBottomInset: false, // This fixes the keyboard white space
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.sp, vertical: 0.sp),
+          padding: EdgeInsets.symmetric(horizontal: 30.sp, vertical: 0.sp),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -262,7 +262,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.w900,
-                  fontSize: 25.sp,
+                  fontSize: 14.sp,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -270,7 +270,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 height: 50.h,
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: margins),
+                padding: EdgeInsets.symmetric(horizontal: 50.h),
                 color: Colors.white,
                 child: TextField(
                   autofocus: true,
@@ -292,7 +292,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 height: 8.h,
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: margins),
+                padding: EdgeInsets.symmetric(horizontal: 50.h),
                 color: Colors.white,
                 child: TextField(
                   obscureText: passwordVisible,
@@ -325,7 +325,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 height: 20.h,
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: margins),
+                padding: EdgeInsets.symmetric(horizontal: 50.sp),
                 child: ElevatedButton(
                   onPressed: () async {
                     setState(() {
@@ -445,48 +445,57 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                 ),
               ),
-              TextButton(
-                child: const Text(
-                  'Forgot Password',
-                  style: TextStyle(color: Colors.blue),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 50.sp),
+                child: TextButton(
+                  child: const Text(
+                    'Forgot Password',
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const ResetPasswordScreen())),
                 ),
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const ResetPasswordScreen())),
               ),
               SizedBox(
                 height: 70.h,
               ),
-              TextButton(
-                child: const Text(
-                  'New User?  Create Account',
-                  style: TextStyle(color: Colors.blue),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 50.sp),
+                child: TextButton(
+                  child: const Text(
+                    'New User?  Create Account',
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                  // onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: (context) => const AddPaymentViaCard())),
+                  onPressed: () {
+                    ref
+                        .read(globalsNotifierProvider.notifier)
+                        .updatenewUser(true);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const UserRegisterScreen()));
+                  },
                 ),
-                // onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                //     builder: (context) => const AddPaymentViaCard())),
-                onPressed: () {
-                  ref
-                      .read(globalsNotifierProvider.notifier)
-                      .updatenewUser(true);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const UserRegisterScreen()));
-                },
               ),
               SizedBox(
                 height: 40.h,
               ),
               Visibility(
                 visible: !kIsWeb,
-                child: TextButton(
-                  child: const Text(
-                    'Privacy Policy',
-                    style: TextStyle(
-                        //fontSize: 10.sp,
-                        color: Colors.blue,
-                        decoration: TextDecoration.underline),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 50.sp),
+                  child: TextButton(
+                    child: const Text(
+                      'Privacy Policy',
+                      style: TextStyle(
+                          //fontSize: 10.sp,
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline),
+                    ),
+                    onPressed: () {
+                      _launchInBrowser();
+                    },
                   ),
-                  onPressed: () {
-                    _launchInBrowser();
-                  },
                 ),
               ),
             ],

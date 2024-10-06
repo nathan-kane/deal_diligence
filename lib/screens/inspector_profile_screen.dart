@@ -215,15 +215,15 @@ class _InspectorCompanyScreenState
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.sp),
+            padding: EdgeInsets.symmetric(horizontal: 50.sp),
             child: Column(
               //mainAxisAlignment: MainAxisAlignment.center,
               //crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                const Text(
+                Text(
                   'Inspector Company Profile',
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w800,
                   ),
                 ),

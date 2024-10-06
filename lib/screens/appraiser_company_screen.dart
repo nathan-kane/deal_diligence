@@ -206,19 +206,19 @@ class _AppraiserCompanyScreenState
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.sp),
+            padding: EdgeInsets.symmetric(horizontal: 50.sp),
             child: Column(
               //mainAxisAlignment: MainAxisAlignment.center,
               //crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                const Text(
+                Text(
                   'Appraiser Company Profile',
                   style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w800,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 30.sp,),
+                SizedBox(height: 30.h,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: appraiserCompanyNameController,

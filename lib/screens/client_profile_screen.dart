@@ -187,20 +187,20 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.sp),
+            padding: EdgeInsets.symmetric(horizontal: 50.sp),
             child: Column(
               //mainAxisAlignment: MainAxisAlignment.center,
               //crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                const Text(
+                Text(
                   'Client Profile',
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                const SizedBox(
-                  height: 30.0,
+                SizedBox(
+                  height: 30.sp,
                 ),
                 TextField(
                   textCapitalization: TextCapitalization.words,
