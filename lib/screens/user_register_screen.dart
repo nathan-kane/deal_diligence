@@ -95,8 +95,8 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                   'User Registration',
                   style: TextStyle(
                     color: Colors.black,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 30.sp,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12.sp,
                   ),
                 )),
                 SizedBox(height: 96.h,),

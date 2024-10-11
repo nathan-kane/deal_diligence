@@ -332,7 +332,8 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                 Text(
                   'User Profile',
                   style: TextStyle(
-                    fontSize: 14.sp,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 SizedBox(height: 8.h,),

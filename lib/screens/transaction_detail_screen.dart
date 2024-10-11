@@ -915,7 +915,7 @@ class _TransactionDetailScreenState
               children: <Widget>[
                 Text('Transaction Details',
                     style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
                     )),
                 SizedBox(

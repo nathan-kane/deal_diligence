@@ -123,28 +123,22 @@ class _StripePaymentScreenState extends ConsumerState<StripePaymentScreen> {
       try {
         final newUser = await _auth.createUserWithEmailAndPassword(
             email: widget.email, password: widget.password);
-        if (newUser != null) {
-          ref
-              .read(usersNotifierProvider.notifier)
-              .updateuserID(newUser.user!.uid);
-          ref
-              .read(globalsNotifierProvider.notifier)
-              .updateCurrentUserId(newUser.user!.uid);
-          ref
-              .read(usersNotifierProvider.notifier)
-              .updateEmail(newUser.user!.email!);
-          ref.read(globalsNotifierProvider.notifier).updatenewUser(true);
-          ref.read(globalsNotifierProvider.notifier).updatenewCompany(true);
+        ref
+            .read(usersNotifierProvider.notifier)
+            .updateuserID(newUser.user!.uid);
+        ref
+            .read(globalsNotifierProvider.notifier)
+            .updateCurrentUserId(newUser.user!.uid);
+        ref
+            .read(usersNotifierProvider.notifier)
+            .updateEmail(newUser.user!.email!);
+        ref.read(globalsNotifierProvider.notifier).updatenewUser(true);
+        ref.read(globalsNotifierProvider.notifier).updatenewCompany(true);
 
-          /// Send the email verification
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) => const VerifyEmailScreen()));
-        } else {
-          setState(() {
-            registrationFail = true;
-          });
-        }
-        setState(() {
+        /// Send the email verification
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => const VerifyEmailScreen()));
+              setState(() {
           showSpinner = false;
         });
       } on FirebaseAuthException catch (error) {

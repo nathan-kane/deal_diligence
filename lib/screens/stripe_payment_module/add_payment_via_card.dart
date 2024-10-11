@@ -208,7 +208,7 @@ class AddPaymentViaCardState extends ConsumerState<AddPaymentViaCard> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: Colors.blue[200],
-                                  borderRadius: BorderRadius.all(
+                                  borderRadius: const BorderRadius.all(
                                     Radius.circular(8),
                                   ),
                                 ),
@@ -224,13 +224,13 @@ class AddPaymentViaCardState extends ConsumerState<AddPaymentViaCard> {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 20),
+                            const SizedBox(width: 20),
                             GestureDetector(
                               onTap: () {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (builder) => ShowCardList()));
+                                        builder: (builder) => const ShowCardList()));
                               },
                               child: Container(
                                 margin: const EdgeInsets.symmetric(
@@ -239,7 +239,7 @@ class AddPaymentViaCardState extends ConsumerState<AddPaymentViaCard> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: Colors.green[100],
-                                  borderRadius: BorderRadius.all(
+                                  borderRadius: const BorderRadius.all(
                                     Radius.circular(8),
                                   ),
                                 ),
@@ -299,27 +299,21 @@ class AddPaymentViaCardState extends ConsumerState<AddPaymentViaCard> {
         password: widget.password,
       );
 
-      if (newUser != null) {
-        final userNotifier = ref.read(usersNotifierProvider.notifier);
-        final globalsNotifier = ref.read(globalsNotifierProvider.notifier);
+      final userNotifier = ref.read(usersNotifierProvider.notifier);
+      final globalsNotifier = ref.read(globalsNotifierProvider.notifier);
 
-        userNotifier.updateuserID(newUser.user!.uid);
-        userNotifier.updateEmail(newUser.user!.email!);
-        globalsNotifier.updatenewUser(true);
-        globalsNotifier.updatenewCompany(true);
+      userNotifier.updateuserID(newUser.user!.uid);
+      userNotifier.updateEmail(newUser.user!.email!);
+      globalsNotifier.updatenewUser(true);
+      globalsNotifier.updatenewCompany(true);
 
-        // Navigate to VerifyEmailScreen
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const VerifyEmailScreen(),
-          ),
-        );
-      } else {
-        setState(() {
-          registrationFail = true;
-        });
-      }
-
+      // Navigate to VerifyEmailScreen
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const VerifyEmailScreen(),
+        ),
+      );
+    
       // setState(() {
       //   showSpinner = false;
       // });

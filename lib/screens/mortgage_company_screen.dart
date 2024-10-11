@@ -9,7 +9,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/mortgage_company_provider.dart';
-import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:flutter/material.dart';
@@ -212,8 +211,8 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                 Text(
                   'Mortgage Company Profile',
                   style: TextStyle(
-                    fontSize: 30.sp,
-                    fontWeight: FontWeight.w800,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 SizedBox(height: 30.sp,),

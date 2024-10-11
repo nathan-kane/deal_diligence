@@ -181,8 +181,8 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                 Text(
                   'Company Profile',
                   style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w800,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 SizedBox(height: 30.h,),

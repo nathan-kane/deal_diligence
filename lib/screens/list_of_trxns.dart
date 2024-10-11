@@ -65,12 +65,8 @@ class _CompanyDashboardScreenState
     if (numericCurrency.isNotEmpty) {
       double value = double.parse(numericCurrency) / 100;
       String formattedText = currencyFormatter.format(value);
-      if (formattedText != null) {
-        return formattedText;
-      } else {
-        return "\$0.00";
-      }
-    } else {
+      return formattedText;
+        } else {
       return "\$0.00";
     }
   }

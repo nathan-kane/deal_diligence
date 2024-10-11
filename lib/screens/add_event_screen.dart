@@ -167,11 +167,11 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
             padding: EdgeInsets.symmetric(horizontal: 30.sp),
             child: Column(
               children: <Widget>[
-                const Text(
+                Text(
                   'Event',
                   style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w800,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 SizedBox(

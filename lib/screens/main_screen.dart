@@ -86,7 +86,7 @@ class MainScreenState extends ConsumerState<MainScreen> {
     return Scaffold(
       appBar: const CustomAppBar(),
       body: SafeArea(child: Container(child: appScreens[_pageIndex])),
-      drawer: SideDrawer(),
+      drawer: const SideDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
         selectedIconTheme: const IconThemeData(color: Colors.red),
@@ -135,7 +135,7 @@ class MainScreenState extends ConsumerState<MainScreen> {
 /// Side drawer menu items
 ///
 class SideDrawer extends StatelessWidget {
-  SideDrawer({super.key});
+  const SideDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {

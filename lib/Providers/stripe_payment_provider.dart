@@ -21,7 +21,7 @@ import '../screens/stripe_payment_module/model/get_customer_list_response.dart';
 
 class GetStripeNotifier extends StateNotifier<GetStripeState> {
   final StripeRepository apiServices = StripeHttpApiRepository();
-  GetStripeNotifier() : super(const GetStripeState.initial()) {}
+  GetStripeNotifier() : super(const GetStripeState.initial());
   Future<bool> getStripeToken(
       {String? userName,
       String? cardNumber,

@@ -195,8 +195,8 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                 Text(
                   'Client Profile',
                   style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w800,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 SizedBox(

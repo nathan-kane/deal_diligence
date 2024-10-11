@@ -115,7 +115,7 @@ class Events {
       userId: userId ?? this.userId,
       companyId: companyId ?? this.companyId,
       frequency: frequency ?? this.frequency,
-      occurrences: occurences ?? this.occurrences,
+      occurrences: occurences ?? occurrences,
       recurrenceEndDate: recurrenceEndDate ?? this.recurrenceEndDate,
       interval: interval,
       rRule: rRule ?? this.rRule,

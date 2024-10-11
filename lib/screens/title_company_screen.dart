@@ -210,8 +210,8 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
                 Text(
                   'Title Company Profile',
                   style: TextStyle(
-                    fontSize: 30.sp,
-                    fontWeight: FontWeight.w800,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 SizedBox(height: 38.h,),

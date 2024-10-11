@@ -214,7 +214,7 @@ class _AppraiserCompanyScreenState
                 Text(
                   'Appraiser Company Profile',
                   style: TextStyle(
-                    fontSize: 14.sp,
+                    fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

@@ -17,7 +17,9 @@ class CalendarClient {
   static const _scopes = [CalendarApi.calendarScope];
 
   insert(title, eventDate, startTime, endTime) {
-    var clientID;
+    ClientId clientID = ClientId(
+          "394692266013-pj87pfid8p2l955nmua43sd6v3g5aqu3.apps.googleusercontent.com",
+          "");
 
     if (kIsWeb) {
       clientID = ClientId(

@@ -23,18 +23,18 @@ class ShowCardListState extends ConsumerState<ShowCardList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Credit Cards'),
+        title: const Text('My Credit Cards'),
       ),
       body: Consumer(builder: (context, ref, child) {
         final cardList = ref.watch(
             getStripeTokenProvider.select((state) => state.getCardList?.data));
         if (cardList == null) {
-          return Center(
+          return const Center(
               child:
                   CircularProgressIndicator()); // Show loading indicator while fetching data
         }
         if (cardList.isEmpty) {
-          return Center(child: Text('No cards available')); // Handle empty list
+          return const Center(child: Text('No cards available')); // Handle empty list
         }
         return ListView.builder(
           itemCount: cardList.length,
@@ -50,9 +50,9 @@ class ShowCardListState extends ConsumerState<ShowCardList> {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       elevation: 5,
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
       child: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.blue.shade300, Colors.blue.shade900],
@@ -68,20 +68,20 @@ class ShowCardListState extends ConsumerState<ShowCardList> {
               children: [
                 Text(
                   data?.last4 ?? '',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 2.0,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       data?.name ?? 'Unknown',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
                       ),
@@ -90,7 +90,7 @@ class ShowCardListState extends ConsumerState<ShowCardList> {
                 ),
               ],
             ),
-            Spacer(),
+            const Spacer(),
             GestureDetector(
               onTap: () {
                 ref
@@ -104,7 +104,7 @@ class ShowCardListState extends ConsumerState<ShowCardList> {
                 ),
                 decoration: BoxDecoration(
                   color: Colors.green[100],
-                  borderRadius: BorderRadius.all(
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(8),
                   ),
                 ),
