@@ -10,11 +10,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Providers/company_provider.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
-import 'package:deal_diligence/Services/firestore_service.dart';
+//import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/main_screen.dart';
-import 'package:deal_diligence/screens/user_profile_screen.dart';
+//import 'package:deal_diligence/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,7 +36,7 @@ class CompanyScreen extends ConsumerStatefulWidget {
 }
 
 class _CompanyScreenState extends ConsumerState<CompanyScreen> {
-  final _db = FirebaseFirestore.instance;
+  //final _db = FirebaseFirestore.instance;
 
   final companyNameController = TextEditingController();
   final address1Controller = TextEditingController();
@@ -77,12 +77,10 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
   String? email;
   String? website;
   String? _currentCompanyState;
-  String? _currentCompanyName;
+  //String? _currentCompanyName;
 
   getCurrentCompanyProfile() async {
-    if (ref.read(globalsNotifierProvider).companyId == null ||
-        ref.read(globalsNotifierProvider).companyId == "") {
-      ref.read(globalsNotifierProvider.notifier).updatenewCompany(true);
+    if (widget.isNewCompany == true) {
       companyNameController.text = "";
       address1Controller.text = "";
       address2Controller.text = "";
@@ -94,23 +92,19 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
       emailController.text = "";
       websiteController.text = "";
     } else {
-      final DocumentSnapshot currentCompanyProfile = await companyRef
-          .doc(ref.read(globalsNotifierProvider).companyId)
-          .get();
-
-      // existing record
-      // Updates Controllers
-      companyNameController.text = currentCompanyProfile["name"] ?? "";
-      address1Controller.text = currentCompanyProfile['address1'] ?? "";
-      address2Controller.text = currentCompanyProfile['address2'] ?? "";
-      cityController.text = currentCompanyProfile['city'] ?? "";
-      stateController.text = currentCompanyProfile['state'] ?? "";
-      _currentCompanyState = currentCompanyProfile['state'] ?? "";
-      zipController.text = currentCompanyProfile['zipCode'].toString();
-      cellPhoneController.text = currentCompanyProfile['cellPhone'] ?? "";
-      officePhoneController.text = currentCompanyProfile['officePhone'] ?? "";
-      emailController.text = currentCompanyProfile['email'] ?? "";
-      websiteController.text = currentCompanyProfile['website'] ?? "";
+      /// Get current company info from companyNotifierProvider
+      /// 
+      companyNameController.text = ref.read(companyNotifierProvider).companyName ?? "";
+      address1Controller.text = ref.read(companyNotifierProvider).address1 ?? "";
+      address2Controller.text = ref.read(companyNotifierProvider).address2 ?? "";
+      cityController.text = ref.read(companyNotifierProvider).city ?? "";
+      stateController.text = ref.read(companyNotifierProvider).companyState ?? "AZ";
+      _currentCompanyState = ref.read(companyNotifierProvider).companyState ?? "AZ";
+      zipController.text = ref.read(companyNotifierProvider).zipCode.toString();
+      cellPhoneController.text = ref.read(companyNotifierProvider).cellPhone ?? "";
+      officePhoneController.text = ref.read(companyNotifierProvider).officePhone ?? "";
+      emailController.text = ref.read(companyNotifierProvider).email ?? "";
+      websiteController.text = ref.read(companyNotifierProvider).website ?? "";
     }
   }
 
@@ -141,41 +135,41 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
     });
   }
 
-  void changedDropDownCompany(String? selectedCompany) {
-    setState(() {
-      _currentCompanyName = selectedCompany;
-      ref
-          .read(globalsNotifierProvider.notifier)
-          .updatecurrentCompanyName(selectedCompany!);
-    });
-  }
+  // void changedDropDownCompany(String? selectedCompany) {
+  //   setState(() {
+  //     _currentCompanyName = selectedCompany;
+  //     ref.read(companyNotifierProvider.notifier).updateCompanyName(selectedCompany!);
+  //     ref
+  //         .read(globalsNotifierProvider.notifier)
+  //         .updatecurrentCompanyName(selectedCompany!);
+  //   });
+  // }
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (ref.read(globalsNotifierProvider).newCompany == false) {
+    //WidgetsBinding.instance.addPostFrameCallback((_) {
+      //if (widget.isNewCompany == false) {
         getCurrentCompanyProfile();
-      }
-    });
+      //}
+    //});
 
     super.initState();
 
     _dropDownState = getDropDownState();
-    //_currentCompanyState = _dropDownState[0].value;
   }
 
   @override
   Widget build(BuildContext context) {
     // Get the stream of agents created in main.dart
     // final agencyProvider = Provider.of<AgencyProvider>(context);
-    final firestoreService = FirestoreService();
+    //final firestoreService = FirestoreService();
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.sp),
+            padding: EdgeInsets.symmetric(horizontal: 50.sp),
             child: Column(
               children: <Widget>[
                 Text(
@@ -185,77 +179,77 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 30.h,),
-                Text(
-                  'Select your company',
-                  style: TextStyle(
-                    fontSize: 6.sp,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                SizedBox(height: 8.h,),
-                StreamBuilder(
-                    stream: _db.collection('company').snapshots(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (snapshot.data == null) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else {
-                        return DropdownButton<String>(
-                          hint: const Text("Select Company"),
-                          value: _currentCompanyName,
-                          onChanged: changedDropDownCompany,
-                          items: snapshot.data.docs
-                              .map<DropdownMenuItem<String>>((document) {
-                            return DropdownMenuItem<String>(
-                              value: document.id,
-                              child: Text(document.data()['name']),
-                            );
-                          }).toList(),
-                        );
-                      }
-                    }),
-                RoundedButton(
-                  title: 'Link to your company',
-                  colour: Colors.blueAccent,
-                  onPressed: () async {
-                    setState(() {
-                      showSpinner = true;
-                    });
-                    try {
-                      await firestoreService.linkUserToExistingCompany(
-                          _currentCompanyName,
-                          ref.read(globalsNotifierProvider).currentUid!);
-                      ref
-                          .read(globalsNotifierProvider.notifier)
-                          .updatecompanyId(_currentCompanyName!);
-                      final DocumentSnapshot currentCompanyProfile =
-                          await companyRef.doc(_currentCompanyName).get();
-                      ref
-                          .read(globalsNotifierProvider.notifier)
-                          .updatecurrentCompanyState(
-                              currentCompanyProfile.get('state'));
-                      if (!context.mounted) return;
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const UserProfileScreen()));
-                      setState(() {
-                        showSpinner = false;
-                      });
-                    } catch (e) {
-                      // todo: add better error handling
-                      //debugPrint(e);
-                    }
-                  },
-                ),
-                SizedBox(height: 20.h,),
-                Text(
-                  'or add a new company',
-                  style: TextStyle(
-                    fontSize: 6.sp,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+                // SizedBox(height: 30.h,),
+                // Text(
+                //   'Select your company',
+                //   style: TextStyle(
+                //     fontSize: 6.sp,
+                //     fontWeight: FontWeight.w700,
+                //   ),
+                // ),
+                // SizedBox(height: 8.h,),
+                // StreamBuilder(
+                //     stream: _db.collection('company').snapshots(),
+                //     builder: (BuildContext context, AsyncSnapshot snapshot) {
+                //       if (snapshot.data == null) {
+                //         return const Center(
+                //           child: CircularProgressIndicator(),
+                //         );
+                //       } else {
+                //         return DropdownButton<String>(
+                //           hint: const Text("Select Company"),
+                //           value: _currentCompanyName,
+                //           onChanged: changedDropDownCompany,
+                //           items: snapshot.data.docs
+                //               .map<DropdownMenuItem<String>>((document) {
+                //             return DropdownMenuItem<String>(
+                //               value: document.id,
+                //               child: Text(document.data()['name']),
+                //             );
+                //           }).toList(),
+                //         );
+                //       }
+                //     }),
+                // RoundedButton(
+                //   title: 'Link to your company',
+                //   colour: Colors.blueAccent,
+                //   onPressed: () async {
+                //     setState(() {
+                //       showSpinner = true;
+                //     });
+                //     try {
+                //       await firestoreService.linkUserToExistingCompany(
+                //           _currentCompanyName,
+                //           ref.read(globalsNotifierProvider).currentUid!);
+                //       ref
+                //           .read(globalsNotifierProvider.notifier)
+                //           .updatecompanyId(_currentCompanyName!);
+                //       final DocumentSnapshot currentCompanyProfile =
+                //           await companyRef.doc(_currentCompanyName).get();
+                //       ref
+                //           .read(globalsNotifierProvider.notifier)
+                //           .updatecurrentCompanyState(
+                //               currentCompanyProfile.get('state'));
+                //       if (!context.mounted) return;
+                //       Navigator.of(context).push(MaterialPageRoute(
+                //           builder: (context) => const UserProfileScreen()));
+                //       setState(() {
+                //         showSpinner = false;
+                //       });
+                //     } catch (e) {
+                //       // todo: add better error handling
+                //       //debugPrint(e);
+                //     }
+                //   },
+                // ),
+                // SizedBox(height: 20.h,),
+                // Text(
+                //   'or add a new company',
+                //   style: TextStyle(
+                //     fontSize: 6.sp,
+                //     fontWeight: FontWeight.w700,
+                //   ),
+                // ),
                 SizedBox(height: 8.h,),
                 TextField(
                   textCapitalization: TextCapitalization.words,
@@ -399,7 +393,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                 ),
                 SizedBox(height: 8.h,),
                 RoundedButton(
-                  title: 'Save new company',
+                  title: 'Save',
                   colour: Colors.blueAccent,
                   onPressed: () async {
                     setState(() {

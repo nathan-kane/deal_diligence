@@ -7,23 +7,17 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, use_key_in_widget_constructors
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:deal_diligence/Providers/company_provider.dart';
-//import 'dart:io';
-//import 'package:deal_diligence/Providers/company_provider.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/company_screen.dart';
 import 'package:deal_diligence/screens/main_screen.dart';
-//import 'package:deal_diligence/screens/widgets/snackbarwidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-// import 'package:mailer/mailer.dart';
-// import 'package:mailer/smtp_server.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 final usersRef = FirebaseFirestore.instance.collection(('users'));
@@ -87,96 +81,38 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   String? _currentUserState = '';
   String? currentBusinessType = '';
 
-  //String? _currentMlsId;
   String? _selectedCompany; // This is the company assigned to new user
   String? _selectedMls;
 
   getCurrentUserProfile() async {
-    String currentCompanyId = ref.read(globalsNotifierProvider).companyId!;
+    //String currentCompanyId = ref.read(globalsNotifierProvider).companyId!;
 
-    if (ref.read(globalsNotifierProvider).newUser == true) {
+    if (widget.isNewUser == true) {
+      /// This is a new user so you will only have access to their login info
       fNameController.text = ref.read(usersNotifierProvider).fName!;
       lNameController.text = ref.read(usersNotifierProvider).lName!;
       emailController.text = ref.read(usersNotifierProvider).email!;
     } else {
-      final DocumentSnapshot currentUserProfile = await usersRef
-          .doc(ref.read(globalsNotifierProvider).currentUserId)
-          .get();
+      /// This is an existing user so get the info from the db
+      // final DocumentSnapshot currentUserProfile = await usersRef
+      //     .doc(ref.read(globalsNotifierProvider).currentUserId)
+      //     .get();
 
       // existing record
       // Updates Controllers
-      emailController.text = currentUserProfile["email"] ?? "";
-      fNameController.text = currentUserProfile['fName'] ?? "";
-      lNameController.text = currentUserProfile['lName'] ?? "";
-      address1Controller.text = currentUserProfile['address1'] ?? "";
-      address2Controller.text = currentUserProfile['address2'] ?? "";
-      cityController.text = currentUserProfile['city'] ?? "";
-      //stateController.text = currentAgentProfile.data()['state'];
-      _currentUserState = currentUserProfile['state'] ?? "";
-      // if (currentUserProfile.get('state') == "" ||
-      //     currentUserProfile.get('state') == null) {
-      //   //_currentCompanyState = globals.currentAgentState;
-      // } else {
-      //   //_currentCompanyState = currentUserProfile['state'] ?? "";
-      // }
+      emailController.text = ref.read(usersNotifierProvider).email ?? "";
+      fNameController.text = ref.read(usersNotifierProvider).fName ?? "";
+      lNameController.text = ref.read(usersNotifierProvider).lName ?? "";
+      address1Controller.text = ref.read(usersNotifierProvider).address1 ?? "";
+      address2Controller.text = ref.read(usersNotifierProvider).address2 ?? "";
+      cityController.text = ref.read(usersNotifierProvider).city ?? "";
+      _currentUserState = ref.read(usersNotifierProvider).userState ?? "";
 
-      zipController.text = currentUserProfile['zipCode'].toString();
-      cellPhoneController.text = currentUserProfile['cellPhone'] ?? "";
-      officePhoneController.text = currentUserProfile['officePhone'] ?? "";
-      companyController.text = currentUserProfile['company'] ?? "";
-      mlsController.text = currentUserProfile['mls'] ?? "";
-
-      // populate the company provider with the retreived data
-
-      ref
-          .read(usersNotifierProvider.notifier)
-          .updatefName(currentUserProfile['fName']);
-      ref
-          .read(usersNotifierProvider.notifier)
-          .updatelName(currentUserProfile['lName']);
-      ref
-          .read(usersNotifierProvider.notifier)
-          .updateaddress1(currentUserProfile['address1']);
-      ref
-          .read(usersNotifierProvider.notifier)
-          .updateaddress2(currentUserProfile['address2']);
-      ref
-          .read(usersNotifierProvider.notifier)
-          .updateCity(currentUserProfile['city']);
-      ref
-          .read(usersNotifierProvider.notifier)
-          .updateState(currentUserProfile['state']);
-      ref
-          .read(usersNotifierProvider.notifier)
-          .updateZipcode(currentUserProfile['zipCode']);
-      ref
-          .read(usersNotifierProvider.notifier)
-          .updateCellPhone(currentUserProfile['cellPhone']);
-      ref
-          .read(usersNotifierProvider.notifier)
-          .updateOfficePhone(currentUserProfile['officePhone']);
-      ref
-          .read(usersNotifierProvider.notifier)
-          .updateEmail(currentUserProfile['email']);
-      ref
-          .read(usersNotifierProvider.notifier)
-          .updateCompanyId(currentCompanyId);
-      ref
-          .read(usersNotifierProvider.notifier)
-          .updateCompanyName(currentUserProfile['company']);
-      ref
-          .read(usersNotifierProvider.notifier)
-          .updateMlsId(currentUserProfile['mlsId']);
-      ref
-          .read(usersNotifierProvider.notifier)
-          .updateMls(currentUserProfile['mls']);
-
-      // Updates State
-      // Future.delayed(Duration.zero, () {
-      //   final userProvider =
-      //       Provider.of<UserProvider>(context, listen: false);
-      //   userProvider.loadValues(widget.users!);
-      // });
+      zipController.text = ref.read(usersNotifierProvider).zipCode.toString();
+      cellPhoneController.text = ref.read(usersNotifierProvider).cellPhone ?? "";
+      officePhoneController.text = ref.read(usersNotifierProvider).officePhone ?? "";
+      companyController.text = ref.read(usersNotifierProvider).companyId ?? "";
+      mlsController.text = ref.read(usersNotifierProvider).mls ?? "";
     }
   }
 
@@ -258,8 +194,8 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
 
   @override
   void initState() {
-    //if (ref.read(globalsNotifierProvider).newUser == false) {
-    getCurrentUserProfile();
+    //if (widget.isNewUser == false) {
+      getCurrentUserProfile();
     //}
 
     if (ref.read(globalsNotifierProvider).currentUserState == "" ||
@@ -439,15 +375,6 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   ],
                 ),
                 SizedBox(height: 8.h,),
-                // DropdownButton(
-                //   value: _currentUserState,
-                //   items: _dropDownState,
-                //   hint: const Text('Choose Business Type'),
-                //   onChanged: changedDropDownBusinessType,
-                // ),
-                // const SizedBox(
-                //   height: 8.0,
-                // ),
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   controller: address1Controller,

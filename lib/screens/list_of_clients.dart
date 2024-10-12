@@ -10,11 +10,12 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
-import 'package:deal_diligence/constants.dart' as constants;
+//import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/client_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 final FirestoreService firestoreService = FirestoreService();
 
@@ -84,7 +85,14 @@ class _ClientsScreenState extends ConsumerState<ListOfClientsScreen> {
                     : const Text('No Date');
               }),
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: Colors.blueAccent,
+          foregroundColor: Colors.white,
+          label: Text(
+            "Add New",
+            style: TextStyle(fontSize: 6.sp),
+          ),
+          icon: FaIcon(FontAwesomeIcons.plus, size: 6.sp,),
           onPressed: () async {
             setState(() {
               showSpinner = true;
@@ -105,11 +113,6 @@ class _ClientsScreenState extends ConsumerState<ListOfClientsScreen> {
               //debugPrint(e);
             }
           },
-          backgroundColor: constants.kPrimaryColor,
-          child: const Icon(
-            Icons.assignment_turned_in_outlined,
-            color: Colors.blueAccent,
-          ),
         ),
       ),
     );

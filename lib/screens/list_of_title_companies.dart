@@ -13,11 +13,12 @@ import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 //import 'package:get/get.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
-import 'package:deal_diligence/constants.dart' as constants;
+//import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/title_company_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 final FirestoreService firestoreService = FirestoreService();
 
@@ -92,6 +93,7 @@ class _CompanyDashboardScreenState
                                 ),
                               ),
                               trailing: Text(
+                                style: TextStyle(fontSize: 5.sp, fontWeight: FontWeight.bold),
                                   'Primary Contact: ${snapshot.data?.docs[index]['primaryContact'] ?? 'n/a'}'),
                               onTap: () {
                                 //MainScreen.of(context)?.setIndex(2);  // Added this for BottomNavigationBar sync
@@ -116,7 +118,11 @@ class _CompanyDashboardScreenState
                     : const Text('No Date');
               }),
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: Colors.blueAccent,
+          foregroundColor: Colors.white,
+          label: Text("Add New", style: TextStyle(fontSize: 6.sp),),
+          icon: FaIcon(FontAwesomeIcons.plus, size: 6.sp,),
           onPressed: () async {
             setState(() {
               showSpinner = true;
@@ -142,11 +148,6 @@ class _CompanyDashboardScreenState
               //debugPrint(e);
             }
           },
-          backgroundColor: constants.kPrimaryColor,
-          child: const Icon(
-            Icons.assignment_turned_in_outlined,
-            color: Colors.blueAccent,
-          ),
         ),
       ),
     );

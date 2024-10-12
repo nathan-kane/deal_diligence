@@ -37,7 +37,7 @@ class MortgageCompanyScreen extends ConsumerStatefulWidget {
 }
 
 class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
-  final _db = FirebaseFirestore.instance;
+  //final _db = FirebaseFirestore.instance;
 
   final mortgageCompanyNameController = TextEditingController();
   final primaryContactController = TextEditingController();
@@ -81,7 +81,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
   String? email;
   String? website;
   String? _currentMortgageCompanyState;
-  String? _currentMortgageCompanyName;
+  //String? _currentMortgageCompanyName;
 
   getCurrentMortgageCompanyProfile() async {
     if (ref.read(globalsNotifierProvider).companyId == null ||
@@ -168,14 +168,14 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
     });
   }
 
-  void changedDropDownCompany(String? selectedCompany) {
-    setState(() {
-      _currentMortgageCompanyName = selectedCompany;
-      ref
-          .read(globalsNotifierProvider.notifier)
-          .updatecurrentCompanyName(selectedCompany!);
-    });
-  }
+  // void changedDropDownCompany(String? selectedCompany) {
+  //   setState(() {
+  //     _currentMortgageCompanyName = selectedCompany;
+  //     ref
+  //         .read(globalsNotifierProvider.notifier)
+  //         .updatecurrentCompanyName(selectedCompany!);
+  //   });
+  // }
 
   @override
   void initState() {

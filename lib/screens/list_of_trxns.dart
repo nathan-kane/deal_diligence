@@ -133,7 +133,7 @@ class _CompanyDashboardScreenState
                                   ),
                                   trailing: Text(
                                     'MLS#: ${snapshot.data?.docs[index]['mlsNumber'] ?? 'n/a'}\n${snapshot.data?.docs[index]['clientType']}',
-                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 5.sp),
                                   ),
                                   onTap: () {
                                     setGlobals(snapshot.data?.docs[index].id);

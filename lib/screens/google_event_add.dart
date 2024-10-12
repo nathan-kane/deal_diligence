@@ -34,7 +34,7 @@ class CalendarClient {
 
     try {
       clientViaUserConsent(clientID, _scopes, prompt).then((AuthClient client) async {
-        var calendar = CalendarApi(client);
+        //var calendar = CalendarApi(client);
         // calendar.calendarList
         //     .list()
         //     .then((value) => debugPrint("VAL________$value"));
