@@ -109,8 +109,10 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
       _currentUserState = ref.read(usersNotifierProvider).userState ?? "";
 
       zipController.text = ref.read(usersNotifierProvider).zipCode.toString();
-      cellPhoneController.text = ref.read(usersNotifierProvider).cellPhone ?? "";
-      officePhoneController.text = ref.read(usersNotifierProvider).officePhone ?? "";
+      cellPhoneController.text =
+          ref.read(usersNotifierProvider).cellPhone ?? "";
+      officePhoneController.text =
+          ref.read(usersNotifierProvider).officePhone ?? "";
       companyController.text = ref.read(usersNotifierProvider).companyId ?? "";
       mlsController.text = ref.read(usersNotifierProvider).mls ?? "";
     }
@@ -195,7 +197,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   @override
   void initState() {
     //if (widget.isNewUser == false) {
-      getCurrentUserProfile();
+    getCurrentUserProfile();
     //}
 
     if (ref.read(globalsNotifierProvider).currentUserState == "" ||
@@ -256,478 +258,523 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   Widget build(BuildContext context) {
     //final _firestoreService = FirestoreService();
 
-    return Scaffold(
-      //appBar: CustomAppBar(),
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 50.sp),
-            child: Column(
-              children: <Widget>[
-                Text(
-                  'User Profile',
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 8.h,),
-                // Email entry text field
-                TextField(
-                  textCapitalization: TextCapitalization.words,
-                  controller: fNameController,
-                  keyboardType: TextInputType.text,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    // ref.read(usersNotifierProvider.notifier).updatefName(value);
-                    newUser.fName = value;
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'First Name', labelText: 'First Name'),
-                ),
-                SizedBox(height: 8.h,),
-                TextField(
-                  textCapitalization: TextCapitalization.words,
-                  controller: lNameController,
-                  keyboardType: TextInputType.text,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    // ref.read(usersNotifierProvider.notifier).updatelName(value);
-                    newUser.lName = value;
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Last Name', labelText: 'Last Name'),
-                ),
-                SizedBox(height: 8.h,),
-                StreamBuilder<QuerySnapshot>(
-                    // Get a list of available companies to assign the new user to a company
-                    stream: _db.collection('company').snapshots(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      List<DropdownMenuItem<String>> companyItems = [];
-                      if (snapshot.hasData) {
-                        final companyList = snapshot.data.docs;
-                        for (var company in companyList) {
-                          companyItems.add(
-                            DropdownMenuItem(
-                              value: company.id,
-                              child: Text(
-                                company['name'],
+    return ScreenUtilInit(
+      ensureScreenSize: true,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          //appBar: CustomAppBar(),
+          backgroundColor: Colors.white,
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 50.sp),
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      'User Profile',
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(12.r),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    // Email entry text field
+                    TextField(
+                      textCapitalization: TextCapitalization.words,
+                      controller: fNameController,
+                      keyboardType: TextInputType.text,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        // ref.read(usersNotifierProvider.notifier).updatefName(value);
+                        newUser.fName = value;
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'First Name', labelText: 'First Name'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    TextField(
+                      textCapitalization: TextCapitalization.words,
+                      controller: lNameController,
+                      keyboardType: TextInputType.text,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        // ref.read(usersNotifierProvider.notifier).updatelName(value);
+                        newUser.lName = value;
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Last Name', labelText: 'Last Name'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    StreamBuilder<QuerySnapshot>(
+                        // Get a list of available companies to assign the new user to a company
+                        stream: _db.collection('company').snapshots(),
+                        builder: (BuildContext context, AsyncSnapshot snapshot) {
+                          List<DropdownMenuItem<String>> companyItems = [];
+                          if (snapshot.hasData) {
+                            final companyList = snapshot.data.docs;
+                            for (var company in companyList) {
+                              companyItems.add(
+                                DropdownMenuItem(
+                                  value: company.id,
+                                  child: Text(
+                                    company['name'],
+                                  ),
+                                ),
+                              );
+                            }
+                          } else {
+                            return const CircularProgressIndicator();
+                          }
+                          return DropdownButton<String>(
+                            hint: const Text("Select Company"),
+                            value: _selectedCompany,
+                            onChanged: (companyValue) {
+                              setState(() {
+                                _selectedCompany = companyValue;
+                                ref
+                                    .read(globalsNotifierProvider.notifier)
+                                    .updatecompanyId(companyValue!);
+      
+                                /// Put the selected company ID into the new user provider
+                                ref
+                                    .read(usersNotifierProvider.notifier)
+                                    .updateCompanyId(_selectedCompany!);
+                              });
+                              newUser.companyId = companyValue;
+                            },
+                            items: companyItems,
+                          );
+                        }),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.all(20.sp),
+                                child: const Text(
+                                  'Add a Company? ',
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                  ),
+                                ),
                               ),
                             ),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.all(20.sp),
+                                child: Checkbox(
+                                  value: isChecked,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      isChecked = value!;
+                                    });
+                                  },
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    TextField(
+                      textCapitalization: TextCapitalization.words,
+                      controller: address1Controller,
+                      keyboardType: TextInputType.text,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(usersNotifierProvider.notifier)
+                            .updateaddress1(value);
+                        newUser.address1 = value;
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Address 1', labelText: 'Address 1'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    TextField(
+                      textCapitalization: TextCapitalization.words,
+                      controller: address2Controller,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(usersNotifierProvider.notifier)
+                            .updateaddress2(value);
+                        newUser.address2 = value;
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Address 2', labelText: 'Address 2'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    TextField(
+                      textCapitalization: TextCapitalization.words,
+                      controller: cityController,
+                      keyboardType: TextInputType.emailAddress,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        // ref.read(usersNotifierProvider.notifier).updateCity(value);
+                        newUser.city = value;
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'City', labelText: 'City'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    DropdownButton(
+                      value: _currentUserState,
+                      items: _dropDownState,
+                      hint: const Text('Choose State'),
+                      onChanged: changedDropDownState,
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    TextField(
+                      controller: zipController,
+                      keyboardType: TextInputType.number,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(usersNotifierProvider.notifier)
+                            .updateZipcode(value);
+                        newUser.zipCode = value;
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Zip Code', labelText: 'Zip Code'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    TextField(
+                      inputFormatters: [maskFormatter],
+                      controller: cellPhoneController,
+                      keyboardType: TextInputType.phone,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(usersNotifierProvider.notifier)
+                            .updateCellPhone(value);
+                        newUser.cellPhone = value;
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Cell Phone', labelText: 'Cell Phone'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    TextField(
+                      inputFormatters: [maskFormatter],
+                      controller: officePhoneController,
+                      keyboardType: TextInputType.phone,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(usersNotifierProvider.notifier)
+                            .updateOfficePhone(value);
+                        newUser.officePhone = value;
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Office Phone', labelText: 'Office Phone'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    TextField(
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        email = value; // Capture the value entered by the user
+                        newUser.email = value;
+                      },
+                      decoration:
+                          const InputDecoration(hintText: 'Enter your email'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    StreamBuilder(
+                        stream: _db
+                            .collection('mls')
+                            .where('mlsState',
+                                isEqualTo: ref
+                                    .read(globalsNotifierProvider)
+                                    .currentUserState)
+                            .snapshots(),
+                        builder: (BuildContext context, AsyncSnapshot snapshot) {
+                          List<DropdownMenuItem<String>> mlsItems = [];
+                          if (snapshot.hasData) {
+                            final mlsList = snapshot.data.docs;
+                            for (var mls in mlsList) {
+                              mlsItems.add(
+                                DropdownMenuItem(
+                                  value: mls.id,
+                                  child: Text(
+                                    mls['mlsName'],
+                                  ),
+                                ),
+                              );
+                            }
+                          } else {
+                            return const CircularProgressIndicator();
+                          }
+                          return DropdownButton<String>(
+                            hint: const Text("Select MLS"),
+                            value: _selectedMls,
+                            onChanged: (mlsValue) {
+                              newUser.mls = mlsValue;
+                              setState(() {
+                                _selectedMls = mlsValue;
+                                ref
+                                    .read(globalsNotifierProvider.notifier)
+                                    .updatemlsId(mlsValue!);
+      
+                                /// Put the MLS ID in the user provider
+                                ref
+                                    .read(usersNotifierProvider.notifier)
+                                    .updateMlsId(mlsValue);
+      
+                                /// Put the MLS name into the user provider
+                                ref
+                                    .read(usersNotifierProvider.notifier)
+                                    .updateMls(mlsValue);
+                              });
+                            },
+                            items: mlsItems,
                           );
-                        }
-                      } else {
-                        return const CircularProgressIndicator();
-                      }
-                      return DropdownButton<String>(
-                        hint: const Text("Select Company"),
-                        value: _selectedCompany,
-                        onChanged: (companyValue) {
-                          setState(() {
-                            _selectedCompany = companyValue;
-                            ref
-                                .read(globalsNotifierProvider.notifier)
-                                .updatecompanyId(companyValue!);
-
-                            /// Put the selected company ID into the new user provider
+                        }),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    RoundedButton(
+                      title: 'Save',
+                      colour: Colors.blueAccent,
+                      onPressed: () async {
+                        setState(() {
+                          showSpinner = true;
+                        });
+                        try {
+                          /// Populate the provider with data entered in the page
+                          ref
+                              .read(usersNotifierProvider.notifier)
+                              .updatefName(fNameController.value.text);
+                          ref
+                              .read(usersNotifierProvider.notifier)
+                              .updatelName(lNameController.value.text);
+                          ref
+                              .read(usersNotifierProvider.notifier)
+                              .updateaddress1(address1Controller.value.text);
+                          ref
+                              .read(usersNotifierProvider.notifier)
+                              .updateaddress2(address2Controller.value.text);
+                          ref
+                              .read(usersNotifierProvider.notifier)
+                              .updateCity(cityController.value.text);
+                          ref
+                              .read(usersNotifierProvider.notifier)
+                              .updateZipcode(zipController.value.text);
+                          ref
+                              .read(usersNotifierProvider.notifier)
+                              .updateCellPhone(cellPhoneController.value.text);
+                          ref
+                              .read(usersNotifierProvider.notifier)
+                              .updateOfficePhone(
+                                  officePhoneController.value.text);
+                          ref
+                              .read(usersNotifierProvider.notifier)
+                              .updateEmail(emailController.value.text);
+      
+                          /// If the user is NOT a new user then save all the data
+                          /// on the screen to the database
+                          if (ref.read(globalsNotifierProvider).newUser ==
+                              false) {
+                            // Add new user account to Cloud Firestore
+                            try {
+                              /// Send welcome email to new user
+                              UserCredential result =
+                                  await _auth.createUserWithEmailAndPassword(
+                                      email: email, password: "D3@lDiligence");
+      
+                              if (result.user != null) {
+                                final User user = result.user!;
+                                newUser.userId = user.uid;
+                                //return user;
+      
+                                ref.read(usersNotifierProvider.notifier).saveUser(
+                                    ref.read(globalsNotifierProvider),
+                                    newUser,
+                                    false);
+      
+                                // Send email to new user with their default password
+                                /// sendNewUserEmail();
+                              }
+                            } catch (error) {
+                              var e = error as FirebaseAuthException;
+                              debugPrint(e.message!);
+                            }
+      
+                            /// The user has selected an existing company so add it to the provider
                             ref
                                 .read(usersNotifierProvider.notifier)
                                 .updateCompanyId(_selectedCompany!);
-                          });
-                          newUser.companyId = companyValue;
-                        },
-                        items: companyItems,
-                      );
-                    }),
-                SizedBox(height: 8.h,),
-                Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(20.sp),
-                            child: const Text(
-                              'Add a Company? ',
-                              style: TextStyle(
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(20.sp),
-                            child: Checkbox(
-                              value: isChecked,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isChecked = value!;
-                                });
-                              },
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(height: 8.h,),
-                TextField(
-                  textCapitalization: TextCapitalization.words,
-                  controller: address1Controller,
-                  keyboardType: TextInputType.text,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(usersNotifierProvider.notifier)
-                        .updateaddress1(value);
-                    newUser.address1 = value;
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Address 1', labelText: 'Address 1'),
-                ),
-                SizedBox(height: 8.h,),
-                TextField(
-                  textCapitalization: TextCapitalization.words,
-                  controller: address2Controller,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(usersNotifierProvider.notifier)
-                        .updateaddress2(value);
-                    newUser.address2 = value;
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Address 2', labelText: 'Address 2'),
-                ),
-                SizedBox(height: 8.h,),
-                TextField(
-                  textCapitalization: TextCapitalization.words,
-                  controller: cityController,
-                  keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    // ref.read(usersNotifierProvider.notifier).updateCity(value);
-                    newUser.city = value;
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'City', labelText: 'City'),
-                ),
-                SizedBox(height: 8.h,),
-                DropdownButton(
-                  value: _currentUserState,
-                  items: _dropDownState,
-                  hint: const Text('Choose State'),
-                  onChanged: changedDropDownState,
-                ),
-                SizedBox(height: 8.h,),
-                TextField(
-                  controller: zipController,
-                  keyboardType: TextInputType.number,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(usersNotifierProvider.notifier)
-                        .updateZipcode(value);
-                    newUser.zipCode = value;
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Zip Code', labelText: 'Zip Code'),
-                ),
-                SizedBox(height: 8.h,),
-                TextField(
-                  inputFormatters: [maskFormatter],
-                  controller: cellPhoneController,
-                  keyboardType: TextInputType.phone,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(usersNotifierProvider.notifier)
-                        .updateCellPhone(value);
-                    newUser.cellPhone = value;
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Cell Phone', labelText: 'Cell Phone'),
-                ),
-                SizedBox(height: 8.h,),
-                TextField(
-                  inputFormatters: [maskFormatter],
-                  controller: officePhoneController,
-                  keyboardType: TextInputType.phone,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(usersNotifierProvider.notifier)
-                        .updateOfficePhone(value);
-                    newUser.officePhone = value;
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Office Phone', labelText: 'Office Phone'),
-                ),
-                SizedBox(height: 8.h,),
-                TextField(
-                  controller: emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    email = value; // Capture the value entered by the user
-                    newUser.email = value;
-                  },
-                  decoration:
-                      const InputDecoration(hintText: 'Enter your email'),
-                ),
-                SizedBox(height: 8.h,),
-                StreamBuilder(
-                    stream: _db
-                        .collection('mls')
-                        .where('mlsState',
-                            isEqualTo: ref
-                                .read(globalsNotifierProvider)
-                                .currentUserState)
-                        .snapshots(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      List<DropdownMenuItem<String>> mlsItems = [];
-                      if (snapshot.hasData) {
-                        final mlsList = snapshot.data.docs;
-                        for (var mls in mlsList) {
-                          mlsItems.add(
-                            DropdownMenuItem(
-                              value: mls.id,
-                              child: Text(
-                                mls['mlsName'],
-                              ),
-                            ),
-                          );
-                        }
-                      } else {
-                        return const CircularProgressIndicator();
-                      }
-                      return DropdownButton<String>(
-                        hint: const Text("Select MLS"),
-                        value: _selectedMls,
-                        onChanged: (mlsValue) {
-                          newUser.mls = mlsValue;
-                          setState(() {
-                            _selectedMls = mlsValue;
-                            ref
-                                .read(globalsNotifierProvider.notifier)
-                                .updatemlsId(mlsValue!);
-
-                            /// Put the MLS ID in the user provider
-                            ref
-                                .read(usersNotifierProvider.notifier)
-                                .updateMlsId(mlsValue);
-                            /// Put the MLS name into the user provider
-                            ref
-                                .read(usersNotifierProvider.notifier)
-                                .updateMls(mlsValue);
-                          });
-                        },
-                        items: mlsItems,
-                      );
-                    }),
-                SizedBox(height: 8.h,),
-                RoundedButton(
-                  title: 'Save',
-                  colour: Colors.blueAccent,
-                  onPressed: () async {
-                    setState(() {
-                      showSpinner = true;
-                    });
-                    try {
-                      /// Populate the provider with data entered in the page
-                      ref
-                          .read(usersNotifierProvider.notifier)
-                          .updatefName(fNameController.value.text);
-                      ref
-                          .read(usersNotifierProvider.notifier)
-                          .updatelName(lNameController.value.text);
-                      ref
-                          .read(usersNotifierProvider.notifier)
-                          .updateaddress1(address1Controller.value.text);
-                      ref
-                          .read(usersNotifierProvider.notifier)
-                          .updateaddress2(address2Controller.value.text);
-                      ref
-                          .read(usersNotifierProvider.notifier)
-                          .updateCity(cityController.value.text);
-                      ref
-                          .read(usersNotifierProvider.notifier)
-                          .updateZipcode(zipController.value.text);
-                      ref
-                          .read(usersNotifierProvider.notifier)
-                          .updateCellPhone(cellPhoneController.value.text);
-                      ref
-                          .read(usersNotifierProvider.notifier)
-                          .updateOfficePhone(officePhoneController.value.text);
-                      ref
-                          .read(usersNotifierProvider.notifier)
-                          .updateEmail(emailController.value.text);
-
-                      /// If the user is NOT a new user then save all the data
-                      /// on the screen to the database
-                      if (ref.read(globalsNotifierProvider).newUser == false) {
-                        // Add new user account to Cloud Firestore
-                        try {
-                          /// Send welcome email to new user
-                          UserCredential result =
-                              await _auth.createUserWithEmailAndPassword(
-                                  email: email, password: "D3@lDiligence");
-
-                          if (result.user != null) {
-                            final User user = result.user!;
-                            newUser.userId = user.uid;
-                            //return user;
-
+      
+                            /// Save the existing user information to the DB
                             ref.read(usersNotifierProvider.notifier).saveUser(
                                 ref.read(globalsNotifierProvider),
-                                newUser,
+                                ref.read(usersNotifierProvider),
                                 false);
-
-                            // Send email to new user with their default password
-                            /// sendNewUserEmail();
+                          } else {
+                            /// The user wants to create a new company and be associated with it
+                            ref.read(usersNotifierProvider.notifier).saveUser(
+                                //ref.read(companyNotifierProvider),
+                                ref.read(globalsNotifierProvider),
+                                ref.read(usersNotifierProvider),
+                                true);
                           }
-                        } catch (error) {
-                          var e = error as FirebaseAuthException;
-                          debugPrint(e.message!);
-                        }
-
-                        /// The user has selected an existing company so add it to the provider
-                        ref
-                            .read(usersNotifierProvider.notifier)
-                            .updateCompanyId(_selectedCompany!);
-
-                        /// Save the existing user information to the DB
-                        ref.read(usersNotifierProvider.notifier).saveUser(
-                            ref.read(globalsNotifierProvider),
-                            ref.read(usersNotifierProvider),
-                            false);
-                      } else {
-                        /// The user wants to create a new company and be associated with it
-                        ref.read(usersNotifierProvider.notifier).saveUser(
-                            //ref.read(companyNotifierProvider),
-                            ref.read(globalsNotifierProvider),
-                            ref.read(usersNotifierProvider),
-                            true);
-                      }
-
-                      /// check if the user wants to create a new company
-                      if (isChecked) {
-                        /// If the user wants to create a new company then execute this
-                        ref
-                            .read(globalsNotifierProvider.notifier)
-                            .updatenewCompany(true);
-
-                        // ignore: use_build_context_synchronously
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => const CompanyScreen()));
-                      } else {
-                        /// The user has selected an existing company so add it to the provider
-                        ref
-                            .read(usersNotifierProvider.notifier)
-                            .updateCompanyId(_selectedCompany!);
-
-                        /// User is linking to an existing company
-                        ref.read(usersNotifierProvider.notifier).saveUser(
-                            ref.read(globalsNotifierProvider),
-                            ref.read(usersNotifierProvider),
-                            false);
-                        // ignore: use_build_context_synchronously
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => const MainScreen()));
-                      }
-
-                      /// iOS does not support push notifications so this code is not needed for now
-                      // ref.read(usersNotifierProvider.notifier).saveFcmToken(
-                      //     ref.read(globalsNotifierProvider).currentUserId!,
-                      //     '${ref.read(usersNotifierProvider).fName} ${ref.read(usersNotifierProvider).lName!}');
-
-                      setState(() {
-                        showSpinner = false;
-                      });
-                    } catch (e) {
-                      // todo: add better error handling
-                      //debugPrint(e);
-                    }
-                  },
-                ),
-                SizedBox(height: 8.h,),
-
-                // ignore: unnecessary_null_comparison
-                (widget != null)
-                    ? RoundedButton(
-                        title: 'Delete',
-                        colour: Colors.red,
-                        onPressed: () async {
-                          setState(() {
-                            showSpinner = true;
-                          });
-                          try {
-                            ref.read(usersNotifierProvider.notifier).deleteUser(
-                                ref.watch(globalsNotifierProvider).currentUid);
+      
+                          /// check if the user wants to create a new company
+                          if (isChecked) {
+                            /// If the user wants to create a new company then execute this
                             ref
                                 .read(globalsNotifierProvider.notifier)
-                                .updateTargetScreen(2);
-                            Navigator.push(
-                                context,
+                                .updatenewCompany(true);
+      
+                            // ignore: use_build_context_synchronously
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => const CompanyScreen()));
+                          } else {
+                            /// The user has selected an existing company so add it to the provider
+                            ref
+                                .read(usersNotifierProvider.notifier)
+                                .updateCompanyId(_selectedCompany!);
+      
+                            /// User is linking to an existing company
+                            ref.read(usersNotifierProvider.notifier).saveUser(
+                                ref.read(globalsNotifierProvider),
+                                ref.read(usersNotifierProvider),
+                                false);
+                            // ignore: use_build_context_synchronously
+                            Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                     builder: (context) => const MainScreen()));
-                            //Navigator.pushNamed(
-                            //    context, AgentDashboardScreen.id);
-
-                            setState(() {
-                              showSpinner = false;
-                            });
-                          } catch (e) {
-                            // todo: add better error handling
-                            //debugPrint(e);
                           }
-                        },
-                      )
-                    : Container()
-              ],
+      
+                          /// iOS does not support push notifications so this code is not needed for now
+                          // ref.read(usersNotifierProvider.notifier).saveFcmToken(
+                          //     ref.read(globalsNotifierProvider).currentUserId!,
+                          //     '${ref.read(usersNotifierProvider).fName} ${ref.read(usersNotifierProvider).lName!}');
+      
+                          setState(() {
+                            showSpinner = false;
+                          });
+                        } catch (e) {
+                          // todo: add better error handling
+                          //debugPrint(e);
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+      
+                    // ignore: unnecessary_null_comparison
+                    (widget != null)
+                        ? RoundedButton(
+                            title: 'Delete',
+                            colour: Colors.red,
+                            onPressed: () async {
+                              setState(() {
+                                showSpinner = true;
+                              });
+                              try {
+                                ref
+                                    .read(usersNotifierProvider.notifier)
+                                    .deleteUser(ref
+                                        .watch(globalsNotifierProvider)
+                                        .currentUid);
+                                ref
+                                    .read(globalsNotifierProvider.notifier)
+                                    .updateTargetScreen(2);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const MainScreen()));
+                                //Navigator.pushNamed(
+                                //    context, AgentDashboardScreen.id);
+      
+                                setState(() {
+                                  showSpinner = false;
+                                });
+                              } catch (e) {
+                                // todo: add better error handling
+                                //debugPrint(e);
+                              }
+                            },
+                          )
+                        : Container()
+                  ],
+                ),
+              ),
             ),
           ),
+          // floatingActionButton: FloatingActionButton(
+          //   onPressed: () async {
+          //     setState(() {
+          //       showSpinner = true;
+          //     });
+          //     try {
+          //       ref.read(usersNotifierProvider.notifier).saveUser(
+          //           //ref.read(companyNotifierProvider),
+          //           ref.read(globalsNotifierProvider).companyId,
+          //           ref.read(usersNotifierProvider).userId);
+          //       ref.read(globalsNotifierProvider.notifier).updatetargetScreen(0);
+          //       ref.read(usersNotifierProvider.notifier).saveFcmToken(
+          //           ref.read(globalsNotifierProvider).currentUserId!,
+          //           '${ref.read(usersNotifierProvider).fName} ${ref.read(usersNotifierProvider).lName!}');
+      
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //           builder: (context) => const MainScreen(),
+          //         ),
+          //       );
+          //       setState(() {
+          //         showSpinner = false;
+          //       });
+          //     } catch (e) {
+          //       // todo: add better error handling
+          //       //debugPrint(e);
+          //     }
+          //   },
+          //   backgroundColor: constants.kPrimaryColor,
+          //   child: const Icon(
+          //     Icons.assignment_turned_in_outlined,
+          //     color: Colors.blueAccent,
+          //   ),
+          // ),
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () async {
-      //     setState(() {
-      //       showSpinner = true;
-      //     });
-      //     try {
-      //       ref.read(usersNotifierProvider.notifier).saveUser(
-      //           //ref.read(companyNotifierProvider),
-      //           ref.read(globalsNotifierProvider).companyId,
-      //           ref.read(usersNotifierProvider).userId);
-      //       ref.read(globalsNotifierProvider.notifier).updatetargetScreen(0);
-      //       ref.read(usersNotifierProvider.notifier).saveFcmToken(
-      //           ref.read(globalsNotifierProvider).currentUserId!,
-      //           '${ref.read(usersNotifierProvider).fName} ${ref.read(usersNotifierProvider).lName!}');
-
-      //       Navigator.push(
-      //         context,
-      //         MaterialPageRoute(
-      //           builder: (context) => const MainScreen(),
-      //         ),
-      //       );
-      //       setState(() {
-      //         showSpinner = false;
-      //       });
-      //     } catch (e) {
-      //       // todo: add better error handling
-      //       //debugPrint(e);
-      //     }
-      //   },
-      //   backgroundColor: constants.kPrimaryColor,
-      //   child: const Icon(
-      //     Icons.assignment_turned_in_outlined,
-      //     color: Colors.blueAccent,
-      //   ),
-      // ),
     );
   }
 }

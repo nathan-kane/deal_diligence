@@ -32,87 +32,99 @@ class _ClientsScreenState extends ConsumerState<ListOfClientsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        //appBar: CustomAppBar(),
-        body: SafeArea(
-          child: FutureBuilder<QuerySnapshot?>(
-              future: FirebaseFirestore.instance.collection('client').get(),
-              builder: (context, snapshot) {
-                return snapshot.hasData
-                    ? ListView.builder(
-                        itemCount: snapshot.data?.size,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 30.sp),
-                            child: ListTile(
-                              isThreeLine: true,
-                              title: Row(
-                                children: [
-                                  Text(
-                                    'Client: ${snapshot.data?.docs[index]['fName'] ?? 'n/a'} ${snapshot.data?.docs[index]['lName'] ?? 'n/a'}',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                        color: Colors.blueAccent),
-                                  ),
-                                ],
-                              ),
-                              subtitle: Text.rich(
-                                TextSpan(
-                                  text:
-                                      '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
-                                      '${snapshot.data?.docs[index]['clientState'] ?? 'n/a'}',
+    return ScreenUtilInit(
+      ensureScreenSize: true,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          //appBar: CustomAppBar(),
+          body: SafeArea(
+            child: FutureBuilder<QuerySnapshot?>(
+                future: FirebaseFirestore.instance.collection('client').get(),
+                builder: (context, snapshot) {
+                  return snapshot.hasData
+                      ? ListView.builder(
+                          itemCount: snapshot.data?.size,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 50.sp),
+                              child: ListTile(
+                                isThreeLine: true,
+                                title: Row(
+                                  children: [
+                                    Text(
+                                      'Client: ${snapshot.data?.docs[index]['fName'] ?? 'n/a'} ${snapshot.data?.docs[index]['lName'] ?? 'n/a'}',
+                                      style: TextStyle(
+                                          fontSize: 5.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blueAccent),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              trailing: Text(
-                                  'Cell Phone: ${snapshot.data?.docs[index]['cellPhone'] ?? 'n/a'}'),
-                              onTap: () {
-                                //MainScreen.of(context)?.setIndex(2);  // Added this for BottomNavigationBar sync
-                                String? clientId =
-                                    snapshot.data?.docs[index].id;
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ClientProfileScreen(false, clientId),
+                                subtitle: Text.rich(
+                                  // style: TextStyle(
+                                  //     fontSize: 8.sp),
+                                  TextSpan(
+                                    style: TextStyle(fontSize: 5.sp),
+                                    text:
+                                        '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
+                                        '${snapshot.data?.docs[index]['clientState'] ?? 'n/a'}',
                                   ),
-                                );
-                              },
-                            ),
-                          );
-                        },
-                      )
-                    : const Text('No Date');
-              }),
-        ),
-        floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: Colors.blueAccent,
-          foregroundColor: Colors.white,
-          label: Text(
-            "Add New",
-            style: TextStyle(fontSize: 6.sp),
+                                ),
+                                trailing: Text(
+                                    style: TextStyle(
+                                        fontSize: 5.sp),
+                                    'Cell Phone: ${snapshot.data?.docs[index]['cellPhone'] ?? 'n/a'}'),
+                                onTap: () {
+                                  //MainScreen.of(context)?.setIndex(2);  // Added this for BottomNavigationBar sync
+                                  String? clientId =
+                                      snapshot.data?.docs[index].id;
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ClientProfileScreen(false, clientId),
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                        )
+                      : const Text('No Date');
+                }),
           ),
-          icon: FaIcon(FontAwesomeIcons.plus, size: 6.sp,),
-          onPressed: () async {
-            setState(() {
-              showSpinner = true;
-            });
-            try {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ClientProfileScreen(true),
-                ),
-              );
+          floatingActionButton: FloatingActionButton.extended(
+            backgroundColor: Colors.blueAccent,
+            foregroundColor: Colors.white,
+            label: Text(
+              "Add New",
+              style: TextStyle(fontSize: ScreenUtil().setSp(6.r)),
+            ),
+            icon: FaIcon(
+              FontAwesomeIcons.plus,
+              size: 6.sp,
+            ),
+            onPressed: () async {
               setState(() {
-                showSpinner = false;
+                showSpinner = true;
               });
-            } catch (e) {
-              // todo: add better error handling
-              //debugPrint(e);
-            }
-          },
+              try {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ClientProfileScreen(true),
+                  ),
+                );
+                setState(() {
+                  showSpinner = false;
+                });
+              } catch (e) {
+                // todo: add better error handling
+                //debugPrint(e);
+              }
+            },
+          ),
         ),
       ),
     );

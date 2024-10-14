@@ -73,96 +73,99 @@ class _CompanyDashboardScreenState
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: SafeArea(
-          child: FutureBuilder<QuerySnapshot?>(
-            future: FirebaseFirestore.instance
-                .collection('company')
-                .doc(ref.read(usersNotifierProvider).companyId)
-                .collection('trxns')
-                .where("trxnStatus", isNotEqualTo: "Archived")
-                .get(),
-            builder: (context, snapshot) {
-              return snapshot.hasData
-                  ? ListView.builder(
-                      itemCount: snapshot.data?.size,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.all(10.sp),
-                          child: FutureBuilder<String?>(
-                            future: GetClientName(
-                                snapshot.data?.docs[index]['clientId']),
-                            builder: (context, clientSnapshot) {
-                              if (clientSnapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const CircularProgressIndicator();
-                              }
-                              if (clientSnapshot.hasData) {
-                                return ListTile(
-                                  isThreeLine: true,
-                                  title: Row(
-                                    children: [
-                                      Text(
-                                        // Replace 'INSERT CLIENT NAME HERE' with retrieved client name
-                                        clientSnapshot.data!,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(255, 4, 93, 248)),
-                                      ),
-                                    ],
-                                  ),
-                                  subtitle: Text.rich(
-                                    TextSpan(
-                                      style: const TextStyle(fontWeight: FontWeight.bold),
-                                      text:
-                                          '${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
-                                          '${snapshot.data?.docs[index]['propertyCity'] ?? 'n/a'}, '
-                                          '${snapshot.data?.docs[index]['propertyState'] ?? 'n/a'}',
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text:
-                                              '\nPrice: ${_formatCurrency(snapshot.data?.docs[index]['contractPrice']) ?? 'n/a'}\nStatus: ${snapshot.data?.docs[index]['trxnStatus'] ?? 'n/a'}',
+    return ScreenUtilInit(
+      ensureScreenSize: true,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          body: SafeArea(
+            child: FutureBuilder<QuerySnapshot?>(
+              future: FirebaseFirestore.instance
+                  .collection('company')
+                  .doc(ref.read(usersNotifierProvider).companyId)
+                  .collection('trxns')
+                  .where("trxnStatus", isNotEqualTo: "Archived")
+                  .get(),
+              builder: (context, snapshot) {
+                return snapshot.hasData
+                    ? ListView.builder(
+                        itemCount: snapshot.data?.size,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.all(10.sp),
+                            child: FutureBuilder<String?>(
+                              future: GetClientName(
+                                  snapshot.data?.docs[index]['clientId']),
+                              builder: (context, clientSnapshot) {
+                                if (clientSnapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const CircularProgressIndicator();
+                                }
+                                if (clientSnapshot.hasData) {
+                                  return ListTile(
+                                    isThreeLine: true,
+                                    title: Row(
+                                      children: [
+                                        Text(
+                                          // Replace 'INSERT CLIENT NAME HERE' with retrieved client name
+                                          clientSnapshot.data!,
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.black),
-                                        )
+                                              color: Color.fromARGB(255, 4, 93, 248)),
+                                        ),
                                       ],
                                     ),
-                                  ),
-                                  trailing: Text(
-                                    'MLS#: ${snapshot.data?.docs[index]['mlsNumber'] ?? 'n/a'}\n${snapshot.data?.docs[index]['clientType']}',
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 5.sp),
-                                  ),
-                                  onTap: () {
-                                    setGlobals(snapshot.data?.docs[index].id);
-
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const TransactionDetailScreen(
-                                                false, false),
+                                    subtitle: Text.rich(
+                                      TextSpan(
+                                        style: const TextStyle(fontWeight: FontWeight.bold),
+                                        text:
+                                            '${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
+                                            '${snapshot.data?.docs[index]['propertyCity'] ?? 'n/a'}, '
+                                            '${snapshot.data?.docs[index]['propertyState'] ?? 'n/a'}',
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text:
+                                                '\nPrice: ${_formatCurrency(snapshot.data?.docs[index]['contractPrice']) ?? 'n/a'}\nStatus: ${snapshot.data?.docs[index]['trxnStatus'] ?? 'n/a'}',
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black),
+                                          )
+                                        ],
                                       ),
-                                    );
-                                  },
-                                );
-                              } else {
-                                return const Text(
-                                  'No Client Available',
-                                  //style: TextStyle(fontSize: 7.sp),
-                                );
-                              }
-                            },
-                          ),
-                        );
-                      },
-                    )
-                  : const Text(
-                      'No Transaction Data',
-                      //style: TextStyle(fontSize: 7.sp),
-                    );
-            },
+                                    ),
+                                    trailing: Text(
+                                      'MLS#: ${snapshot.data?.docs[index]['mlsNumber'] ?? 'n/a'}\n${snapshot.data?.docs[index]['clientType']}',
+                                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: ScreenUtil().setSp(5.r)),
+                                    ),
+                                    onTap: () {
+                                      setGlobals(snapshot.data?.docs[index].id);
+      
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const TransactionDetailScreen(
+                                                  false, false),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  return const Text(
+                                    'No Client Available',
+                                    //style: TextStyle(fontSize: 7.sp),
+                                  );
+                                }
+                              },
+                            ),
+                          );
+                        },
+                      )
+                    : const Text(
+                        'No Transaction Data',
+                        //style: TextStyle(fontSize: 7.sp),
+                      );
+              },
+            ),
           ),
         ),
       ),

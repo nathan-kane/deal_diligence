@@ -245,260 +245,276 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     String errorMessage = "";
     //final globalVars = ref.watch(globalsNotifierProvider);
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: const CustomAppBar(),
-      resizeToAvoidBottomInset: false, // This fixes the keyboard white space
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30.sp, vertical: 0.sp),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Text(
-                'User Login',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12.sp,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                height: 50.h,
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 50.h),
-                color: Colors.white,
-                child: TextField(
-                  autofocus: true,
-                  keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: const Color.fromARGB(255, 255, 237, 211),
-                    border: InputBorder.none,
-                    hintText: 'Email',
-                    errorText: loginFail ? 'incorrect email' : null,
-                  ),
-                  onChanged: (value) {
-                    email = value;
-                  },
-                ),
-              ),
-              SizedBox(
-                height: 8.h,
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 50.h),
-                color: Colors.white,
-                child: TextField(
-                  obscureText: passwordVisible,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    password = value;
-                  },
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: const Color.fromARGB(255, 255, 237, 211),
-                    border: InputBorder.none,
-                    hintText: 'Password',
-                    errorText: loginFail ? 'incorrect passwowrd' : null,
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(
-                          () {
-                            passwordVisible = !passwordVisible;
-                          },
-                        );
-                      },
-                      icon: Icon(passwordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 50.sp),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    setState(() {
-                      showSpinner = true;
-                    });
-                    try {
-                      UserCredential userCredential =
-                          await _auth.signInWithEmailAndPassword(
-                              email: email, password: password);
-
-                      if (userCredential != null) {
-                        // Set the global state
-                        ref
-                            .read(globalsNotifierProvider.notifier)
-                            .updatecurrentUid(_auth.currentUser!.uid);
-                        ref
-                            .read(globalsNotifierProvider.notifier)
-                            .updateCurrentUserId(_auth.currentUser!.uid);
-                        ref
-                            .read(globalsNotifierProvider.notifier)
-                            .updatecurrentUEmail(_auth.currentUser!.email);
-
-                        await getCurrentUserName();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const MainScreen()),
-                        );
-                      } else {
-                        setState(() {
-                          loginFail = true;
-                        });
-                      }
-                      setState(() {
-                        showSpinner = false;
-                      });
-                    } catch (error) {
-                      if (error is FirebaseAuthException) {
-                        //} on FirebaseAuthException catch (error) {
-                        switch (error.code) {
-                          case "ERROR_INVALID_EMAIL":
-                          case "invalid-email":
-                            errorMessage =
-                                "Your email address appears to be malformed.";
-                            break;
-                          case "invalid-credential":
-                            errorMessage =
-                                "Wrong email or password. Please try again";
-                            break;
-                          case "email-already-in-use":
-                            errorMessage = "Email is already in use.";
-                            break;
-                          case "ERROR_WRONG_PASSWORD":
-                          case "wrong-password":
-                            errorMessage = "Your password is wrong.";
-                            break;
-                          case "ERROR_USER_NOT_FOUND":
-                          case "user-not-found":
-                            errorMessage =
-                                "User with this email doesn't exist.";
-                            break;
-                          case "ERROR_USER_DISABLED":
-                          case "user-disabled":
-                            errorMessage =
-                                "User with this email has been disabled.";
-                            break;
-                          case "ERROR_TOO_MANY_REQUESTS":
-                          case "too-many-requests":
-                            errorMessage =
-                                "Too many requests. Try again later.";
-                            break;
-                          case "ERROR_OPERATION_NOT_ALLOWED":
-                          case "operation-not-allowed":
-                            errorMessage =
-                                "Signing in with Email and Password is not enabled.";
-                            break;
-                          default:
-                            errorMessage =
-                                "An undefined Error happened. Please try again.";
-                        }
-                      } else {
-                        errorMessage = error.toString();
-                      }
-
-                      if (errorMessage != "") {
-                        ScaffoldMessenger.of(context).showSnackBar((SnackBar(
-                          content: Center(
-                            child: Text(
-                              errorMessage,
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  //fontSize: 11.sp,
-                                  fontWeight: FontWeight.w900),
-                            ),
-                          ),
-                          behavior: SnackBarBehavior.floating,
-                          margin: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).size.height - 100,
-                            left: 20.sp,
-                            right: 20.sp,
-                          ),
-                          backgroundColor: Colors.redAccent,
-                        )));
-                      }
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  child: const Text(
-                    "Login",
+    return ScreenUtilInit(
+      ensureScreenSize: true,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: const CustomAppBar(),
+          resizeToAvoidBottomInset:
+              false, // This fixes the keyboard white space
+          body: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 50.0.r),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Text(
+                    'User Login',
                     style: TextStyle(
-                        fontWeight: FontWeight.w900, color: Colors.black),
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 50.sp),
-                child: TextButton(
-                  child: const Text(
-                    'Forgot Password',
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const ResetPasswordScreen())),
-                ),
-              ),
-              SizedBox(
-                height: 70.h,
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 50.sp),
-                child: TextButton(
-                  child: const Text(
-                    'New User?  Create Account',
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                  // onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                  //     builder: (context) => const AddPaymentViaCard())),
-                  onPressed: () {
-                    ref
-                        .read(globalsNotifierProvider.notifier)
-                        .updatenewUser(true);
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const UserRegisterScreen()));
-                  },
-                ),
-              ),
-              SizedBox(
-                height: 40.h,
-              ),
-              Visibility(
-                visible: !kIsWeb,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 50.sp),
-                  child: TextButton(
-                    child: const Text(
-                      'Privacy Policy',
-                      style: TextStyle(
-                          //fontSize: 10.sp,
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline),
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: ScreenUtil().setSp(14.r),
                     ),
-                    onPressed: () {
-                      _launchInBrowser();
-                    },
+                    textAlign: TextAlign.center,
                   ),
-                ),
+                  SizedBox(
+                    height: 50.r,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 200.r),
+                    color: Colors.white,
+                    child: TextField(
+                      style: TextStyle(fontSize: 6.sp),
+                      autofocus: true,
+                      keyboardType: TextInputType.emailAddress,
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: const Color.fromARGB(255, 255, 237, 211),
+                        border: InputBorder.none,
+                        hintText: 'Email',
+                        errorText: loginFail ? 'incorrect email' : null,
+                      ),
+                      onChanged: (value) {
+                        email = value;
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8.r,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 200.r),
+                    color: Colors.white,
+                    child: TextField(
+                      style: TextStyle(fontSize: 6.sp),
+                      obscureText: passwordVisible,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        password = value;
+                      },
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: const Color.fromARGB(255, 255, 237, 211),
+                        border: InputBorder.none,
+                        hintText: 'Password',
+                        errorText: loginFail ? 'incorrect passwowrd' : null,
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(
+                              () {
+                                passwordVisible = !passwordVisible;
+                              },
+                            );
+                          },
+                          icon: Icon(passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50.r,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 200.r),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        setState(() {
+                          showSpinner = true;
+                        });
+                        try {
+                          UserCredential userCredential =
+                              await _auth.signInWithEmailAndPassword(
+                                  email: email, password: password);
+
+                          if (userCredential != null) {
+                            // Set the global state
+                            ref
+                                .read(globalsNotifierProvider.notifier)
+                                .updatecurrentUid(_auth.currentUser!.uid);
+                            ref
+                                .read(globalsNotifierProvider.notifier)
+                                .updateCurrentUserId(_auth.currentUser!.uid);
+                            ref
+                                .read(globalsNotifierProvider.notifier)
+                                .updatecurrentUEmail(_auth.currentUser!.email);
+
+                            await getCurrentUserName();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const MainScreen()),
+                            );
+                          } else {
+                            setState(() {
+                              loginFail = true;
+                            });
+                          }
+                          setState(() {
+                            showSpinner = false;
+                          });
+                        } catch (error) {
+                          if (error is FirebaseAuthException) {
+                            //} on FirebaseAuthException catch (error) {
+                            switch (error.code) {
+                              case "ERROR_INVALID_EMAIL":
+                              case "invalid-email":
+                                errorMessage =
+                                    "Your email address appears to be malformed.";
+                                break;
+                              case "invalid-credential":
+                                errorMessage =
+                                    "Wrong email or password. Please try again";
+                                break;
+                              case "email-already-in-use":
+                                errorMessage = "Email is already in use.";
+                                break;
+                              case "ERROR_WRONG_PASSWORD":
+                              case "wrong-password":
+                                errorMessage = "Your password is wrong.";
+                                break;
+                              case "ERROR_USER_NOT_FOUND":
+                              case "user-not-found":
+                                errorMessage =
+                                    "User with this email doesn't exist.";
+                                break;
+                              case "ERROR_USER_DISABLED":
+                              case "user-disabled":
+                                errorMessage =
+                                    "User with this email has been disabled.";
+                                break;
+                              case "ERROR_TOO_MANY_REQUESTS":
+                              case "too-many-requests":
+                                errorMessage =
+                                    "Too many requests. Try again later.";
+                                break;
+                              case "ERROR_OPERATION_NOT_ALLOWED":
+                              case "operation-not-allowed":
+                                errorMessage =
+                                    "Signing in with Email and Password is not enabled.";
+                                break;
+                              default:
+                                errorMessage =
+                                    "An undefined Error happened. Please try again.";
+                            }
+                          } else {
+                            errorMessage = error.toString();
+                          }
+
+                          if (errorMessage != "") {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar((SnackBar(
+                              content: Center(
+                                child: Text(
+                                  errorMessage,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      //fontSize: 11.sp,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              margin: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).size.height - 100,
+                                left: 20.r,
+                                right: 20.r,
+                              ),
+                              backgroundColor: Colors.redAccent,
+                            )));
+                          }
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.orange,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: Text(
+                        "Login",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: ScreenUtil().setSp(8.r),
+                            color: Colors.black),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 50.r,),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20.r),
+                    child: TextButton(
+                      child: Text(
+                        'Forgot Password',
+                        style: TextStyle(color: Colors.blue, fontSize: 6.sp),
+                      ),
+                      onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const ResetPasswordScreen())),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20.r),
+                    child: TextButton(
+                      child: Text(
+                        'New User?  Create Account',
+                        style: TextStyle(color: Colors.blue, fontSize: 6.sp),
+                      ),
+                      // onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      //     builder: (context) => const AddPaymentViaCard())),
+                      onPressed: () {
+                        ref
+                            .read(globalsNotifierProvider.notifier)
+                            .updatenewUser(true);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const UserRegisterScreen()));
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15.h,
+                  ),
+                  Visibility(
+                    visible: !kIsWeb,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20.sp),
+                      child: TextButton(
+                        child: Text(
+                          'Privacy Policy',
+                          style: TextStyle(
+                              fontSize: 6.sp,
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline),
+                        ),
+                        onPressed: () {
+                          _launchInBrowser();
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

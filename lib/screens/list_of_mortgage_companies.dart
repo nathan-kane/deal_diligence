@@ -47,108 +47,113 @@ class _CompanyDashboardScreenState
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        //appBar: CustomAppBar(),
-        body: SafeArea(
-          child: FutureBuilder<QuerySnapshot?>(
-              future: FirebaseFirestore.instance
-                  .collection('mortgageCompany')
-                  .get(),
-
-              builder: (context, snapshot) {
-                return snapshot.hasData
-                    ? ListView.builder(
-                        itemCount: snapshot.data?.size,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 30.sp),
-                            child: ListTile(
-                              isThreeLine: true,
-                              title: Row(
-                                children: [
-                                  Text(
-                                    '${snapshot.data?.docs[index]['mortgageCompanyName'] ?? 'n/a'}',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                        color: Colors.blueAccent),
-                                  ),
-                                ],
-                              ),
-                              subtitle: Text.rich(
-                                TextSpan(
-                                  text:
-                                      //'${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
-                                      '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
-                                      '${snapshot.data?.docs[index]['mortgageCompanyState'] ?? 'n/a'}',
-                                  // children: <TextSpan>[
-                                  //   TextSpan(
-                                  //     text:
-                                  //         '\nPrice: ${snapshot.data?.docs[index]['contractPrice'] ?? 'n/a'}\nStatus: ${snapshot.data?.docs[index]['trxnStatus'] ?? 'n/a'}',
-                                  //     style: const TextStyle(
-                                  //         fontWeight: FontWeight.w900,
-                                  //         color: Colors.blueGrey),
-                                  //   )
-                                  // ],
+    return ScreenUtilInit(
+      ensureScreenSize: true,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          //appBar: CustomAppBar(),
+          body: SafeArea(
+            child: FutureBuilder<QuerySnapshot?>(
+                future: FirebaseFirestore.instance
+                    .collection('mortgageCompany')
+                    .get(),
+                builder: (context, snapshot) {
+                  return snapshot.hasData
+                      ? ListView.builder(
+                          itemCount: snapshot.data?.size,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 50.sp),
+                              child: ListTile(
+                                isThreeLine: true,
+                                title: Row(
+                                  children: [
+                                    Text(
+                                      '${snapshot.data?.docs[index]['mortgageCompanyName'] ?? 'n/a'}',
+                                      style: TextStyle(
+                                          fontSize: 5.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blueAccent),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              trailing: Text(
-                                style: TextStyle(fontSize: 5.sp, fontWeight: FontWeight.bold),
-                                  'Primary Contact: ${snapshot.data?.docs[index]['primaryContact'] ?? 'n/a'}'),
-                              onTap: () {
-                                //MainScreen.of(context)?.setIndex(2);  // Added this for BottomNavigationBar sync
-                                String? mortgageCompanyId =
-                                    snapshot.data?.docs[index].id;
-                                //setGlobals(snapshot.data?.docs[index].id);
-                                // ref
-                                //     .read(globalsNotifierProvider.notifier)
-                                //     .updatecurrentTrxnId(
-                                //         snapshot.data?.docs[index].id);
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => MortgageCompanyScreen(
-                                        false, mortgageCompanyId),
+                                subtitle: Text.rich(
+                                  TextSpan(
+                                    style: TextStyle(
+                                        fontSize: 5.sp),
+                                    text:
+                                        //'${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
+                                        '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
+                                        '${snapshot.data?.docs[index]['mortgageCompanyState'] ?? 'n/a'}',
                                   ),
-                                );
-                              },
-                            ),
-                          );
-                        },
-                      )
-                    : const Text('No Date');
-              }),
-        ),
-        floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: Colors.blueAccent,
-          foregroundColor: Colors.white,
-          label: Text("Add New", style: TextStyle(fontSize: 6.sp),),
-          icon: FaIcon(FontAwesomeIcons.plus, size: 6.sp,),
-          onPressed: () async {
-            setState(() {
-              showSpinner = true;
-            });
-            try {
-              // ref.read(trxnNotifierProvider.notifier).saveTrxn(
-              //     ref.read(trxnNotifierProvider),
-              //     ref.read(globalsNotifierProvider).companyId!,
-              //     widget.newTrxn!);
-              // ref.read(globalsNotifierProvider.notifier).updatetargetScreen(0);
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const MortgageCompanyScreen(true),
-                ),
-              );
+                                ),
+                                trailing: Text(
+                                    style: TextStyle(
+                                        fontSize: 5.sp,
+                                        fontWeight: FontWeight.bold),
+                                    'Primary Contact: ${snapshot.data?.docs[index]['primaryContact'] ?? 'n/a'}'),
+                                onTap: () {
+                                  //MainScreen.of(context)?.setIndex(2);  // Added this for BottomNavigationBar sync
+                                  String? mortgageCompanyId =
+                                      snapshot.data?.docs[index].id;
+                                  //setGlobals(snapshot.data?.docs[index].id);
+                                  // ref
+                                  //     .read(globalsNotifierProvider.notifier)
+                                  //     .updatecurrentTrxnId(
+                                  //         snapshot.data?.docs[index].id);
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          MortgageCompanyScreen(
+                                              false, mortgageCompanyId),
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                        )
+                      : const Text('No Date');
+                }),
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            backgroundColor: Colors.blueAccent,
+            foregroundColor: Colors.white,
+            label: Text(
+              "Add New",
+              style: TextStyle(fontSize: ScreenUtil().setSp(6.r)),
+            ),
+            icon: FaIcon(
+              FontAwesomeIcons.plus,
+              size: 6.sp,
+            ),
+            onPressed: () async {
               setState(() {
-                showSpinner = false;
+                showSpinner = true;
               });
-            } catch (e) {
-              // todo: add better error handling
-              //debugPrint(e);
-            }
-          },
+              try {
+                // ref.read(trxnNotifierProvider.notifier).saveTrxn(
+                //     ref.read(trxnNotifierProvider),
+                //     ref.read(globalsNotifierProvider).companyId!,
+                //     widget.newTrxn!);
+                // ref.read(globalsNotifierProvider.notifier).updatetargetScreen(0);
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MortgageCompanyScreen(true),
+                  ),
+                );
+                setState(() {
+                  showSpinner = false;
+                });
+              } catch (e) {
+                // todo: add better error handling
+                //debugPrint(e);
+              }
+            },
+          ),
         ),
       ),
     );

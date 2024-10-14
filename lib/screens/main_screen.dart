@@ -14,6 +14,7 @@ import 'package:deal_diligence/screens/list_of_mortgage_companies.dart';
 import 'package:deal_diligence/screens/list_of_title_companies.dart';
 import 'package:deal_diligence/screens/login_screen.dart';
 import 'package:deal_diligence/screens/mortgage_calculator.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:deal_diligence/screens/privacy_policy_screen.dart';
@@ -83,43 +84,50 @@ class MainScreenState extends ConsumerState<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(),
-      body: SafeArea(child: Container(child: appScreens[_pageIndex])),
-      drawer: const SideDrawer(),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        selectedIconTheme: const IconThemeData(color: Colors.red),
-        selectedItemColor: Colors.red,
-        unselectedItemColor: Colors.black45,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _pageIndex,
-        onTap: (value) {
-          setState(() {
-            _pageIndex = value;
-          });
-          if (value == 3) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const UserProfileScreen(false)));
-          }
-        },
+    return ScreenUtilInit(
+      ensureScreenSize: true,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          appBar: const CustomAppBar(),
+          body: SafeArea(child: Container(child: appScreens[_pageIndex])),
+          drawer: const SideDrawer(),
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: Colors.white,
+            selectedIconTheme: const IconThemeData(color: Colors.red),
+            selectedItemColor: Colors.red,
+            unselectedItemColor: Colors.black45,
+            type: BottomNavigationBarType.fixed,
+            currentIndex: _pageIndex,
+            onTap: (value) {
+              setState(() {
+                _pageIndex = value;
+              });
+              if (value == 3) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const UserProfileScreen(false)));
+              }
+            },
 
-        ///
-        /// Bottom Navigation Bar items
-        ///
-        items: const [
-          BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.house), label: "Home"),
-          BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.fileInvoiceDollar), label: "Trxn"),
-          BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.calendar), label: "Calendar"),
-          BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.person), label: "User Profile"),
-          BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
-        ],
+            ///
+            /// Bottom Navigation Bar items
+            ///
+            items: const [
+              BottomNavigationBarItem(
+                  icon: FaIcon(FontAwesomeIcons.house), label: "Home"),
+              BottomNavigationBarItem(
+                  icon: FaIcon(FontAwesomeIcons.fileInvoiceDollar),
+                  label: "Trxn"),
+              BottomNavigationBarItem(
+                  icon: FaIcon(FontAwesomeIcons.calendar), label: "Calendar"),
+              BottomNavigationBarItem(
+                  icon: FaIcon(FontAwesomeIcons.person), label: "User Profile"),
+              BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -307,8 +315,7 @@ class SideDrawer extends StatelessWidget {
                 title: const Text(
                   'Privacy Policy',
                   style: TextStyle(
-                      color: Colors.blue,
-                      decoration: TextDecoration.underline),
+                      color: Colors.blue, decoration: TextDecoration.underline),
                 ),
                 onTap: () {
                   if (kIsWeb) {
@@ -319,8 +326,7 @@ class SideDrawer extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                const PrivacyPolicyScreen()));
+                            builder: (context) => const PrivacyPolicyScreen()));
                   }
                 },
               ),

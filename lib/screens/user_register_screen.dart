@@ -77,115 +77,141 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      //appBar: CustomAppBar(),
-      body: SafeArea(
-        child: ModalProgressHUD(
-          inAsyncCall: showSpinner,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.sp),
-            // Set the logo below
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Center(
-                    child: Text(
-                  'User Registration',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12.sp,
-                  ),
-                )),
-                SizedBox(height: 96.h,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return ScreenUtilInit(
+      ensureScreenSize: true,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: Colors.white,
+          //appBar: CustomAppBar(),
+          body: SafeArea(
+            child: ModalProgressHUD(
+              inAsyncCall: showSpinner,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30.sp),
+                // Set the logo below
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Expanded(child: TextField(
-                      textCapitalization: TextCapitalization.words,
-                      keyboardType: TextInputType.name,
+                    Center(
+                        child: Text(
+                      'User Registration',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: ScreenUtil().setSp(12.r),
+                      ),
+                    )),
+                    SizedBox(
+                      height: 96.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Expanded(
+                          child: TextField(
+                            textCapitalization: TextCapitalization.words,
+                            keyboardType: TextInputType.name,
+                            textAlign: TextAlign.center,
+                            onChanged: (value) {
+                              fName =
+                                  value; // Capture the value entered by the user
+                            },
+                            decoration:
+                                const InputDecoration(hintText: 'First Name'),
+                          ),
+                        ),
+                        Expanded(
+                          child: TextField(
+                            textCapitalization: TextCapitalization.words,
+                            keyboardType: TextInputType.name,
+                            textAlign: TextAlign.center,
+                            onChanged: (value) {
+                              lName =
+                                  value; // Capture the value entered by the user
+                            },
+                            decoration:
+                                const InputDecoration(hintText: 'Last Name'),
+                          ),
+                        )
+                      ],
+                    ),
+
+                    TextField(
+                      keyboardType: TextInputType.emailAddress,
                       textAlign: TextAlign.center,
                       onChanged: (value) {
-                        fName = value; // Capture the value entered by the user
+                        email = value; // Capture the value entered by the user
                       },
-                      decoration: const InputDecoration(hintText: 'First Name'),
-                    ),),
-                    Expanded(child: TextField(
-                      textCapitalization: TextCapitalization.words,
-                      keyboardType: TextInputType.name,
+                      decoration:
+                          const InputDecoration(hintText: 'Enter your email'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    TextField(
+                      obscureText: true,
                       textAlign: TextAlign.center,
                       onChanged: (value) {
-                        lName = value; // Capture the value entered by the user
+                        password =
+                            value; // Capture the value entered by the user
                       },
-                      decoration: const InputDecoration(hintText: 'Last Name'),
-                    ),)
-                    
+                      decoration: const InputDecoration(
+                          hintText: 'Enter a new password'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    // Center(
+                    //   child: DropdownButton(
+                    //     value: _currentUserState,
+                    //     items: _dropDownState,
+                    //     hint: const Text('Choose State'),
+                    //     onChanged: changedDropDownState,
+                    //   ),
+                    // ),
+                    // const SizedBox(
+                    //   height: 24.0,
+                    // ),
+                    TextButton(
+                      child: Text(
+                        'Register',
+                        style: TextStyle(fontSize: ScreenUtil().setSp(8.r), color: Colors.blue),
+                      ),
+                      onPressed: () async {
+                        setState(() {
+                          showSpinner = true;
+                        });
+
+                        /// The actual registration takes place in the StripePaymentScreen file
+
+                        ref
+                            .read(usersNotifierProvider.notifier)
+                            .updatefName(fName);
+                        ref
+                            .read(usersNotifierProvider.notifier)
+                            .updatelName(lName);
+                        ref
+                            .read(usersNotifierProvider.notifier)
+                            .updateEmail(email);
+
+                        ref
+                            .read(globalsNotifierProvider.notifier)
+                            .updatenewUser(true);
+
+                        // Setup payments
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) =>
+                                StripePaymentScreen(email, password)));
+                        setState(() {
+                          showSpinner = false;
+                        });
+                      },
+                    ),
                   ],
                 ),
-
-                TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    email = value; // Capture the value entered by the user
-                  },
-                  decoration:
-                      const InputDecoration(hintText: 'Enter your email'),
-                ),
-                SizedBox(height: 8.h,),
-                TextField(
-                  obscureText: true,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    password = value; // Capture the value entered by the user
-                  },
-                  decoration:
-                      const InputDecoration(hintText: 'Enter a new password'),
-                ),
-                SizedBox(height: 8.h,),
-                // Center(
-                //   child: DropdownButton(
-                //     value: _currentUserState,
-                //     items: _dropDownState,
-                //     hint: const Text('Choose State'),
-                //     onChanged: changedDropDownState,
-                //   ),
-                // ),
-                // const SizedBox(
-                //   height: 24.0,
-                // ),
-                TextButton(
-                  child: Text(
-                    'Register',
-                    style: TextStyle(fontSize: 15.sp, color: Colors.blue),
-                  ),
-                  onPressed: () async {
-                    setState(() {
-                      showSpinner = true;
-                    });
-
-                    /// The actual registration takes place in the StripePaymentScreen file
-
-                    ref.read(usersNotifierProvider.notifier).updatefName(fName);
-                    ref.read(usersNotifierProvider.notifier).updatelName(lName);
-                    ref.read(usersNotifierProvider.notifier).updateEmail(email);
-
-                    ref
-                        .read(globalsNotifierProvider.notifier)
-                        .updatenewUser(true);
-
-                    // Setup payments
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) =>
-                            StripePaymentScreen(email, password)));
-                    setState(() {
-                      showSpinner = false;
-                    });
-                  },
-                ),
-              ],
+              ),
             ),
           ),
         ),

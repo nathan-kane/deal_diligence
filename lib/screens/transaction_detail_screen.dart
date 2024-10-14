@@ -902,1748 +902,1785 @@ class _TransactionDetailScreenState
 
     setVisibility();
 
-    return Scaffold(
-      //appBar: CustomAppBar(),
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: false, // This fixes the keyboard white space
-      body: SafeArea(
-        child: SingleChildScrollView(
-          reverse: true,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 50.sp),
-            child: Column(
-              children: <Widget>[
-                Text('Transaction Details',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                    )),
-                SizedBox(
-                  height: 30.sp,
-                ),
-                const Text(
-                  'Select User',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                SizedBox(
-                  height: 8.sp,
-                ),
-                Container(
-                  /* Populate the Agent dropdown only if
-                       there is an agency to associate the agent with.
-                     */
-                  child: _currentCompany != null && _currentCompany != ""
-                      ? StreamBuilder(
-                          stream: _db
-                              .collection('users')
-                              .where('companyId', isEqualTo: _currentCompany)
-                              .snapshots(),
-                          builder:
-                              (BuildContext context, AsyncSnapshot snapshot) {
-                            List<DropdownMenuItem<String>> userItems = [];
-                            userItems.add(
-                              const DropdownMenuItem<String>(
-                                value: 'Select User',
-                                child: Text('Select User'),
-                              ),
-                            );
-                            if (snapshot.hasData) {
-                              final userList = snapshot.data.docs;
-                              for (var user in userList) {
+    return ScreenUtilInit(
+      ensureScreenSize: true,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          //appBar: CustomAppBar(),
+          backgroundColor: Colors.white,
+          resizeToAvoidBottomInset:
+              false, // This fixes the keyboard white space
+          body: SafeArea(
+            child: SingleChildScrollView(
+              reverse: true,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 50.sp),
+                child: Column(
+                  children: <Widget>[
+                    Text('Transaction Details',
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(12.r),
+                          fontWeight: FontWeight.bold,
+                        )),
+                    SizedBox(
+                      height: 30.sp,
+                    ),
+                    const Text(
+                      'Select User',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 8.sp,
+                    ),
+                    Container(
+                      /* Populate the Agent dropdown only if
+                           there is an agency to associate the agent with.
+                         */
+                      child: _currentCompany != null && _currentCompany != ""
+                          ? StreamBuilder(
+                              stream: _db
+                                  .collection('users')
+                                  .where('companyId',
+                                      isEqualTo: _currentCompany)
+                                  .snapshots(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                List<DropdownMenuItem<String>> userItems = [];
                                 userItems.add(
-                                  DropdownMenuItem(
-                                    value: user.id,
+                                  const DropdownMenuItem<String>(
+                                    value: 'Select User',
+                                    child: Text('Select User'),
+                                  ),
+                                );
+                                if (snapshot.hasData) {
+                                  final userList = snapshot.data.docs;
+                                  for (var user in userList) {
+                                    userItems.add(
+                                      DropdownMenuItem(
+                                        value: user.id,
+                                        child: Text(
+                                          user['fName'] + '' + user['lName'],
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                } else {
+                                  return const CircularProgressIndicator();
+                                }
+                                return DropdownButton<String>(
+                                  hint: const Text("Select User"),
+                                  value: _selectedUser,
+                                  onChanged: (userValue) {
+                                    setState(() {
+                                      _selectedUser = userValue;
+                                      ref
+                                          .read(
+                                              globalsNotifierProvider.notifier)
+                                          .updateCurrentUserId(userValue!);
+                                    });
+                                  },
+                                  items: userItems,
+                                );
+                              })
+                          : const Text('No users yet'),
+                    ),
+                    SizedBox(
+                      height: 30.sp,
+                    ),
+
+                    /// Display the client information in a collapsible panel
+                    Card(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 30.sp),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          //mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ExpansionTile(
+                              subtitle: Text(
+                                  '${clientFNameController.text} ${clientLNameController.text}'),
+                              title: Text(
+                                'Client Information',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: ScreenUtil().setSp(8.r)),
+                              ),
+                              children: [
+                                TextField(
+                                  textCapitalization: TextCapitalization.words,
+                                  keyboardType: TextInputType.text,
+                                  controller: clientFNameController,
+                                  textAlign: TextAlign.center,
+                                  onChanged: (value) {
+                                    ref
+                                        .read(clientNotifierProvider.notifier)
+                                        .updateFName(value);
+                                    bClientChanged = true;
+                                  },
+                                  decoration: const InputDecoration(
+                                      hintText: 'Client First Name',
+                                      labelText: 'Client First Name'),
+                                ),
+                                TextField(
+                                  textCapitalization: TextCapitalization.words,
+                                  keyboardType: TextInputType.text,
+                                  controller: clientLNameController,
+                                  textAlign: TextAlign.center,
+                                  onChanged: (value) {
+                                    ref
+                                        .read(clientNotifierProvider.notifier)
+                                        .updateLName(value);
+                                    bClientChanged = true;
+                                  },
+                                  decoration: const InputDecoration(
+                                      hintText: 'Client Last Name',
+                                      labelText: 'Client Last Name'),
+                                ),
+                                TextField(
+                                  textCapitalization: TextCapitalization.words,
+                                  keyboardType: TextInputType.text,
+                                  controller: clientAddress1Controller,
+                                  textAlign: TextAlign.center,
+                                  onChanged: (value) {
+                                    ref
+                                        .read(clientNotifierProvider.notifier)
+                                        .updateAddress1(value);
+                                    bClientChanged = true;
+                                  },
+                                  decoration: const InputDecoration(
+                                      hintText: 'Address 1',
+                                      labelText: 'Address 1'),
+                                ),
+                                TextField(
+                                  textCapitalization: TextCapitalization.words,
+                                  keyboardType: TextInputType.text,
+                                  controller: clientAddress2Controller,
+                                  textAlign: TextAlign.center,
+                                  onChanged: (value) {
+                                    ref
+                                        .read(clientNotifierProvider.notifier)
+                                        .updateAddress2(value);
+                                    bClientChanged = true;
+                                  },
+                                  decoration: const InputDecoration(
+                                      hintText: 'Address 2',
+                                      labelText: 'Address 2'),
+                                ),
+                                TextField(
+                                  textCapitalization: TextCapitalization.words,
+                                  keyboardType: TextInputType.text,
+                                  controller: clientCityController,
+                                  textAlign: TextAlign.center,
+                                  onChanged: (value) {
+                                    ref
+                                        .read(clientNotifierProvider.notifier)
+                                        .updateCity(value);
+                                    bClientChanged = true;
+                                  },
+                                  decoration: const InputDecoration(
+                                      hintText: 'City', labelText: 'City'),
+                                ),
+                                DropdownButton(
+                                  value: _currentClientState,
+                                  items: _dropDownState,
+                                  hint: const Text('Choose Client State'),
+                                  onChanged: changedClientDropDownState,
+                                ),
+                                TextField(
+                                  inputFormatters: [maskFormatter],
+                                  textCapitalization: TextCapitalization.words,
+                                  keyboardType: TextInputType.text,
+                                  controller: clientCellPhoneController,
+                                  textAlign: TextAlign.center,
+                                  onChanged: (value) {
+                                    ref
+                                        .read(clientNotifierProvider.notifier)
+                                        .updateCellPhone(value);
+                                    bClientChanged = true;
+                                  },
+                                  decoration: const InputDecoration(
+                                      hintText: 'Cell Phone',
+                                      labelText: 'Cell Phone'),
+                                ),
+                                TextField(
+                                  inputFormatters: [maskFormatter],
+                                  textCapitalization: TextCapitalization.words,
+                                  keyboardType: TextInputType.text,
+                                  controller: clientHomePhoneController,
+                                  textAlign: TextAlign.center,
+                                  onChanged: (value) {
+                                    ref
+                                        .read(clientNotifierProvider.notifier)
+                                        .updateHomePhone(value);
+                                    bClientChanged = true;
+                                  },
+                                  decoration: const InputDecoration(
+                                      hintText: 'Home Phone',
+                                      labelText: 'Home Phone'),
+                                ),
+
+                                /// Hide this row if on the web because they don't work on web
+                                Visibility(
+                                  visible: _dontShowOnWeb,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Column(
+                                        children: [
+                                          IconButton(
+                                            icon: const Icon(Icons.message),
+                                            iconSize: 25,
+                                            color: Colors.blueAccent,
+                                            tooltip: 'Text Client',
+                                            onPressed: () {
+                                              setState(() {
+                                                _launched = _makeCallOrSendText(
+                                                    'sms:$_clientCellPhoneNumber');
+                                              });
+                                            },
+                                          ),
+                                          const Text('Text'),
+                                          const SizedBox(
+                                            height: 8.0,
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          IconButton(
+                                            icon: const Icon(Icons.add_call),
+                                            iconSize: 25,
+                                            color: Colors.blueAccent,
+                                            tooltip: 'Call Cell',
+                                            onPressed: () {
+                                              setState(() {
+                                                _launched = _makeCallOrSendText(
+                                                    'tel:$_clientCellPhoneNumber');
+                                              });
+                                            },
+                                          ),
+                                          const Text('Call Cell'),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          IconButton(
+                                            icon: const Icon(Icons.add_call),
+                                            iconSize: 25,
+                                            color: Colors.blueAccent,
+                                            tooltip: 'Call Home',
+                                            onPressed: () {
+                                              setState(() {
+                                                _launched = _makeCallOrSendText(
+                                                    'tel:$_clientHomePhoneNumber');
+                                              });
+                                            },
+                                          ),
+                                          const Text('Call Home'),
+                                          const SizedBox(
+                                            height: 8.0,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                                TextField(
+                                  textCapitalization: TextCapitalization.words,
+                                  keyboardType: TextInputType.text,
+                                  controller: clientEmailController,
+                                  textAlign: TextAlign.center,
+                                  onChanged: (value) {
+                                    ref
+                                        .read(clientNotifierProvider.notifier)
+                                        .updateEmail(value);
+                                    bClientChanged = true;
+                                  },
+                                  decoration: const InputDecoration(
+                                      hintText: 'Email', labelText: 'Email'),
+                                ),
+                                //   ],
+                                // ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(
+                      height: 30,
+                    ),
+
+                    /// //////////////////////////////////////
+                    DropdownButton(
+                      value: _currentClientType,
+                      items: _dropdownClientType,
+                      hint: const Text('Choose Client Type'),
+                      onChanged: changedDropDownClientType,
+                    ),
+
+                    /// ////////////////////////////////////////
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    TextField(
+                      textCapitalization: TextCapitalization.words,
+                      keyboardType: TextInputType.text,
+                      controller: propertyAddressController,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(trxnNotifierProvider.notifier)
+                            .updatePropertyAddress(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Property Address',
+                          labelText: 'Property Address'),
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    TextField(
+                      textCapitalization: TextCapitalization.words,
+                      keyboardType: TextInputType.text,
+                      controller: propertyCityController,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(trxnNotifierProvider.notifier)
+                            .updatePropertyCity(value); //, loggedInUid);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Property City',
+                          labelText: 'Property City'),
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    DropdownButton<String>(
+                      //icon: const Icon(Icons.add_to_home_screen),
+                      value: _currentPropertyState,
+                      items: _dropDownState,
+                      hint: const Text('Choose State'),
+                      onChanged: changedDropDownState,
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    TextField(
+                      keyboardType: TextInputType.number,
+                      controller: propertyZipCodeController,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(trxnNotifierProvider.notifier)
+                            .updatePropertyZipCode(value); //, loggedInUid);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Property Zip Code',
+                          labelText: 'Property Zip Code'),
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    TextField(
+                      keyboardType: TextInputType.number,
+                      controller: mlsNumberController,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(trxnNotifierProvider.notifier)
+                            .updateMlsNumber(value); //, loggedInUid);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Property MLS #',
+                          labelText: 'Property MLS #'),
+                    ),
+                    Visibility(
+                      visible: _hasMLSNumber,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Column(
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.water_damage),
+                                iconSize: 25,
+                                color: Colors.blueAccent,
+                                tooltip: 'View Property',
+                                onPressed: () {
+                                  setState(() {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            PropertyWebViewScreenContainer(
+                                                '$_mlsSearchLink$_propertyMLSNbr'),
+                                        //PropertyWebViewScreenContainer('https://www.utahrealestate.com/$_propertyMLSNbr'),
+                                      ),
+                                    );
+                                  });
+                                },
+                              ),
+                              const Text('View Property'),
+                              const SizedBox(
+                                height: 8.0,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    TextField(
+                      keyboardType: TextInputType.datetime,
+                      textAlign: TextAlign.center,
+                      controller: contractDateController,
+                      onTap: () async {
+                        DateTime? _datePicked = await (showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2020),
+                            lastDate: DateTime(2040)));
+                        if (!context.mounted) return;
+                        if (_date != null &&
+                            _datePicked != null &&
+                            _date != _datePicked) {
+                          // Add time to the calendar event
+                          TimeOfDay? _timePicked = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.now(),
+                          );
+                          DateTime tempTime = DateFormat("hh:mm").parse(
+                              '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
+                          var timeFormat = DateFormat("h:mm a");
+                          setState(() {
+                            contractDateController.text =
+                                '${DateFormat("EE  MM-dd-yyyy").format(_datePicked)} ${timeFormat.format(tempTime)}';
+                            ref
+                                .read(trxnNotifierProvider.notifier)
+                                .updateContractDate(_datePicked.toString());
+                            _selectedDate = _datePicked;
+
+                            bContractDate = true;
+                            eventDatePicked = DateTime(
+                              _datePicked.year,
+                              _datePicked.month,
+                              _datePicked.day,
+                              _timePicked.hour,
+                              _timePicked.minute,
+                            );
+                            contractDatePicked = DateTime(
+                              _datePicked.year,
+                              _datePicked.month,
+                              _datePicked.day,
+                              _timePicked.hour,
+                              _timePicked.minute,
+                            );
+                          });
+                        }
+                      },
+                      onChanged: (value) {
+                        ref
+                            .read(trxnNotifierProvider.notifier)
+                            .updateContractDate(value);
+                      },
+                      decoration: const InputDecoration(
+                        hintText: 'Contract Date',
+                        labelText: 'Contract Date',
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    TextField(
+                      keyboardType: TextInputType.number,
+                      controller: contractPriceController,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(trxnNotifierProvider.notifier)
+                            .updateContractPrice(value); //, loggedInUid);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Contract Price',
+                          labelText: 'Contract Price'),
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    Visibility(
+                      visible: _hasContractPrice,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Column(
+                            children: [
+                              TextButton(
+                                child: Text(
+                                  '3% Commission: ${_formatCurrency(strCommission)}',
+                                  style: TextStyle(fontSize: ScreenUtil().setSp(8.r)),
+                                ),
+                                onPressed: () {
+                                  CommissionCalculatorPopup
+                                      .showCommissionCalculator(
+                                          context,
+                                          double.parse(
+                                              contractPriceController.text));
+                                },
+                              ),
+                              const SizedBox(
+                                height: 8.0,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    TextField(
+                      keyboardType: TextInputType.text,
+                      controller: sellerDisclosure24aController,
+                      textAlign: TextAlign.center,
+                      onTap: () async {
+                        DateTime? _datePicked = await (showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2020),
+                            lastDate: DateTime(2040)));
+                        if (!context.mounted) return;
+
+                        if (_date != null && _date != _datePicked) {
+                          TimeOfDay? _timePicked = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.now(),
+                          );
+                          DateTime tempTime = DateFormat("hh:mm").parse(
+                              '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
+                          var timeFormat = DateFormat("h:mm a");
+                          setState(() {
+                            sellerDisclosure24aController.text =
+                                '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
+                            ref
+                                .read(trxnNotifierProvider.notifier)
+                                .updateSellerDisclosure24a(
+                                    _datePicked.toString());
+                            _selectedDate = _datePicked;
+                          });
+                          bTwoFourASellerDisclosureDeadline = true;
+                          eventDatePicked = DateTime(
+                            _datePicked!.year,
+                            _datePicked.month,
+                            _datePicked.day,
+                            _timePicked.hour,
+                            _timePicked.minute,
+                          );
+                          sellerDisclosureDatePicked = DateTime(
+                            _datePicked.year,
+                            _datePicked.month,
+                            _datePicked.day,
+                            _timePicked.hour,
+                            _timePicked.minute,
+                          );
+                        }
+                      },
+                      onChanged: (value) {
+                        bTwoFourASellerDisclosureDeadline = true;
+                        ref
+                            .read(trxnNotifierProvider.notifier)
+                            .updateSellerDisclosure24a(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: '24a. Seller Disclosures Deadline',
+                          labelText: '24a. Seller Disclosures Deadline'),
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    TextField(
+                      keyboardType: TextInputType.text,
+                      controller: dueDiligence24bController,
+                      textAlign: TextAlign.center,
+                      onTap: () async {
+                        DateTime? _datePicked = await (showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2020),
+                            lastDate: DateTime(2040)));
+                        if (!context.mounted) return;
+
+                        if (_date != null && _date != _datePicked) {
+                          TimeOfDay? _timePicked = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.now(),
+                          );
+                          DateTime tempTime = DateFormat("hh:mm").parse(
+                              '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
+                          var timeFormat = DateFormat("h:mm a");
+                          setState(() {
+                            dueDiligence24bController.text =
+                                '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
+                            ref
+                                .read(trxnNotifierProvider.notifier)
+                                .updateDueDiligence24b(_datePicked.toString());
+                            _selectedDate = _datePicked;
+                          });
+                          bTwoFourBDueDiligenceDeadline = true;
+                          eventDatePicked = DateTime(
+                            _datePicked!.year,
+                            _datePicked.month,
+                            _datePicked.day,
+                            _timePicked.hour,
+                            _timePicked.minute,
+                          );
+                          dueDilienceDatePicked = DateTime(
+                            _datePicked.year,
+                            _datePicked.month,
+                            _datePicked.day,
+                            _timePicked.hour,
+                            _timePicked.minute,
+                          );
+                        }
+                      },
+                      onChanged: (value) {
+                        ref
+                            .read(trxnNotifierProvider.notifier)
+                            .updateDueDiligence24b(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: '24b. Due Diligence Deadline',
+                          labelText: '24b. Due Diligence Deadline'),
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    TextField(
+                      keyboardType: TextInputType.text,
+                      controller: financing2cController,
+                      textAlign: TextAlign.center,
+                      onTap: () async {
+                        DateTime? _datePicked = await (showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2020),
+                            lastDate: DateTime(2040)));
+                        if (!context.mounted) return;
+
+                        if (_date != null && _date != _datePicked) {
+                          TimeOfDay? _timePicked = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.now(),
+                          );
+                          DateTime tempTime = DateFormat("hh:mm").parse(
+                              '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
+                          var timeFormat = DateFormat("h:mm a");
+                          setState(() {
+                            financing2cController.text =
+                                '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
+                            ref
+                                .read(trxnNotifierProvider.notifier)
+                                .updateFinancing24c(_datePicked.toString());
+                            _selectedDate = _datePicked;
+                          });
+                          bTwoFourCFinancingAndAppraisalDeadline = true;
+                          eventDatePicked = DateTime(
+                            _datePicked!.year,
+                            _datePicked.month,
+                            _datePicked.day,
+                            _timePicked.hour,
+                            _timePicked.minute,
+                          );
+                          financingAppraisalDatePicked = DateTime(
+                            _datePicked.year,
+                            _datePicked.month,
+                            _datePicked.day,
+                            _timePicked.hour,
+                            _timePicked.minute,
+                          );
+                        }
+                      },
+                      onChanged: (value) {
+                        bTwoFourBDueDiligenceDeadline = true;
+                        ref
+                            .read(trxnNotifierProvider.notifier)
+                            .updateFinancing24c(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: '24c. Financing & Appraisal Deadline',
+                          labelText: '24c. Financing & Appraisal Deadline'),
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    TextField(
+                      keyboardType: TextInputType.text,
+                      controller: settlement24dController,
+                      textAlign: TextAlign.center,
+                      onTap: () async {
+                        DateTime? _datePicked = await (showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2020),
+                            lastDate: DateTime(2040)));
+                        if (!context.mounted) return;
+
+                        if (_date != null && _date != _datePicked) {
+                          TimeOfDay? _timePicked = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.now(),
+                          );
+                          DateTime tempTime = DateFormat("hh:mm").parse(
+                              '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
+                          var timeFormat = DateFormat("h:mm a");
+                          setState(() {
+                            settlement24dController.text =
+                                '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
+                            ref
+                                .read(trxnNotifierProvider.notifier)
+                                .updateSettlement24d(_datePicked.toString());
+                            _selectedDate = _datePicked;
+                          });
+                          bTwoFourDSettlementDeadline = true;
+                          eventDatePicked = DateTime(
+                            _datePicked!.year,
+                            _datePicked.month,
+                            _datePicked.day,
+                            _timePicked.hour,
+                            _timePicked.minute,
+                          );
+                          settlementDatePicked = DateTime(
+                            _datePicked.year,
+                            _datePicked.month,
+                            _datePicked.day,
+                            _timePicked.hour,
+                            _timePicked.minute,
+                          );
+                        }
+                      },
+                      onChanged: (value) {
+                        bTwoFourCFinancingAndAppraisalDeadline = true;
+                        ref
+                            .read(trxnNotifierProvider.notifier)
+                            .updateSettlement24d(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: '24d. Settlement Deadline',
+                          labelText: '24d. Settlement Deadline'),
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    const Row(
+                      //mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text('Inspector Company'),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        StreamBuilder<QuerySnapshot>(
+                          stream:
+                              _db.collection('inspectorCompany').snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            List<DropdownMenuItem<String>>
+                                inspectorCompanyItems = [];
+                            inspectorCompanyItems.add(
+                                const DropdownMenuItem<String>(
+                                    value: 'Select Inspector',
+                                    child: Text('Select Inspector')));
+                            if (snapshot.hasData) {
+                              final inspectorCompanyList = snapshot.data!.docs;
+                              for (var inspectorCompany
+                                  in inspectorCompanyList) {
+                                inspectorCompanyItems.add(
+                                  DropdownMenuItem<String>(
+                                    value: inspectorCompany.id,
                                     child: Text(
-                                      user['fName'] + '' + user['lName'],
+                                      inspectorCompany['inspectorCompanyName'],
                                     ),
                                   ),
                                 );
                               }
+                              if (inspectorCompanyItems.isNotEmpty) {
+                                return DropdownButton<String>(
+                                  hint: const Text("Select Inspector"),
+                                  value: _selectedInspectorCompany ??
+                                      inspectorCompanyItems[0].value,
+                                  onChanged: (inspectorCompanyValue) {
+                                    setState(() {
+                                      _selectedInspectorCompany =
+                                          inspectorCompanyValue;
+                                    });
+                                    ref
+                                        .read(trxnNotifierProvider.notifier)
+                                        .updateInspectorCompanyId(
+                                            _selectedInspectorCompany!);
+                                  },
+                                  items: inspectorCompanyItems,
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
                             } else {
-                              return const CircularProgressIndicator();
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
                             }
-                            return DropdownButton<String>(
-                              hint: const Text("Select User"),
-                              value: _selectedUser,
-                              onChanged: (userValue) {
-                                setState(() {
-                                  _selectedUser = userValue;
-                                  ref
-                                      .read(globalsNotifierProvider.notifier)
-                                      .updateCurrentUserId(userValue!);
-                                });
-                              },
-                              items: userItems,
-                            );
-                          })
-                      : const Text('No users yet'),
-                ),
-                SizedBox(
-                  height: 30.sp,
-                ),
-
-                /// Display the client information in a collapsible panel
-                Card(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 30.sp),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      //mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        ExpansionTile(
-                          subtitle: Text(
-                              '${clientFNameController.text} ${clientLNameController.text}'),
-                          title: Text(
-                            'Client Information',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 8.sp),
-                          ),
-                          children: [
-                            TextField(
-                              textCapitalization: TextCapitalization.words,
-                              keyboardType: TextInputType.text,
-                              controller: clientFNameController,
-                              textAlign: TextAlign.center,
-                              onChanged: (value) {
-                                ref
-                                    .read(clientNotifierProvider.notifier)
-                                    .updateFName(value);
-                                bClientChanged = true;
-                              },
-                              decoration: const InputDecoration(
-                                  hintText: 'Client First Name',
-                                  labelText: 'Client First Name'),
-                            ),
-                            TextField(
-                              textCapitalization: TextCapitalization.words,
-                              keyboardType: TextInputType.text,
-                              controller: clientLNameController,
-                              textAlign: TextAlign.center,
-                              onChanged: (value) {
-                                ref
-                                    .read(clientNotifierProvider.notifier)
-                                    .updateLName(value);
-                                bClientChanged = true;
-                              },
-                              decoration: const InputDecoration(
-                                  hintText: 'Client Last Name',
-                                  labelText: 'Client Last Name'),
-                            ),
-                            TextField(
-                              textCapitalization: TextCapitalization.words,
-                              keyboardType: TextInputType.text,
-                              controller: clientAddress1Controller,
-                              textAlign: TextAlign.center,
-                              onChanged: (value) {
-                                ref
-                                    .read(clientNotifierProvider.notifier)
-                                    .updateAddress1(value);
-                                bClientChanged = true;
-                              },
-                              decoration: const InputDecoration(
-                                  hintText: 'Address 1', labelText: 'Address 1'),
-                            ),
-                            TextField(
-                              textCapitalization: TextCapitalization.words,
-                              keyboardType: TextInputType.text,
-                              controller: clientAddress2Controller,
-                              textAlign: TextAlign.center,
-                              onChanged: (value) {
-                                ref
-                                    .read(clientNotifierProvider.notifier)
-                                    .updateAddress2(value);
-                                bClientChanged = true;
-                              },
-                              decoration: const InputDecoration(
-                                  hintText: 'Address 2', labelText: 'Address 2'),
-                            ),
-                            TextField(
-                              textCapitalization: TextCapitalization.words,
-                              keyboardType: TextInputType.text,
-                              controller: clientCityController,
-                              textAlign: TextAlign.center,
-                              onChanged: (value) {
-                                ref
-                                    .read(clientNotifierProvider.notifier)
-                                    .updateCity(value);
-                                bClientChanged = true;
-                              },
-                              decoration: const InputDecoration(
-                                  hintText: 'City', labelText: 'City'),
-                            ),
-                            DropdownButton(
-                              value: _currentClientState,
-                              items: _dropDownState,
-                              hint: const Text('Choose Client State'),
-                              onChanged: changedClientDropDownState,
-                            ),
-                            TextField(
-                              inputFormatters: [maskFormatter],
-                              textCapitalization: TextCapitalization.words,
-                              keyboardType: TextInputType.text,
-                              controller: clientCellPhoneController,
-                              textAlign: TextAlign.center,
-                              onChanged: (value) {
-                                ref
-                                    .read(clientNotifierProvider.notifier)
-                                    .updateCellPhone(value);
-                                bClientChanged = true;
-                              },
-                              decoration: const InputDecoration(
-                                  hintText: 'Cell Phone',
-                                  labelText: 'Cell Phone'),
-                            ),
-                            TextField(
-                              inputFormatters: [maskFormatter],
-                              textCapitalization: TextCapitalization.words,
-                              keyboardType: TextInputType.text,
-                              controller: clientHomePhoneController,
-                              textAlign: TextAlign.center,
-                              onChanged: (value) {
-                                ref
-                                    .read(clientNotifierProvider.notifier)
-                                    .updateHomePhone(value);
-                                bClientChanged = true;
-                              },
-                              decoration: const InputDecoration(
-                                  hintText: 'Home Phone',
-                                  labelText: 'Home Phone'),
-                            ),
-                    
-                            /// Hide this row if on the web because they don't work on web
-                            Visibility(
-                              visible: _dontShowOnWeb,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  Column(
-                                    children: [
-                                      IconButton(
-                                        icon: const Icon(Icons.message),
-                                        iconSize: 25,
-                                        color: Colors.blueAccent,
-                                        tooltip: 'Text Client',
-                                        onPressed: () {
-                                          setState(() {
-                                            _launched = _makeCallOrSendText(
-                                                'sms:$_clientCellPhoneNumber');
-                                          });
-                                        },
-                                      ),
-                                      const Text('Text'),
-                                      const SizedBox(
-                                        height: 8.0,
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      IconButton(
-                                        icon: const Icon(Icons.add_call),
-                                        iconSize: 25,
-                                        color: Colors.blueAccent,
-                                        tooltip: 'Call Cell',
-                                        onPressed: () {
-                                          setState(() {
-                                            _launched = _makeCallOrSendText(
-                                                'tel:$_clientCellPhoneNumber');
-                                          });
-                                        },
-                                      ),
-                                      const Text('Call Cell'),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      IconButton(
-                                        icon: const Icon(Icons.add_call),
-                                        iconSize: 25,
-                                        color: Colors.blueAccent,
-                                        tooltip: 'Call Home',
-                                        onPressed: () {
-                                          setState(() {
-                                            _launched = _makeCallOrSendText(
-                                                'tel:$_clientHomePhoneNumber');
-                                          });
-                                        },
-                                      ),
-                                      const Text('Call Home'),
-                                      const SizedBox(
-                                        height: 8.0,
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                    
-                            TextField(
-                              textCapitalization: TextCapitalization.words,
-                              keyboardType: TextInputType.text,
-                              controller: clientEmailController,
-                              textAlign: TextAlign.center,
-                              onChanged: (value) {
-                                ref
-                                    .read(clientNotifierProvider.notifier)
-                                    .updateEmail(value);
-                                bClientChanged = true;
-                              },
-                              decoration: const InputDecoration(
-                                  hintText: 'Email', labelText: 'Email'),
-                            ),
-                            //   ],
-                            // ),
-                          ],
+                          },
                         ),
                       ],
                     ),
-                  ),
-                ),
+                    TextField(
+                      keyboardType: TextInputType.text,
+                      controller: inspectionDateController,
+                      textAlign: TextAlign.center,
+                      onTap: () async {
+                        DateTime? _datePicked = await (showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2020),
+                            lastDate: DateTime(2040)));
+                        if (!context.mounted) return;
 
-                const SizedBox(
-                  height: 30,
-                ),
-
-                /// //////////////////////////////////////
-                DropdownButton(
-                  value: _currentClientType,
-                  items: _dropdownClientType,
-                  hint: const Text('Choose Client Type'),
-                  onChanged: changedDropDownClientType,
-                ),
-
-                /// ////////////////////////////////////////
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  textCapitalization: TextCapitalization.words,
-                  keyboardType: TextInputType.text,
-                  controller: propertyAddressController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updatePropertyAddress(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Property Address',
-                      labelText: 'Property Address'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  textCapitalization: TextCapitalization.words,
-                  keyboardType: TextInputType.text,
-                  controller: propertyCityController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updatePropertyCity(value); //, loggedInUid);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Property City', labelText: 'Property City'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                DropdownButton<String>(
-                  //icon: const Icon(Icons.add_to_home_screen),
-                  value: _currentPropertyState,
-                  items: _dropDownState,
-                  hint: const Text('Choose State'),
-                  onChanged: changedDropDownState,
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  keyboardType: TextInputType.number,
-                  controller: propertyZipCodeController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updatePropertyZipCode(value); //, loggedInUid);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Property Zip Code',
-                      labelText: 'Property Zip Code'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  keyboardType: TextInputType.number,
-                  controller: mlsNumberController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateMlsNumber(value); //, loggedInUid);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Property MLS #', labelText: 'Property MLS #'),
-                ),
-                Visibility(
-                  visible: _hasMLSNumber,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Column(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.water_damage),
-                            iconSize: 25,
-                            color: Colors.blueAccent,
-                            tooltip: 'View Property',
-                            onPressed: () {
-                              setState(() {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        PropertyWebViewScreenContainer(
-                                            '$_mlsSearchLink$_propertyMLSNbr'),
-                                    //PropertyWebViewScreenContainer('https://www.utahrealestate.com/$_propertyMLSNbr'),
-                                  ),
-                                );
-                              });
-                            },
-                          ),
-                          const Text('View Property'),
-                          const SizedBox(
-                            height: 8.0,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  keyboardType: TextInputType.datetime,
-                  textAlign: TextAlign.center,
-                  controller: contractDateController,
-                  onTap: () async {
-                    DateTime? _datePicked = await (showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2020),
-                        lastDate: DateTime(2040)));
-                    if (!context.mounted) return;
-                    if (_date != null &&
-                        _datePicked != null &&
-                        _date != _datePicked) {
-                      // Add time to the calendar event
-                      TimeOfDay? _timePicked = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      );
-                      DateTime tempTime = DateFormat("hh:mm").parse(
-                          '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
-                      var timeFormat = DateFormat("h:mm a");
-                      setState(() {
-                        contractDateController.text =
-                            '${DateFormat("EE  MM-dd-yyyy").format(_datePicked)} ${timeFormat.format(tempTime)}';
+                        if (_date != null && _date != _datePicked) {
+                          TimeOfDay? _timePicked = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.now(),
+                          );
+                          DateTime tempTime = DateFormat("hh:mm").parse(
+                              '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
+                          var timeFormat = DateFormat("h:mm a");
+                          setState(() {
+                            inspectionDateController.text =
+                                '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
+                            ref
+                                .read(trxnNotifierProvider.notifier)
+                                .updateInspectionDate(_datePicked.toString());
+                            _selectedDate = _datePicked;
+                          });
+                          bInspectionDate = true;
+                          eventDatePicked = DateTime(
+                            _datePicked!.year,
+                            _datePicked.month,
+                            _datePicked.day,
+                            _timePicked.hour,
+                            _timePicked.minute,
+                          );
+                          inspectionDatePicked = DateTime(
+                            _datePicked.year,
+                            _datePicked.month,
+                            _datePicked.day,
+                            _timePicked.hour,
+                            _timePicked.minute,
+                          );
+                        }
+                        /*
+                          var date = await (showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2020),
+                              lastDate: DateTime(2100)) as FutureOr<DateTime>);
+                          inspectionDateController.text =
+                              DateFormat("MM/dd/yyyy").format(date);
+                          trxnProvider.changeinspectionDate(
+                              DateFormat("MM/dd/yyyy").format(date));
+                          */
+                      },
+                      onChanged: (value) {
+                        bInspectionDate = true;
                         ref
                             .read(trxnNotifierProvider.notifier)
-                            .updateContractDate(_datePicked.toString());
-                        _selectedDate = _datePicked;
-
-                        bContractDate = true;
-                        eventDatePicked = DateTime(
-                          _datePicked.year,
-                          _datePicked.month,
-                          _datePicked.day,
-                          _timePicked.hour,
-                          _timePicked.minute,
-                        );
-                        contractDatePicked = DateTime(
-                          _datePicked.year,
-                          _datePicked.month,
-                          _datePicked.day,
-                          _timePicked.hour,
-                          _timePicked.minute,
-                        );
-                      });
-                    }
-                  },
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateContractDate(value);
-                  },
-                  decoration: const InputDecoration(
-                    hintText: 'Contract Date',
-                    labelText: 'Contract Date',
-                  ),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  keyboardType: TextInputType.number,
-                  controller: contractPriceController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateContractPrice(value); //, loggedInUid);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Contract Price', labelText: 'Contract Price'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                Visibility(
-                  visible: _hasContractPrice,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Column(
-                        children: [
-                          TextButton(
-                            child: Text(
-                              '3% Commission: ${_formatCurrency(strCommission)}',
-                              style: const TextStyle(fontSize: 15),
-                            ),
-                            onPressed: () {
-                              CommissionCalculatorPopup
-                                  .showCommissionCalculator(
-                                      context,
-                                      double.parse(
-                                          contractPriceController.text));
-                            },
-                          ),
-                          const SizedBox(
-                            height: 8.0,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                TextField(
-                  keyboardType: TextInputType.text,
-                  controller: sellerDisclosure24aController,
-                  textAlign: TextAlign.center,
-                  onTap: () async {
-                    DateTime? _datePicked = await (showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2020),
-                        lastDate: DateTime(2040)));
-                    if (!context.mounted) return;
-
-                    if (_date != null && _date != _datePicked) {
-                      TimeOfDay? _timePicked = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      );
-                      DateTime tempTime = DateFormat("hh:mm").parse(
-                          '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
-                      var timeFormat = DateFormat("h:mm a");
-                      setState(() {
-                        sellerDisclosure24aController.text =
-                            '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
-                        ref
-                            .read(trxnNotifierProvider.notifier)
-                            .updateSellerDisclosure24a(_datePicked.toString());
-                        _selectedDate = _datePicked;
-                      });
-                      bTwoFourASellerDisclosureDeadline = true;
-                      eventDatePicked = DateTime(
-                        _datePicked!.year,
-                        _datePicked.month,
-                        _datePicked.day,
-                        _timePicked.hour,
-                        _timePicked.minute,
-                      );
-                      sellerDisclosureDatePicked = DateTime(
-                        _datePicked.year,
-                        _datePicked.month,
-                        _datePicked.day,
-                        _timePicked.hour,
-                        _timePicked.minute,
-                      );
-                    }
-                  },
-                  onChanged: (value) {
-                    bTwoFourASellerDisclosureDeadline = true;
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateSellerDisclosure24a(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: '24a. Seller Disclosures Deadline',
-                      labelText: '24a. Seller Disclosures Deadline'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  keyboardType: TextInputType.text,
-                  controller: dueDiligence24bController,
-                  textAlign: TextAlign.center,
-                  onTap: () async {
-                    DateTime? _datePicked = await (showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2020),
-                        lastDate: DateTime(2040)));
-                    if (!context.mounted) return;
-
-                    if (_date != null && _date != _datePicked) {
-                      TimeOfDay? _timePicked = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      );
-                      DateTime tempTime = DateFormat("hh:mm").parse(
-                          '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
-                      var timeFormat = DateFormat("h:mm a");
-                      setState(() {
-                        dueDiligence24bController.text =
-                            '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
-                        ref
-                            .read(trxnNotifierProvider.notifier)
-                            .updateDueDiligence24b(_datePicked.toString());
-                        _selectedDate = _datePicked;
-                      });
-                      bTwoFourBDueDiligenceDeadline = true;
-                      eventDatePicked = DateTime(
-                        _datePicked!.year,
-                        _datePicked.month,
-                        _datePicked.day,
-                        _timePicked.hour,
-                        _timePicked.minute,
-                      );
-                      dueDilienceDatePicked = DateTime(
-                        _datePicked.year,
-                        _datePicked.month,
-                        _datePicked.day,
-                        _timePicked.hour,
-                        _timePicked.minute,
-                      );
-                    }
-                  },
-                  onChanged: (value) {
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateDueDiligence24b(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: '24b. Due Diligence Deadline',
-                      labelText: '24b. Due Diligence Deadline'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  keyboardType: TextInputType.text,
-                  controller: financing2cController,
-                  textAlign: TextAlign.center,
-                  onTap: () async {
-                    DateTime? _datePicked = await (showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2020),
-                        lastDate: DateTime(2040)));
-                    if (!context.mounted) return;
-
-                    if (_date != null && _date != _datePicked) {
-                      TimeOfDay? _timePicked = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      );
-                      DateTime tempTime = DateFormat("hh:mm").parse(
-                          '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
-                      var timeFormat = DateFormat("h:mm a");
-                      setState(() {
-                        financing2cController.text =
-                            '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
-                        ref
-                            .read(trxnNotifierProvider.notifier)
-                            .updateFinancing24c(_datePicked.toString());
-                        _selectedDate = _datePicked;
-                      });
-                      bTwoFourCFinancingAndAppraisalDeadline = true;
-                      eventDatePicked = DateTime(
-                        _datePicked!.year,
-                        _datePicked.month,
-                        _datePicked.day,
-                        _timePicked.hour,
-                        _timePicked.minute,
-                      );
-                      financingAppraisalDatePicked = DateTime(
-                        _datePicked.year,
-                        _datePicked.month,
-                        _datePicked.day,
-                        _timePicked.hour,
-                        _timePicked.minute,
-                      );
-                    }
-                  },
-                  onChanged: (value) {
-                    bTwoFourBDueDiligenceDeadline = true;
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateFinancing24c(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: '24c. Financing & Appraisal Deadline',
-                      labelText: '24c. Financing & Appraisal Deadline'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  keyboardType: TextInputType.text,
-                  controller: settlement24dController,
-                  textAlign: TextAlign.center,
-                  onTap: () async {
-                    DateTime? _datePicked = await (showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2020),
-                        lastDate: DateTime(2040)));
-                    if (!context.mounted) return;
-
-                    if (_date != null && _date != _datePicked) {
-                      TimeOfDay? _timePicked = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      );
-                      DateTime tempTime = DateFormat("hh:mm").parse(
-                          '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
-                      var timeFormat = DateFormat("h:mm a");
-                      setState(() {
-                        settlement24dController.text =
-                            '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
-                        ref
-                            .read(trxnNotifierProvider.notifier)
-                            .updateSettlement24d(_datePicked.toString());
-                        _selectedDate = _datePicked;
-                      });
-                      bTwoFourDSettlementDeadline = true;
-                      eventDatePicked = DateTime(
-                        _datePicked!.year,
-                        _datePicked.month,
-                        _datePicked.day,
-                        _timePicked.hour,
-                        _timePicked.minute,
-                      );
-                      settlementDatePicked = DateTime(
-                        _datePicked.year,
-                        _datePicked.month,
-                        _datePicked.day,
-                        _timePicked.hour,
-                        _timePicked.minute,
-                      );
-                    }
-                  },
-                  onChanged: (value) {
-                    bTwoFourCFinancingAndAppraisalDeadline = true;
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateSettlement24d(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: '24d. Settlement Deadline',
-                      labelText: '24d. Settlement Deadline'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                const Row(
-                  //mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text('Inspector Company'),
-                  ],
-                ),
-                Row(
-                  children: [
-                    StreamBuilder<QuerySnapshot>(
-                      stream: _db.collection('inspectorCompany').snapshots(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
-                        List<DropdownMenuItem<String>> inspectorCompanyItems =
-                            [];
-                        inspectorCompanyItems.add(
-                            const DropdownMenuItem<String>(
-                                value: 'Select Inspector',
-                                child: Text('Select Inspector')));
-                        if (snapshot.hasData) {
-                          final inspectorCompanyList = snapshot.data!.docs;
-                          for (var inspectorCompany in inspectorCompanyList) {
-                            inspectorCompanyItems.add(
-                              DropdownMenuItem<String>(
-                                value: inspectorCompany.id,
-                                child: Text(
-                                  inspectorCompany['inspectorCompanyName'],
-                                ),
+                            .updateInspectionDate(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Inspection Date',
+                          labelText: 'Inspection Date'),
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    const Row(
+                      children: [
+                        Text('Appraiser Company'),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        StreamBuilder<QuerySnapshot>(
+                          stream:
+                              _db.collection('appraiserCompany').snapshots(),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            if (snapshot.hasError) {
+                              return const Center(
+                                child: Text('Error loading data'),
+                              );
+                            }
+                            final appraiserCompanyItems =
+                                <DropdownMenuItem<String>>[];
+                            appraiserCompanyItems.add(
+                              const DropdownMenuItem<String>(
+                                value: 'Select Appraiser',
+                                child: Text('Select Appraiser'),
                               ),
                             );
-                          }
-                          if (inspectorCompanyItems.isNotEmpty) {
+                            snapshot.data!.docs.forEach((appraiserCompany) {
+                              appraiserCompanyItems.add(
+                                DropdownMenuItem<String>(
+                                  value: appraiserCompany.id,
+                                  child: Text(
+                                      appraiserCompany['appraiserCompanyName']),
+                                ),
+                              );
+                            });
                             return DropdownButton<String>(
-                              hint: const Text("Select Inspector"),
-                              value: _selectedInspectorCompany ??
-                                  inspectorCompanyItems[0].value,
-                              onChanged: (inspectorCompanyValue) {
+                              hint: const Text("Select Appraiser"),
+                              value: _selectedAppraiserCompany ??
+                                  appraiserCompanyItems[0].value,
+                              onChanged: (appraiserCompanyValue) {
                                 setState(() {
-                                  _selectedInspectorCompany =
-                                      inspectorCompanyValue;
+                                  _selectedAppraiserCompany =
+                                      appraiserCompanyValue;
                                 });
                                 ref
                                     .read(trxnNotifierProvider.notifier)
-                                    .updateInspectorCompanyId(
-                                        _selectedInspectorCompany!);
+                                    .updateAppraiserCompanyId(
+                                        _selectedAppraiserCompany!);
                               },
-                              items: inspectorCompanyItems,
+                              items: appraiserCompanyItems,
                             );
-                          } else {
-                            return const SizedBox();
-                          }
-                        } else {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                      },
+                          },
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                TextField(
-                  keyboardType: TextInputType.text,
-                  controller: inspectionDateController,
-                  textAlign: TextAlign.center,
-                  onTap: () async {
-                    DateTime? _datePicked = await (showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2020),
-                        lastDate: DateTime(2040)));
-                    if (!context.mounted) return;
 
-                    if (_date != null && _date != _datePicked) {
-                      TimeOfDay? _timePicked = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      );
-                      DateTime tempTime = DateFormat("hh:mm").parse(
-                          '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
-                      var timeFormat = DateFormat("h:mm a");
-                      setState(() {
-                        inspectionDateController.text =
-                            '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
-                        ref
-                            .read(trxnNotifierProvider.notifier)
-                            .updateInspectionDate(_datePicked.toString());
-                        _selectedDate = _datePicked;
-                      });
-                      bInspectionDate = true;
-                      eventDatePicked = DateTime(
-                        _datePicked!.year,
-                        _datePicked.month,
-                        _datePicked.day,
-                        _timePicked.hour,
-                        _timePicked.minute,
-                      );
-                      inspectionDatePicked = DateTime(
-                        _datePicked.year,
-                        _datePicked.month,
-                        _datePicked.day,
-                        _timePicked.hour,
-                        _timePicked.minute,
-                      );
-                    }
-                    /*
-                      var date = await (showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2020),
-                          lastDate: DateTime(2100)) as FutureOr<DateTime>);
-                      inspectionDateController.text =
-                          DateFormat("MM/dd/yyyy").format(date);
-                      trxnProvider.changeinspectionDate(
-                          DateFormat("MM/dd/yyyy").format(date));
-                      */
-                  },
-                  onChanged: (value) {
-                    bInspectionDate = true;
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateInspectionDate(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Inspection Date',
-                      labelText: 'Inspection Date'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                const Row(
-                  children: [
-                    Text('Appraiser Company'),
-                  ],
-                ),
-                Row(
-                  children: [
-                    StreamBuilder<QuerySnapshot>(
-                      stream: _db.collection('appraiserCompany').snapshots(),
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    TextField(
+                      keyboardType: TextInputType.text,
+                      controller: appraisalDateController,
+                      textAlign: TextAlign.center,
+                      onTap: () async {
+                        DateTime? _datePicked = await (showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2020),
+                            lastDate: DateTime(2040)));
+                        if (!context.mounted) return;
+
+                        if (_date != null && _date != _datePicked) {
+                          TimeOfDay? _timePicked = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.now(),
                           );
-                        }
-                        if (snapshot.hasError) {
-                          return const Center(
-                            child: Text('Error loading data'),
-                          );
-                        }
-                        final appraiserCompanyItems =
-                            <DropdownMenuItem<String>>[];
-                        appraiserCompanyItems.add(
-                          const DropdownMenuItem<String>(
-                            value: 'Select Appraiser',
-                            child: Text('Select Appraiser'),
-                          ),
-                        );
-                        snapshot.data!.docs.forEach((appraiserCompany) {
-                          appraiserCompanyItems.add(
-                            DropdownMenuItem<String>(
-                              value: appraiserCompany.id,
-                              child: Text(
-                                  appraiserCompany['appraiserCompanyName']),
-                            ),
-                          );
-                        });
-                        return DropdownButton<String>(
-                          hint: const Text("Select Appraiser"),
-                          value: _selectedAppraiserCompany ??
-                              appraiserCompanyItems[0].value,
-                          onChanged: (appraiserCompanyValue) {
-                            setState(() {
-                              _selectedAppraiserCompany = appraiserCompanyValue;
-                            });
+                          DateTime tempTime = DateFormat("hh:mm").parse(
+                              '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
+                          var timeFormat = DateFormat("h:mm a");
+                          setState(() {
+                            appraisalDateController.text =
+                                '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
                             ref
                                 .read(trxnNotifierProvider.notifier)
-                                .updateAppraiserCompanyId(
-                                    _selectedAppraiserCompany!);
-                          },
-                          items: appraiserCompanyItems,
-                        );
+                                .updateAppraisalDate(_datePicked.toString());
+                            _selectedDate = _datePicked;
+                          });
+                          bAppraisalDate = true;
+                          eventDatePicked = DateTime(
+                            _datePicked!.year,
+                            _datePicked.month,
+                            _datePicked.day,
+                            _timePicked.hour,
+                            _timePicked.minute,
+                          );
+                          appraisalDatePicked = DateTime(
+                            _datePicked.year,
+                            _datePicked.month,
+                            _datePicked.day,
+                            _timePicked.hour,
+                            _timePicked.minute,
+                          );
+                        }
+
+                        /*
+                          var date = await (showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2020),
+                              lastDate: DateTime(2100)) as FutureOr<DateTime>);
+                          appraisalDateController.text =
+                              DateFormat("MM/dd/yyyy").format(date);
+                          trxnProvider.changeappraisalDate(
+                              DateFormat("MM/dd/yyyy").format(date));
+                          */
                       },
+                      onChanged: (value) {
+                        bAppraisalDate = true;
+                        ref
+                            .read(trxnNotifierProvider.notifier)
+                            .updateAppraisalDate(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Appraisal Date',
+                          labelText: 'Appraisal Date'),
                     ),
-                  ],
-                ),
-
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  keyboardType: TextInputType.text,
-                  controller: appraisalDateController,
-                  textAlign: TextAlign.center,
-                  onTap: () async {
-                    DateTime? _datePicked = await (showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2020),
-                        lastDate: DateTime(2040)));
-                    if (!context.mounted) return;
-
-                    if (_date != null && _date != _datePicked) {
-                      TimeOfDay? _timePicked = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      );
-                      DateTime tempTime = DateFormat("hh:mm").parse(
-                          '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
-                      var timeFormat = DateFormat("h:mm a");
-                      setState(() {
-                        appraisalDateController.text =
-                            '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
-                        ref
-                            .read(trxnNotifierProvider.notifier)
-                            .updateAppraisalDate(_datePicked.toString());
-                        _selectedDate = _datePicked;
-                      });
-                      bAppraisalDate = true;
-                      eventDatePicked = DateTime(
-                        _datePicked!.year,
-                        _datePicked.month,
-                        _datePicked.day,
-                        _timePicked.hour,
-                        _timePicked.minute,
-                      );
-                      appraisalDatePicked = DateTime(
-                        _datePicked.year,
-                        _datePicked.month,
-                        _datePicked.day,
-                        _timePicked.hour,
-                        _timePicked.minute,
-                      );
-                    }
-
-                    /*
-                      var date = await (showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2020),
-                          lastDate: DateTime(2100)) as FutureOr<DateTime>);
-                      appraisalDateController.text =
-                          DateFormat("MM/dd/yyyy").format(date);
-                      trxnProvider.changeappraisalDate(
-                          DateFormat("MM/dd/yyyy").format(date));
-                      */
-                  },
-                  onChanged: (value) {
-                    bAppraisalDate = true;
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateAppraisalDate(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Appraisal Date', labelText: 'Appraisal Date'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  keyboardType: TextInputType.text,
-                  controller: closingDateController,
-                  textAlign: TextAlign.center,
-                  onTap: () async {
-                    DateTime? _datePicked = await (showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2020),
-                        lastDate: DateTime(2040)));
-                    if (!context.mounted) return;
-
-                    if (_date != null && _date != _datePicked) {
-                      TimeOfDay? _timePicked = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      );
-                      DateTime tempTime = DateFormat("hh:mm").parse(
-                          '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
-                      var timeFormat = DateFormat("h:mm a");
-                      setState(() {
-                        closingDateController.text =
-                            '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
-                        ref
-                            .read(trxnNotifierProvider.notifier)
-                            .updateClosingDate(_datePicked.toString());
-                        _selectedDate = _datePicked;
-                      });
-                      bClosingDate = true;
-                      eventDatePicked = DateTime(
-                        _datePicked!.year,
-                        _datePicked.month,
-                        _datePicked.day,
-                        _timePicked.hour,
-                        _timePicked.minute,
-                      );
-                      closingDatePicked = DateTime(
-                        _datePicked.year,
-                        _datePicked.month,
-                        _datePicked.day,
-                        _timePicked.hour,
-                        _timePicked.minute,
-                      );
-                    }
-
-                    /*
-                      var date = await (showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2020),
-                          lastDate: DateTime(2100)) as FutureOr<DateTime>);
-                      closingDateController.text =
-                          DateFormat("MM/dd/yyyy").format(date);
-                      trxnProvider.changeclosingDate(
-                          DateFormat("MM/dd/yyyy").format(date));
-                      */
-                  },
-                  onChanged: (value) {
-                    bClosingDate = true;
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateClosingDate(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Closing Date', labelText: 'Closing Date'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  keyboardType: TextInputType.text,
-                  controller: walkThroughDateController,
-                  textAlign: TextAlign.center,
-                  onTap: () async {
-                    DateTime? _datePicked = await (showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2020),
-                        lastDate: DateTime(2040)));
-                    if (!context.mounted) return;
-
-                    if (_date != null && _date != _datePicked) {
-                      TimeOfDay? _timePicked = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      );
-                      DateTime tempTime = DateFormat("hh:mm").parse(
-                          '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
-                      var timeFormat = DateFormat("h:mm a");
-                      setState(() {
-                        walkThroughDateController.text =
-                            '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
-                        ref
-                            .read(trxnNotifierProvider.notifier)
-                            .updateWalkThroughDate(_datePicked.toString());
-                        _selectedDate = _datePicked;
-                      });
-                      bFinalWalkThrough = true;
-                      eventDatePicked = DateTime(
-                        _datePicked!.year,
-                        _datePicked.month,
-                        _datePicked.day,
-                        _timePicked.hour,
-                        _timePicked.minute,
-                      );
-                      walkThroughDatePicked = DateTime(
-                        _datePicked.year,
-                        _datePicked.month,
-                        _datePicked.day,
-                        _timePicked.hour,
-                        _timePicked.minute,
-                      );
-                    }
-                  },
-                  onChanged: (value) {
-                    bFinalWalkThrough = true;
-                    ref
-                        .read(trxnNotifierProvider.notifier)
-                        .updateWalkThroughDate(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Final Walk Through Date',
-                      labelText: 'Final Walk Through Date'),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                const Row(
-                  //mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Title Company',
+                    const SizedBox(
+                      height: 8.0,
                     ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    StreamBuilder<QuerySnapshot>(
-                        stream: _db.collection('titleCompany').snapshots(),
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          List<DropdownMenuItem<String>> titleCompanyItems = [];
-                          titleCompanyItems.add(const DropdownMenuItem<String>(
-                              value: 'Select Title Company',
-                              child: Text('Select Title Company')));
-                          if (snapshot.hasData) {
-                            final titleCompanyList = snapshot.data.docs;
-                            for (var titleCompany in titleCompanyList) {
+                    TextField(
+                      keyboardType: TextInputType.text,
+                      controller: closingDateController,
+                      textAlign: TextAlign.center,
+                      onTap: () async {
+                        DateTime? _datePicked = await (showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2020),
+                            lastDate: DateTime(2040)));
+                        if (!context.mounted) return;
+
+                        if (_date != null && _date != _datePicked) {
+                          TimeOfDay? _timePicked = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.now(),
+                          );
+                          DateTime tempTime = DateFormat("hh:mm").parse(
+                              '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
+                          var timeFormat = DateFormat("h:mm a");
+                          setState(() {
+                            closingDateController.text =
+                                '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
+                            ref
+                                .read(trxnNotifierProvider.notifier)
+                                .updateClosingDate(_datePicked.toString());
+                            _selectedDate = _datePicked;
+                          });
+                          bClosingDate = true;
+                          eventDatePicked = DateTime(
+                            _datePicked!.year,
+                            _datePicked.month,
+                            _datePicked.day,
+                            _timePicked.hour,
+                            _timePicked.minute,
+                          );
+                          closingDatePicked = DateTime(
+                            _datePicked.year,
+                            _datePicked.month,
+                            _datePicked.day,
+                            _timePicked.hour,
+                            _timePicked.minute,
+                          );
+                        }
+
+                        /*
+                          var date = await (showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2020),
+                              lastDate: DateTime(2100)) as FutureOr<DateTime>);
+                          closingDateController.text =
+                              DateFormat("MM/dd/yyyy").format(date);
+                          trxnProvider.changeclosingDate(
+                              DateFormat("MM/dd/yyyy").format(date));
+                          */
+                      },
+                      onChanged: (value) {
+                        bClosingDate = true;
+                        ref
+                            .read(trxnNotifierProvider.notifier)
+                            .updateClosingDate(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Closing Date', labelText: 'Closing Date'),
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    TextField(
+                      keyboardType: TextInputType.text,
+                      controller: walkThroughDateController,
+                      textAlign: TextAlign.center,
+                      onTap: () async {
+                        DateTime? _datePicked = await (showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2020),
+                            lastDate: DateTime(2040)));
+                        if (!context.mounted) return;
+
+                        if (_date != null && _date != _datePicked) {
+                          TimeOfDay? _timePicked = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.now(),
+                          );
+                          DateTime tempTime = DateFormat("hh:mm").parse(
+                              '${_timePicked!.hour.toString()}:${_timePicked.minute.toString()}');
+                          var timeFormat = DateFormat("h:mm a");
+                          setState(() {
+                            walkThroughDateController.text =
+                                '${DateFormat("EE  MM-dd-yyyy").format(_datePicked!)} ${timeFormat.format(tempTime)}';
+                            ref
+                                .read(trxnNotifierProvider.notifier)
+                                .updateWalkThroughDate(_datePicked.toString());
+                            _selectedDate = _datePicked;
+                          });
+                          bFinalWalkThrough = true;
+                          eventDatePicked = DateTime(
+                            _datePicked!.year,
+                            _datePicked.month,
+                            _datePicked.day,
+                            _timePicked.hour,
+                            _timePicked.minute,
+                          );
+                          walkThroughDatePicked = DateTime(
+                            _datePicked.year,
+                            _datePicked.month,
+                            _datePicked.day,
+                            _timePicked.hour,
+                            _timePicked.minute,
+                          );
+                        }
+                      },
+                      onChanged: (value) {
+                        bFinalWalkThrough = true;
+                        ref
+                            .read(trxnNotifierProvider.notifier)
+                            .updateWalkThroughDate(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Final Walk Through Date',
+                          labelText: 'Final Walk Through Date'),
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    const Row(
+                      //mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Title Company',
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        StreamBuilder<QuerySnapshot>(
+                            stream: _db.collection('titleCompany').snapshots(),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              List<DropdownMenuItem<String>> titleCompanyItems =
+                                  [];
                               titleCompanyItems.add(
-                                DropdownMenuItem(
-                                  value: titleCompany.id,
-                                  child: Text(
-                                    titleCompany['titleCompanyName'],
-                                  ),
-                                ),
-                              );
-                            }
-                          } else {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          if (titleCompanyItems.isNotEmpty) {
-                            return DropdownButton<String>(
-                              hint: const Text("Select Title Company"),
-                              value: _selectedTitleCompany ??
-                                  titleCompanyItems[0].value,
-                              onChanged: (titleCompanyValue) {
-                                setState(() {
-                                  _selectedTitleCompany = titleCompanyValue;
-                                });
-                                ref
-                                    .read(trxnNotifierProvider.notifier)
-                                    .updateTitleCompanyId(
-                                        _selectedTitleCompany!);
-                              },
-                              items: titleCompanyItems,
-                            );
-                          } else {
-                            return const SizedBox();
-                          }
-                        }),
-                  ],
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                const Row(
-                  children: [
-                    Text(
-                      'Mortgage Company',
+                                  const DropdownMenuItem<String>(
+                                      value: 'Select Title Company',
+                                      child: Text('Select Title Company')));
+                              if (snapshot.hasData) {
+                                final titleCompanyList = snapshot.data.docs;
+                                for (var titleCompany in titleCompanyList) {
+                                  titleCompanyItems.add(
+                                    DropdownMenuItem(
+                                      value: titleCompany.id,
+                                      child: Text(
+                                        titleCompany['titleCompanyName'],
+                                      ),
+                                    ),
+                                  );
+                                }
+                              } else {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              if (titleCompanyItems.isNotEmpty) {
+                                return DropdownButton<String>(
+                                  hint: const Text("Select Title Company"),
+                                  value: _selectedTitleCompany ??
+                                      titleCompanyItems[0].value,
+                                  onChanged: (titleCompanyValue) {
+                                    setState(() {
+                                      _selectedTitleCompany = titleCompanyValue;
+                                    });
+                                    ref
+                                        .read(trxnNotifierProvider.notifier)
+                                        .updateTitleCompanyId(
+                                            _selectedTitleCompany!);
+                                  },
+                                  items: titleCompanyItems,
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
+                            }),
+                      ],
                     ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    StreamBuilder<QuerySnapshot>(
-                        stream: _db.collection('mortgageCompany').snapshots(),
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          List<DropdownMenuItem<String>> mortgageCompanyItems =
-                              [];
-                          mortgageCompanyItems.add(
-                              const DropdownMenuItem<String>(
-                                  value: 'Select Mortgage Company',
-                                  child: Text('Select Mortgage Company')));
-                          if (snapshot.hasData) {
-                            final mortgageCompanyList = snapshot.data.docs;
-                            for (var mortgageCompany in mortgageCompanyList) {
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    const Row(
+                      children: [
+                        Text(
+                          'Mortgage Company',
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        StreamBuilder<QuerySnapshot>(
+                            stream:
+                                _db.collection('mortgageCompany').snapshots(),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              List<DropdownMenuItem<String>>
+                                  mortgageCompanyItems = [];
                               mortgageCompanyItems.add(
-                                DropdownMenuItem(
-                                  value: mortgageCompany.id,
-                                  child: Text(
-                                    mortgageCompany['mortgageCompanyName'],
-                                  ),
-                                ),
-                              );
-                            }
-                          } else {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          if (mortgageCompanyItems.isNotEmpty) {
-                            return DropdownButton<String>(
-                              hint: const Text("Select Mortgage Company"),
-                              value: _selectedMortgageCompany ??
-                                  mortgageCompanyItems[0].value,
-                              onChanged: (mortgageCompanyValue) {
-                                setState(() {
-                                  _selectedMortgageCompany =
-                                      mortgageCompanyValue;
-                                });
-                                ref
-                                    .read(trxnNotifierProvider.notifier)
-                                    .updateMortgageCompanyId(
-                                        _selectedMortgageCompany!);
-                              },
-                              items: mortgageCompanyItems,
-                            );
-                          } else {
-                            return const SizedBox();
-                          }
-                        }),
-                  ],
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                const Row(
-                  children: [
-                    Text(
-                      'Other Agent Company:    ',
+                                  const DropdownMenuItem<String>(
+                                      value: 'Select Mortgage Company',
+                                      child: Text('Select Mortgage Company')));
+                              if (snapshot.hasData) {
+                                final mortgageCompanyList = snapshot.data.docs;
+                                for (var mortgageCompany
+                                    in mortgageCompanyList) {
+                                  mortgageCompanyItems.add(
+                                    DropdownMenuItem(
+                                      value: mortgageCompany.id,
+                                      child: Text(
+                                        mortgageCompany['mortgageCompanyName'],
+                                      ),
+                                    ),
+                                  );
+                                }
+                              } else {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              if (mortgageCompanyItems.isNotEmpty) {
+                                return DropdownButton<String>(
+                                  hint: const Text("Select Mortgage Company"),
+                                  value: _selectedMortgageCompany ??
+                                      mortgageCompanyItems[0].value,
+                                  onChanged: (mortgageCompanyValue) {
+                                    setState(() {
+                                      _selectedMortgageCompany =
+                                          mortgageCompanyValue;
+                                    });
+                                    ref
+                                        .read(trxnNotifierProvider.notifier)
+                                        .updateMortgageCompanyId(
+                                            _selectedMortgageCompany!);
+                                  },
+                                  items: mortgageCompanyItems,
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
+                            }),
+                      ],
                     ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    StreamBuilder<QuerySnapshot>(
-                        stream: _db.collection('company').snapshots(),
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          List<DropdownMenuItem<String>> otherCompanyItems = [];
-                          otherCompanyItems.add(const DropdownMenuItem<String>(
-                              value: 'Select Other Agency',
-                              child: Text('Select Other Agency')));
-                          if (snapshot.hasData) {
-                            final otherCompanyList = snapshot.data.docs;
-                            for (var otherCompany in otherCompanyList) {
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    const Row(
+                      children: [
+                        Text(
+                          'Other Agent Company:    ',
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        StreamBuilder<QuerySnapshot>(
+                            stream: _db.collection('company').snapshots(),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              List<DropdownMenuItem<String>> otherCompanyItems =
+                                  [];
                               otherCompanyItems.add(
-                                DropdownMenuItem(
-                                  value: otherCompany.id,
-                                  child: Text(
-                                    otherCompany['name'],
-                                  ),
-                                ),
+                                  const DropdownMenuItem<String>(
+                                      value: 'Select Other Agency',
+                                      child: Text('Select Other Agency')));
+                              if (snapshot.hasData) {
+                                final otherCompanyList = snapshot.data.docs;
+                                for (var otherCompany in otherCompanyList) {
+                                  otherCompanyItems.add(
+                                    DropdownMenuItem(
+                                      value: otherCompany.id,
+                                      child: Text(
+                                        otherCompany['name'],
+                                      ),
+                                    ),
+                                  );
+                                }
+                              } else {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              return DropdownButton<String>(
+                                hint: const Text("Select Other Agency"),
+                                value: _selectedOtherAgentCompany ??
+                                    otherCompanyItems[0].value,
+                                onChanged: (otherCompanyValue) {
+                                  setState(() {
+                                    _selectedOtherAgentCompany =
+                                        otherCompanyValue;
+                                  });
+                                  ref
+                                      .read(trxnNotifierProvider.notifier)
+                                      .updateOtherAgentCompanyId(
+                                          _selectedOtherAgentCompany!);
+                                },
+                                items: otherCompanyItems,
                               );
-                            }
-                          } else {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          return DropdownButton<String>(
-                            hint: const Text("Select Other Agency"),
-                            value: _selectedOtherAgentCompany ??
-                                otherCompanyItems[0].value,
-                            onChanged: (otherCompanyValue) {
-                              setState(() {
-                                _selectedOtherAgentCompany = otherCompanyValue;
-                              });
-                              ref
-                                  .read(trxnNotifierProvider.notifier)
-                                  .updateOtherAgentCompanyId(
-                                      _selectedOtherAgentCompany!);
-                            },
-                            items: otherCompanyItems,
-                          );
-                        }),
-                  ],
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                // TextField(
-                //   keyboardType: TextInputType.text,
-                //   controller: otherPartyClientController,
-                //   textAlign: TextAlign.center,
-                //   onChanged: (value) {
-                //     ref
-                //         .read(trxnNotifierProvider.notifier)
-                //         .updateOtherPartyClient(value); //, loggedInUid);
-                //   },
-                //   decoration: const InputDecoration(
-                //       hintText: 'Other Party Client',
-                //       labelText: 'Other Party Client'),
-                // ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                const Row(
-                  //mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Other Title Company:    ',
+                            }),
+                      ],
                     ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    StreamBuilder<QuerySnapshot>(
-                        stream: _db.collection('titleCompany').snapshots(),
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          List<DropdownMenuItem<String>>
-                              otherTitleCompanyItems = [];
-                          otherTitleCompanyItems.add(
-                              const DropdownMenuItem<String>(
-                                  value: 'Select Other Title Company',
-                                  child: Text('Select Other Title Company')));
-                          if (snapshot.hasData) {
-                            final otherTitleCompanyList = snapshot.data.docs;
-                            for (var otherTitleCompany
-                                in otherTitleCompanyList) {
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    // TextField(
+                    //   keyboardType: TextInputType.text,
+                    //   controller: otherPartyClientController,
+                    //   textAlign: TextAlign.center,
+                    //   onChanged: (value) {
+                    //     ref
+                    //         .read(trxnNotifierProvider.notifier)
+                    //         .updateOtherPartyClient(value); //, loggedInUid);
+                    //   },
+                    //   decoration: const InputDecoration(
+                    //       hintText: 'Other Party Client',
+                    //       labelText: 'Other Party Client'),
+                    // ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    const Row(
+                      //mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Other Title Company:    ',
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        StreamBuilder<QuerySnapshot>(
+                            stream: _db.collection('titleCompany').snapshots(),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              List<DropdownMenuItem<String>>
+                                  otherTitleCompanyItems = [];
                               otherTitleCompanyItems.add(
-                                DropdownMenuItem(
-                                  value: otherTitleCompany.id,
-                                  child: Text(
-                                    otherTitleCompany['titleCompanyName'],
-                                  ),
-                                ),
+                                  const DropdownMenuItem<String>(
+                                      value: 'Select Other Title Company',
+                                      child:
+                                          Text('Select Other Title Company')));
+                              if (snapshot.hasData) {
+                                final otherTitleCompanyList =
+                                    snapshot.data.docs;
+                                for (var otherTitleCompany
+                                    in otherTitleCompanyList) {
+                                  otherTitleCompanyItems.add(
+                                    DropdownMenuItem(
+                                      value: otherTitleCompany.id,
+                                      child: Text(
+                                        otherTitleCompany['titleCompanyName'],
+                                      ),
+                                    ),
+                                  );
+                                }
+                              } else {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              return DropdownButton<String>(
+                                hint: const Text("Select Title Company"),
+                                value: _selectedOtherTitleCompany ??
+                                    otherTitleCompanyItems[0].value,
+                                onChanged: (otherTitleCompanyValue) {
+                                  setState(() {
+                                    _selectedOtherTitleCompany =
+                                        otherTitleCompanyValue;
+                                  });
+                                  ref
+                                      .read(trxnNotifierProvider.notifier)
+                                      .updateOtherPartyTitleCompanyId(
+                                          _selectedOtherTitleCompany!);
+                                },
+                                items: otherTitleCompanyItems,
                               );
-                            }
-                          } else {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          return DropdownButton<String>(
-                            hint: const Text("Select Title Company"),
-                            value: _selectedOtherTitleCompany ??
-                                otherTitleCompanyItems[0].value,
-                            onChanged: (otherTitleCompanyValue) {
-                              setState(() {
-                                _selectedOtherTitleCompany =
-                                    otherTitleCompanyValue;
-                              });
-                              ref
-                                  .read(trxnNotifierProvider.notifier)
-                                  .updateOtherPartyTitleCompanyId(
-                                      _selectedOtherTitleCompany!);
-                            },
-                            items: otherTitleCompanyItems,
-                          );
-                        }),
-                  ],
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                DropdownButton(
-                  value: _currentTrxnStatus,
-                  items: _dropdownTrxnStatusList,
-                  hint: const Text('Select Status'),
-                  onChanged: changedDropDownTrxnStatus,
-                ),
-                RoundedButton(
-                  title: 'Save',
-                  colour: Colors.blueAccent,
-                  onPressed: () async {
-                    setState(() {
-                      showSpinner = true;
-                    });
-
-                    try {
-                      /// ////////////////////////////////
-                      /// Save the client data
-                      if (bClientChanged == true) {
-                        /// Gather the data from the client text controllers
-                        populateClientProvider();
+                            }),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    DropdownButton(
+                      value: _currentTrxnStatus,
+                      items: _dropdownTrxnStatusList,
+                      hint: const Text('Select Status'),
+                      onChanged: changedDropDownTrxnStatus,
+                    ),
+                    RoundedButton(
+                      title: 'Save',
+                      colour: Colors.blueAccent,
+                      onPressed: () async {
+                        setState(() {
+                          showSpinner = true;
+                        });
 
                         try {
-                          /// Save the client information for the trxn
-                          if (ref.read(clientNotifierProvider).clientId ==
-                                  null ||
-                              ref.read(clientNotifierProvider).clientId == "") {
-                            /// Save the client record and get the client DocumentReference in return
-                            var docRef = await ref
-                                .read(clientNotifierProvider.notifier)
-                                .saveClient(
-                                    ref.read(clientNotifierProvider), true);
+                          /// ////////////////////////////////
+                          /// Save the client data
+                          if (bClientChanged == true) {
+                            /// Gather the data from the client text controllers
+                            populateClientProvider();
 
-                            /// Add the new clientId to the client provider
-                            ref
-                                .read(clientNotifierProvider.notifier)
-                                .updateClientId(docRef!.id);
+                            try {
+                              /// Save the client information for the trxn
+                              if (ref.read(clientNotifierProvider).clientId ==
+                                      null ||
+                                  ref.read(clientNotifierProvider).clientId ==
+                                      "") {
+                                /// Save the client record and get the client DocumentReference in return
+                                var docRef = await ref
+                                    .read(clientNotifierProvider.notifier)
+                                    .saveClient(
+                                        ref.read(clientNotifierProvider), true);
 
-                            /// Update the client record with the new clientId
-                            ref
-                                .read(clientNotifierProvider.notifier)
-                                .saveClient(ref.read(clientNotifierProvider),
-                                    false, docRef.id);
+                                /// Add the new clientId to the client provider
+                                ref
+                                    .read(clientNotifierProvider.notifier)
+                                    .updateClientId(docRef!.id);
 
-                            /// Add the new client ID to the trxn provider to be saved
-                            ref
-                                .read(trxnNotifierProvider.notifier)
-                                .updateClientId(docRef.id);
-                          } else {
-                            /// Update the existing Transaction record
-                            ref
-                                .read(clientNotifierProvider.notifier)
-                                .saveClient(
-                                    ref.read(clientNotifierProvider), false);
+                                /// Update the client record with the new clientId
+                                ref
+                                    .read(clientNotifierProvider.notifier)
+                                    .saveClient(
+                                        ref.read(clientNotifierProvider),
+                                        false,
+                                        docRef.id);
+
+                                /// Add the new client ID to the trxn provider to be saved
+                                ref
+                                    .read(trxnNotifierProvider.notifier)
+                                    .updateClientId(docRef.id);
+                              } else {
+                                /// Update the existing Transaction record
+                                ref
+                                    .read(clientNotifierProvider.notifier)
+                                    .saveClient(
+                                        ref.read(clientNotifierProvider),
+                                        false);
+                              }
+                            } catch (e) {
+                              debugPrint('Trxn Detail:  $e');
+                            }
                           }
+
+                          /// /////////////////////////
+                          /// Save the Trxn
+                          populateTrxnProvider();
+
+                          ref.read(trxnNotifierProvider.notifier).saveTrxn(
+                              ref.read(trxnNotifierProvider),
+                              ref.read(globalsNotifierProvider).companyId!,
+                              widget.newTrxn!);
+
+                          // Add dates to calendar
+                          if (bContractDate) {
+                            bContractDate = false;
+                            String title =
+                                'Contract Date for ${ref.read(clientNotifierProvider).lName}';
+                            ref
+                                .read(eventsNotifierProvider.notifier)
+                                .updateEventName(title);
+                            String? desc =
+                                '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
+                            ref
+                                .read(eventsNotifierProvider.notifier)
+                                .updateEventDescription(desc);
+                            String eventDate = DateFormat("yyyy-MM-dd HH:mm")
+                                .format(eventDatePicked);
+                            ref
+                                .read(eventsNotifierProvider.notifier)
+                                .updateEventDate(DateTime.parse(eventDate));
+
+                            AddEventsToAllCalendars.addMultipleEvent(Events(
+                                eventName: title,
+                                eventDate: contractDatePicked,
+                                eventDescription: desc));
+                          }
+
+                          if (bTwoFourASellerDisclosureDeadline) {
+                            bTwoFourASellerDisclosureDeadline = false;
+                            String title = '24a Seller Disclosure Deadline';
+                            String? desc =
+                                '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
+                            ref
+                                .read(eventsNotifierProvider.notifier)
+                                .updateEventDescription(desc);
+                            String eventDate = DateFormat("yyyy-MM-dd HH:mm")
+                                .format(eventDatePicked);
+                            ref
+                                .read(eventsNotifierProvider.notifier)
+                                .updateEventDate(DateTime.parse(eventDate));
+                            AddEventsToAllCalendars.addMultipleEvent(Events(
+                                eventName: title,
+                                eventDate: sellerDisclosureDatePicked,
+                                eventDescription: desc));
+                          }
+                          if (bTwoFourBDueDiligenceDeadline) {
+                            bTwoFourBDueDiligenceDeadline = false;
+                            String title = '24b Due Diligence Deadline';
+                            String? desc =
+                                '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
+                            ref
+                                .read(eventsNotifierProvider.notifier)
+                                .updateEventDescription(desc);
+                            String eventDate = DateFormat("yyyy-MM-dd HH:mm")
+                                .format(eventDatePicked);
+                            ref
+                                .read(eventsNotifierProvider.notifier)
+                                .updateEventDate(DateTime.parse(eventDate));
+                            AddEventsToAllCalendars.addMultipleEvent(Events(
+                                eventName: title,
+                                eventDate: dueDilienceDatePicked,
+                                eventDescription: desc));
+                          }
+                          if (bTwoFourCFinancingAndAppraisalDeadline) {
+                            bTwoFourCFinancingAndAppraisalDeadline = false;
+                            String title =
+                                '24c Financing and Appraisal Deadline';
+                            String? desc =
+                                '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
+                            ref
+                                .read(eventsNotifierProvider.notifier)
+                                .updateEventDescription(desc);
+                            String eventDate = DateFormat("yyyy-MM-dd HH:mm")
+                                .format(eventDatePicked);
+                            ref
+                                .read(eventsNotifierProvider.notifier)
+                                .updateEventDate(DateTime.parse(eventDate));
+                            AddEventsToAllCalendars.addMultipleEvent(Events(
+                                eventName: title,
+                                eventDate: financingAppraisalDatePicked,
+                                eventDescription: desc));
+                          }
+                          if (bTwoFourDSettlementDeadline) {
+                            bTwoFourDSettlementDeadline = false;
+                            String title = '24d Settlement Deadline';
+                            String? desc =
+                                '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
+                            ref
+                                .read(eventsNotifierProvider.notifier)
+                                .updateEventDescription(desc);
+                            String eventDate = DateFormat("yyyy-MM-dd HH:mm")
+                                .format(eventDatePicked);
+                            ref
+                                .read(eventsNotifierProvider.notifier)
+                                .updateEventDate(DateTime.parse(eventDate));
+                            AddEventsToAllCalendars.addMultipleEvent(Events(
+                                eventName: title,
+                                eventDate: settlementDatePicked,
+                                eventDescription: desc));
+                          }
+                          if (bInspectionDate) {
+                            bInspectionDate = false;
+                            String title = 'Inspection Date';
+                            String? desc =
+                                '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
+                            ref
+                                .read(eventsNotifierProvider.notifier)
+                                .updateEventDescription(desc);
+                            String eventDate = DateFormat("yyyy-MM-dd HH:mm")
+                                .format(eventDatePicked);
+                            ref
+                                .read(eventsNotifierProvider.notifier)
+                                .updateEventDate(DateTime.parse(eventDate));
+                            AddEventsToAllCalendars.addMultipleEvent(Events(
+                                eventName: title,
+                                eventDate: inspectionDatePicked,
+                                eventDescription: desc));
+                          }
+                          if (bAppraisalDate) {
+                            bAppraisalDate = false;
+                            String title = 'Appraisal Date';
+                            String? desc =
+                                '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
+                            ref
+                                .read(eventsNotifierProvider.notifier)
+                                .updateEventDescription(desc);
+                            String eventDate = DateFormat("yyyy-MM-dd HH:mm")
+                                .format(eventDatePicked);
+                            ref
+                                .read(eventsNotifierProvider.notifier)
+                                .updateEventDate(DateTime.parse(eventDate));
+                            AddEventsToAllCalendars.addMultipleEvent(Events(
+                                eventName: title,
+                                eventDate: appraisalDatePicked,
+                                eventDescription: desc));
+                          }
+                          if (bClosingDate) {
+                            bClosingDate = false;
+                            String title = 'Closing Date';
+                            String? desc =
+                                '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
+                            ref
+                                .read(eventsNotifierProvider.notifier)
+                                .updateEventDescription(desc);
+                            String eventDate = DateFormat("yyyy-MM-dd HH:mm")
+                                .format(eventDatePicked);
+                            ref
+                                .read(eventsNotifierProvider.notifier)
+                                .updateEventDate(DateTime.parse(eventDate));
+                            AddEventsToAllCalendars.addMultipleEvent(Events(
+                                eventName: title,
+                                eventDate: closingDatePicked,
+                                eventDescription: desc));
+                          }
+                          if (bFinalWalkThrough) {
+                            bFinalWalkThrough = false;
+                            String title = 'Final Walkthrough';
+                            String? desc =
+                                '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
+                            ref
+                                .read(eventsNotifierProvider.notifier)
+                                .updateEventDescription(desc);
+                            String eventDate = DateFormat("yyyy-MM-dd HH:mm")
+                                .format(eventDatePicked);
+                            ref
+                                .read(eventsNotifierProvider.notifier)
+                                .updateEventDate(DateTime.parse(eventDate));
+                            AddEventsToAllCalendars.addMultipleEvent(Events(
+                                eventName: title,
+                                eventDate: walkThroughDatePicked,
+                                eventDescription: desc));
+                          }
+
+                          if (!context.mounted) return;
+
+                          Navigator.pop(context);
+                          setState(() {
+                            showSpinner = false;
+                          });
                         } catch (e) {
-                          debugPrint('Trxn Detail:  $e');
+                          //todo: add better error handling
+                          debugPrint(e as String?);
                         }
-                      }
-
-                      /// /////////////////////////
-                      /// Save the Trxn
-                      populateTrxnProvider();
-
-                      ref.read(trxnNotifierProvider.notifier).saveTrxn(
-                          ref.read(trxnNotifierProvider),
-                          ref.read(globalsNotifierProvider).companyId!,
-                          widget.newTrxn!);
-
-                      // Add dates to calendar
-                      if (bContractDate) {
-                        bContractDate = false;
-                        String title =
-                            'Contract Date for ${ref.read(clientNotifierProvider).lName}';
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventName(title);
-                        String? desc =
-                            '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventDescription(desc);
-                        String eventDate = DateFormat("yyyy-MM-dd HH:mm")
-                            .format(eventDatePicked);
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventDate(DateTime.parse(eventDate));
-
-                        AddEventsToAllCalendars.addMultipleEvent(Events(
-                            eventName: title,
-                            eventDate: contractDatePicked,
-                            eventDescription: desc));
-                      }
-
-                      if (bTwoFourASellerDisclosureDeadline) {
-                        bTwoFourASellerDisclosureDeadline = false;
-                        String title = '24a Seller Disclosure Deadline';
-                        String? desc =
-                            '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventDescription(desc);
-                        String eventDate = DateFormat("yyyy-MM-dd HH:mm")
-                            .format(eventDatePicked);
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventDate(DateTime.parse(eventDate));
-                        AddEventsToAllCalendars.addMultipleEvent(Events(
-                            eventName: title,
-                            eventDate: sellerDisclosureDatePicked,
-                            eventDescription: desc));
-                      }
-                      if (bTwoFourBDueDiligenceDeadline) {
-                        bTwoFourBDueDiligenceDeadline = false;
-                        String title = '24b Due Diligence Deadline';
-                        String? desc =
-                            '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventDescription(desc);
-                        String eventDate = DateFormat("yyyy-MM-dd HH:mm")
-                            .format(eventDatePicked);
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventDate(DateTime.parse(eventDate));
-                        AddEventsToAllCalendars.addMultipleEvent(Events(
-                            eventName: title,
-                            eventDate: dueDilienceDatePicked,
-                            eventDescription: desc));
-                      }
-                      if (bTwoFourCFinancingAndAppraisalDeadline) {
-                        bTwoFourCFinancingAndAppraisalDeadline = false;
-                        String title = '24c Financing and Appraisal Deadline';
-                        String? desc =
-                            '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventDescription(desc);
-                        String eventDate = DateFormat("yyyy-MM-dd HH:mm")
-                            .format(eventDatePicked);
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventDate(DateTime.parse(eventDate));
-                        AddEventsToAllCalendars.addMultipleEvent(Events(
-                            eventName: title,
-                            eventDate: financingAppraisalDatePicked,
-                            eventDescription: desc));
-                      }
-                      if (bTwoFourDSettlementDeadline) {
-                        bTwoFourDSettlementDeadline = false;
-                        String title = '24d Settlement Deadline';
-                        String? desc =
-                            '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventDescription(desc);
-                        String eventDate = DateFormat("yyyy-MM-dd HH:mm")
-                            .format(eventDatePicked);
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventDate(DateTime.parse(eventDate));
-                        AddEventsToAllCalendars.addMultipleEvent(Events(
-                            eventName: title,
-                            eventDate: settlementDatePicked,
-                            eventDescription: desc));
-                      }
-                      if (bInspectionDate) {
-                        bInspectionDate = false;
-                        String title = 'Inspection Date';
-                        String? desc =
-                            '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventDescription(desc);
-                        String eventDate = DateFormat("yyyy-MM-dd HH:mm")
-                            .format(eventDatePicked);
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventDate(DateTime.parse(eventDate));
-                        AddEventsToAllCalendars.addMultipleEvent(Events(
-                            eventName: title,
-                            eventDate: inspectionDatePicked,
-                            eventDescription: desc));
-                      }
-                      if (bAppraisalDate) {
-                        bAppraisalDate = false;
-                        String title = 'Appraisal Date';
-                        String? desc =
-                            '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventDescription(desc);
-                        String eventDate = DateFormat("yyyy-MM-dd HH:mm")
-                            .format(eventDatePicked);
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventDate(DateTime.parse(eventDate));
-                        AddEventsToAllCalendars.addMultipleEvent(Events(
-                            eventName: title,
-                            eventDate: appraisalDatePicked,
-                            eventDescription: desc));
-                      }
-                      if (bClosingDate) {
-                        bClosingDate = false;
-                        String title = 'Closing Date';
-                        String? desc =
-                            '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventDescription(desc);
-                        String eventDate = DateFormat("yyyy-MM-dd HH:mm")
-                            .format(eventDatePicked);
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventDate(DateTime.parse(eventDate));
-                        AddEventsToAllCalendars.addMultipleEvent(Events(
-                            eventName: title,
-                            eventDate: closingDatePicked,
-                            eventDescription: desc));
-                      }
-                      if (bFinalWalkThrough) {
-                        bFinalWalkThrough = false;
-                        String title = 'Final Walkthrough';
-                        String? desc =
-                            '${ref.read(trxnNotifierProvider).propertyAddress} ${ref.read(trxnNotifierProvider).propertyCity}';
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventDescription(desc);
-                        String eventDate = DateFormat("yyyy-MM-dd HH:mm")
-                            .format(eventDatePicked);
-                        ref
-                            .read(eventsNotifierProvider.notifier)
-                            .updateEventDate(DateTime.parse(eventDate));
-                        AddEventsToAllCalendars.addMultipleEvent(Events(
-                            eventName: title,
-                            eventDate: walkThroughDatePicked,
-                            eventDescription: desc));
-                      }
-
-                      if (!context.mounted) return;
-
-                      Navigator.pop(context);
-                      setState(() {
-                        showSpinner = false;
-                      });
-                    } catch (e) {
-                      //todo: add better error handling
-                      debugPrint(e as String?);
-                    }
-                  },
+                      },
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    RoundedButton(
+                      title: 'Delete',
+                      colour: Colors.red,
+                      onPressed: () async {
+                        setState(() {
+                          showSpinner = true;
+                        });
+                        try {
+                          ref.read(trxnNotifierProvider.notifier).deleteTrxn(
+                              ref.read(globalsNotifierProvider).currentTrxnId!,
+                              _selectedCompany!);
+                          ref
+                              .read(globalsNotifierProvider.notifier)
+                              .updateTargetScreen(0);
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MainScreen(),
+                            ),
+                          );
+                          setState(() {
+                            showSpinner = false;
+                          });
+                        } catch (e) {
+                          // todo: add better error handling
+                          //debugPrint(e);
+                        }
+                      },
+                    ),
+                    RoundedButton(
+                      title: 'Cancel',
+                      colour: Colors.orange,
+                      onPressed: () async {
+                        setState(() {
+                          showSpinner = true;
+                        });
+                        try {
+                          ref
+                              .read(globalsNotifierProvider.notifier)
+                              .updateTargetScreen(0);
+                          Navigator.pop(context);
+                          setState(() {
+                            showSpinner = false;
+                          });
+                        } catch (e) {
+                          // todo: add better error handling
+                          //debugPrint(e);
+                        }
+                      },
+                    )
+                  ],
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                RoundedButton(
-                  title: 'Delete',
-                  colour: Colors.red,
-                  onPressed: () async {
-                    setState(() {
-                      showSpinner = true;
-                    });
-                    try {
-                      ref.read(trxnNotifierProvider.notifier).deleteTrxn(
-                          ref.read(globalsNotifierProvider).currentTrxnId!,
-                          _selectedCompany!);
-                      ref
-                          .read(globalsNotifierProvider.notifier)
-                          .updateTargetScreen(0);
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const MainScreen(),
-                        ),
-                      );
-                      setState(() {
-                        showSpinner = false;
-                      });
-                    } catch (e) {
-                      // todo: add better error handling
-                      //debugPrint(e);
-                    }
-                  },
-                ),
-                RoundedButton(
-                  title: 'Cancel',
-                  colour: Colors.orange,
-                  onPressed: () async {
-                    setState(() {
-                      showSpinner = true;
-                    });
-                    try {
-                      ref
-                          .read(globalsNotifierProvider.notifier)
-                          .updateTargetScreen(0);
-                      Navigator.pop(context);
-                      setState(() {
-                        showSpinner = false;
-                      });
-                    } catch (e) {
-                      // todo: add better error handling
-                      //debugPrint(e);
-                    }
-                  },
-                )
-              ],
+                //}
+              ),
             ),
-            //}
           ),
+          //       floatingActionButton: FloatingActionButton(
+          //         onPressed: () async {
+          //           setState(() {
+          //             showSpinner = true;
+          //           });
+          //           try {
+          //             ref.read(trxnNotifierProvider.notifier).saveTrxn(
+          //                 ref.read(trxnNotifierProvider),
+          //                 ref.read(globalsNotifierProvider).companyId!,
+          //                 widget.newTrxn!);
+          //             ref.read(globalsNotifierProvider.notifier).updateTargetScreen(0);
+          //             Navigator.pop(context);
+          // /*
+          //             Navigator.push(
+          //               context,
+          //               new MaterialPageRoute(
+          //                 builder: (context) => MainScreen(),
+          //               ),
+          //             );*/
+          //             setState(() {
+          //               showSpinner = false;
+          //             });
+          //           } catch (e) {
+          //             // todo: add better error handling
+          //             //debugPrint(e);
+          //           }
+          //         },
+          //         backgroundColor: constants.kPrimaryColor,
+          //         child: const Icon(
+          //           Icons.assignment_turned_in_outlined,
+          //           color: Colors.blueAccent,
+          //         ),
+          //       ),
         ),
       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: () async {
-//           setState(() {
-//             showSpinner = true;
-//           });
-//           try {
-//             ref.read(trxnNotifierProvider.notifier).saveTrxn(
-//                 ref.read(trxnNotifierProvider),
-//                 ref.read(globalsNotifierProvider).companyId!,
-//                 widget.newTrxn!);
-//             ref.read(globalsNotifierProvider.notifier).updateTargetScreen(0);
-//             Navigator.pop(context);
-// /*
-//             Navigator.push(
-//               context,
-//               new MaterialPageRoute(
-//                 builder: (context) => MainScreen(),
-//               ),
-//             );*/
-//             setState(() {
-//               showSpinner = false;
-//             });
-//           } catch (e) {
-//             // todo: add better error handling
-//             //debugPrint(e);
-//           }
-//         },
-//         backgroundColor: constants.kPrimaryColor,
-//         child: const Icon(
-//           Icons.assignment_turned_in_outlined,
-//           color: Colors.blueAccent,
-//         ),
-//       ),
     );
   }
 }

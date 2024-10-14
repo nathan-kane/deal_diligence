@@ -21,17 +21,20 @@ Future<void> main() async {
 
   // Initialize Stripe API
   // Assign publishable key to flutter_stripe
-   Stripe.publishableKey =
-       "pk_test_51OOkCzLLjsDD7g7b0sBcRBgQvaimzoiBHdg3NK7UOqXvbml1WwnaZC4OdF5ncpwyStO1CFpWmUuwHAxhwM95O5G000Qp2heWf9";
+  Stripe.publishableKey =
+      "pk_test_51OOkCzLLjsDD7g7b0sBcRBgQvaimzoiBHdg3NK7UOqXvbml1WwnaZC4OdF5ncpwyStO1CFpWmUuwHAxhwM95O5G000Qp2heWf9";
 
   //Load the .env file that contains the Stripe Secret key
   await dotenv.load(fileName: "lib/assets/.env");
+
+  await ScreenUtil.ensureScreenSize();
 
   runApp(const ProviderScope(
       child:
           DealDiligence())); // This allows the entire app to use River_Pod for state management
 }
-   final rootNavigatorKey = GlobalKey<NavigatorState>();
+
+final rootNavigatorKey = GlobalKey<NavigatorState>();
 
 class DealDiligence extends StatelessWidget {
   const DealDiligence({super.key});
@@ -39,13 +42,16 @@ class DealDiligence extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(360, 690),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: const LoginScreen(),
-                    navigatorKey: rootNavigatorKey,
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      builder: (context, child) =>
+         MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: child,
+        ),
+        child: const LoginScreen(),
+          //navigatorKey: rootNavigatorKey,,
       
-      ),
     );
   }
 }

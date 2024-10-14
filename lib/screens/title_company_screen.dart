@@ -196,247 +196,279 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
     // final agencyProvider = Provider.of<AgencyProvider>(context);
     //final firestoreService = FirestoreService();
 
-    return Scaffold(
-      //appBar: CustomAppBar(),
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.sp),
-            child: Column(
-              //mainAxisAlignment: MainAxisAlignment.center,
-              //crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Text(
-                  'Title Company Profile',
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 38.h,),
-                TextField(
-                  textCapitalization: TextCapitalization.words,
-                  controller: titleCompanyNameController,
-                  keyboardType: TextInputType.text,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(titleCompanyNotifierProvider.notifier)
-                        .updateTitleCompanyName(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Title Company Name',
-                      labelText: 'Title Company Name'),
-                ),
-                SizedBox(height: 8.h,),
-                TextField(
-                  textCapitalization: TextCapitalization.words,
-                  controller: primaryContactController,
-                  keyboardType: TextInputType.text,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(titleCompanyNotifierProvider.notifier)
-                        .updatePrimaryContact(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Primary Contact',
-                      labelText: 'Primary Contact'),
-                ),
-                SizedBox(height: 8.h,),
-                TextField(
-                  textCapitalization: TextCapitalization.words,
-                  controller: address1Controller,
-                  keyboardType: TextInputType.text,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(titleCompanyNotifierProvider.notifier)
-                        .updateaddress1(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Address 1', labelText: 'Address 1'),
-                ),
-                SizedBox(height: 8.h,),
-                TextField(
-                  textCapitalization: TextCapitalization.words,
-                  controller: address2Controller,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(titleCompanyNotifierProvider.notifier)
-                        .updateaddress2(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Address 2', labelText: 'Address 2'),
-                ),
-                SizedBox(height: 8.h,),
-                TextField(
-                  textCapitalization: TextCapitalization.words,
-                  controller: cityController,
-                  keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(titleCompanyNotifierProvider.notifier)
-                        .updatecity(value);
-                    // if (ref
-                    //         .watch(globalsNotifierProvider)
-                    //         .currentCompanyState ==
-                    //     "") {
-                    //   _currentCompanyState = ref
-                    //       .watch(globalsNotifierProvider)
-                    //       .currentCompanyState;
-                    // } else {
-                    //   _currentCompanyState = ref
-                    //       .watch(globalsNotifierProvider)
-                    //       .currentCompanyState;
-                    // }
-                    // ;
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'City', labelText: 'City'),
-                ),
-                SizedBox(height: 8.h,),
-                DropdownButton(
-                  value: _currentTitleCompanyState,
-                  items: _dropDownState,
-                  hint: const Text('Choose State'),
-                  onChanged: changedDropDownState,
-                ),
-                SizedBox(height: 8.h,),
-                TextField(
-                  controller: zipController,
-                  keyboardType: TextInputType.phone,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(titleCompanyNotifierProvider.notifier)
-                        .updatezipcode(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Zip Code', labelText: 'Zip Code'),
-                ),
-                SizedBox(height: 8.h,),
-                TextField(
-                  inputFormatters: [maskFormatter],
-                  controller: cellPhoneController,
-                  keyboardType: TextInputType.phone,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(titleCompanyNotifierProvider.notifier)
-                        .updateCellPhone(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Cell Phone', labelText: 'Cell Phone'),
-                ),
-                SizedBox(height: 8.h,),
-                TextField(
-                  inputFormatters: [maskFormatter],
-                  controller: officePhoneController,
-                  keyboardType: TextInputType.phone,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(titleCompanyNotifierProvider.notifier)
-                        .updateofficePhone(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Office Phone', labelText: 'Office Phone'),
-                ),
-                SizedBox(height: 8.h,),
-                TextField(
-                  controller: emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(titleCompanyNotifierProvider.notifier)
-                        .updateemail(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Email', labelText: 'Email'),
-                ),
-                SizedBox(height: 8.h,),
-                TextField(
-                  controller: websiteController,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(titleCompanyNotifierProvider.notifier)
-                        .updatewebsite(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Website', labelText: 'Website'),
-                ),
-                SizedBox(height: 8.h,),
-                RoundedButton(
-                  title: 'Save Title company',
-                  colour: Colors.blueAccent,
-                  onPressed: () async {
-                    setState(() {
-                      showSpinner = true;
-                    });
-                    try {
-                      ref
-                          .read(globalsNotifierProvider.notifier)
-                          .updatenewCompany(true);
-
-                      //  This is a new company record but it will already
-                      //  have a document ID that should be used.
-
-                      if (widget.titleCompanyId == "" ||
-                          widget.titleCompanyId == null) {
+    return ScreenUtilInit(
+      ensureScreenSize: true,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          //appBar: CustomAppBar(),
+          backgroundColor: Colors.white,
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30.sp),
+                child: Column(
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                  //crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Text(
+                      'Title Company Profile',
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(12.r),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 38.h,
+                    ),
+                    TextField(
+                      textCapitalization: TextCapitalization.words,
+                      controller: titleCompanyNameController,
+                      keyboardType: TextInputType.text,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
                         ref
                             .read(titleCompanyNotifierProvider.notifier)
-                            .saveTitleCompany(
-                                ref.read(titleCompanyNotifierProvider));
-                      } else {
+                            .updateTitleCompanyName(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Title Company Name',
+                          labelText: 'Title Company Name'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    TextField(
+                      textCapitalization: TextCapitalization.words,
+                      controller: primaryContactController,
+                      keyboardType: TextInputType.text,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
                         ref
                             .read(titleCompanyNotifierProvider.notifier)
-                            .saveTitleCompany(
-                                ref.read(titleCompanyNotifierProvider),
-                                widget.titleCompanyId);
-                      }
+                            .updatePrimaryContact(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Primary Contact',
+                          labelText: 'Primary Contact'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    TextField(
+                      textCapitalization: TextCapitalization.words,
+                      controller: address1Controller,
+                      keyboardType: TextInputType.text,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(titleCompanyNotifierProvider.notifier)
+                            .updateaddress1(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Address 1', labelText: 'Address 1'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    TextField(
+                      textCapitalization: TextCapitalization.words,
+                      controller: address2Controller,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(titleCompanyNotifierProvider.notifier)
+                            .updateaddress2(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Address 2', labelText: 'Address 2'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    TextField(
+                      textCapitalization: TextCapitalization.words,
+                      controller: cityController,
+                      keyboardType: TextInputType.emailAddress,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(titleCompanyNotifierProvider.notifier)
+                            .updatecity(value);
+                        // if (ref
+                        //         .watch(globalsNotifierProvider)
+                        //         .currentCompanyState ==
+                        //     "") {
+                        //   _currentCompanyState = ref
+                        //       .watch(globalsNotifierProvider)
+                        //       .currentCompanyState;
+                        // } else {
+                        //   _currentCompanyState = ref
+                        //       .watch(globalsNotifierProvider)
+                        //       .currentCompanyState;
+                        // }
+                        // ;
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'City', labelText: 'City'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    DropdownButton(
+                      value: _currentTitleCompanyState,
+                      items: _dropDownState,
+                      hint: const Text('Choose State'),
+                      onChanged: changedDropDownState,
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    TextField(
+                      controller: zipController,
+                      keyboardType: TextInputType.phone,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(titleCompanyNotifierProvider.notifier)
+                            .updatezipcode(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Zip Code', labelText: 'Zip Code'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    TextField(
+                      inputFormatters: [maskFormatter],
+                      controller: cellPhoneController,
+                      keyboardType: TextInputType.phone,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(titleCompanyNotifierProvider.notifier)
+                            .updateCellPhone(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Cell Phone', labelText: 'Cell Phone'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    TextField(
+                      inputFormatters: [maskFormatter],
+                      controller: officePhoneController,
+                      keyboardType: TextInputType.phone,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(titleCompanyNotifierProvider.notifier)
+                            .updateofficePhone(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Office Phone', labelText: 'Office Phone'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    TextField(
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(titleCompanyNotifierProvider.notifier)
+                            .updateemail(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Email', labelText: 'Email'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    TextField(
+                      controller: websiteController,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(titleCompanyNotifierProvider.notifier)
+                            .updatewebsite(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Website', labelText: 'Website'),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    RoundedButton(
+                      title: 'Save Title company',
+                      colour: Colors.blueAccent,
+                      onPressed: () async {
+                        setState(() {
+                          showSpinner = true;
+                        });
+                        try {
+                          ref
+                              .read(globalsNotifierProvider.notifier)
+                              .updatenewCompany(true);
 
-                      Navigator.pop(context);
+                          //  This is a new company record but it will already
+                          //  have a document ID that should be used.
 
-                      setState(() {
-                        showSpinner = false;
-                      });
-                    } catch (e) {
-                      // todo: add better error handling
-                      // debugPrint(e);
-                    }
-                  },
-                ),
-                SizedBox(height: 8.h,),
-                (widget != null)
-                    ? RoundedButton(
-                        title: 'Delete Title Company',
-                        colour: Colors.red,
-                        onPressed: () async {
-                          setState(() {
-                            showSpinner = true;
-                          });
-                          try {
-                            //agencyProvider.deleteCompany(globals.currentUid);
-                            // Navigator.pushNamed(
-                            //     context, UserDashboardScreen.id);
-
-                            setState(() {
-                              showSpinner = false;
-                            });
-                          } catch (e) {
-                            // todo: add better error handling
-                            //debugPrint(e);
+                          if (widget.titleCompanyId == "" ||
+                              widget.titleCompanyId == null) {
+                            ref
+                                .read(titleCompanyNotifierProvider.notifier)
+                                .saveTitleCompany(
+                                    ref.read(titleCompanyNotifierProvider));
+                          } else {
+                            ref
+                                .read(titleCompanyNotifierProvider.notifier)
+                                .saveTitleCompany(
+                                    ref.read(titleCompanyNotifierProvider),
+                                    widget.titleCompanyId);
                           }
-                        },
-                      )
-                    : Container()
-              ],
+
+                          Navigator.pop(context);
+
+                          setState(() {
+                            showSpinner = false;
+                          });
+                        } catch (e) {
+                          // todo: add better error handling
+                          // debugPrint(e);
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    (widget != null)
+                        ? RoundedButton(
+                            title: 'Delete Title Company',
+                            colour: Colors.red,
+                            onPressed: () async {
+                              setState(() {
+                                showSpinner = true;
+                              });
+                              try {
+                                //agencyProvider.deleteCompany(globals.currentUid);
+                                // Navigator.pushNamed(
+                                //     context, UserDashboardScreen.id);
+
+                                setState(() {
+                                  showSpinner = false;
+                                });
+                              } catch (e) {
+                                // todo: add better error handling
+                                //debugPrint(e);
+                              }
+                            },
+                          )
+                        : Container()
+                  ],
+                ),
+              ),
             ),
           ),
         ),

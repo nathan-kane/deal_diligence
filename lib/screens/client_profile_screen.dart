@@ -181,228 +181,260 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
     // final agencyProvider = Provider.of<AgencyProvider>(context);
     //final firestoreService = FirestoreService();
 
-    return Scaffold(
-      //appBar: CustomAppBar(),
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 50.sp),
-            child: Column(
-              //mainAxisAlignment: MainAxisAlignment.center,
-              //crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Text(
-                  'Client Profile',
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  height: 30.sp,
-                ),
-                TextField(
-                  textCapitalization: TextCapitalization.words,
-                  controller: clientFNameController,
-                  keyboardType: TextInputType.text,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(clientNotifierProvider.notifier)
-                        .updateFName(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'First Name', labelText: 'First Name'),
-                ),
-                SizedBox(height: 8.sp,),
-                TextField(
-                  textCapitalization: TextCapitalization.words,
-                  controller: clientLNameController,
-                  keyboardType: TextInputType.text,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(clientNotifierProvider.notifier)
-                        .updateLName(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Last Name', labelText: 'Last Name'),
-                ),
-                SizedBox(height: 8.sp,),
-                TextField(
-                  textCapitalization: TextCapitalization.words,
-                  controller: address1Controller,
-                  keyboardType: TextInputType.text,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(clientNotifierProvider.notifier)
-                        .updateAddress1(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Address 1', labelText: 'Address 1'),
-                ),
-                SizedBox(height: 8.sp,),
-                TextField(
-                  textCapitalization: TextCapitalization.words,
-                  controller: address2Controller,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(clientNotifierProvider.notifier)
-                        .updateAddress2(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Address 2', labelText: 'Address 2'),
-                ),
-                SizedBox(height: 8.sp,),
-                TextField(
-                  textCapitalization: TextCapitalization.words,
-                  controller: cityController,
-                  keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref.read(clientNotifierProvider.notifier).updateCity(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'City', labelText: 'City'),
-                ),
-                SizedBox(height: 8.sp,),
-                DropdownButton(
-                  value: _currentClientState,
-                  items: _dropDownState,
-                  hint: const Text('Choose State'),
-                  onChanged: changedDropDownState,
-                ),
-                SizedBox(height: 8.sp,),
-                TextField(
-                  controller: zipController,
-                  keyboardType: TextInputType.phone,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(clientNotifierProvider.notifier)
-                        .updateZipCode(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Zip Code', labelText: 'Zip Code'),
-                ),
-                SizedBox(height: 8.sp,),
-                TextField(
-                  inputFormatters: [maskFormatter],
-                  controller: cellPhoneController,
-                  keyboardType: TextInputType.phone,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(clientNotifierProvider.notifier)
-                        .updateCellPhone(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Cell Phone', labelText: 'Cell Phone'),
-                ),
-                SizedBox(height: 8.sp,),
-                TextField(
-                  inputFormatters: [maskFormatter],
-                  controller: homePhoneController,
-                  keyboardType: TextInputType.phone,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(clientNotifierProvider.notifier)
-                        .updateHomePhone(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Office Phone', labelText: 'Office Phone'),
-                ),
-                SizedBox(height: 8.sp,),
-                TextField(
-                  controller: emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    ref
-                        .read(clientNotifierProvider.notifier)
-                        .updateEmail(value);
-                  },
-                  decoration: const InputDecoration(
-                      hintText: 'Email', labelText: 'Email'),
-                ),
-                SizedBox(height: 8.sp,),
-                // TextField(
-                //   controller: websiteController,
-                //   textAlign: TextAlign.center,
-                //   onChanged: (value) {
-                //     ref.read(clientProvider.notifier).updateWebsite(value);
-                //   },
-                //   decoration: const InputDecoration(
-                //       hintText: 'Website', labelText: 'Website'),
-                // ),
-                // const SizedBox(
-                //   height: 8.0,
-                // ),
-                RoundedButton(
-                  title: 'Save Client',
-                  colour: Colors.blueAccent,
-                  onPressed: () async {
-                    setState(() {
-                      showSpinner = true;
-                    });
-                    try {
-                      ref
-                          .read(globalsNotifierProvider.notifier)
-                          .updatenewCompany(true);
-
-                      //  This is a new company record but it will already
-                      //  have a document ID that should be used.
-                      if (widget.clientId == "" || widget.clientId == null) {
+    return ScreenUtilInit(
+      ensureScreenSize: true,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          //appBar: CustomAppBar(),
+          backgroundColor: Colors.white,
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 50.sp),
+                child: Column(
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                  //crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Text(
+                      'Client Profile',
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(14.r),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30.sp,
+                    ),
+                    TextField(
+                      textCapitalization: TextCapitalization.words,
+                      controller: clientFNameController,
+                      keyboardType: TextInputType.text,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
                         ref
                             .read(clientNotifierProvider.notifier)
-                            .saveClient(ref.read(clientNotifierProvider), true);
-                      } else {
-                        ref.read(clientNotifierProvider.notifier).saveClient(
-                            ref.read(clientNotifierProvider),
-                            false,
-                            widget.clientId);
-                      }
+                            .updateFName(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'First Name', labelText: 'First Name'),
+                    ),
+                    SizedBox(
+                      height: 8.sp,
+                    ),
+                    TextField(
+                      textCapitalization: TextCapitalization.words,
+                      controller: clientLNameController,
+                      keyboardType: TextInputType.text,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(clientNotifierProvider.notifier)
+                            .updateLName(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Last Name', labelText: 'Last Name'),
+                    ),
+                    SizedBox(
+                      height: 8.sp,
+                    ),
+                    TextField(
+                      textCapitalization: TextCapitalization.words,
+                      controller: address1Controller,
+                      keyboardType: TextInputType.text,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(clientNotifierProvider.notifier)
+                            .updateAddress1(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Address 1', labelText: 'Address 1'),
+                    ),
+                    SizedBox(
+                      height: 8.sp,
+                    ),
+                    TextField(
+                      textCapitalization: TextCapitalization.words,
+                      controller: address2Controller,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(clientNotifierProvider.notifier)
+                            .updateAddress2(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Address 2', labelText: 'Address 2'),
+                    ),
+                    SizedBox(
+                      height: 8.sp,
+                    ),
+                    TextField(
+                      textCapitalization: TextCapitalization.words,
+                      controller: cityController,
+                      keyboardType: TextInputType.emailAddress,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(clientNotifierProvider.notifier)
+                            .updateCity(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'City', labelText: 'City'),
+                    ),
+                    SizedBox(
+                      height: 8.sp,
+                    ),
+                    DropdownButton(
+                      value: _currentClientState,
+                      items: _dropDownState,
+                      hint: const Text('Choose State'),
+                      onChanged: changedDropDownState,
+                    ),
+                    SizedBox(
+                      height: 8.sp,
+                    ),
+                    TextField(
+                      controller: zipController,
+                      keyboardType: TextInputType.phone,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(clientNotifierProvider.notifier)
+                            .updateZipCode(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Zip Code', labelText: 'Zip Code'),
+                    ),
+                    SizedBox(
+                      height: 8.sp,
+                    ),
+                    TextField(
+                      inputFormatters: [maskFormatter],
+                      controller: cellPhoneController,
+                      keyboardType: TextInputType.phone,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(clientNotifierProvider.notifier)
+                            .updateCellPhone(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Cell Phone', labelText: 'Cell Phone'),
+                    ),
+                    SizedBox(
+                      height: 8.sp,
+                    ),
+                    TextField(
+                      inputFormatters: [maskFormatter],
+                      controller: homePhoneController,
+                      keyboardType: TextInputType.phone,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(clientNotifierProvider.notifier)
+                            .updateHomePhone(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Office Phone', labelText: 'Office Phone'),
+                    ),
+                    SizedBox(
+                      height: 8.sp,
+                    ),
+                    TextField(
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        ref
+                            .read(clientNotifierProvider.notifier)
+                            .updateEmail(value);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Email', labelText: 'Email'),
+                    ),
+                    SizedBox(
+                      height: 8.sp,
+                    ),
+                    // TextField(
+                    //   controller: websiteController,
+                    //   textAlign: TextAlign.center,
+                    //   onChanged: (value) {
+                    //     ref.read(clientProvider.notifier).updateWebsite(value);
+                    //   },
+                    //   decoration: const InputDecoration(
+                    //       hintText: 'Website', labelText: 'Website'),
+                    // ),
+                    // const SizedBox(
+                    //   height: 8.0,
+                    // ),
+                    RoundedButton(
+                      title: 'Save Client',
+                      colour: Colors.blueAccent,
+                      onPressed: () async {
+                        setState(() {
+                          showSpinner = true;
+                        });
+                        try {
+                          ref
+                              .read(globalsNotifierProvider.notifier)
+                              .updatenewCompany(true);
 
-                      Navigator.pop(context);
-
-                      setState(() {
-                        showSpinner = false;
-                      });
-                    } catch (e) {
-                      // todo: add better error handling
-                      // debugPrint(e);
-                    }
-                  },
-                ),
-                SizedBox(height: 8.sp,),
-                (widget != null)
-                    ? RoundedButton(
-                        title: 'Delete Appraiser Company',
-                        colour: Colors.red,
-                        onPressed: () async {
-                          setState(() {
-                            showSpinner = true;
-                          });
-                          try {
-                            //agencyProvider.deleteCompany(globals.currentUid);
-                            // Navigator.pushNamed(
-                            //     context, UserDashboardScreen.id);
-
-                            setState(() {
-                              showSpinner = false;
-                            });
-                          } catch (e) {
-                            // todo: add better error handling
-                            //debugPrint(e);
+                          //  This is a new company record but it will already
+                          //  have a document ID that should be used.
+                          if (widget.clientId == "" ||
+                              widget.clientId == null) {
+                            ref
+                                .read(clientNotifierProvider.notifier)
+                                .saveClient(
+                                    ref.read(clientNotifierProvider), true);
+                          } else {
+                            ref
+                                .read(clientNotifierProvider.notifier)
+                                .saveClient(ref.read(clientNotifierProvider),
+                                    false, widget.clientId);
                           }
-                        },
-                      )
-                    : Container()
-              ],
+
+                          Navigator.pop(context);
+
+                          setState(() {
+                            showSpinner = false;
+                          });
+                        } catch (e) {
+                          // todo: add better error handling
+                          // debugPrint(e);
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 8.sp,
+                    ),
+                    (widget != null)
+                        ? RoundedButton(
+                            title: 'Delete Appraiser Company',
+                            colour: Colors.red,
+                            onPressed: () async {
+                              setState(() {
+                                showSpinner = true;
+                              });
+                              try {
+                                //agencyProvider.deleteCompany(globals.currentUid);
+                                // Navigator.pushNamed(
+                                //     context, UserDashboardScreen.id);
+
+                                setState(() {
+                                  showSpinner = false;
+                                });
+                              } catch (e) {
+                                // todo: add better error handling
+                                //debugPrint(e);
+                              }
+                            },
+                          )
+                        : Container()
+                  ],
+                ),
+              ),
             ),
           ),
         ),

@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 //import 'package:riverpod/riverpod.dart';
 
 //import 'package:deal_diligence/screens/company_screen.dart';
@@ -50,16 +52,22 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Center(child: Text('Deal Diligence')),
-      ),
-      body: SafeArea(
-        child: Center(
-            child: Text(
-                'An email has been sent to ${user!.email}...please verify')),
-        //'An email has been sent to...please verify')),
+    return ScreenUtilInit(
+      ensureScreenSize: true,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            title: const Center(child: Text('Deal Diligence')),
+          ),
+          body: SafeArea(
+            child: Center(
+                child: Text(
+                    'An email has been sent to ${user!.email}...please verify')),
+            //'An email has been sent to...please verify')),
+          ),
+        ),
       ),
     );
   }
