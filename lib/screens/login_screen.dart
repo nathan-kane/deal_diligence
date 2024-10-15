@@ -278,7 +278,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 30.r),
                     color: Colors.white,
                     child: TextField(
-                      style: TextStyle(fontSize: 5.sp),
+                      style: TextStyle(fontSize: 8.sp),
                       autofocus: true,
                       keyboardType: TextInputType.emailAddress,
                       textAlign: TextAlign.center,
@@ -301,7 +301,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 30.r),
                     color: Colors.white,
                     child: TextField(
-                      style: TextStyle(fontSize: 5.sp),
+                      style: TextStyle(fontSize: 8.sp),
                       obscureText: passwordVisible,
                       textAlign: TextAlign.center,
                       onChanged: (value) {
@@ -451,7 +451,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         "Login",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: ScreenUtil().setSp(8.r),
+                            fontSize: 8.sp,
                             color: Colors.black),
                       ),
                     ),
