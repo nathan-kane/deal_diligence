@@ -275,7 +275,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     height: 50.r,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 200.r),
+                    padding: EdgeInsets.symmetric(horizontal: 30.r),
                     color: Colors.white,
                     child: TextField(
                       style: TextStyle(fontSize: 5.sp),
@@ -298,7 +298,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     height: 8.r,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 200.r),
+                    padding: EdgeInsets.symmetric(horizontal: 30.r),
                     color: Colors.white,
                     child: TextField(
                       style: TextStyle(fontSize: 5.sp),
@@ -332,7 +332,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     height: 50.r,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 200.r),
+                    padding: EdgeInsets.symmetric(horizontal: 30.r),
                     child: ElevatedButton(
                       onPressed: () async {
                         setState(() {
@@ -458,11 +458,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   SizedBox(height: 50.r,),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 200.r),
+                    padding: EdgeInsets.symmetric(horizontal: 30.r),
                     child: TextButton(
                       child: Text(
                         'Forgot Password',
-                        style: TextStyle(color: Colors.blue, fontSize: 4.sp),
+                        style: TextStyle(color: Colors.blue, fontSize: 6.sp),
                       ),
                       onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute(
@@ -474,11 +474,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     height: 20.h,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 200.r),
+                    padding: EdgeInsets.symmetric(horizontal: 30.r),
                     child: TextButton(
                       child: Text(
                         'New User?  Create Account',
-                        style: TextStyle(color: Colors.blue, fontSize: 4.sp),
+                        style: TextStyle(color: Colors.blue, fontSize: 6.sp),
                       ),
                       // onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                       //     builder: (context) => const AddPaymentViaCard())),
@@ -497,7 +497,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   Visibility(
                     visible: !kIsWeb,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 200.sp),
+                      padding: EdgeInsets.symmetric(horizontal: 30.sp),
                       child: TextButton(
                         child: Text(
                           'Privacy Policy',
