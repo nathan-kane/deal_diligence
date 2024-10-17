@@ -223,7 +223,7 @@ class _InspectorCompanyScreenState
                     Text(
                       'Inspector Company Profile',
                       style: TextStyle(
-                        fontSize: ScreenUtil().setSp(14.r),
+                        fontSize: 24.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

@@ -211,6 +211,7 @@ class _TransactionDetailScreenState
 
   String? _currentCompany = '';
   String? _currentUser = '';
+  double tileText = 14.sp;
 
   @override
   void initState() {
@@ -219,6 +220,12 @@ class _TransactionDetailScreenState
     _currentUser = ref.read(globalsNotifierProvider).currentUserId;
     String textCurrency = contractPriceController.text;
     contractPriceController.text = _formatCurrency(textCurrency);
+
+    if (kIsWeb == true) {
+      tileText = 5.sp;
+    } else {
+      tileText = 14.sp;
+    }
 
     getTrxn();
 
@@ -920,7 +927,7 @@ class _TransactionDetailScreenState
                   children: <Widget>[
                     Text('Transaction Details',
                         style: TextStyle(
-                          fontSize: ScreenUtil().setSp(12.r),
+                          fontSize: tileText,
                           fontWeight: FontWeight.bold,
                         )),
                     SizedBox(
@@ -933,7 +940,7 @@ class _TransactionDetailScreenState
                       ),
                     ),
                     SizedBox(
-                      height: 8.sp,
+                      height: tileText,
                     ),
                     Container(
                       /* Populate the Agent dropdown only if
@@ -988,13 +995,13 @@ class _TransactionDetailScreenState
                           : const Text('No users yet'),
                     ),
                     SizedBox(
-                      height: 30.sp,
+                      height: 30.h,
                     ),
 
                     /// Display the client information in a collapsible panel
                     Card(
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 30.sp),
+                        padding: EdgeInsets.symmetric(horizontal: 30.h),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1007,7 +1014,7 @@ class _TransactionDetailScreenState
                                 'Client Information',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: ScreenUtil().setSp(8.r)),
+                                    fontSize: tileText),
                               ),
                               children: [
                                 TextField(
@@ -1428,7 +1435,7 @@ class _TransactionDetailScreenState
                               TextButton(
                                 child: Text(
                                   '3% Commission: ${_formatCurrency(strCommission)}',
-                                  style: TextStyle(fontSize: ScreenUtil().setSp(8.r)),
+                                  style: TextStyle(fontSize: tileText),
                                 ),
                                 onPressed: () {
                                   CommissionCalculatorPopup
@@ -1438,8 +1445,8 @@ class _TransactionDetailScreenState
                                               contractPriceController.text));
                                 },
                               ),
-                              const SizedBox(
-                                height: 8.0,
+                              SizedBox(
+                                height: 8.h,
                               ),
                             ],
                           ),
@@ -1617,8 +1624,8 @@ class _TransactionDetailScreenState
                           hintText: '24c. Financing & Appraisal Deadline',
                           labelText: '24c. Financing & Appraisal Deadline'),
                     ),
-                    const SizedBox(
-                      height: 8.0,
+                    SizedBox(
+                      height: 8.h,
                     ),
                     TextField(
                       keyboardType: TextInputType.text,
@@ -1675,8 +1682,8 @@ class _TransactionDetailScreenState
                           hintText: '24d. Settlement Deadline',
                           labelText: '24d. Settlement Deadline'),
                     ),
-                    const SizedBox(
-                      height: 8.0,
+                    SizedBox(
+                      height: 8.h,
                     ),
                     const Row(
                       //mainAxisAlignment: MainAxisAlignment.start,
@@ -1728,7 +1735,7 @@ class _TransactionDetailScreenState
                                   items: inspectorCompanyItems,
                                 );
                               } else {
-                                return const SizedBox();
+                                return SizedBox(height: 8.h,);
                               }
                             } else {
                               return const Center(

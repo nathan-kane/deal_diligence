@@ -110,14 +110,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   void initState() {
     super.initState();
     passwordVisible = true;
-
-    /// Set the margins for web and mobile
-    // if (kIsWeb) {
-    //   margins = 80.w;
-    // } else {
-    //   margins = 10.w;
-    // }
-    //initNotifications();
   }
 
   late String email;
@@ -243,7 +235,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     bool loginFail = false;
     String errorMessage = "";
-    //final globalVars = ref.watch(globalsNotifierProvider);
 
     return ScreenUtilInit(
       ensureScreenSize: true,
@@ -262,12 +253,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Text(
+                 const Text(
                     'User Login',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
-                      fontSize: ScreenUtil().setSp(14.r),
+                      //fontSize: 24.sp,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -278,7 +269,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 30.r),
                     color: Colors.white,
                     child: TextField(
-                      style: TextStyle(fontSize: 8.sp),
+                      //style: TextStyle(fontSize: 14.sp),
                       autofocus: true,
                       keyboardType: TextInputType.emailAddress,
                       textAlign: TextAlign.center,
@@ -301,7 +292,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 30.r),
                     color: Colors.white,
                     child: TextField(
-                      style: TextStyle(fontSize: 8.sp),
+                      //style: TextStyle(fontSize: 14.sp),
                       obscureText: passwordVisible,
                       textAlign: TextAlign.center,
                       onChanged: (value) {
@@ -447,22 +438,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
-                      child: Text(
+                      child: const Text(
                         "Login",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 8.sp,
+                            //fontSize: 14.sp,
                             color: Colors.black),
                       ),
                     ),
                   ),
-                  SizedBox(height: 50.r,),
+                  SizedBox(
+                    height: 50.r,
+                  ),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 30.r),
                     child: TextButton(
-                      child: Text(
+                      child: const Text(
                         'Forgot Password',
-                        style: TextStyle(color: Colors.blue, fontSize: 6.sp),
+                        style: TextStyle(color: Colors.blue), //fontSize: 12.sp),
                       ),
                       onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute(
@@ -476,9 +469,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 30.r),
                     child: TextButton(
-                      child: Text(
+                      child: const Text(
                         'New User?  Create Account',
-                        style: TextStyle(color: Colors.blue, fontSize: 6.sp),
+                        style: TextStyle(color: Colors.blue), //fontSize: 12.sp),
                       ),
                       // onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                       //     builder: (context) => const AddPaymentViaCard())),
@@ -499,10 +492,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 30.sp),
                       child: TextButton(
-                        child: Text(
+                        child: const Text(
                           'Privacy Policy',
                           style: TextStyle(
-                              fontSize: 4.sp,
+                              //fontSize: 4.sp,
                               color: Colors.blue,
                               decoration: TextDecoration.underline),
                         ),

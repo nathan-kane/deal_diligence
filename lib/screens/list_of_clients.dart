@@ -52,29 +52,37 @@ class _ClientsScreenState extends ConsumerState<ListOfClientsScreen> {
                                 isThreeLine: true,
                                 title: Row(
                                   children: [
-                                    Text(
-                                      'Client: ${snapshot.data?.docs[index]['fName'] ?? 'n/a'} ${snapshot.data?.docs[index]['lName'] ?? 'n/a'}',
-                                      style: TextStyle(
-                                          fontSize: 5.sp,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.blueAccent),
+                                    Flexible(
+                                      child: Text(
+                                        'Client: ${snapshot.data?.docs[index]['fName'] ?? 'n/a'} ${snapshot.data?.docs[index]['lName'] ?? 'n/a'}',
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.blueAccent),
+                                      ),
                                     ),
                                   ],
                                 ),
-                                subtitle: Text.rich(
-                                  // style: TextStyle(
-                                  //     fontSize: 8.sp),
-                                  TextSpan(
-                                    style: TextStyle(fontSize: 5.sp),
-                                    text:
-                                        '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
-                                        '${snapshot.data?.docs[index]['clientState'] ?? 'n/a'}',
+                                subtitle: Flexible(
+                                  child: Text.rich(
+                                    // style: TextStyle(
+                                    //     fontSize: 8.sp),
+                                    TextSpan(
+                                      //style: TextStyle(fontSize: 14.sp),
+                                      text:
+                                          '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
+                                          '${snapshot.data?.docs[index]['clientState'] ?? 'n/a'}',
+                                    ),
                                   ),
                                 ),
-                                trailing: Text(
-                                    style: TextStyle(
-                                        fontSize: 5.sp),
-                                    'Cell Phone: ${snapshot.data?.docs[index]['cellPhone'] ?? 'n/a'}'),
+                                trailing: Flexible(
+                                  child: Flexible(
+                                    child: Text(
+                                        //style: 
+                                        //TextStyle(fontSize: 14.sp),
+                                        'Cell Phone: ${snapshot.data?.docs[index]['cellPhone'] ?? 'n/a'}'),
+                                  ),
+                                ),
                                 onTap: () {
                                   //MainScreen.of(context)?.setIndex(2);  // Added this for BottomNavigationBar sync
                                   String? clientId =

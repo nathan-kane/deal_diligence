@@ -41,8 +41,11 @@ class DealDiligence extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
+
     return ScreenUtilInit(
-      designSize: const Size(375, 812),
+      designSize: Size(screenWidth, screenHeight),
       minTextAdapt: true,
       builder: (context, child) =>
          MaterialApp(

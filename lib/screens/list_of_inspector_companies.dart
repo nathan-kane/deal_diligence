@@ -70,19 +70,21 @@ class _CompanyDashboardScreenState
                                 isThreeLine: true,
                                 title: Row(
                                   children: [
-                                    Text(
-                                      '${snapshot.data?.docs[index]['inspectorCompanyName'] ?? 'n/a'}',
-                                      style: TextStyle(
-                                          fontSize: 5.sp,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.blueAccent),
+                                    Flexible(
+                                      child: Text(
+                                        '${snapshot.data?.docs[index]['inspectorCompanyName'] ?? 'n/a'}',
+                                        style: const TextStyle(
+                                            //fontSize: 14.sp,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.blueAccent),
+                                      ),
                                     ),
                                   ],
                                 ),
                                 subtitle: Text.rich(
                                   TextSpan(
-                                    style: TextStyle(
-                                        fontSize: 5.sp),
+                                    //style: TextStyle(
+                                        //fontSize: 14.sp),
                                     text:
                                         //'${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
                                         '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
@@ -90,8 +92,8 @@ class _CompanyDashboardScreenState
                                   ),
                                 ),
                                 trailing: Text(
-                                    style: TextStyle(
-                                        fontSize: 5.sp,
+                                    style: const TextStyle(
+                                        //fontSize: 14.sp,
                                         fontWeight: FontWeight.bold),
                                     'Primary Contact: ${snapshot.data?.docs[index]['primaryContact'] ?? 'n/a'}'),
                                 onTap: () {

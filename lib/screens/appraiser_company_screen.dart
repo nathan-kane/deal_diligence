@@ -213,7 +213,7 @@ class _AppraiserCompanyScreenState
                   Text(
                     'Appraiser Company Profile',
                     style: TextStyle(
-                      fontSize: ScreenUtil().setSp(14.r),
+                      fontSize: 24.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

@@ -214,7 +214,7 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
                     Text(
                       'Title Company Profile',
                       style: TextStyle(
-                        fontSize: ScreenUtil().setSp(12.r),
+                        fontSize: 24.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

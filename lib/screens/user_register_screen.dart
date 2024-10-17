@@ -100,7 +100,7 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
-                        fontSize: ScreenUtil().setSp(12.r),
+                        fontSize: 24.sp,
                       ),
                     )),
                     SizedBox(

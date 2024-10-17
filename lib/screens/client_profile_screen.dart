@@ -199,7 +199,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                     Text(
                       'Client Profile',
                       style: TextStyle(
-                        fontSize: ScreenUtil().setSp(14.r),
+                        fontSize: 24.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

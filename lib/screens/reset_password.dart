@@ -53,7 +53,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w900,
-                      fontSize: ScreenUtil().setSp(14.r),
+                      fontSize: 24.sp,
                     ),
                     textAlign: TextAlign.center,
                   ),

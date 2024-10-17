@@ -53,23 +53,25 @@ class _CompanyDashboardScreenState
                           itemCount: snapshot.data?.size,
                           itemBuilder: (context, index) {
                             return Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 50.sp),
+                              padding: EdgeInsets.symmetric(horizontal: 30.h),
                               child: ListTile(
                                 isThreeLine: true,
                                 title: Row(
                                   children: [
-                                    Text(
-                                      '${snapshot.data?.docs[index]['appraiserCompanyName'] ?? 'n/a'}',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 5.sp,
-                                          color: Colors.blueAccent),
+                                    Flexible(
+                                      child: Text(
+                                        '${snapshot.data?.docs[index]['appraiserCompanyName'] ?? 'n/a'}',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            //fontSize: 14.sp,
+                                            color: Colors.blueAccent),
+                                      ),
                                     ),
                                   ],
                                 ),
                                 subtitle: Text.rich(
                                   TextSpan(
-                                    style: TextStyle(fontSize: 5.sp),
+                                    //style: TextStyle(fontSize: 14.sp),
                                     text:
                                         //'${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
                                         '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
@@ -77,8 +79,8 @@ class _CompanyDashboardScreenState
                                   ),
                                 ),
                                 trailing: Text(
-                                    style: TextStyle(
-                                        fontSize: 5.sp,
+                                    style: const TextStyle(
+                                        //fontSize: 14.sp,
                                         fontWeight: FontWeight.bold),
                                     'Primary Contact: ${snapshot.data?.docs[index]['primaryContact'] ?? 'n/a'}'),
                                 onTap: () {
@@ -108,9 +110,9 @@ class _CompanyDashboardScreenState
           floatingActionButton: FloatingActionButton.extended(
             backgroundColor: Colors.blueAccent,
             foregroundColor: Colors.white,
-            label: Text(
+            label: const Text(
               "Add New",
-              style: TextStyle(fontSize: ScreenUtil().setSp(6.r)),
+              //style: TextStyle(fontSize: ScreenUtil().setSp(6.r)),
             ),
             icon: FaIcon(
               FontAwesomeIcons.plus,
