@@ -55,13 +55,13 @@ class AppointmentCalendarScreen extends ConsumerStatefulWidget {
 class _AppointmentCalendarScreenState
     extends ConsumerState<AppointmentCalendarScreen>
     with TickerProviderStateMixin {
-  late final List<Events> _selectedEvents;
-  final CalendarFormat _calendarFormat = CalendarFormat.month;
-  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
+  //late final List<Events> _selectedEvents;
+  //final CalendarFormat _calendarFormat = CalendarFormat.month;
+  //RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  DateTime? _rangeStart;
-  DateTime? _rangeEnd;
+  //DateTime? _rangeStart;
+  //DateTime? _rangeEnd;
 
   late StreamController<Map<DateTime, List>> _streamController;
   var eventDoc;
@@ -230,11 +230,11 @@ class _AppointmentCalendarScreenState
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
-        _rangeStart = null; // Important to clean those
-        _rangeEnd = null;
-        _rangeSelectionMode = RangeSelectionMode.toggledOff;
+        //_rangeStart = null; // Important to clean those
+        //_rangeEnd = null;
+        //_rangeSelectionMode = RangeSelectionMode.toggledOff;
       });
-      _selectedEvents = _getEventsForDay(selectedDay, events);
+      //_selectedEvents = _getEventsForDay(selectedDay, events);
     }
     //_buildEventList();
   }

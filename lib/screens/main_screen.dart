@@ -5,6 +5,7 @@
 //*********************************************
 
 //import 'package:deal_diligence/Providers/global_provider.dart';
+import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/screens/company_screen.dart';
 import 'package:deal_diligence/screens/list_of_appraiser_companies.dart';
@@ -104,10 +105,11 @@ class MainScreenState extends ConsumerState<MainScreen> {
                 _pageIndex = value;
               });
               if (value == 3) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const UserProfileScreen(false)));
+                ref.read(globalsNotifierProvider.notifier).updatenewUser(false);
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => const UserProfileScreen(false)));
               }
             },
 

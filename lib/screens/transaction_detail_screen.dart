@@ -222,7 +222,7 @@ class _TransactionDetailScreenState
     contractPriceController.text = _formatCurrency(textCurrency);
 
     if (kIsWeb == true) {
-      tileText = 5.sp;
+      tileText = 10.sp;
     } else {
       tileText = 14.sp;
     }
@@ -925,7 +925,7 @@ class _TransactionDetailScreenState
                 padding: EdgeInsets.symmetric(horizontal: 50.sp),
                 child: Column(
                   children: <Widget>[
-                    Text('Transaction Details',
+                   Text('Transaction Details',
                         style: TextStyle(
                           fontSize: tileText,
                           fontWeight: FontWeight.bold,
@@ -1010,11 +1010,11 @@ class _TransactionDetailScreenState
                             ExpansionTile(
                               subtitle: Text(
                                   '${clientFNameController.text} ${clientLNameController.text}'),
-                              title: Text(
+                              title: const Text(
                                 'Client Information',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: tileText),
+                                    fontWeight: FontWeight.bold),
+                                    //fontSize: tileText),
                               ),
                               children: [
                                 TextField(

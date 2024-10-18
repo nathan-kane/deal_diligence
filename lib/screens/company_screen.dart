@@ -14,6 +14,7 @@ import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/main_screen.dart';
+import 'package:flutter/foundation.dart';
 //import 'package:deal_diligence/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -152,10 +153,19 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
   //   });
   // }
 
+  double tileText = 14.sp;
+
   @override
   void initState() {
     //WidgetsBinding.instance.addPostFrameCallback((_) {
     //if (widget.isNewCompany == false) {
+
+    if (kIsWeb == true) {
+      tileText = 10.sp;
+    } else {
+      tileText = 14.sp;
+    }
+
     getCurrentCompanyProfile();
     //}
     //});
@@ -186,7 +196,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                     Text(
                       'Company Profile',
                       style: TextStyle(
-                        fontSize: 24.sp,
+                        fontSize: tileText,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -320,19 +330,6 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                         ref
                             .read(companyNotifierProvider.notifier)
                             .updatecity(value);
-                        // if (ref
-                        //         .watch(globalsNotifierProvider)
-                        //         .currentCompanyState ==
-                        //     "") {
-                        //   _currentCompanyState = ref
-                        //       .watch(globalsNotifierProvider)
-                        //       .currentCompanyState;
-                        // } else {
-                        //   _currentCompanyState = ref
-                        //       .watch(globalsNotifierProvider)
-                        //       .currentCompanyState;
-                        // }
-                        // ;
                       },
                       decoration: const InputDecoration(
                           hintText: 'City', labelText: 'City'),

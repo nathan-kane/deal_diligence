@@ -141,6 +141,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       // Update user notifier
       ref
           .read(usersNotifierProvider.notifier)
+          .updateuserID(_currentUserProfile.id);
+      ref
+          .read(usersNotifierProvider.notifier)
           .updateCellPhone(_currentUserProfile.get('cellPhone'));
       ref
           .read(usersNotifierProvider.notifier)
@@ -253,7 +256,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                 const Text(
+                  const Text(
                     'User Login',
                     style: TextStyle(
                       color: Colors.black,
@@ -455,7 +458,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     child: TextButton(
                       child: const Text(
                         'Forgot Password',
-                        style: TextStyle(color: Colors.blue), //fontSize: 12.sp),
+                        style:
+                            TextStyle(color: Colors.blue), //fontSize: 12.sp),
                       ),
                       onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute(
@@ -471,7 +475,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     child: TextButton(
                       child: const Text(
                         'New User?  Create Account',
-                        style: TextStyle(color: Colors.blue), //fontSize: 12.sp),
+                        style:
+                            TextStyle(color: Colors.blue), //fontSize: 12.sp),
                       ),
                       // onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                       //     builder: (context) => const AddPaymentViaCard())),

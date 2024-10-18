@@ -14,6 +14,7 @@ import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/company_screen.dart';
 import 'package:deal_diligence/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -87,12 +88,19 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   getCurrentUserProfile() async {
     //String currentCompanyId = ref.read(globalsNotifierProvider).companyId!;
 
-    if (widget.isNewUser == true) {
+    //if (widget.isNewUser == true) {
+    if (ref.read(globalsNotifierProvider).newUser == true) {
       /// This is a new user so you will only have access to their login info
       fNameController.text = ref.read(usersNotifierProvider).fName!;
       lNameController.text = ref.read(usersNotifierProvider).lName!;
       emailController.text = ref.read(usersNotifierProvider).email!;
-    } else {
+    } else if (widget.isNewUser == true) {
+      /// This is a current user trying to add a new user from the sidebar menu
+      fNameController.text = "";
+      lNameController.text = "";
+      emailController.text = "";
+    }
+    else {
       /// This is an existing user so get the info from the db
       // final DocumentSnapshot currentUserProfile = await usersRef
       //     .doc(ref.read(globalsNotifierProvider).currentUserId)
@@ -194,9 +202,18 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
     });
   }
 
+  double tileText = 14.sp;
+
   @override
   void initState() {
     //if (widget.isNewUser == false) {
+
+    if (kIsWeb == true) {
+      tileText = 10.sp;
+    } else {
+      tileText = 14.sp;
+    }
+
     getCurrentUserProfile();
     //}
 
@@ -274,7 +291,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                     Text(
                       'User Profile',
                       style: TextStyle(
-                        fontSize: 24.sp,
+                        fontSize: tileText,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -315,7 +332,8 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                     StreamBuilder<QuerySnapshot>(
                         // Get a list of available companies to assign the new user to a company
                         stream: _db.collection('company').snapshots(),
-                        builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
                           List<DropdownMenuItem<String>> companyItems = [];
                           if (snapshot.hasData) {
                             final companyList = snapshot.data.docs;
@@ -341,7 +359,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                 ref
                                     .read(globalsNotifierProvider.notifier)
                                     .updatecompanyId(companyValue!);
-      
+
                                 /// Put the selected company ID into the new user provider
                                 ref
                                     .read(usersNotifierProvider.notifier)
@@ -520,7 +538,8 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                     .read(globalsNotifierProvider)
                                     .currentUserState)
                             .snapshots(),
-                        builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
                           List<DropdownMenuItem<String>> mlsItems = [];
                           if (snapshot.hasData) {
                             final mlsList = snapshot.data.docs;
@@ -547,12 +566,12 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                 ref
                                     .read(globalsNotifierProvider.notifier)
                                     .updatemlsId(mlsValue!);
-      
+
                                 /// Put the MLS ID in the user provider
                                 ref
                                     .read(usersNotifierProvider.notifier)
                                     .updateMlsId(mlsValue);
-      
+
                                 /// Put the MLS name into the user provider
                                 ref
                                     .read(usersNotifierProvider.notifier)
@@ -602,7 +621,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                           ref
                               .read(usersNotifierProvider.notifier)
                               .updateEmail(emailController.value.text);
-      
+
                           /// If the user is NOT a new user then save all the data
                           /// on the screen to the database
                           if (ref.read(globalsNotifierProvider).newUser ==
@@ -613,17 +632,17 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                               UserCredential result =
                                   await _auth.createUserWithEmailAndPassword(
                                       email: email, password: "D3@lDiligence");
-      
+
                               if (result.user != null) {
                                 final User user = result.user!;
                                 newUser.userId = user.uid;
                                 //return user;
-      
-                                ref.read(usersNotifierProvider.notifier).saveUser(
-                                    ref.read(globalsNotifierProvider),
-                                    newUser,
-                                    false);
-      
+
+                                ref
+                                    .read(usersNotifierProvider.notifier)
+                                    .saveUser(ref.read(globalsNotifierProvider),
+                                        newUser, false);
+
                                 // Send email to new user with their default password
                                 /// sendNewUserEmail();
                               }
@@ -631,12 +650,12 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                               var e = error as FirebaseAuthException;
                               debugPrint(e.message!);
                             }
-      
+
                             /// The user has selected an existing company so add it to the provider
                             ref
                                 .read(usersNotifierProvider.notifier)
                                 .updateCompanyId(_selectedCompany!);
-      
+
                             /// Save the existing user information to the DB
                             ref.read(usersNotifierProvider.notifier).saveUser(
                                 ref.read(globalsNotifierProvider),
@@ -650,24 +669,25 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                 ref.read(usersNotifierProvider),
                                 true);
                           }
-      
+
                           /// check if the user wants to create a new company
                           if (isChecked) {
                             /// If the user wants to create a new company then execute this
                             ref
                                 .read(globalsNotifierProvider.notifier)
                                 .updatenewCompany(true);
-      
+
                             // ignore: use_build_context_synchronously
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                    builder: (context) => const CompanyScreen()));
+                                    builder: (context) =>
+                                        const CompanyScreen()));
                           } else {
                             /// The user has selected an existing company so add it to the provider
                             ref
                                 .read(usersNotifierProvider.notifier)
                                 .updateCompanyId(_selectedCompany!);
-      
+
                             /// User is linking to an existing company
                             ref.read(usersNotifierProvider.notifier).saveUser(
                                 ref.read(globalsNotifierProvider),
@@ -678,12 +698,12 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                 MaterialPageRoute(
                                     builder: (context) => const MainScreen()));
                           }
-      
+
                           /// iOS does not support push notifications so this code is not needed for now
                           // ref.read(usersNotifierProvider.notifier).saveFcmToken(
                           //     ref.read(globalsNotifierProvider).currentUserId!,
                           //     '${ref.read(usersNotifierProvider).fName} ${ref.read(usersNotifierProvider).lName!}');
-      
+
                           setState(() {
                             showSpinner = false;
                           });
@@ -696,7 +716,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                     SizedBox(
                       height: 8.h,
                     ),
-      
+
                     // ignore: unnecessary_null_comparison
                     (widget != null)
                         ? RoundedButton(
@@ -722,7 +742,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                                             const MainScreen()));
                                 //Navigator.pushNamed(
                                 //    context, AgentDashboardScreen.id);
-      
+
                                 setState(() {
                                   showSpinner = false;
                                 });
@@ -752,7 +772,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
           //       ref.read(usersNotifierProvider.notifier).saveFcmToken(
           //           ref.read(globalsNotifierProvider).currentUserId!,
           //           '${ref.read(usersNotifierProvider).fName} ${ref.read(usersNotifierProvider).lName!}');
-      
+
           //       Navigator.push(
           //         context,
           //         MaterialPageRoute(

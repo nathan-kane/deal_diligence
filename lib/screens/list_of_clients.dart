@@ -55,8 +55,8 @@ class _ClientsScreenState extends ConsumerState<ListOfClientsScreen> {
                                     Flexible(
                                       child: Text(
                                         'Client: ${snapshot.data?.docs[index]['fName'] ?? 'n/a'} ${snapshot.data?.docs[index]['lName'] ?? 'n/a'}',
-                                        style: TextStyle(
-                                            fontSize: 14.sp,
+                                        style: const TextStyle(
+                                            //fontSize: 14.sp,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.blueAccent),
                                       ),
