@@ -12,6 +12,7 @@ import 'package:deal_diligence/Providers/global_provider.dart';
 //import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -180,6 +181,8 @@ class _AppraiserCompanyScreenState
     });
   }
 
+  double tileText = 14.sp;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -187,6 +190,12 @@ class _AppraiserCompanyScreenState
         getCurrentAppraiserCompanyProfile();
       }
     });
+
+    if (kIsWeb) {
+      tileText = 14.sp;
+    } else {
+      tileText = 14.sp;
+    }
 
     super.initState();
 
@@ -196,7 +205,6 @@ class _AppraiserCompanyScreenState
 
   @override
   Widget build(BuildContext context) {
-
     return ScreenUtilInit(
       ensureScreenSize: true,
       child: Scaffold(
@@ -213,11 +221,13 @@ class _AppraiserCompanyScreenState
                   Text(
                     'Appraiser Company Profile',
                     style: TextStyle(
-                      fontSize: 24.sp,
+                      fontSize: tileText,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 30.h,),
+                  SizedBox(
+                    height: 30.h,
+                  ),
                   TextField(
                     textCapitalization: TextCapitalization.words,
                     controller: appraiserCompanyNameController,
@@ -232,7 +242,9 @@ class _AppraiserCompanyScreenState
                         hintText: 'Appraiser Company Name',
                         labelText: 'Appraiser Company Name'),
                   ),
-                  SizedBox(height: 8.h,),
+                  SizedBox(
+                    height: 8.h,
+                  ),
                   TextField(
                     textCapitalization: TextCapitalization.words,
                     controller: primaryContactController,
@@ -247,7 +259,9 @@ class _AppraiserCompanyScreenState
                         hintText: 'Primary Contact',
                         labelText: 'Primary Contact'),
                   ),
-                  SizedBox(height: 8.h,),
+                  SizedBox(
+                    height: 8.h,
+                  ),
                   TextField(
                     textCapitalization: TextCapitalization.words,
                     controller: address1Controller,
@@ -261,7 +275,9 @@ class _AppraiserCompanyScreenState
                     decoration: const InputDecoration(
                         hintText: 'Address 1', labelText: 'Address 1'),
                   ),
-                  SizedBox(height: 8.h,),
+                  SizedBox(
+                    height: 8.h,
+                  ),
                   TextField(
                     textCapitalization: TextCapitalization.words,
                     controller: address2Controller,
@@ -274,7 +290,9 @@ class _AppraiserCompanyScreenState
                     decoration: const InputDecoration(
                         hintText: 'Address 2', labelText: 'Address 2'),
                   ),
-                  SizedBox(height: 8.h,),
+                  SizedBox(
+                    height: 8.h,
+                  ),
                   TextField(
                     textCapitalization: TextCapitalization.words,
                     controller: cityController,
@@ -288,14 +306,18 @@ class _AppraiserCompanyScreenState
                     decoration: const InputDecoration(
                         hintText: 'City', labelText: 'City'),
                   ),
-                  SizedBox(height: 8.h,),
+                  SizedBox(
+                    height: 8.h,
+                  ),
                   DropdownButton(
                     value: _currentAppraiserCompanyState,
                     items: _dropDownState,
                     hint: const Text('Choose State'),
                     onChanged: changedDropDownState,
                   ),
-                  SizedBox(height: 8.h,),
+                  SizedBox(
+                    height: 8.h,
+                  ),
                   TextField(
                     controller: zipController,
                     keyboardType: TextInputType.phone,
@@ -308,7 +330,9 @@ class _AppraiserCompanyScreenState
                     decoration: const InputDecoration(
                         hintText: 'Zip Code', labelText: 'Zip Code'),
                   ),
-                  SizedBox(height: 8.h,),
+                  SizedBox(
+                    height: 8.h,
+                  ),
                   TextField(
                     inputFormatters: [maskFormatter],
                     controller: cellPhoneController,
@@ -322,7 +346,9 @@ class _AppraiserCompanyScreenState
                     decoration: const InputDecoration(
                         hintText: 'Cell Phone', labelText: 'Cell Phone'),
                   ),
-                  SizedBox(height: 8.h,),
+                  SizedBox(
+                    height: 8.h,
+                  ),
                   TextField(
                     inputFormatters: [maskFormatter],
                     controller: officePhoneController,
@@ -336,7 +362,9 @@ class _AppraiserCompanyScreenState
                     decoration: const InputDecoration(
                         hintText: 'Office Phone', labelText: 'Office Phone'),
                   ),
-                  SizedBox(height: 8.h,),
+                  SizedBox(
+                    height: 8.h,
+                  ),
                   TextField(
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
@@ -349,7 +377,9 @@ class _AppraiserCompanyScreenState
                     decoration: const InputDecoration(
                         hintText: 'Email', labelText: 'Email'),
                   ),
-                  SizedBox(height: 8.h,),
+                  SizedBox(
+                    height: 8.h,
+                  ),
                   TextField(
                     controller: websiteController,
                     textAlign: TextAlign.center,
@@ -361,7 +391,9 @@ class _AppraiserCompanyScreenState
                     decoration: const InputDecoration(
                         hintText: 'Website', labelText: 'Website'),
                   ),
-                  SizedBox(height: 8.h,),
+                  SizedBox(
+                    height: 8.h,
+                  ),
                   RoundedButton(
                     title: 'Save Appraiser Company',
                     colour: Colors.blueAccent,
@@ -373,7 +405,7 @@ class _AppraiserCompanyScreenState
                         ref
                             .read(globalsNotifierProvider.notifier)
                             .updatenewCompany(true);
-      
+
                         //  This is a new company record but it will already
                         //  have a document ID that should be used.
                         if (widget.appraiserCompanyId == "" ||
@@ -389,9 +421,9 @@ class _AppraiserCompanyScreenState
                                   ref.read(appraiserCompanyNotifierProvider),
                                   widget.appraiserCompanyId);
                         }
-      
+
                         Navigator.pop(context);
-      
+
                         setState(() {
                           showSpinner = false;
                         });
@@ -401,7 +433,9 @@ class _AppraiserCompanyScreenState
                       }
                     },
                   ),
-                  SizedBox(height: 8.h,),
+                  SizedBox(
+                    height: 8.h,
+                  ),
                   (widget != null)
                       ? RoundedButton(
                           title: 'Delete Appraiser Company',
@@ -414,7 +448,7 @@ class _AppraiserCompanyScreenState
                               //agencyProvider.deleteCompany(globals.currentUid);
                               // Navigator.pushNamed(
                               //     context, UserDashboardScreen.id);
-      
+
                               setState(() {
                                 showSpinner = false;
                               });

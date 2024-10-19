@@ -114,7 +114,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     passwordVisible = true;
 
     if (kIsWeb == true) {
-      tileText = 18.sp;
+      tileText = 20.sp;
     } else {
       tileText = 14.sp;
     }

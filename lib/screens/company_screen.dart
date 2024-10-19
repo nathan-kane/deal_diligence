@@ -161,7 +161,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
     //if (widget.isNewCompany == false) {
 
     if (kIsWeb == true) {
-      tileText = 10.sp;
+      tileText = 14.sp;
     } else {
       tileText = 14.sp;
     }
@@ -196,6 +196,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                     Text(
                       'Company Profile',
                       style: TextStyle(
+                        color: Colors.black,
                         fontSize: tileText,
                         fontWeight: FontWeight.bold,
                       ),

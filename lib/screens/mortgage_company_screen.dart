@@ -11,6 +11,7 @@ import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Providers/mortgage_company_provider.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -177,6 +178,8 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
   //   });
   // }
 
+  double tileText = 14.sp;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -184,6 +187,12 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
         getCurrentMortgageCompanyProfile();
       }
     });
+
+    if (kIsWeb) {
+      tileText = 14.sp;
+    } else {
+      tileText = 14.sp;
+    }
 
     super.initState();
 
@@ -215,7 +224,7 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
                     Text(
                       'Mortgage Company Profile',
                       style: TextStyle(
-                        fontSize: 24.sp,
+                        fontSize: tileText,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

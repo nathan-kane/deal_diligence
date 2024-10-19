@@ -12,6 +12,7 @@ import 'package:deal_diligence/Providers/title_company_provider.dart';
 //import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -176,6 +177,8 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
   //   });
   // }
 
+  double tileText = 14.sp;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -183,6 +186,12 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
         getCurrentTitleCompanyProfile();
       }
     });
+
+    if (kIsWeb) {
+      tileText = 14.sp;
+    } else {
+      tileText = 14.sp;
+    }
 
     super.initState();
 
@@ -214,7 +223,7 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
                     Text(
                       'Title Company Profile',
                       style: TextStyle(
-                        fontSize: 24.sp,
+                        fontSize: tileText,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
