@@ -131,27 +131,25 @@ class _CompanyDashboardScreenState
                                         ),
                                       ],
                                     ),
-                                    subtitle: Flexible(
-                                      child: Text.rich(
-                                        TextSpan(
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                              //fontSize: tileText),
-                                          text:
-                                              '${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
-                                              '${snapshot.data?.docs[index]['propertyCity'] ?? 'n/a'}, '
-                                              '${snapshot.data?.docs[index]['propertyState'] ?? 'n/a'}',
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                              text:
-                                                  '\nPrice: ${_formatCurrency(snapshot.data?.docs[index]['contractPrice']) ?? 'n/a'}\nStatus: ${snapshot.data?.docs[index]['trxnStatus'] ?? 'n/a'}',
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  //fontSize: tileText,
-                                                  color: Colors.black),
-                                            )
-                                          ],
-                                        ),
+                                    subtitle: Text.rich(
+                                      TextSpan(
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                            //fontSize: tileText),
+                                        text:
+                                            '${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
+                                            '${snapshot.data?.docs[index]['propertyCity'] ?? 'n/a'}, '
+                                            '${snapshot.data?.docs[index]['propertyState'] ?? 'n/a'}',
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text:
+                                                '\nPrice: ${_formatCurrency(snapshot.data?.docs[index]['contractPrice']) ?? 'n/a'}\nStatus: ${snapshot.data?.docs[index]['trxnStatus'] ?? 'n/a'}',
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                //fontSize: tileText,
+                                                color: Colors.black),
+                                          )
+                                        ],
                                       ),
                                     ),
                                     trailing: Text(

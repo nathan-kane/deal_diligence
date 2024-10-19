@@ -106,10 +106,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
 /* =========================================================== */
 
+  double tileText = 14.sp;
+
   @override
   void initState() {
     super.initState();
     passwordVisible = true;
+
+    if (kIsWeb == true) {
+      tileText = 18.sp;
+    } else {
+      tileText = 14.sp;
+    }
   }
 
   late String email;
@@ -256,12 +264,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  const Text(
+                  Text(
                     'User Login',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
-                      //fontSize: 24.sp,
+                      fontSize: tileText,
                     ),
                     textAlign: TextAlign.center,
                   ),
