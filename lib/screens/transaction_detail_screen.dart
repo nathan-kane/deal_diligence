@@ -1001,7 +1001,7 @@ class _TransactionDetailScreenState
                     /// Display the client information in a collapsible panel
                     Card(
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 30.h),
+                        padding: EdgeInsets.symmetric(horizontal: 20.h),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
