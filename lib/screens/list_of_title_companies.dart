@@ -15,6 +15,7 @@ import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/title_company_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,6 +46,25 @@ class _CompanyDashboardScreenState
         .updatemlsId(ref.read(usersNotifierProvider).mlsId!);
   }
 
+ ///
+  /// Set the fonts sizes here because they don't seem to work
+  /// with the responsive UI and List Tile widget
+  /// 
+  double tileTitleFontSize = 14.sp;
+  double tileBodyFontSize = 8.sp;
+  
+  @override
+  void initState() {
+    super.initState();
+        if (kIsWeb) {
+      tileTitleFontSize = 6.sp;
+      tileBodyFontSize = 5.sp;
+    } else {
+      tileBodyFontSize = 14.sp;
+      tileTitleFontSize = 10.sp;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -73,7 +93,7 @@ class _CompanyDashboardScreenState
                                         child: Text(
                                           '${snapshot.data?.docs[index]['titleCompanyName'] ?? 'n/a'}',
                                           style: TextStyle(
-                                              fontSize: constants.kListHeaderFontSize,
+                                              fontSize: tileTitleFontSize,
                                               fontWeight: FontWeight.bold,
                                               color: Colors.blueAccent),
                                         ),
@@ -84,7 +104,7 @@ class _CompanyDashboardScreenState
                                 subtitle: Text.rich(
                                   TextSpan(
                                     style: TextStyle(
-                                        fontSize: constants.kListBodyFontSize),
+                                        fontSize: tileBodyFontSize),
                                     text:
                                         //'${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
                                         '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
@@ -95,7 +115,7 @@ class _CompanyDashboardScreenState
                                   child: Flexible(
                                     child: Text(
                                         style: TextStyle(
-                                            fontSize: constants.kListBodyFontSize,
+                                            fontSize: tileBodyFontSize,
                                             fontWeight: FontWeight.bold),
                                         'Primary Contact: ${snapshot.data?.docs[index]['primaryContact'] ?? 'n/a'}'),
                                   ),

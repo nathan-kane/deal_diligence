@@ -12,6 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/client_profile_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,7 +31,26 @@ class _ClientsScreenState extends ConsumerState<ListOfClientsScreen> {
   bool showSpinner = false;
   bool isLoaded = false;
 
+   ///
+  /// Set the fonts sizes here because they don't seem to work
+  /// with the responsive UI and List Tile widget
+  /// 
+  double tileTitleFontSize = 14.sp;
+  double tileBodyFontSize = 8.sp;
+  
   @override
+  void initState() {
+    super.initState();
+        if (kIsWeb) {
+      tileTitleFontSize = 6.sp;
+      tileBodyFontSize = 5.sp;
+    } else {
+      tileBodyFontSize = 14.sp;
+      tileTitleFontSize = 10.sp;
+    }
+  }
+  
+@override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       ensureScreenSize: true,
@@ -48,52 +68,52 @@ class _ClientsScreenState extends ConsumerState<ListOfClientsScreen> {
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: EdgeInsets.symmetric(horizontal: 50.sp),
-                              child: ListTile(
-                                isThreeLine: true,
-                                title: Row(
-                                  children: [
-                                    Flexible(
-                                      child: Text(
+                              child: Flexible(
+                                child: ListTile(
+                                  isThreeLine: true,
+                                  title: Row(
+                                    children: [
+                                      Text(
                                         'Client: ${snapshot.data?.docs[index]['fName'] ?? 'n/a'} ${snapshot.data?.docs[index]['lName'] ?? 'n/a'}',
-                                        style: TextStyle(
-                                            fontSize: constants.kListHeaderFontSize,
+                                        style: const TextStyle(
+                                            //fontSize: constants.kListHeaderFontSize,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.blueAccent),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                subtitle: Flexible(
-                                  child: Text.rich(
-                                    style: TextStyle(
-                                        fontSize: constants.kListBodyFontSize),
-                                    TextSpan(
-                                      style: TextStyle(fontSize: constants.kListBodyFontSize),
-                                      text:
-                                          '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
-                                          '${snapshot.data?.docs[index]['clientState'] ?? 'n/a'}',
+                                    ],
+                                  ),
+                                  subtitle: Flexible(
+                                    child: Text.rich(
+                                      style: TextStyle(
+                                          fontSize: tileBodyFontSize),
+                                      TextSpan(
+                                        style: TextStyle(fontSize: tileBodyFontSize),
+                                        text:
+                                            '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
+                                            '${snapshot.data?.docs[index]['clientState'] ?? 'n/a'}',
+                                      ),
                                     ),
                                   ),
-                                ),
-                                trailing: Flexible(
-                                  child: Flexible(
-                                    child: Text(
-                                        style: 
-                                        TextStyle(fontSize: constants.kListBodyFontSize),
-                                        'Cell Phone: ${snapshot.data?.docs[index]['cellPhone'] ?? 'n/a'}'),
-                                  ),
-                                ),
-                                onTap: () {
-                                  //MainScreen.of(context)?.setIndex(2);  // Added this for BottomNavigationBar sync
-                                  String? clientId =
-                                      snapshot.data?.docs[index].id;
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          ClientProfileScreen(false, clientId),
+                                  trailing: Flexible(
+                                    child: Flexible(
+                                      child: Text(
+                                          style: 
+                                          TextStyle(fontSize: tileBodyFontSize),
+                                          'Cell Phone: ${snapshot.data?.docs[index]['cellPhone'] ?? 'n/a'}'),
                                     ),
-                                  );
-                                },
+                                  ),
+                                  onTap: () {
+                                    //MainScreen.of(context)?.setIndex(2);  // Added this for BottomNavigationBar sync
+                                    String? clientId =
+                                        snapshot.data?.docs[index].id;
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ClientProfileScreen(false, clientId),
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
                             );
                           },

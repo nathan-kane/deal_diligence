@@ -15,6 +15,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/inspector_profile_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,13 +38,24 @@ class _CompanyDashboardScreenState
   bool showSpinner = false;
   bool isLoaded = false;
 
-  // setGlobals(String? Id) {
-  //   ref.read(globalsNotifierProvider.notifier).updatenewTrxn(false);
-  //   ref.read(globalsNotifierProvider.notifier).updatecurrentTrxnId(Id);
-  //   ref
-  //       .read(globalsNotifierProvider.notifier)
-  //       .updatemlsId(ref.read(usersNotifierProvider).mlsId!);
-  // }
+ ///
+  /// Set the fonts sizes here because they don't seem to work
+  /// with the responsive UI and List Tile widget
+  /// 
+  double tileTitleFontSize = 14.sp;
+  double tileBodyFontSize = 8.sp;
+  
+  @override
+  void initState() {
+    super.initState();
+        if (kIsWeb) {
+      tileTitleFontSize = 6.sp;
+      tileBodyFontSize = 5.sp;
+    } else {
+      tileBodyFontSize = 14.sp;
+      tileTitleFontSize = 10.sp;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,48 +77,48 @@ class _CompanyDashboardScreenState
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: EdgeInsets.symmetric(horizontal: 50.sp),
-                              child: ListTile(
-                                isThreeLine: true,
-                                title: Row(
-                                  children: [
-                                    Flexible(
-                                      child: Text(
+                              child: Flexible(
+                                child: ListTile(
+                                  isThreeLine: true,
+                                  title: Row(
+                                    children: [
+                                      Text(
                                         '${snapshot.data?.docs[index]['inspectorCompanyName'] ?? 'n/a'}',
                                         style: TextStyle(
-                                            fontSize: constants.kListHeaderFontSize,
+                                            fontSize: tileTitleFontSize,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.blueAccent),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                subtitle: Text.rich(
-                                  TextSpan(
-                                    style: TextStyle(
-                                        fontSize: constants.kListBodyFontSize),
-                                    text:
-                                        //'${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
-                                        '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
-                                        '${snapshot.data?.docs[index]['inspectorCompanyState'] ?? 'n/a'}',
+                                    ],
                                   ),
-                                ),
-                                trailing: Text(
-                                    style: TextStyle(
-                                        fontSize: constants.kListBodyFontSize,
-                                        fontWeight: FontWeight.bold),
-                                    'Primary Contact: ${snapshot.data?.docs[index]['primaryContact'] ?? 'n/a'}'),
-                                onTap: () {
-                                  String? inspectorCompanyId =
-                                      snapshot.data?.docs[index].id;
-
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          InspectorCompanyScreen(
-                                              false, inspectorCompanyId),
+                                  subtitle: Text.rich(
+                                    TextSpan(
+                                      style: TextStyle(
+                                          fontSize: tileBodyFontSize),
+                                      text:
+                                          //'${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
+                                          '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
+                                          '${snapshot.data?.docs[index]['inspectorCompanyState'] ?? 'n/a'}',
                                     ),
-                                  );
-                                },
+                                  ),
+                                  trailing: Text(
+                                      style: TextStyle(
+                                          fontSize: tileBodyFontSize,
+                                          fontWeight: FontWeight.bold),
+                                      'Primary Contact: ${snapshot.data?.docs[index]['primaryContact'] ?? 'n/a'}'),
+                                  onTap: () {
+                                    String? inspectorCompanyId =
+                                        snapshot.data?.docs[index].id;
+                                
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            InspectorCompanyScreen(
+                                                false, inspectorCompanyId),
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
                             );
                           },

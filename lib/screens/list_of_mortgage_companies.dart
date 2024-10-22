@@ -13,6 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/mortgage_company_screen.dart';
+import 'package:flutter/foundation.dart';
 //import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -37,13 +38,24 @@ class _CompanyDashboardScreenState
   bool showSpinner = false;
   bool isLoaded = false;
 
-  // setGlobals(String? Id) {
-  //   ref.read(globalsNotifierProvider.notifier).updatenewTrxn(false);
-  //   ref.read(globalsNotifierProvider.notifier).updatecurrentTrxnId(Id);
-  //   ref
-  //       .read(globalsNotifierProvider.notifier)
-  //       .updatemlsId(ref.read(usersNotifierProvider).mlsId!);
-  // }
+ ///
+  /// Set the fonts sizes here because they don't seem to work
+  /// with the responsive UI and List Tile widget
+  /// 
+  double tileTitleFontSize = 14.sp;
+  double tileBodyFontSize = 8.sp;
+  
+  @override
+  void initState() {
+    super.initState();
+        if (kIsWeb) {
+      tileTitleFontSize = 6.sp;
+      tileBodyFontSize = 5.sp;
+    } else {
+      tileBodyFontSize = 14.sp;
+      tileTitleFontSize = 10.sp;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,57 +77,55 @@ class _CompanyDashboardScreenState
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: EdgeInsets.symmetric(horizontal: 50.sp),
-                              child: ListTile(
-                                isThreeLine: true,
-                                title: Row(
-                                  children: [
-                                    Flexible(
-                                      child: Flexible(
-                                        child: Text(
-                                          '${snapshot.data?.docs[index]['mortgageCompanyName'] ?? 'n/a'}',
-                                          style: TextStyle(
-                                              fontSize: constants.kListHeaderFontSize,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.blueAccent),
-                                        ),
+                              child: Flexible(
+                                child: ListTile(
+                                  isThreeLine: true,
+                                  title: Row(
+                                    children: [
+                                      Text(
+                                        '${snapshot.data?.docs[index]['mortgageCompanyName'] ?? 'n/a'}',
+                                        style: TextStyle(
+                                            fontSize: tileTitleFontSize,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.blueAccent),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                subtitle: Text.rich(
-                                  TextSpan(
-                                    style: TextStyle(
-                                        fontSize: constants.kListBodyFontSize),
-                                    text:
-                                        //'${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
-                                        '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
-                                        '${snapshot.data?.docs[index]['mortgageCompanyState'] ?? 'n/a'}',
+                                    ],
                                   ),
-                                ),
-                                trailing: Flexible(
-                                  child: Text(
+                                  subtitle: Text.rich(
+                                    TextSpan(
                                       style: TextStyle(
-                                          fontSize: constants.kListBodyFontSize,
-                                          fontWeight: FontWeight.bold),
-                                      'Primary Contact: ${snapshot.data?.docs[index]['primaryContact'] ?? 'n/a'}'),
-                                ),
-                                onTap: () {
-                                  //MainScreen.of(context)?.setIndex(2);  // Added this for BottomNavigationBar sync
-                                  String? mortgageCompanyId =
-                                      snapshot.data?.docs[index].id;
-                                  //setGlobals(snapshot.data?.docs[index].id);
-                                  // ref
-                                  //     .read(globalsNotifierProvider.notifier)
-                                  //     .updatecurrentTrxnId(
-                                  //         snapshot.data?.docs[index].id);
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          MortgageCompanyScreen(
-                                              false, mortgageCompanyId),
+                                          fontSize: tileBodyFontSize),
+                                      text:
+                                          //'${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
+                                          '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
+                                          '${snapshot.data?.docs[index]['mortgageCompanyState'] ?? 'n/a'}',
                                     ),
-                                  );
-                                },
+                                  ),
+                                  trailing: Flexible(
+                                    child: Text(
+                                        style: TextStyle(
+                                            fontSize: tileBodyFontSize,
+                                            fontWeight: FontWeight.bold),
+                                        'Primary Contact: ${snapshot.data?.docs[index]['primaryContact'] ?? 'n/a'}'),
+                                  ),
+                                  onTap: () {
+                                    //MainScreen.of(context)?.setIndex(2);  // Added this for BottomNavigationBar sync
+                                    String? mortgageCompanyId =
+                                        snapshot.data?.docs[index].id;
+                                    //setGlobals(snapshot.data?.docs[index].id);
+                                    // ref
+                                    //     .read(globalsNotifierProvider.notifier)
+                                    //     .updatecurrentTrxnId(
+                                    //         snapshot.data?.docs[index].id);
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            MortgageCompanyScreen(
+                                                false, mortgageCompanyId),
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
                             );
                           },

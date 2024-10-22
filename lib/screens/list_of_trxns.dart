@@ -37,7 +37,6 @@ class _CompanyDashboardScreenState
   bool showSpinner = false;
   bool isLoaded = false;
   final moneyFormat = NumberFormat("#,##0.00", "en_US");
-  double tileText = 14.sp;
 
   setGlobals(String? Id) {
     ref.read(globalsNotifierProvider.notifier).updatenewTrxn(false);
@@ -74,14 +73,23 @@ class _CompanyDashboardScreenState
     }
   }
 
+  ///
+  /// Set the fonts sizes here because they don't seem to work
+  /// with the responsive UI and List Tile widget
+  /// 
+  double tileTitleFontSize = 14.sp;
+  double tileBodyFontSize = 8.sp;
+
   @override
   void initState() {
-    if (kIsWeb == true) {
-      tileText = 5.sp;
-    } else {
-      tileText = 14.sp;
-    }
     super.initState();
+    if (kIsWeb) {
+      tileTitleFontSize = 6.sp;
+      tileBodyFontSize = 5.sp;
+    } else {
+      tileBodyFontSize = 14.sp;
+      tileTitleFontSize = 10.sp;
+    }
   }
 
   @override
@@ -115,61 +123,60 @@ class _CompanyDashboardScreenState
                                   return const CircularProgressIndicator();
                                 }
                                 if (clientSnapshot.hasData) {
-                                  return ListTile(
-                                    isThreeLine: true,
-                                    title: Row(
-                                      children: [
-                                        Flexible(
-                                          child: Text(
-                                            // Replace 'INSERT CLIENT NAME HERE' with retrieved client name
+                                  return Flexible(
+                                    child: ListTile(
+                                      isThreeLine: true,
+                                      title: Row(
+                                        children: [
+                                          Text(
                                             clientSnapshot.data!,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: constants.kListHeaderFontSize,
-                                                color: const Color.fromARGB(
+                                                //fontSize: tileTitleFontSize,
+                                                color: Color.fromARGB(
                                                     255, 4, 93, 248)),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    subtitle: Text.rich(
-                                      TextSpan(
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: constants.kListBodyFontSize),
-                                        text:
-                                            '${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
-                                            '${snapshot.data?.docs[index]['propertyCity'] ?? 'n/a'}, '
-                                            '${snapshot.data?.docs[index]['propertyState'] ?? 'n/a'}',
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                            text:
-                                                '\nPrice: ${_formatCurrency(snapshot.data?.docs[index]['contractPrice']) ?? 'n/a'}\nStatus: ${snapshot.data?.docs[index]['trxnStatus'] ?? 'n/a'}',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: constants.kListBodyFontSize,
-                                                color: Colors.black),
-                                          )
                                         ],
                                       ),
-                                    ),
-                                    trailing: Text(
-                                      'MLS#: ${snapshot.data?.docs[index]['mlsNumber'] ?? 'n/a'}\n${snapshot.data?.docs[index]['clientType']}',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: constants.kListBodyFontSize),
-                                    ),
-                                    onTap: () {
-                                      setGlobals(snapshot.data?.docs[index].id);
-
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const TransactionDetailScreen(
-                                                  false, false),
+                                      subtitle: Text.rich(
+                                        TextSpan(
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: tileBodyFontSize),
+                                          text:
+                                              '${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
+                                              '${snapshot.data?.docs[index]['propertyCity'] ?? 'n/a'}, '
+                                              '${snapshot.data?.docs[index]['propertyState'] ?? 'n/a'}',
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text:
+                                                  '\nPrice: ${_formatCurrency(snapshot.data?.docs[index]['contractPrice']) ?? 'n/a'}\nStatus: ${snapshot.data?.docs[index]['trxnStatus'] ?? 'n/a'}',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: tileBodyFontSize,
+                                                  color: Colors.black),
+                                            )
+                                          ],
                                         ),
-                                      );
-                                    },
+                                      ),
+                                      trailing: Text(
+                                        'MLS#: ${snapshot.data?.docs[index]['mlsNumber'] ?? 'n/a'}\n${snapshot.data?.docs[index]['clientType']}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: tileBodyFontSize),
+                                      ),
+                                      onTap: () {
+                                        setGlobals(snapshot.data?.docs[index].id);
+                                    
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const TransactionDetailScreen(
+                                                    false, false),
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   );
                                 } else {
                                   return const Text(
