@@ -6,8 +6,9 @@
 
 // ignore_for_file: use_build_context_synchronously, unnecessary_null_comparison
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-//import 'package:deal_diligence/constants.dart' as constants;
+import 'package:deal_diligence/constants.dart' as constants;
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -100,7 +101,7 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
-                        fontSize: 24.sp,
+                        fontSize: constants.kTitleTextFontSize,
                       ),
                     )),
                     SizedBox(
@@ -114,12 +115,17 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                             textCapitalization: TextCapitalization.words,
                             keyboardType: TextInputType.name,
                             textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: constants.kTextFieldTextFontSize),
                             onChanged: (value) {
                               fName =
                                   value; // Capture the value entered by the user
                             },
-                            decoration:
-                                const InputDecoration(hintText: 'First Name'),
+                            decoration: InputDecoration(
+                                hintText: 'First Name',
+                                labelStyle: TextStyle(
+                                    fontSize:
+                                        constants.kTextFieldHintFontSize)),
                           ),
                         ),
                         Expanded(
@@ -127,12 +133,17 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                             textCapitalization: TextCapitalization.words,
                             keyboardType: TextInputType.name,
                             textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: constants.kTextFieldTextFontSize),
                             onChanged: (value) {
                               lName =
                                   value; // Capture the value entered by the user
                             },
-                            decoration:
-                                const InputDecoration(hintText: 'Last Name'),
+                            decoration: InputDecoration(
+                                hintText: 'Last Name',
+                                labelStyle: TextStyle(
+                                    fontSize:
+                                        constants.kTextFieldHintFontSize)),
                           ),
                         )
                       ],
@@ -141,11 +152,15 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                     TextField(
                       keyboardType: TextInputType.emailAddress,
                       textAlign: TextAlign.center,
+                      style:
+                          TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         email = value; // Capture the value entered by the user
                       },
-                      decoration:
-                          const InputDecoration(hintText: 'Enter your email'),
+                      decoration: InputDecoration(
+                          hintText: 'Enter your email',
+                          labelStyle: TextStyle(
+                              fontSize: constants.kTextFieldHintFontSize)),
                     ),
                     SizedBox(
                       height: 8.h,
@@ -153,12 +168,16 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                     TextField(
                       obscureText: true,
                       textAlign: TextAlign.center,
+                      style:
+                          TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         password =
                             value; // Capture the value entered by the user
                       },
-                      decoration: const InputDecoration(
-                          hintText: 'Enter a new password'),
+                      decoration: InputDecoration(
+                          hintText: 'Enter a new password',
+                          labelStyle: TextStyle(
+                              fontSize: constants.kTextFieldHintFontSize)),
                     ),
                     SizedBox(
                       height: 8.h,
@@ -177,7 +196,9 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                     TextButton(
                       child: Text(
                         'Register',
-                        style: TextStyle(fontSize: ScreenUtil().setSp(8.r), color: Colors.blue),
+                        style: TextStyle(
+                            fontSize: constants.kTextButtonFontSize,
+                            color: Colors.blue),
                       ),
                       onPressed: () async {
                         setState(() {

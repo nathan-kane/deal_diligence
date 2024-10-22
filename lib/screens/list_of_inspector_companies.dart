@@ -13,8 +13,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:get/get.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
-//import 'package:deal_diligence/Providers/global_provider.dart';
-//import 'package:deal_diligence/constants.dart' as constants;
+import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/inspector_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -73,8 +72,8 @@ class _CompanyDashboardScreenState
                                     Flexible(
                                       child: Text(
                                         '${snapshot.data?.docs[index]['inspectorCompanyName'] ?? 'n/a'}',
-                                        style: const TextStyle(
-                                            //fontSize: 14.sp,
+                                        style: TextStyle(
+                                            fontSize: constants.kListHeaderFontSize,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.blueAccent),
                                       ),
@@ -83,8 +82,8 @@ class _CompanyDashboardScreenState
                                 ),
                                 subtitle: Text.rich(
                                   TextSpan(
-                                    //style: TextStyle(
-                                        //fontSize: 14.sp),
+                                    style: TextStyle(
+                                        fontSize: constants.kListBodyFontSize),
                                     text:
                                         //'${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
                                         '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
@@ -92,8 +91,8 @@ class _CompanyDashboardScreenState
                                   ),
                                 ),
                                 trailing: Text(
-                                    style: const TextStyle(
-                                        //fontSize: 14.sp,
+                                    style: TextStyle(
+                                        fontSize: constants.kListBodyFontSize,
                                         fontWeight: FontWeight.bold),
                                     'Primary Contact: ${snapshot.data?.docs[index]['primaryContact'] ?? 'n/a'}'),
                                 onTap: () {
@@ -120,7 +119,7 @@ class _CompanyDashboardScreenState
             foregroundColor: Colors.white,
             label: Text(
               "Add New",
-              style: TextStyle(fontSize: ScreenUtil().setSp(6.r)),
+              style: TextStyle(fontSize: constants.kTextButtonFontSize),
             ),
             icon: FaIcon(
               FontAwesomeIcons.plus,

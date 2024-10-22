@@ -178,8 +178,6 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
   //   });
   // }
 
-  double tileText = 14.sp;
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -187,12 +185,6 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
         getCurrentMortgageCompanyProfile();
       }
     });
-
-    if (kIsWeb) {
-      tileText = 14.sp;
-    } else {
-      tileText = 14.sp;
-    }
 
     super.initState();
 
@@ -206,277 +198,312 @@ class _MortgageCompanyScreenState extends ConsumerState<MortgageCompanyScreen> {
     // final agencyProvider = Provider.of<AgencyProvider>(context);
     //final firestoreService = FirestoreService();
 
-    return ScreenUtilInit(
-      ensureScreenSize: true,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          //appBar: CustomAppBar(),
-          backgroundColor: Colors.white,
-          body: SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.sp),
-                child: Column(
-                  //mainAxisAlignment: MainAxisAlignment.center,
-                  //crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Text(
-                      'Mortgage Company Profile',
-                      style: TextStyle(
-                        fontSize: tileText,
-                        fontWeight: FontWeight.bold,
-                      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        //appBar: CustomAppBar(),
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.sp),
+              child: Column(
+                //mainAxisAlignment: MainAxisAlignment.center,
+                //crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Text(
+                    'Mortgage Company Profile',
+                    style: TextStyle(
+                      fontSize: constants.kTitleTextFontSize,
+                      fontWeight: FontWeight.bold,
                     ),
-                    SizedBox(
-                      height: 30.sp,
-                    ),
-                    TextField(
-                      textCapitalization: TextCapitalization.words,
-                      controller: mortgageCompanyNameController,
-                      keyboardType: TextInputType.text,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
+                  ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                  TextField(
+                    textCapitalization: TextCapitalization.words,
+                    controller: mortgageCompanyNameController,
+                    keyboardType: TextInputType.text,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
+                    onChanged: (value) {
+                      ref
+                          .read(mortgageCompanyNotifierProvider.notifier)
+                          .updateMortgageCompanyName(value);
+                    },
+                    decoration: InputDecoration(
+                        labelStyle:
+                            TextStyle(fontSize: constants.kTextFieldHintFontSize),
+                        hintText: 'Mortgage Company Name',
+                        labelText: 'Mortgage Company Name'),
+                  ),
+                  SizedBox(
+                    height: 8.h,
+                  ),
+                  TextField(
+                    textCapitalization: TextCapitalization.words,
+                    controller: primaryContactController,
+                    keyboardType: TextInputType.text,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
+                    onChanged: (value) {
+                      ref
+                          .read(mortgageCompanyNotifierProvider.notifier)
+                          .updatePrimaryContact(value);
+                    },
+                    decoration: InputDecoration(
+                        labelStyle:
+                            TextStyle(fontSize: constants.kTextFieldHintFontSize),
+                        hintText: 'Primary Contact',
+                        labelText: 'Primary Contact'),
+                  ),
+                  SizedBox(
+                    height: 8.sp,
+                  ),
+                  TextField(
+                    textCapitalization: TextCapitalization.words,
+                    controller: address1Controller,
+                    keyboardType: TextInputType.text,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
+                    onChanged: (value) {
+                      ref
+                          .read(mortgageCompanyNotifierProvider.notifier)
+                          .updateaddress1(value);
+                    },
+                    decoration: InputDecoration(
+                        labelStyle:
+                            TextStyle(fontSize: constants.kTextFieldHintFontSize),
+                        hintText: 'Address 1',
+                        labelText: 'Address 1'),
+                  ),
+                  SizedBox(
+                    height: 8.sp,
+                  ),
+                  TextField(
+                    textCapitalization: TextCapitalization.words,
+                    controller: address2Controller,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
+                    onChanged: (value) {
+                      ref
+                          .read(mortgageCompanyNotifierProvider.notifier)
+                          .updateaddress2(value);
+                    },
+                    decoration: InputDecoration(
+                        labelStyle:
+                            TextStyle(fontSize: constants.kTextFieldHintFontSize),
+                        hintText: 'Address 2',
+                        labelText: 'Address 2'),
+                  ),
+                  SizedBox(
+                    height: 8.sp,
+                  ),
+                  TextField(
+                    textCapitalization: TextCapitalization.words,
+                    controller: cityController,
+                    keyboardType: TextInputType.emailAddress,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
+                    onChanged: (value) {
+                      ref
+                          .read(mortgageCompanyNotifierProvider.notifier)
+                          .updatecity(value);
+                      // if (ref
+                      //         .watch(globalsNotifierProvider)
+                      //         .currentCompanyState ==
+                      //     "") {
+                      //   _currentCompanyState = ref
+                      //       .watch(globalsNotifierProvider)
+                      //       .currentCompanyState;
+                      // } else {
+                      //   _currentCompanyState = ref
+                      //       .watch(globalsNotifierProvider)
+                      //       .currentCompanyState;
+                      // }
+                      // ;
+                    },
+                    decoration: InputDecoration(
+                        labelStyle:
+                            TextStyle(fontSize: constants.kTextFieldHintFontSize),
+                        hintText: 'City',
+                        labelText: 'City'),
+                  ),
+                  SizedBox(
+                    height: 8.sp,
+                  ),
+                  DropdownButton(
+                    value: _currentMortgageCompanyState,
+                    items: _dropDownState,
+                    hint: const Text('Choose State'),
+                    onChanged: changedDropDownState,
+                  ),
+                  SizedBox(
+                    height: 8.sp,
+                  ),
+                  TextField(
+                    controller: zipController,
+                    keyboardType: TextInputType.phone,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
+                    onChanged: (value) {
+                      ref
+                          .read(mortgageCompanyNotifierProvider.notifier)
+                          .updatezipcode(value);
+                    },
+                    decoration: InputDecoration(
+                        labelStyle:
+                            TextStyle(fontSize: constants.kTextFieldHintFontSize),
+                        hintText: 'Zip Code',
+                        labelText: 'Zip Code'),
+                  ),
+                  SizedBox(
+                    height: 8.sp,
+                  ),
+                  TextField(
+                    inputFormatters: [maskFormatter],
+                    controller: cellPhoneController,
+                    keyboardType: TextInputType.phone,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
+                    onChanged: (value) {
+                      ref
+                          .read(mortgageCompanyNotifierProvider.notifier)
+                          .updateCellPhone(value);
+                    },
+                    decoration: InputDecoration(
+                        labelStyle:
+                            TextStyle(fontSize: constants.kTextFieldHintFontSize),
+                        hintText: 'Cell Phone',
+                        labelText: 'Cell Phone'),
+                  ),
+                  SizedBox(
+                    height: 8.sp,
+                  ),
+                  TextField(
+                    inputFormatters: [maskFormatter],
+                    controller: officePhoneController,
+                    keyboardType: TextInputType.phone,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
+                    onChanged: (value) {
+                      ref
+                          .read(mortgageCompanyNotifierProvider.notifier)
+                          .updateofficePhone(value);
+                    },
+                    decoration: InputDecoration(
+                        labelStyle:
+                            TextStyle(fontSize: constants.kTextFieldHintFontSize),
+                        hintText: 'Office Phone',
+                        labelText: 'Office Phone'),
+                  ),
+                  SizedBox(
+                    height: 8.sp,
+                  ),
+                  TextField(
+                    controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
+                    onChanged: (value) {
+                      ref
+                          .read(mortgageCompanyNotifierProvider.notifier)
+                          .updateemail(value);
+                    },
+                    decoration: InputDecoration(
+                        labelStyle:
+                            TextStyle(fontSize: constants.kTextFieldHintFontSize),
+                        hintText: 'Email',
+                        labelText: 'Email'),
+                  ),
+                  SizedBox(
+                    height: 8.sp,
+                  ),
+                  TextField(
+                    controller: websiteController,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
+                    onChanged: (value) {
+                      ref
+                          .read(mortgageCompanyNotifierProvider.notifier)
+                          .updatewebsite(value);
+                    },
+                    decoration: InputDecoration(
+                        labelStyle:
+                            TextStyle(fontSize: constants.kTextFieldHintFontSize),
+                        hintText: 'Website',
+                        labelText: 'Website'),
+                  ),
+                  SizedBox(
+                    height: constants.kTextButtonFontSize,
+                  ),
+                  RoundedButton(
+                    title: 'Save Mortgage Company',
+                    colour: Colors.blueAccent,
+                    onPressed: () async {
+                      setState(() {
+                        showSpinner = true;
+                      });
+                      try {
                         ref
-                            .read(mortgageCompanyNotifierProvider.notifier)
-                            .updateMortgageCompanyName(value);
-                      },
-                      decoration: const InputDecoration(
-                          hintText: 'Mortgage Company Name',
-                          labelText: 'Mortgage Company Name'),
-                    ),
-                    SizedBox(
-                      height: 8.sp,
-                    ),
-                    TextField(
-                      textCapitalization: TextCapitalization.words,
-                      controller: primaryContactController,
-                      keyboardType: TextInputType.text,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        ref
-                            .read(mortgageCompanyNotifierProvider.notifier)
-                            .updatePrimaryContact(value);
-                      },
-                      decoration: const InputDecoration(
-                          hintText: 'Primary Contact',
-                          labelText: 'Primary Contact'),
-                    ),
-                    SizedBox(
-                      height: 8.sp,
-                    ),
-                    TextField(
-                      textCapitalization: TextCapitalization.words,
-                      controller: address1Controller,
-                      keyboardType: TextInputType.text,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        ref
-                            .read(mortgageCompanyNotifierProvider.notifier)
-                            .updateaddress1(value);
-                      },
-                      decoration: const InputDecoration(
-                          hintText: 'Address 1', labelText: 'Address 1'),
-                    ),
-                    SizedBox(
-                      height: 8.sp,
-                    ),
-                    TextField(
-                      textCapitalization: TextCapitalization.words,
-                      controller: address2Controller,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        ref
-                            .read(mortgageCompanyNotifierProvider.notifier)
-                            .updateaddress2(value);
-                      },
-                      decoration: const InputDecoration(
-                          hintText: 'Address 2', labelText: 'Address 2'),
-                    ),
-                    SizedBox(
-                      height: 8.sp,
-                    ),
-                    TextField(
-                      textCapitalization: TextCapitalization.words,
-                      controller: cityController,
-                      keyboardType: TextInputType.emailAddress,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        ref
-                            .read(mortgageCompanyNotifierProvider.notifier)
-                            .updatecity(value);
-                        // if (ref
-                        //         .watch(globalsNotifierProvider)
-                        //         .currentCompanyState ==
-                        //     "") {
-                        //   _currentCompanyState = ref
-                        //       .watch(globalsNotifierProvider)
-                        //       .currentCompanyState;
-                        // } else {
-                        //   _currentCompanyState = ref
-                        //       .watch(globalsNotifierProvider)
-                        //       .currentCompanyState;
-                        // }
-                        // ;
-                      },
-                      decoration: const InputDecoration(
-                          hintText: 'City', labelText: 'City'),
-                    ),
-                    SizedBox(
-                      height: 8.sp,
-                    ),
-                    DropdownButton(
-                      value: _currentMortgageCompanyState,
-                      items: _dropDownState,
-                      hint: const Text('Choose State'),
-                      onChanged: changedDropDownState,
-                    ),
-                    SizedBox(
-                      height: 8.sp,
-                    ),
-                    TextField(
-                      controller: zipController,
-                      keyboardType: TextInputType.phone,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        ref
-                            .read(mortgageCompanyNotifierProvider.notifier)
-                            .updatezipcode(value);
-                      },
-                      decoration: const InputDecoration(
-                          hintText: 'Zip Code', labelText: 'Zip Code'),
-                    ),
-                    SizedBox(
-                      height: 8.sp,
-                    ),
-                    TextField(
-                      inputFormatters: [maskFormatter],
-                      controller: cellPhoneController,
-                      keyboardType: TextInputType.phone,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        ref
-                            .read(mortgageCompanyNotifierProvider.notifier)
-                            .updateCellPhone(value);
-                      },
-                      decoration: const InputDecoration(
-                          hintText: 'Cell Phone', labelText: 'Cell Phone'),
-                    ),
-                    SizedBox(
-                      height: 8.sp,
-                    ),
-                    TextField(
-                      inputFormatters: [maskFormatter],
-                      controller: officePhoneController,
-                      keyboardType: TextInputType.phone,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        ref
-                            .read(mortgageCompanyNotifierProvider.notifier)
-                            .updateofficePhone(value);
-                      },
-                      decoration: const InputDecoration(
-                          hintText: 'Office Phone', labelText: 'Office Phone'),
-                    ),
-                    SizedBox(
-                      height: 8.sp,
-                    ),
-                    TextField(
-                      controller: emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        ref
-                            .read(mortgageCompanyNotifierProvider.notifier)
-                            .updateemail(value);
-                      },
-                      decoration: const InputDecoration(
-                          hintText: 'Email', labelText: 'Email'),
-                    ),
-                    SizedBox(
-                      height: 8.sp,
-                    ),
-                    TextField(
-                      controller: websiteController,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        ref
-                            .read(mortgageCompanyNotifierProvider.notifier)
-                            .updatewebsite(value);
-                      },
-                      decoration: const InputDecoration(
-                          hintText: 'Website', labelText: 'Website'),
-                    ),
-                    SizedBox(
-                      height: 8.sp,
-                    ),
-                    RoundedButton(
-                      title: 'Save Mortgage Company',
-                      colour: Colors.blueAccent,
-                      onPressed: () async {
-                        setState(() {
-                          showSpinner = true;
-                        });
-                        try {
+                            .read(globalsNotifierProvider.notifier)
+                            .updatenewMortgageCompany(true);
+    
+                        //  This is a new company record but it will already
+                        //  have a document ID that should be used.
+                        //agencyProvider.saveCompany();
+                        if (widget.mortgageCompanyId == "" ||
+                            widget.mortgageCompanyId == null) {
                           ref
-                              .read(globalsNotifierProvider.notifier)
-                              .updatenewMortgageCompany(true);
-
-                          //  This is a new company record but it will already
-                          //  have a document ID that should be used.
-                          //agencyProvider.saveCompany();
-                          if (widget.mortgageCompanyId == "" ||
-                              widget.mortgageCompanyId == null) {
-                            ref
-                                .read(mortgageCompanyNotifierProvider.notifier)
-                                .saveMortgageCompany(
-                                    ref.read(mortgageCompanyNotifierProvider));
-                          } else {
-                            ref
-                                .read(mortgageCompanyNotifierProvider.notifier)
-                                .saveMortgageCompany(
-                                    ref.read(mortgageCompanyNotifierProvider),
-                                    widget.mortgageCompanyId);
-                          }
-                          Navigator.pop(context);
-
-                          setState(() {
-                            showSpinner = false;
-                          });
-                        } catch (e) {
-                          // todo: add better error handling
-                          // debugPrint(e);
+                              .read(mortgageCompanyNotifierProvider.notifier)
+                              .saveMortgageCompany(
+                                  ref.read(mortgageCompanyNotifierProvider));
+                        } else {
+                          ref
+                              .read(mortgageCompanyNotifierProvider.notifier)
+                              .saveMortgageCompany(
+                                  ref.read(mortgageCompanyNotifierProvider),
+                                  widget.mortgageCompanyId);
                         }
-                      },
-                    ),
-                    SizedBox(
-                      height: 8.sp,
-                    ),
-                    (widget != null)
-                        ? RoundedButton(
-                            title: 'Delete',
-                            colour: Colors.red,
-                            onPressed: () async {
+                        Navigator.pop(context);
+    
+                        setState(() {
+                          showSpinner = false;
+                        });
+                      } catch (e) {
+                        // todo: add better error handling
+                        // debugPrint(e);
+                      }
+                    },
+                  ),
+                  SizedBox(
+                    height: 8.sp,
+                  ),
+                  (widget != null)
+                      ? RoundedButton(
+                          title: 'Delete',
+                          colour: Colors.red,
+                          onPressed: () async {
+                            setState(() {
+                              showSpinner = true;
+                            });
+                            try {
+                              //agencyProvider.deleteCompany(globals.currentUid);
+                              // Navigator.pushNamed(
+                              //     context, UserDashboardScreen.id);
+    
                               setState(() {
-                                showSpinner = true;
+                                showSpinner = false;
                               });
-                              try {
-                                //agencyProvider.deleteCompany(globals.currentUid);
-                                // Navigator.pushNamed(
-                                //     context, UserDashboardScreen.id);
-
-                                setState(() {
-                                  showSpinner = false;
-                                });
-                              } catch (e) {
-                                // todo: add better error handling
-                                //debugPrint(e);
-                              }
-                            },
-                          )
-                        : Container()
-                  ],
-                ),
+                            } catch (e) {
+                              // todo: add better error handling
+                              //debugPrint(e);
+                            }
+                          },
+                        )
+                      : Container()
+                ],
               ),
             ),
           ),

@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:deal_diligence/constants.dart' as constants;
 
 final usersRef = FirebaseFirestore.instance.collection('users');
 final companyRef = FirebaseFirestore.instance.collection('company');
@@ -106,18 +107,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
 /* =========================================================== */
 
-  double tileText = 14.sp;
-
   @override
   void initState() {
     super.initState();
     passwordVisible = true;
-
-    if (kIsWeb == true) {
-      tileText = 10.sp;
-    } else {
-      tileText = 14.sp;
-    }
   }
 
   late String email;
@@ -269,7 +262,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
-                      fontSize: tileText,
+                      fontSize: constants.kTitleTextFontSize,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -280,11 +273,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 30.r),
                     color: Colors.white,
                     child: TextField(
-                      //style: TextStyle(fontSize: 14.sp),
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       autofocus: true,
                       keyboardType: TextInputType.emailAddress,
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                         filled: true,
                         fillColor: const Color.fromARGB(255, 255, 237, 211),
                         border: InputBorder.none,
@@ -303,13 +297,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 30.r),
                     color: Colors.white,
                     child: TextField(
-                      //style: TextStyle(fontSize: 14.sp),
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       obscureText: passwordVisible,
                       textAlign: TextAlign.center,
                       onChanged: (value) {
                         password = value;
                       },
                       decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                         filled: true,
                         fillColor: const Color.fromARGB(255, 255, 237, 211),
                         border: InputBorder.none,
@@ -425,9 +420,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               content: Center(
                                 child: Text(
                                   errorMessage,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: Colors.black,
-                                      //fontSize: 11.sp,
+                                      fontSize: constants.kTextFieldTextFontSize,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
@@ -449,11 +444,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         "Login",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            //fontSize: 14.sp,
+                            fontSize: constants.kTextButtonFontSize,
                             color: Colors.black),
                       ),
                     ),
@@ -464,10 +459,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 30.r),
                     child: TextButton(
-                      child: const Text(
+                      child: Text(
                         'Forgot Password',
                         style:
-                            TextStyle(color: Colors.blue), //fontSize: 12.sp),
+                            TextStyle(color: Colors.blue, fontSize: constants.kTextButtonFontSize),
                       ),
                       onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute(
@@ -481,10 +476,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 30.r),
                     child: TextButton(
-                      child: const Text(
+                      child: Text(
                         'New User?  Create Account',
                         style:
-                            TextStyle(color: Colors.blue), //fontSize: 12.sp),
+                            TextStyle(color: Colors.blue, fontSize: constants.kTextButtonFontSize),
                       ),
                       // onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                       //     builder: (context) => const AddPaymentViaCard())),
@@ -505,10 +500,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 30.sp),
                       child: TextButton(
-                        child: const Text(
+                        child: Text(
                           'Privacy Policy',
                           style: TextStyle(
-                              //fontSize: 4.sp,
+                              fontSize: constants.kTextButtonFontSize,
                               color: Colors.blue,
                               decoration: TextDecoration.underline),
                         ),

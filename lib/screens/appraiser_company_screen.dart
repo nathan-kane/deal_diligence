@@ -192,7 +192,7 @@ class _AppraiserCompanyScreenState
     });
 
     if (kIsWeb) {
-      tileText = 14.sp;
+      tileText = 10.sp;
     } else {
       tileText = 14.sp;
     }
@@ -221,7 +221,7 @@ class _AppraiserCompanyScreenState
                   Text(
                     'Appraiser Company Profile',
                     style: TextStyle(
-                      fontSize: tileText,
+                      fontSize: constants.kTitleTextFontSize,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -233,12 +233,14 @@ class _AppraiserCompanyScreenState
                     controller: appraiserCompanyNameController,
                     keyboardType: TextInputType.text,
                     textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                     onChanged: (value) {
                       ref
                           .read(appraiserCompanyNotifierProvider.notifier)
                           .updateAppraiserCompanyName(value);
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                         hintText: 'Appraiser Company Name',
                         labelText: 'Appraiser Company Name'),
                   ),
@@ -250,12 +252,14 @@ class _AppraiserCompanyScreenState
                     controller: primaryContactController,
                     keyboardType: TextInputType.text,
                     textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                     onChanged: (value) {
                       ref
                           .read(appraiserCompanyNotifierProvider.notifier)
                           .updatePrimaryContact(value);
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                         hintText: 'Primary Contact',
                         labelText: 'Primary Contact'),
                   ),
@@ -267,12 +271,14 @@ class _AppraiserCompanyScreenState
                     controller: address1Controller,
                     keyboardType: TextInputType.text,
                     textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                     onChanged: (value) {
                       ref
                           .read(appraiserCompanyNotifierProvider.notifier)
                           .updateAddress1(value);
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                         hintText: 'Address 1', labelText: 'Address 1'),
                   ),
                   SizedBox(
@@ -282,12 +288,14 @@ class _AppraiserCompanyScreenState
                     textCapitalization: TextCapitalization.words,
                     controller: address2Controller,
                     textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                     onChanged: (value) {
                       ref
                           .read(appraiserCompanyNotifierProvider.notifier)
                           .updateAddress2(value);
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                         hintText: 'Address 2', labelText: 'Address 2'),
                   ),
                   SizedBox(
@@ -298,18 +306,21 @@ class _AppraiserCompanyScreenState
                     controller: cityController,
                     keyboardType: TextInputType.emailAddress,
                     textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                     onChanged: (value) {
                       ref
                           .read(appraiserCompanyNotifierProvider.notifier)
                           .updateCity(value);
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                         hintText: 'City', labelText: 'City'),
                   ),
                   SizedBox(
                     height: 8.h,
                   ),
                   DropdownButton(
+                    style: TextStyle(fontSize: constants.kTextButtonFontSize),
                     value: _currentAppraiserCompanyState,
                     items: _dropDownState,
                     hint: const Text('Choose State'),
@@ -322,12 +333,14 @@ class _AppraiserCompanyScreenState
                     controller: zipController,
                     keyboardType: TextInputType.phone,
                     textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                     onChanged: (value) {
                       ref
                           .read(appraiserCompanyNotifierProvider.notifier)
                           .updateZipcode(value);
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                         hintText: 'Zip Code', labelText: 'Zip Code'),
                   ),
                   SizedBox(
@@ -338,12 +351,14 @@ class _AppraiserCompanyScreenState
                     controller: cellPhoneController,
                     keyboardType: TextInputType.phone,
                     textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                     onChanged: (value) {
                       ref
                           .read(appraiserCompanyNotifierProvider.notifier)
                           .updateCellPhone(value);
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                         hintText: 'Cell Phone', labelText: 'Cell Phone'),
                   ),
                   SizedBox(
@@ -359,7 +374,8 @@ class _AppraiserCompanyScreenState
                           .read(appraiserCompanyNotifierProvider.notifier)
                           .updateOfficePhone(value);
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                         hintText: 'Office Phone', labelText: 'Office Phone'),
                   ),
                   SizedBox(
@@ -369,12 +385,14 @@ class _AppraiserCompanyScreenState
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
                     textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                     onChanged: (value) {
                       ref
                           .read(appraiserCompanyNotifierProvider.notifier)
                           .updateEmail(value);
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                         hintText: 'Email', labelText: 'Email'),
                   ),
                   SizedBox(
@@ -383,12 +401,14 @@ class _AppraiserCompanyScreenState
                   TextField(
                     controller: websiteController,
                     textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                     onChanged: (value) {
                       ref
                           .read(appraiserCompanyNotifierProvider.notifier)
                           .updateWebsite(value);
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                         hintText: 'Website', labelText: 'Website'),
                   ),
                   SizedBox(

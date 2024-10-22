@@ -18,6 +18,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:deal_diligence/constants.dart' as constants;
 
 final FirestoreService firestoreService = FirestoreService();
 
@@ -122,10 +123,10 @@ class _CompanyDashboardScreenState
                                           child: Text(
                                             // Replace 'INSERT CLIENT NAME HERE' with retrieved client name
                                             clientSnapshot.data!,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 fontWeight: FontWeight.bold,
-                                                //fontSize: tileText,
-                                                color: Color.fromARGB(
+                                                fontSize: constants.kListHeaderFontSize,
+                                                color: const Color.fromARGB(
                                                     255, 4, 93, 248)),
                                           ),
                                         ),
@@ -133,9 +134,9 @@ class _CompanyDashboardScreenState
                                     ),
                                     subtitle: Text.rich(
                                       TextSpan(
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                            //fontSize: tileText),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: constants.kListBodyFontSize),
                                         text:
                                             '${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
                                             '${snapshot.data?.docs[index]['propertyCity'] ?? 'n/a'}, '
@@ -144,9 +145,9 @@ class _CompanyDashboardScreenState
                                           TextSpan(
                                             text:
                                                 '\nPrice: ${_formatCurrency(snapshot.data?.docs[index]['contractPrice']) ?? 'n/a'}\nStatus: ${snapshot.data?.docs[index]['trxnStatus'] ?? 'n/a'}',
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 fontWeight: FontWeight.bold,
-                                                //fontSize: tileText,
+                                                fontSize: constants.kListBodyFontSize,
                                                 color: Colors.black),
                                           )
                                         ],
@@ -154,9 +155,9 @@ class _CompanyDashboardScreenState
                                     ),
                                     trailing: Text(
                                       'MLS#: ${snapshot.data?.docs[index]['mlsNumber'] ?? 'n/a'}\n${snapshot.data?.docs[index]['clientType']}',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                          //fontSize: tileText),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: constants.kListBodyFontSize),
                                     ),
                                     onTap: () {
                                       setGlobals(snapshot.data?.docs[index].id);

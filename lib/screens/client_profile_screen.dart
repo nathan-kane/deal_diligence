@@ -173,7 +173,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
     });
 
     if (kIsWeb) {
-      tileText = 14.sp;
+      tileText = 10.sp;
     } else {
       tileText = 14.sp;
     }
@@ -208,7 +208,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                     Text(
                       'Client Profile',
                       style: TextStyle(
-                        fontSize: tileText,
+                        fontSize: constants.kTitleTextFontSize,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -220,12 +220,14 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                       controller: clientFNameController,
                       keyboardType: TextInputType.text,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(clientNotifierProvider.notifier)
                             .updateFName(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'First Name', labelText: 'First Name'),
                     ),
                     SizedBox(
@@ -236,12 +238,14 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                       controller: clientLNameController,
                       keyboardType: TextInputType.text,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(clientNotifierProvider.notifier)
                             .updateLName(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Last Name', labelText: 'Last Name'),
                     ),
                     SizedBox(
@@ -252,12 +256,14 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                       controller: address1Controller,
                       keyboardType: TextInputType.text,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(clientNotifierProvider.notifier)
                             .updateAddress1(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Address 1', labelText: 'Address 1'),
                     ),
                     SizedBox(
@@ -267,12 +273,14 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                       textCapitalization: TextCapitalization.words,
                       controller: address2Controller,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(clientNotifierProvider.notifier)
                             .updateAddress2(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Address 2', labelText: 'Address 2'),
                     ),
                     SizedBox(
@@ -283,18 +291,21 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                       controller: cityController,
                       keyboardType: TextInputType.emailAddress,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(clientNotifierProvider.notifier)
                             .updateCity(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'City', labelText: 'City'),
                     ),
                     SizedBox(
                       height: 8.sp,
                     ),
                     DropdownButton(
+                      style: TextStyle(fontSize: constants.kTextButtonFontSize),
                       value: _currentClientState,
                       items: _dropDownState,
                       hint: const Text('Choose State'),
@@ -307,12 +318,14 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                       controller: zipController,
                       keyboardType: TextInputType.phone,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(clientNotifierProvider.notifier)
                             .updateZipCode(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Zip Code', labelText: 'Zip Code'),
                     ),
                     SizedBox(
@@ -323,12 +336,14 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                       controller: cellPhoneController,
                       keyboardType: TextInputType.phone,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(clientNotifierProvider.notifier)
                             .updateCellPhone(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Cell Phone', labelText: 'Cell Phone'),
                     ),
                     SizedBox(
@@ -339,12 +354,14 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                       controller: homePhoneController,
                       keyboardType: TextInputType.phone,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(clientNotifierProvider.notifier)
                             .updateHomePhone(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Office Phone', labelText: 'Office Phone'),
                     ),
                     SizedBox(
@@ -354,12 +371,14 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(clientNotifierProvider.notifier)
                             .updateEmail(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Email', labelText: 'Email'),
                     ),
                     SizedBox(

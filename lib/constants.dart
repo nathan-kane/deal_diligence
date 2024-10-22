@@ -5,6 +5,7 @@
 //*********************************************
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 const kPrimaryColor = Color(0xFF00BF6D);
 const kSecondaryColor = Color(0xFFFE9901);
@@ -13,39 +14,19 @@ const kContentColorDarkTheme = Color(0xFFF5FCF9);
 const kWarninngColor = Color(0xFFF3BB1C);
 const kErrorColor = Color(0xFFF03738);
 
+/// Responsive UI constants
+double kTitleTextFontSize = 10.sp;
+double kTextFieldTextFontSize = 6.sp;
+double kTextFieldHintFontSize = 6.sp;
+double kTextButtonFontSize = 5.sp;
+double kListHeaderFontSize = 6.sp;
+double kListBodyFontSize = 5.sp;
+
 const kDefaultPadding = 20.0;
 const kSendButtonTextStyle = TextStyle(
   color: Colors.lightBlueAccent,
   fontWeight: FontWeight.bold,
   fontSize: 18.0,
-);
-
-const kMessageTextFieldDecoration = InputDecoration(
-  contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-  hintText: 'Type your message here...',
-  border: InputBorder.none,
-);
-
-const kMessageContainerDecoration = BoxDecoration(
-  border: Border(
-    top: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
-  ),
-);
-
-const kTextFieldDecoration = InputDecoration(
-  hintText: 'Enter a value',
-  contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-  border: OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-  ),
-  enabledBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
-    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-  ),
-  focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-  ),
 );
 
 const appBarBackColor = Colors.blueAccent;
@@ -57,13 +38,15 @@ const List kBusinessType = [
 
 const List kFrequencyList = ['daily', 'weekly', 'monthly', 'yearly'];
 
-const List kTrxnStatus = ['Select Status',
-                    'Prospect',
-                    'Listed',
-                    'Under Contract',
-                    'On Hold',
-                    'Closed',
-                    'Archived'];
+const List kTrxnStatus = [
+  'Select Status',
+  'Prospect',
+  'Listed',
+  'Under Contract',
+  'On Hold',
+  'Closed',
+  'Archived'
+];
 
 const List kClientType = ['Choose Client Type', 'Buyer', 'Seller'];
 

@@ -188,7 +188,7 @@ class _TitleCompanyScreenState extends ConsumerState<TitleCompanyScreen> {
     });
 
     if (kIsWeb) {
-      tileText = 14.sp;
+      tileText = 10.sp;
     } else {
       tileText = 14.sp;
     }

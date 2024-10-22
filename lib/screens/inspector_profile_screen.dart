@@ -190,8 +190,6 @@ class _InspectorCompanyScreenState
   //   });
   // }
 
-  double tileText = 14.sp;
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -199,12 +197,6 @@ class _InspectorCompanyScreenState
         getCurrentInspectorCompanyProfile();
       }
     });
-
-    if (kIsWeb) {
-      tileText = 14.sp;
-    } else {
-      tileText = 14.sp;
-    }
 
     super.initState();
 
@@ -232,7 +224,7 @@ class _InspectorCompanyScreenState
                     Text(
                       'Inspector Company Profile',
                       style: TextStyle(
-                        fontSize: tileText,
+                        fontSize: constants.kTitleTextFontSize,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -244,12 +236,14 @@ class _InspectorCompanyScreenState
                       controller: inspectorCompanyNameController,
                       keyboardType: TextInputType.text,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(inspectorCompanyNotifierProvider.notifier)
                             .updateInspectorCompanyName(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Inspector Company Name',
                           labelText: 'Inspector Company Name'),
                     ),
@@ -261,12 +255,14 @@ class _InspectorCompanyScreenState
                       controller: primaryContactController,
                       keyboardType: TextInputType.text,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(inspectorCompanyNotifierProvider.notifier)
                             .updatePrimaryContact(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Primary Contact',
                           labelText: 'Primary Contact'),
                     ),
@@ -278,12 +274,14 @@ class _InspectorCompanyScreenState
                       controller: address1Controller,
                       keyboardType: TextInputType.text,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(inspectorCompanyNotifierProvider.notifier)
                             .updateaddress1(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Address 1', labelText: 'Address 1'),
                     ),
                     SizedBox(
@@ -293,12 +291,14 @@ class _InspectorCompanyScreenState
                       textCapitalization: TextCapitalization.words,
                       controller: address2Controller,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(inspectorCompanyNotifierProvider.notifier)
                             .updateaddress2(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Address 2', labelText: 'Address 2'),
                     ),
                     SizedBox(
@@ -309,18 +309,21 @@ class _InspectorCompanyScreenState
                       controller: cityController,
                       keyboardType: TextInputType.emailAddress,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(inspectorCompanyNotifierProvider.notifier)
                             .updateCity(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'City', labelText: 'City'),
                     ),
                     SizedBox(
                       height: 8.h,
                     ),
                     DropdownButton(
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       value: _currentInspectorCompanyState,
                       items: _dropDownState,
                       hint: const Text('Choose State'),
@@ -333,12 +336,14 @@ class _InspectorCompanyScreenState
                       controller: zipController,
                       keyboardType: TextInputType.phone,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(inspectorCompanyNotifierProvider.notifier)
                             .updateZipcode(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Zip Code', labelText: 'Zip Code'),
                     ),
                     SizedBox(
@@ -349,12 +354,14 @@ class _InspectorCompanyScreenState
                       controller: cellPhoneController,
                       keyboardType: TextInputType.phone,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(inspectorCompanyNotifierProvider.notifier)
                             .updateCellPhone(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Cell Phone', labelText: 'Cell Phone'),
                     ),
                     SizedBox(
@@ -365,12 +372,14 @@ class _InspectorCompanyScreenState
                       controller: officePhoneController,
                       keyboardType: TextInputType.phone,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(inspectorCompanyNotifierProvider.notifier)
                             .updateOfficePhone(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Office Phone', labelText: 'Office Phone'),
                     ),
                     SizedBox(
@@ -380,12 +389,14 @@ class _InspectorCompanyScreenState
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(inspectorCompanyNotifierProvider.notifier)
                             .updateEmail(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Email', labelText: 'Email'),
                     ),
                     SizedBox(
@@ -394,12 +405,14 @@ class _InspectorCompanyScreenState
                     TextField(
                       controller: websiteController,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(inspectorCompanyNotifierProvider.notifier)
                             .updateWebsite(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Website', labelText: 'Website'),
                     ),
                     SizedBox(

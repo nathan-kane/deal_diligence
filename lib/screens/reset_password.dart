@@ -10,7 +10,7 @@ import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:flutter/material.dart';
 //import 'package:tonnah/Services/firestore_service.dart';
 //import 'package:deal_diligence/components/rounded_button.dart';
-// import 'package:deal_diligence/constants.dart';
+import 'package:deal_diligence/constants.dart' as constants;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 //import 'package:deal_diligence/screens/agent_dash_board.dart';
@@ -53,7 +53,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w900,
-                      fontSize: 24.sp,
+                      fontSize: constants.kTitleTextFontSize,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -64,11 +64,15 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     autofocus: true,
                     keyboardType: TextInputType.emailAddress,
                     textAlign: TextAlign.center,
+                    style:
+                        TextStyle(fontSize: constants.kTextFieldTextFontSize),
                     onChanged: (value) {
                       _email = value;
                     },
-                    decoration:
-                        const InputDecoration(hintText: 'Enter your email'),
+                    decoration: InputDecoration(
+                        hintText: 'Enter your email',
+                        labelStyle: TextStyle(
+                            fontSize: constants.kTextFieldHintFontSize)),
                   ),
                   SizedBox(
                     height: 8.h,

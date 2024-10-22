@@ -10,7 +10,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
-//import 'package:deal_diligence/constants.dart' as constants;
+import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/client_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -55,8 +55,8 @@ class _ClientsScreenState extends ConsumerState<ListOfClientsScreen> {
                                     Flexible(
                                       child: Text(
                                         'Client: ${snapshot.data?.docs[index]['fName'] ?? 'n/a'} ${snapshot.data?.docs[index]['lName'] ?? 'n/a'}',
-                                        style: const TextStyle(
-                                            //fontSize: 14.sp,
+                                        style: TextStyle(
+                                            fontSize: constants.kListHeaderFontSize,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.blueAccent),
                                       ),
@@ -65,10 +65,10 @@ class _ClientsScreenState extends ConsumerState<ListOfClientsScreen> {
                                 ),
                                 subtitle: Flexible(
                                   child: Text.rich(
-                                    // style: TextStyle(
-                                    //     fontSize: 8.sp),
+                                    style: TextStyle(
+                                        fontSize: constants.kListBodyFontSize),
                                     TextSpan(
-                                      //style: TextStyle(fontSize: 14.sp),
+                                      style: TextStyle(fontSize: constants.kListBodyFontSize),
                                       text:
                                           '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
                                           '${snapshot.data?.docs[index]['clientState'] ?? 'n/a'}',
@@ -78,8 +78,8 @@ class _ClientsScreenState extends ConsumerState<ListOfClientsScreen> {
                                 trailing: Flexible(
                                   child: Flexible(
                                     child: Text(
-                                        //style: 
-                                        //TextStyle(fontSize: 14.sp),
+                                        style: 
+                                        TextStyle(fontSize: constants.kListBodyFontSize),
                                         'Cell Phone: ${snapshot.data?.docs[index]['cellPhone'] ?? 'n/a'}'),
                                   ),
                                 ),
@@ -106,7 +106,7 @@ class _ClientsScreenState extends ConsumerState<ListOfClientsScreen> {
             foregroundColor: Colors.white,
             label: Text(
               "Add New",
-              style: TextStyle(fontSize: ScreenUtil().setSp(6.r)),
+              style: TextStyle(fontSize: constants.kTextButtonFontSize),
             ),
             icon: FaIcon(
               FontAwesomeIcons.plus,

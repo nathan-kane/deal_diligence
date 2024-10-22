@@ -153,18 +153,8 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
   //   });
   // }
 
-  double tileText = 14.sp;
-
   @override
   void initState() {
-    //WidgetsBinding.instance.addPostFrameCallback((_) {
-    //if (widget.isNewCompany == false) {
-
-    if (kIsWeb == true) {
-      tileText = 14.sp;
-    } else {
-      tileText = 14.sp;
-    }
 
     getCurrentCompanyProfile();
     //}
@@ -197,7 +187,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                       'Company Profile',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: tileText,
+                        fontSize: constants.kTitleTextFontSize,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -280,12 +270,14 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                       controller: companyNameController,
                       keyboardType: TextInputType.text,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(companyNotifierProvider.notifier)
                             .updateCompanyName(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Company Name', labelText: 'Company Name'),
                     ),
                     SizedBox(
@@ -296,12 +288,14 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                       controller: address1Controller,
                       keyboardType: TextInputType.text,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(companyNotifierProvider.notifier)
                             .updateaddress1(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Address 1', labelText: 'Address 1'),
                     ),
                     SizedBox(
@@ -311,12 +305,14 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                       textCapitalization: TextCapitalization.words,
                       controller: address2Controller,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(companyNotifierProvider.notifier)
                             .updateaddress2(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Address 2', labelText: 'Address 2'),
                     ),
                     SizedBox(
@@ -327,18 +323,21 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                       controller: cityController,
                       keyboardType: TextInputType.emailAddress,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(companyNotifierProvider.notifier)
                             .updatecity(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'City', labelText: 'City'),
                     ),
                     SizedBox(
                       height: 8.h,
                     ),
                     DropdownButton(
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       value: _currentCompanyState,
                       items: _dropDownState,
                       hint: const Text('Choose State'),
@@ -351,12 +350,14 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                       controller: zipController,
                       keyboardType: TextInputType.phone,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(companyNotifierProvider.notifier)
                             .updatezipcode(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Zip Code', labelText: 'Zip Code'),
                     ),
                     SizedBox(
@@ -367,12 +368,14 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                       controller: cellPhoneController,
                       keyboardType: TextInputType.phone,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(companyNotifierProvider.notifier)
                             .updateCellPhone(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Cell Phone', labelText: 'Cell Phone'),
                     ),
                     SizedBox(
@@ -383,12 +386,14 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                       controller: officePhoneController,
                       keyboardType: TextInputType.phone,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(companyNotifierProvider.notifier)
                             .updateofficePhone(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Office Phone', labelText: 'Office Phone'),
                     ),
                     SizedBox(
@@ -398,12 +403,14 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       onChanged: (value) {
                         ref
                             .read(companyNotifierProvider.notifier)
                             .updateemail(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Email', labelText: 'Email'),
                     ),
                     SizedBox(
@@ -412,12 +419,14 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                     TextField(
                       controller: websiteController,
                       textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                       onChanged: (value) {
                         ref
                             .read(companyNotifierProvider.notifier)
                             .updatewebsite(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
                           hintText: 'Website', labelText: 'Website'),
                     ),
                     SizedBox(
