@@ -31,17 +31,17 @@ class _ClientsScreenState extends ConsumerState<ListOfClientsScreen> {
   bool showSpinner = false;
   bool isLoaded = false;
 
-   ///
+  ///
   /// Set the fonts sizes here because they don't seem to work
   /// with the responsive UI and List Tile widget
-  /// 
+  ///
   double tileTitleFontSize = 14.sp;
   double tileBodyFontSize = 8.sp;
-  
+
   @override
   void initState() {
     super.initState();
-        if (kIsWeb) {
+    if (kIsWeb) {
       tileTitleFontSize = 6.sp;
       tileBodyFontSize = 5.sp;
     } else {
@@ -49,8 +49,8 @@ class _ClientsScreenState extends ConsumerState<ListOfClientsScreen> {
       tileTitleFontSize = 10.sp;
     }
   }
-  
-@override
+
+  @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       ensureScreenSize: true,
@@ -67,53 +67,51 @@ class _ClientsScreenState extends ConsumerState<ListOfClientsScreen> {
                           itemCount: snapshot.data?.size,
                           itemBuilder: (context, index) {
                             return Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 50.sp),
-                              child: Flexible(
-                                child: ListTile(
-                                  isThreeLine: true,
-                                  title: Row(
-                                    children: [
-                                      Text(
+                              padding: EdgeInsets.symmetric(horizontal: 50.h),
+                              child: ListTile(
+                                isThreeLine: true,
+                                title: Row(
+                                  children: [
+                                    Flexible(
+                                      child: Text(
                                         'Client: ${snapshot.data?.docs[index]['fName'] ?? 'n/a'} ${snapshot.data?.docs[index]['lName'] ?? 'n/a'}',
-                                        style: const TextStyle(
-                                            //fontSize: constants.kListHeaderFontSize,
+                                        style: TextStyle(
+                                            fontSize: tileTitleFontSize,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.blueAccent),
                                       ),
-                                    ],
-                                  ),
-                                  subtitle: Flexible(
-                                    child: Text.rich(
-                                      style: TextStyle(
-                                          fontSize: tileBodyFontSize),
-                                      TextSpan(
-                                        style: TextStyle(fontSize: tileBodyFontSize),
-                                        text:
-                                            '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
-                                            '${snapshot.data?.docs[index]['clientState'] ?? 'n/a'}',
-                                      ),
                                     ),
-                                  ),
-                                  trailing: Flexible(
-                                    child: Flexible(
-                                      child: Text(
-                                          style: 
-                                          TextStyle(fontSize: tileBodyFontSize),
-                                          'Cell Phone: ${snapshot.data?.docs[index]['cellPhone'] ?? 'n/a'}'),
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    //MainScreen.of(context)?.setIndex(2);  // Added this for BottomNavigationBar sync
-                                    String? clientId =
-                                        snapshot.data?.docs[index].id;
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ClientProfileScreen(false, clientId),
-                                      ),
-                                    );
-                                  },
+                                  ],
                                 ),
+                                subtitle: Flexible(
+                                  child: Text.rich(
+                                    TextSpan(
+                                      style:
+                                          TextStyle(fontSize: tileBodyFontSize),
+                                      text:
+                                          '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
+                                          '${snapshot.data?.docs[index]['clientState'] ?? 'n/a'}',
+                                    ),
+                                  ),
+                                ),
+                                trailing: Flexible(
+                                  child: Text(
+                                      style: TextStyle(
+                                          fontSize: tileBodyFontSize,
+                                          fontWeight: FontWeight.bold),
+                                      'Cell Phone: ${snapshot.data?.docs[index]['cellPhone'] ?? 'n/a'}'),
+                                ),
+                                onTap: () {
+                                  //MainScreen.of(context)?.setIndex(2);  // Added this for BottomNavigationBar sync
+                                  String? clientId =
+                                      snapshot.data?.docs[index].id;
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ClientProfileScreen(false, clientId),
+                                    ),
+                                  );
+                                },
                               ),
                             );
                           },

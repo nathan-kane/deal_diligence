@@ -439,7 +439,7 @@ class _ClientProfileScreenState extends ConsumerState<ClientProfileScreen> {
                     ),
                     (widget != null)
                         ? RoundedButton(
-                            title: 'Delete Appraiser Company',
+                            title: 'Delete Client',
                             colour: Colors.red,
                             onPressed: () async {
                               setState(() {

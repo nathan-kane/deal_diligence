@@ -211,7 +211,6 @@ class _TransactionDetailScreenState
 
   String? _currentCompany = '';
   String? _currentUser = '';
-  double tileText = 14.sp;
 
   @override
   void initState() {
@@ -220,12 +219,6 @@ class _TransactionDetailScreenState
     _currentUser = ref.read(globalsNotifierProvider).currentUserId;
     String textCurrency = contractPriceController.text;
     contractPriceController.text = _formatCurrency(textCurrency);
-
-    if (kIsWeb == true) {
-      tileText = 10.sp;
-    } else {
-      tileText = 14.sp;
-    }
 
     getTrxn();
 
@@ -927,7 +920,7 @@ class _TransactionDetailScreenState
                   children: <Widget>[
                    Text('Transaction Details',
                         style: TextStyle(
-                          fontSize: tileText,
+                          fontSize: constants.kTitleTextFontSize,
                           fontWeight: FontWeight.bold,
                         )),
                     SizedBox(
@@ -940,7 +933,7 @@ class _TransactionDetailScreenState
                       ),
                     ),
                     SizedBox(
-                      height: tileText,
+                      height: 8.sp,
                     ),
                     Container(
                       /* Populate the Agent dropdown only if
@@ -1435,7 +1428,7 @@ class _TransactionDetailScreenState
                               TextButton(
                                 child: Text(
                                   '3% Commission: ${_formatCurrency(strCommission)}',
-                                  style: TextStyle(fontSize: tileText),
+                                  style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                                 ),
                                 onPressed: () {
                                   CommissionCalculatorPopup
@@ -2345,7 +2338,7 @@ class _TransactionDetailScreenState
                       onChanged: changedDropDownTrxnStatus,
                     ),
                     RoundedButton(
-                      title: 'Save',
+                      title: 'Save Transaction',
                       colour: Colors.blueAccent,
                       onPressed: () async {
                         setState(() {
@@ -2597,7 +2590,7 @@ class _TransactionDetailScreenState
                       height: 8.0,
                     ),
                     RoundedButton(
-                      title: 'Delete',
+                      title: 'Delete Transaction',
                       colour: Colors.red,
                       onPressed: () async {
                         setState(() {

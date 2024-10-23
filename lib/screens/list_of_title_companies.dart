@@ -89,36 +89,34 @@ class _CompanyDashboardScreenState
                                 title: Row(
                                   children: [
                                     Flexible(
-                                      child: Flexible(
-                                        child: Text(
-                                          '${snapshot.data?.docs[index]['titleCompanyName'] ?? 'n/a'}',
-                                          style: TextStyle(
-                                              fontSize: tileTitleFontSize,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.blueAccent),
-                                        ),
+                                      child: Text(
+                                        '${snapshot.data?.docs[index]['titleCompanyName'] ?? 'n/a'}',
+                                        style: TextStyle(
+                                            fontSize: tileTitleFontSize,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.blueAccent),
                                       ),
                                     ),
                                   ],
                                 ),
-                                subtitle: Text.rich(
-                                  TextSpan(
-                                    style: TextStyle(
-                                        fontSize: tileBodyFontSize),
-                                    text:
-                                        //'${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
-                                        '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
-                                        '${snapshot.data?.docs[index]['titleCompanyState'] ?? 'n/a'}',
+                                subtitle: Flexible(
+                                  child: Text.rich(
+                                    TextSpan(
+                                      style: TextStyle(
+                                          fontSize: tileBodyFontSize),
+                                      text:
+                                          //'${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
+                                          '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
+                                          '${snapshot.data?.docs[index]['titleCompanyState'] ?? 'n/a'}',
+                                    ),
                                   ),
                                 ),
                                 trailing: Flexible(
-                                  child: Flexible(
-                                    child: Text(
-                                        style: TextStyle(
-                                            fontSize: tileBodyFontSize,
-                                            fontWeight: FontWeight.bold),
-                                        'Primary Contact: ${snapshot.data?.docs[index]['primaryContact'] ?? 'n/a'}'),
-                                  ),
+                                  child: Text(
+                                      style: TextStyle(
+                                          fontSize: tileBodyFontSize,
+                                          fontWeight: FontWeight.bold),
+                                      'Primary Contact: ${snapshot.data?.docs[index]['primaryContact'] ?? 'n/a'}'),
                                 ),
                                 onTap: () {
                                   //MainScreen.of(context)?.setIndex(2);  // Added this for BottomNavigationBar sync

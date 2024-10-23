@@ -74,23 +74,23 @@ class _CompanyDashboardScreenState
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: EdgeInsets.symmetric(horizontal: 30.h),
-                              child: Flexible(
-                                child: ListTile(
-                                  isThreeLine: true,
-                                  title: Row(
-                                    children: [
-                                      Flexible(
-                                        child: Text(
-                                          '${snapshot.data?.docs[index]['appraiserCompanyName'] ?? 'n/a'}',
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              //fontSize: tileTitleFontSize,
-                                              color: Colors.blueAccent),
-                                        ),
+                              child: ListTile(
+                                isThreeLine: true,
+                                title: Row(
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        '${snapshot.data?.docs[index]['appraiserCompanyName'] ?? 'n/a'}',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            //fontSize: tileTitleFontSize,
+                                            color: Colors.blueAccent),
                                       ),
-                                    ],
-                                  ),
-                                  subtitle: Text.rich(
+                                    ),
+                                  ],
+                                ),
+                                subtitle: Flexible(
+                                  child: Text.rich(
                                     TextSpan(
                                       style: TextStyle(fontSize: tileBodyFontSize),
                                       text:
@@ -99,29 +99,31 @@ class _CompanyDashboardScreenState
                                           '${snapshot.data?.docs[index]['appraiserCompanyState'] ?? 'n/a'}',
                                     ),
                                   ),
-                                  trailing: Text(
+                                ),
+                                trailing: Flexible(
+                                  child: Text(
                                       style: TextStyle(
                                           fontSize: tileBodyFontSize,
                                           fontWeight: FontWeight.bold),
                                       'Primary Contact: ${snapshot.data?.docs[index]['primaryContact'] ?? 'n/a'}'),
-                                  onTap: () {
-                                    //MainScreen.of(context)?.setIndex(2);  // Added this for BottomNavigationBar sync
-                                    String? appraiserCompanyId =
-                                        snapshot.data?.docs[index].id;
-                                    //setGlobals(snapshot.data?.docs[index].id);
-                                    // ref
-                                    //     .read(globalsNotifierProvider.notifier)
-                                    //     .updatecurrentTrxnId(
-                                    //         snapshot.data?.docs[index].id);
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            AppraiserCompanyScreen(
-                                                false, appraiserCompanyId),
-                                      ),
-                                    );
-                                  },
                                 ),
+                                onTap: () {
+                                  //MainScreen.of(context)?.setIndex(2);  // Added this for BottomNavigationBar sync
+                                  String? appraiserCompanyId =
+                                      snapshot.data?.docs[index].id;
+                                  //setGlobals(snapshot.data?.docs[index].id);
+                                  // ref
+                                  //     .read(globalsNotifierProvider.notifier)
+                                  //     .updatecurrentTrxnId(
+                                  //         snapshot.data?.docs[index].id);
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          AppraiserCompanyScreen(
+                                              false, appraiserCompanyId),
+                                    ),
+                                  );
+                                },
                               ),
                             );
                           },

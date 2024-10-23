@@ -585,7 +585,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                       height: 8.h,
                     ),
                     RoundedButton(
-                      title: 'Save',
+                      title: 'Save Agent',
                       colour: Colors.blueAccent,
                       onPressed: () async {
                         setState(() {
@@ -720,7 +720,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                     // ignore: unnecessary_null_comparison
                     (widget != null)
                         ? RoundedButton(
-                            title: 'Delete',
+                            title: 'Delete Agent',
                             colour: Colors.red,
                             onPressed: () async {
                               setState(() {

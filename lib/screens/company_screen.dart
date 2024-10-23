@@ -433,7 +433,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                       height: 8.h,
                     ),
                     RoundedButton(
-                      title: 'Save',
+                      title: 'Save Company',
                       colour: Colors.blueAccent,
                       onPressed: () async {
                         setState(() {
@@ -493,7 +493,7 @@ class _CompanyScreenState extends ConsumerState<CompanyScreen> {
                     ),
                     (widget != null)
                         ? RoundedButton(
-                            title: 'Delete',
+                            title: 'Delete Company',
                             colour: Colors.red,
                             onPressed: () async {
                               setState(() {
