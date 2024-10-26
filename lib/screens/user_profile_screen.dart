@@ -90,7 +90,9 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
 
     //if (widget.isNewUser == true) {
     if (ref.read(globalsNotifierProvider).newUser == true) {
-      /// This is a new user so you will only have access to their login info
+      /// This is a new user coming from the registration screen 
+      /// so you will only have access to their login info. This
+      /// information will be prepopulated in the form.
       fNameController.text = ref.read(usersNotifierProvider).fName!;
       lNameController.text = ref.read(usersNotifierProvider).lName!;
       emailController.text = ref.read(usersNotifierProvider).email!;

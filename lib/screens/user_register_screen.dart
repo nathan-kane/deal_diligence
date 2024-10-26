@@ -6,15 +6,13 @@
 
 // ignore_for_file: use_build_context_synchronously, unnecessary_null_comparison
 
-import 'package:flutter/foundation.dart';
+//import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:deal_diligence/constants.dart' as constants;
-//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-// import 'package:deal_diligence/screens/verify_email.dart';
 import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/screens/stripe_payment_screen.dart';
 

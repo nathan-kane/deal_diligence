@@ -125,6 +125,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         await usersRef.doc(globals.currentUid).get();
 
     if (_currentUserProfile != null) {
+      ///
+      /// Update the global provider
+      /// 
       ref
           .read(globalsNotifierProvider.notifier)
           .updatecompanyId(_currentUserProfile.get('companyId'));
@@ -139,7 +142,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           .read(globalsNotifierProvider.notifier)
           .updatecurrentUserState(_currentUserProfile.get('state'));
 
-      // Update user notifier
+      /// 
+      /// Update user notifier.
+      /// If the UserID does not exist, take the user to tue User Profile
+      /// screen so they can enter in that information.
+      /// 
+      
+      // if (_currentUserProfile.id == null || _currentUserProfile.id == "") {
+
+      // }
       ref
           .read(usersNotifierProvider.notifier)
           .updateuserID(_currentUserProfile.id);
@@ -326,10 +337,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 50.r,
+                    height: 50.h,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 30.r),
+                    padding: EdgeInsets.symmetric(horizontal: 30.h),
                     child: ElevatedButton(
                       onPressed: () async {
                         setState(() {
