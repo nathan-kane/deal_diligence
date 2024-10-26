@@ -127,15 +127,13 @@ class _CompanyDashboardScreenState
                                     isThreeLine: true,
                                     title: Row(
                                       children: [
-                                        Flexible(
-                                          child: Text(
-                                            clientSnapshot.data!,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                //fontSize: tileTitleFontSize,
-                                                color: Color.fromARGB(
-                                                    255, 4, 93, 248)),
-                                          ),
+                                        Text(
+                                          clientSnapshot.data!,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              //fontSize: tileTitleFontSize,
+                                              color: Color.fromARGB(
+                                                  255, 4, 93, 248)),
                                         ),
                                       ],
                                     ),
