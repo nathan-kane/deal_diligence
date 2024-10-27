@@ -76,49 +76,47 @@ class _CompanyDashboardScreenState
                           itemCount: snapshot.data?.size,
                           itemBuilder: (context, index) {
                             return Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 50.sp),
-                              child: Flexible(
-                                child: ListTile(
-                                  isThreeLine: true,
-                                  title: Row(
-                                    children: [
-                                      Text(
-                                        '${snapshot.data?.docs[index]['inspectorCompanyName'] ?? 'n/a'}',
-                                        style: TextStyle(
-                                            fontSize: tileTitleFontSize,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.blueAccent),
-                                      ),
-                                    ],
-                                  ),
-                                  subtitle: Text.rich(
-                                    TextSpan(
+                              padding: EdgeInsets.symmetric(horizontal: 50.h),
+                              child: ListTile(
+                                isThreeLine: true,
+                                title: Row(
+                                  children: [
+                                    Text(
+                                      '${snapshot.data?.docs[index]['inspectorCompanyName'] ?? 'n/a'}',
                                       style: TextStyle(
-                                          fontSize: tileBodyFontSize),
-                                      text:
-                                          //'${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
-                                          '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
-                                          '${snapshot.data?.docs[index]['inspectorCompanyState'] ?? 'n/a'}',
+                                          fontSize: tileTitleFontSize,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blueAccent),
                                     ),
-                                  ),
-                                  trailing: Text(
-                                      style: TextStyle(
-                                          fontSize: tileBodyFontSize,
-                                          fontWeight: FontWeight.bold),
-                                      'Primary Contact: ${snapshot.data?.docs[index]['primaryContact'] ?? 'n/a'}'),
-                                  onTap: () {
-                                    String? inspectorCompanyId =
-                                        snapshot.data?.docs[index].id;
-                                
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            InspectorCompanyScreen(
-                                                false, inspectorCompanyId),
-                                      ),
-                                    );
-                                  },
+                                  ],
                                 ),
+                                subtitle: Text.rich(
+                                  TextSpan(
+                                    style: TextStyle(
+                                        fontSize: tileBodyFontSize),
+                                    text:
+                                        //'${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
+                                        '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
+                                        '${snapshot.data?.docs[index]['inspectorCompanyState'] ?? 'n/a'}',
+                                  ),
+                                ),
+                                trailing: Text(
+                                    style: TextStyle(
+                                        fontSize: tileBodyFontSize,
+                                        fontWeight: FontWeight.bold),
+                                    'Primary Contact: ${snapshot.data?.docs[index]['primaryContact'] ?? 'n/a'}'),
+                                onTap: () {
+                                  String? inspectorCompanyId =
+                                      snapshot.data?.docs[index].id;
+                              
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          InspectorCompanyScreen(
+                                              false, inspectorCompanyId),
+                                    ),
+                                  );
+                                },
                               ),
                             );
                           },
