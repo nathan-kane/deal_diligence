@@ -84,8 +84,8 @@ class _CompanyDashboardScreenState
   void initState() {
     super.initState();
     if (kIsWeb) {
-      tileTitleFontSize = 6.sp;
-      tileBodyFontSize = 5.sp;
+      tileTitleFontSize = 4.sp;
+      tileBodyFontSize = 4.sp;
     } else {
       tileBodyFontSize = 14.sp;
       tileTitleFontSize = 10.sp;
@@ -129,10 +129,10 @@ class _CompanyDashboardScreenState
                                       children: [
                                         Text(
                                           clientSnapshot.data!,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              //fontSize: tileTitleFontSize,
-                                              color: Color.fromARGB(
+                                              fontSize: tileTitleFontSize,
+                                              color: const Color.fromARGB(
                                                   255, 4, 93, 248)),
                                         ),
                                       ],
@@ -161,7 +161,7 @@ class _CompanyDashboardScreenState
                                     trailing: Text(
                                       'MLS#: ${snapshot.data?.docs[index]['mlsNumber'] ?? 'n/a'}\n${snapshot.data?.docs[index]['clientType']}',
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.bold, 
                                           fontSize: tileBodyFontSize),
                                     ),
                                     onTap: () {

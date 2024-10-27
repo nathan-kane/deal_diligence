@@ -46,8 +46,8 @@ class _CompanyDashboardScreenState
   void initState() {
     super.initState();
         if (kIsWeb) {
-      tileTitleFontSize = 6.sp;
-      tileBodyFontSize = 5.sp;
+      tileTitleFontSize = 4.sp;
+      tileBodyFontSize = 4.sp;
     } else {
       tileBodyFontSize = 14.sp;
       tileTitleFontSize = 10.sp;
@@ -80,9 +80,9 @@ class _CompanyDashboardScreenState
                                   children: [
                                     Text(
                                       '${snapshot.data?.docs[index]['appraiserCompanyName'] ?? 'n/a'}',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          //fontSize: tileTitleFontSize,
+                                          fontSize: tileTitleFontSize,
                                           color: Colors.blueAccent),
                                     ),
                                   ],

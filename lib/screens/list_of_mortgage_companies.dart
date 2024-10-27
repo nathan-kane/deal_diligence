@@ -38,19 +38,19 @@ class _CompanyDashboardScreenState
   bool showSpinner = false;
   bool isLoaded = false;
 
- ///
+  ///
   /// Set the fonts sizes here because they don't seem to work
   /// with the responsive UI and List Tile widget
-  /// 
+  ///
   double tileTitleFontSize = 14.sp;
   double tileBodyFontSize = 8.sp;
-  
+
   @override
   void initState() {
     super.initState();
-        if (kIsWeb) {
-      tileTitleFontSize = 6.sp;
-      tileBodyFontSize = 5.sp;
+    if (kIsWeb) {
+      tileTitleFontSize = 4.sp;
+      tileBodyFontSize = 4.sp;
     } else {
       tileBodyFontSize = 14.sp;
       tileTitleFontSize = 10.sp;
@@ -92,8 +92,8 @@ class _CompanyDashboardScreenState
                                 ),
                                 subtitle: Text.rich(
                                   TextSpan(
-                                    style: TextStyle(
-                                        fontSize: tileBodyFontSize),
+                                    style:
+                                        TextStyle(fontSize: tileBodyFontSize),
                                     text:
                                         '${snapshot.data?.docs[index]['city'] ?? 'n/a'}, '
                                         '${snapshot.data?.docs[index]['mortgageCompanyState'] ?? 'n/a'}',

@@ -57,8 +57,8 @@ class _CompanyDashboardScreenState
   void initState() {
     super.initState();
         if (kIsWeb) {
-      tileTitleFontSize = 6.sp;
-      tileBodyFontSize = 5.sp;
+      tileTitleFontSize = 4.sp;
+      tileBodyFontSize = 4.sp;
     } else {
       tileBodyFontSize = 14.sp;
       tileTitleFontSize = 10.sp;

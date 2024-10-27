@@ -20,7 +20,7 @@ double kTextFieldTextFontSize = 6.sp;
 double kTextFieldHintFontSize = 6.sp;
 double kTextButtonFontSize = 5.sp;
 double kListHeaderFontSize = 6.sp;
-double kListBodyFontSize = 5.sp;
+double kListBodyFontSize = 4.sp;
 
 const kDefaultPadding = 20.0;
 const kSendButtonTextStyle = TextStyle(
