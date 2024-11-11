@@ -173,7 +173,7 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
                             value; // Capture the value entered by the user
                       },
                       decoration: InputDecoration(
-                          hintText: 'Enter a new password',
+                          hintText: 'Enter a password',
                           labelStyle: TextStyle(
                               fontSize: constants.kTextFieldHintFontSize)),
                     ),

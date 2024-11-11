@@ -107,10 +107,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
 /* =========================================================== */
 
+  ///
+  /// Set the fonts sizes here because they don't seem to work
+  /// with the responsive UI and List Tile widget
+  ///
+  double tileTitleFontSize = 14.sp;
+  double tileBodyFontSize = 8.sp;
+
   @override
   void initState() {
     super.initState();
     passwordVisible = true;
+    if (kIsWeb) {
+      tileTitleFontSize = 4.sp;
+      tileBodyFontSize = 4.sp;
+    } else {
+      tileBodyFontSize = 14.sp;
+      tileTitleFontSize = 10.sp;
+    }
   }
 
   late String email;
@@ -127,7 +141,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (_currentUserProfile != null) {
       ///
       /// Update the global provider
-      /// 
+      ///
       ref
           .read(globalsNotifierProvider.notifier)
           .updatecompanyId(_currentUserProfile.get('companyId'));
@@ -142,12 +156,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           .read(globalsNotifierProvider.notifier)
           .updatecurrentUserState(_currentUserProfile.get('state'));
 
-      /// 
+      ///
       /// Update user notifier.
       /// If the UserID does not exist, take the user to tue User Profile
       /// screen so they can enter in that information.
-      /// 
-      
+      ///
+
       // if (_currentUserProfile.id == null || _currentUserProfile.id == "") {
 
       // }
@@ -278,18 +292,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(
-                    height: 50.r,
+                    height: 50.h,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 30.r),
+                    padding: EdgeInsets.symmetric(horizontal: 30.h),
                     color: Colors.white,
                     child: TextField(
-                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
+                      style:
+                          TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       autofocus: true,
                       keyboardType: TextInputType.emailAddress,
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
-                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
+                        labelStyle: TextStyle(
+                            fontSize: constants.kTextFieldHintFontSize),
                         filled: true,
                         fillColor: const Color.fromARGB(255, 255, 237, 211),
                         border: InputBorder.none,
@@ -308,14 +324,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 30.r),
                     color: Colors.white,
                     child: TextField(
-                      style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
+                      style:
+                          TextStyle(fontSize: constants.kTextFieldTextFontSize),
                       obscureText: passwordVisible,
                       textAlign: TextAlign.center,
                       onChanged: (value) {
                         password = value;
                       },
                       decoration: InputDecoration(
-                        labelStyle: TextStyle(fontSize: constants.kTextFieldHintFontSize),
+                        labelStyle: TextStyle(
+                            fontSize: constants.kTextFieldHintFontSize),
                         filled: true,
                         fillColor: const Color.fromARGB(255, 255, 237, 211),
                         border: InputBorder.none,
@@ -433,7 +451,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   errorMessage,
                                   style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: constants.kTextFieldTextFontSize,
+                                      fontSize:
+                                          constants.kTextFieldTextFontSize,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
@@ -472,8 +491,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     child: TextButton(
                       child: Text(
                         'Forgot Password',
-                        style:
-                            TextStyle(color: Colors.blue, fontSize: constants.kTextButtonFontSize),
+                        style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: constants.kTextButtonFontSize),
                       ),
                       onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute(
@@ -489,8 +509,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     child: TextButton(
                       child: Text(
                         'New User?  Create Account',
-                        style:
-                            TextStyle(color: Colors.blue, fontSize: constants.kTextButtonFontSize),
+                        style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: constants.kTextButtonFontSize),
                       ),
                       // onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                       //     builder: (context) => const AddPaymentViaCard())),

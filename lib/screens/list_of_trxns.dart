@@ -123,58 +123,60 @@ class _CompanyDashboardScreenState
                                   return const CircularProgressIndicator();
                                 }
                                 if (clientSnapshot.hasData) {
-                                  return ListTile(
-                                    isThreeLine: true,
-                                    title: Row(
-                                      children: [
-                                        Text(
-                                          clientSnapshot.data!,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: tileTitleFontSize,
-                                              color: const Color.fromARGB(
-                                                  255, 4, 93, 248)),
-                                        ),
-                                      ],
-                                    ),
-                                    subtitle: Text.rich(
-                                      TextSpan(
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: tileBodyFontSize),
-                                        text:
-                                            '${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
-                                            '${snapshot.data?.docs[index]['propertyCity'] ?? 'n/a'}, '
-                                            '${snapshot.data?.docs[index]['propertyState'] ?? 'n/a'}',
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                            text:
-                                                '\nPrice: ${_formatCurrency(snapshot.data?.docs[index]['contractPrice']) ?? 'n/a'}\nStatus: ${snapshot.data?.docs[index]['trxnStatus'] ?? 'n/a'}',
-                                            style: TextStyle(
+                                  return Column(
+                                    children: <Widget>[ListTile(
+                                      isThreeLine: true,
+                                      title: Row(
+                                        children: [
+                                          Text(
+                                            clientSnapshot.data!,
+                                            style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: tileBodyFontSize,
-                                                color: Colors.black),
-                                          )
+                                                //fontSize: tileTitleFontSize,
+                                                color: Color.fromARGB(
+                                                    255, 4, 93, 248)),
+                                          ),
                                         ],
                                       ),
-                                    ),
-                                    trailing: Text(
-                                      'MLS#: ${snapshot.data?.docs[index]['mlsNumber'] ?? 'n/a'}\n${snapshot.data?.docs[index]['clientType']}',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold, 
-                                          fontSize: tileBodyFontSize),
-                                    ),
-                                    onTap: () {
-                                      setGlobals(snapshot.data?.docs[index].id);
-                                  
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const TransactionDetailScreen(
-                                                  false, false),
+                                      subtitle: Text.rich(
+                                        TextSpan(
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                              //fontSize: tileBodyFontSize),
+                                          text:
+                                              '${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
+                                              '${snapshot.data?.docs[index]['propertyCity'] ?? 'n/a'}, '
+                                              '${snapshot.data?.docs[index]['propertyState'] ?? 'n/a'}',
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text:
+                                                  '\nPrice: ${_formatCurrency(snapshot.data?.docs[index]['contractPrice']) ?? 'n/a'}\nStatus: ${snapshot.data?.docs[index]['trxnStatus'] ?? 'n/a'}',
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  //fontSize: tileBodyFontSize,
+                                                  color: Colors.black),
+                                            )
+                                          ],
                                         ),
-                                      );
-                                    },
+                                      ),
+                                      trailing: Text(
+                                        'MLS#: ${snapshot.data?.docs[index]['mlsNumber'] ?? 'n/a'}\n${snapshot.data?.docs[index]['clientType']}',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold), 
+                                            //fontSize: tileBodyFontSize),
+                                      ),
+                                      onTap: () {
+                                        setGlobals(snapshot.data?.docs[index].id);
+                                    
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const TransactionDetailScreen(
+                                                    false, false),
+                                          ),
+                                        );
+                                      },
+                                    ),],
                                   );
                                 } else {
                                   return const Text(

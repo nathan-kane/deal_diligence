@@ -72,16 +72,10 @@ class MainScreenState extends ConsumerState<MainScreen> {
   final List<Widget> appScreens = [
     const CompanyDashboardScreen(),
     const TransactionDetailScreen(true, true),
-    const AppointmentCalendarScreen(),
+    ///const AppointmentCalendarScreen(),
     const UserProfileScreen(),
     const ChatScreen(),
   ];
-
-  // void onItemTapped(int index) {
-  //   setState(() {
-  //     _pageIndex = index;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -122,8 +116,8 @@ class MainScreenState extends ConsumerState<MainScreen> {
               BottomNavigationBarItem(
                   icon: FaIcon(FontAwesomeIcons.fileInvoiceDollar),
                   label: "Trxn"),
-              BottomNavigationBarItem(
-                  icon: FaIcon(FontAwesomeIcons.calendar), label: "Calendar"),
+              // BottomNavigationBarItem(
+              //     icon: FaIcon(FontAwesomeIcons.calendar), label: "Calendar"),
               BottomNavigationBarItem(
                   icon: FaIcon(FontAwesomeIcons.person), label: "User Profile"),
               BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
@@ -179,25 +173,25 @@ class SideDrawer extends StatelessWidget {
                           builder: (context) => const CompanyScreen(false)));
                 },
               ),
-              ListTile(
-                leading: const Icon(
-                  Icons.person,
-                  color: Colors.lightBlueAccent,
-                ),
-                title: const Text('Add Company Agent'),
-                onTap: () {
-                  Navigator.pop(context);
-                  // ref
-                  //     .read(globalsNotifierProvider.notifier)
-                  //     .updateNewUser(true);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const UserProfileScreen(true),
-                    ),
-                  );
-                },
-              ),
+              // ListTile(
+              //   leading: const Icon(
+              //     Icons.person,
+              //     color: Colors.lightBlueAccent,
+              //   ),
+              //   title: const Text('Add Company Agent'),
+              //   onTap: () {
+              //     Navigator.pop(context);
+              //     // ref
+              //     //     .read(globalsNotifierProvider.notifier)
+              //     //     .updateNewUser(true);
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) => const UserProfileScreen(true),
+              //       ),
+              //     );
+              //   },
+              // ),
               ListTile(
                 leading: const Icon(
                   Icons.account_balance,
@@ -300,18 +294,18 @@ class SideDrawer extends StatelessWidget {
                               const MortgageCalculatorScreen()));
                 },
               ),
-              ListTile(
-                leading: const FaIcon(FontAwesomeIcons.dollarSign),
-                title: const Text('Pricing'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const MortgageCalculatorScreen()));
-                },
-              ),
+              // ListTile(
+              //   leading: const FaIcon(FontAwesomeIcons.dollarSign),
+              //   title: const Text('Pricing'),
+              //   onTap: () {
+              //     Navigator.pop(context);
+              //     Navigator.push(
+              //         context,
+              //         MaterialPageRoute(
+              //             builder: (context) =>
+              //                 const MortgageCalculatorScreen()));
+              //   },
+              // ),
               ListTile(
                 leading: const FaIcon(FontAwesomeIcons.lock),
                 title: const Text(

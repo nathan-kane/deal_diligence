@@ -225,7 +225,7 @@ class _TransactionDetailScreenState
     _dropDownState = getDropDownState();
     _dropdownClientType = getDropDownClientType();
     _dropdownTrxnStatusList = getDropDownTrxnStatus();
-    _selectedUser = 'Select User';
+    _selectedUser = 'Select Agent';
   }
 
   String _currentStatus = "Select Status";
@@ -699,7 +699,7 @@ class _TransactionDetailScreenState
             _currentClientType =
                 trxnSnapshot.data()?['clientType'] ?? 'Select Client Type';
             _selectedCompany = trxnSnapshot.data()?['companyId'] ?? "";
-            _selectedUser = trxnSnapshot.data()?['userId'] ?? "Select User";
+            _selectedUser = trxnSnapshot.data()?['userId'] ?? "Select Agent";
             _selectedClientState = trxnSnapshot.data()?['clientState'] ?? "";
             _currentTrxnStatus =
                 trxnSnapshot.data()?['trxnStatus'] ?? "Select Status";
@@ -927,7 +927,7 @@ class _TransactionDetailScreenState
                       height: 30.sp,
                     ),
                     const Text(
-                      'Select User',
+                      'Select Agent',
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                       ),
@@ -951,8 +951,8 @@ class _TransactionDetailScreenState
                                 List<DropdownMenuItem<String>> userItems = [];
                                 userItems.add(
                                   const DropdownMenuItem<String>(
-                                    value: 'Select User',
-                                    child: Text('Select User'),
+                                    value: 'Select Agent',
+                                    child: Text('Select Agent'),
                                   ),
                                 );
                                 if (snapshot.hasData) {
