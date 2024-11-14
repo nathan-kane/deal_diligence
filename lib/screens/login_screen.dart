@@ -133,6 +133,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   getCurrentUserName() async {
     final globals = ref.watch(globalsNotifierProvider);
 
+    /// This will set the global variable newUser to false
+    /// This is used in user_profile_screen to populate the screen or not
     ref.read(globalsNotifierProvider.notifier).updatenewUser(false);
 
     final DocumentSnapshot _currentUserProfile =
@@ -155,6 +157,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       ref
           .read(globalsNotifierProvider.notifier)
           .updatecurrentUserState(_currentUserProfile.get('state'));
+
+      /// REMOVE THIS LINE
+      ref.read(globalsNotifierProvider.notifier).updatenewUser(false);
 
       ///
       /// Update user notifier.
@@ -380,6 +385,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ref
                                 .read(globalsNotifierProvider.notifier)
                                 .updatecurrentUEmail(_auth.currentUser!.email);
+                            ref
+                                .read(globalsNotifierProvider.notifier)
+                                .updatenewUser(false);
+
+                            ///
+                            /// The login was successful so get the current user data
+                            /// and populate the user notifier
+                            ///
 
                             await getCurrentUserName();
                             Navigator.push(

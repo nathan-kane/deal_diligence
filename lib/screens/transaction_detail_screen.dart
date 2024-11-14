@@ -918,7 +918,7 @@ class _TransactionDetailScreenState
                 padding: EdgeInsets.symmetric(horizontal: 50.sp),
                 child: Column(
                   children: <Widget>[
-                   Text('Transaction Details',
+                    Text('Transaction Details',
                         style: TextStyle(
                           fontSize: constants.kTitleTextFontSize,
                           fontWeight: FontWeight.bold,
@@ -1005,9 +1005,8 @@ class _TransactionDetailScreenState
                                   '${clientFNameController.text} ${clientLNameController.text}'),
                               title: const Text(
                                 'Client Information',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold),
-                                    //fontSize: tileText),
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                                //fontSize: tileText),
                               ),
                               children: [
                                 TextField(
@@ -1428,14 +1427,29 @@ class _TransactionDetailScreenState
                               TextButton(
                                 child: Text(
                                   '3% Commission: ${_formatCurrency(strCommission)}',
-                                  style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
+                                  //style: TextStyle(fontSize: constants.kTextFieldTextFontSize),
                                 ),
                                 onPressed: () {
-                                  CommissionCalculatorPopup
-                                      .showCommissionCalculator(
-                                          context,
-                                          double.parse(
-                                              contractPriceController.text));
+                                  try {
+                                    String currencyString =
+                                        contractPriceController.text;
+
+                                    /// Remove the dollar sign
+                                    currencyString =
+                                        currencyString.replaceAll("\$", "");
+
+                                    // Parse the string to double using NumberFormat
+                                    final numberFormat =
+                                        NumberFormat.simpleCurrency(
+                                            decimalDigits: 2);
+
+                                    double agentCommission = numberFormat.parse(currencyString).toDouble();
+                                    CommissionCalculatorPopup
+                                        .showCommissionCalculator(
+                                            context, agentCommission);
+                                  } catch (e) {
+                                    print(e);
+                                  }
                                 },
                               ),
                               SizedBox(
@@ -1728,7 +1742,9 @@ class _TransactionDetailScreenState
                                   items: inspectorCompanyItems,
                                 );
                               } else {
-                                return SizedBox(height: 8.h,);
+                                return SizedBox(
+                                  height: 8.h,
+                                );
                               }
                             } else {
                               return const Center(

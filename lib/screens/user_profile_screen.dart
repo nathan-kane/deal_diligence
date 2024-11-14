@@ -90,7 +90,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
 
     //if (widget.isNewUser == true) {
     if (ref.read(globalsNotifierProvider).newUser == true) {
-      /// This is a new user coming from the registration screen 
+      /// This is a new user coming from the registration screen
       /// so you will only have access to their login info. This
       /// information will be prepopulated in the form.
       fNameController.text = ref.read(usersNotifierProvider).fName!;
@@ -101,8 +101,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
       fNameController.text = "";
       lNameController.text = "";
       emailController.text = "";
-    }
-    else {
+    } else {
       /// This is an existing user so get the info from the db
       // final DocumentSnapshot currentUserProfile = await usersRef
       //     .doc(ref.read(globalsNotifierProvider).currentUserId)
@@ -358,15 +357,15 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                             onChanged: (companyValue) {
                               setState(() {
                                 _selectedCompany = companyValue;
-                                ref
-                                    .read(globalsNotifierProvider.notifier)
-                                    .updatecompanyId(companyValue!);
-
-                                /// Put the selected company ID into the new user provider
-                                ref
-                                    .read(usersNotifierProvider.notifier)
-                                    .updateCompanyId(_selectedCompany!);
                               });
+                              ref
+                                  .read(globalsNotifierProvider.notifier)
+                                  .updatecompanyId(companyValue!);
+
+                              /// Put the selected company ID into the new user provider
+                              ref
+                                  .read(usersNotifierProvider.notifier)
+                                  .updateCompanyId(_selectedCompany!);
                               newUser.companyId = companyValue;
                             },
                             items: companyItems,
@@ -631,23 +630,23 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                             // Add new user account to Cloud Firestore
                             try {
                               /// Send welcome email to new user
-                              UserCredential result =
-                                  await _auth.createUserWithEmailAndPassword(
-                                      email: email, password: "D3@lDiligence");
+                              // UserCredential result =
+                              //     await _auth.createUserWithEmailAndPassword(
+                              //         email: email, password: "D3@lDiligence");
 
-                              if (result.user != null) {
-                                final User user = result.user!;
-                                newUser.userId = user.uid;
-                                //return user;
+                              // if (result.user != null) {
+                              //   final User user = result.user!;
+                              //   newUser.userId = user.uid;
+                              //   //return user;
 
-                                ref
-                                    .read(usersNotifierProvider.notifier)
-                                    .saveUser(ref.read(globalsNotifierProvider),
-                                        newUser, false);
+                              //   ref
+                              //       .read(usersNotifierProvider.notifier)
+                              //       .saveUser(ref.read(globalsNotifierProvider),
+                              //           newUser, false);
 
-                                // Send email to new user with their default password
-                                /// sendNewUserEmail();
-                              }
+                              //   // Send email to new user with their default password
+                              //   /// sendNewUserEmail();
+                              // }
                             } catch (error) {
                               var e = error as FirebaseAuthException;
                               debugPrint(e.message!);
