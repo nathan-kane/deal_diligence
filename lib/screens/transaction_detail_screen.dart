@@ -1315,17 +1315,27 @@ class _TransactionDetailScreenState
                                 color: Colors.blueAccent,
                                 tooltip: 'View Property',
                                 onPressed: () {
-                                  setState(() {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            PropertyWebViewScreenContainer(
-                                                '$_mlsSearchLink$_propertyMLSNbr'),
-                                        //PropertyWebViewScreenContainer('https://www.utahrealestate.com/$_propertyMLSNbr'),
-                                      ),
-                                    );
-                                  });
+                                  try {
+                                    if (kIsWeb) {
+                                      final uri = Uri.parse(
+                                          '$_mlsSearchLink$_propertyMLSNbr');
+                                      _launchURL(uri);
+                                    } else {
+                                      setState(() {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                PropertyWebViewScreenContainer(
+                                                    '$_mlsSearchLink$_propertyMLSNbr'),
+                                            //PropertyWebViewScreenContainer('https://www.utahrealestate.com/$_propertyMLSNbr'),
+                                          ),
+                                        );
+                                      });
+                                    }
+                                  } catch (e) {
+                                    print('View Property Error: $e');
+                                  }
                                 },
                               ),
                               const Text('View Property'),
@@ -1431,6 +1441,9 @@ class _TransactionDetailScreenState
                                 ),
                                 onPressed: () {
                                   try {
+                                    ///
+                                    /// Convert the commission string to a double
+                                    ///
                                     String currencyString =
                                         contractPriceController.text;
 
@@ -1443,7 +1456,9 @@ class _TransactionDetailScreenState
                                         NumberFormat.simpleCurrency(
                                             decimalDigits: 2);
 
-                                    double agentCommission = numberFormat.parse(currencyString).toDouble();
+                                    double agentCommission = numberFormat
+                                        .parse(currencyString)
+                                        .toDouble();
                                     CommissionCalculatorPopup
                                         .showCommissionCalculator(
                                             context, agentCommission);

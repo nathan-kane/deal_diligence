@@ -43,7 +43,7 @@ class _CommissionCalculatorDialogState
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Commission Calculator'),
+      title: Text('Commission Calculator', style: TextStyle(fontSize: 8.sp),),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -65,7 +65,7 @@ class _CommissionCalculatorDialogState
           SizedBox(height: 20.sp),
           Text(
             'Commission: \$${commission.toStringAsFixed(2)}',
-            style: TextStyle(fontSize: 18.sp),
+            style: TextStyle(fontSize: 8.sp),
           ),
         ],
       ),
