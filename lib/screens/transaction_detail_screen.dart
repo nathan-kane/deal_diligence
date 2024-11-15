@@ -913,7 +913,7 @@ class _TransactionDetailScreenState
               false, // This fixes the keyboard white space
           body: SafeArea(
             child: SingleChildScrollView(
-              reverse: true,
+              reverse: false,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 50.sp),
                 child: Column(
