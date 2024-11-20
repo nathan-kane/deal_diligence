@@ -6,6 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 class CommissionCalculatorPopup {
   static void showCommissionCalculator(BuildContext context, double salePrice) {
@@ -32,18 +33,40 @@ class _CommissionCalculatorDialogState
     extends State<CommissionCalculatorDialog> {
   TextEditingController salePriceController = TextEditingController();
   TextEditingController commissionRateController = TextEditingController();
-  double commission = 0.0;
+  String commission = "0.0";
+  final NumberFormat currencyFormatter = NumberFormat.currency(symbol: '\$');
+
+  String _formatCurrency(String textCurrency) {
+    //String textContractPrice = contractPriceController.text;
+
+    /// Format the contract price
+    String numericCurrency = textCurrency.replaceAll(RegExp(r'[^\d]'), '');
+    if (numericCurrency.isNotEmpty) {
+      double value = double.parse(numericCurrency);
+      String formattedText = currencyFormatter.format(value);
+      if (formattedText != null) {
+        return formattedText;
+      } else {
+        return "\$0.00";
+      }
+    } else {
+      return "\$0.00";
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    salePriceController.text = widget.salePrice.toString();
+    salePriceController.text = _formatCurrency(widget.salePrice.toString());
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Commission Calculator', style: TextStyle(fontSize: 8.sp),),
+      title: Text(
+        'Commission Calculator',
+        style: TextStyle(fontSize: 8.sp),
+      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -64,7 +87,8 @@ class _CommissionCalculatorDialogState
           ),
           SizedBox(height: 20.sp),
           Text(
-            'Commission: \$${commission.toStringAsFixed(2)}',
+            //'Commission: \$${commission.toStringAsFixed(2)}',
+            'Commission: $commission',
             style: TextStyle(fontSize: 8.sp),
           ),
         ],
@@ -83,13 +107,20 @@ class _CommissionCalculatorDialogState
   void calculateCommission() {
     if (salePriceController.text.isNotEmpty &&
         commissionRateController.text.isNotEmpty) {
-      double salePrice = double.parse(salePriceController.text);
-      double commissionRate = double.parse(commissionRateController.text);
+      try {
+        var unformattedSalePrice = salePriceController.text;
+        unformattedSalePrice = unformattedSalePrice.replaceAll(RegExp(r'[^\d]'), '');
+        double salePrice = double.parse(unformattedSalePrice)/100;
+        double commissionRate = double.parse(commissionRateController.text);
 
-      double commissionAmount = (salePrice * commissionRate) / 100;
-      setState(() {
-        commission = commissionAmount;
-      });
+        double commissionAmount = (salePrice * commissionRate) / 100;
+        setState(() {
+          String strCommissionAmount = commissionAmount.toString();
+          commission = _formatCurrency(strCommissionAmount);
+        });
+      } catch (e) {
+        print({'Commission Calculation Error: $e'});
+      }
     } else {
       // Handle empty fields
       // You can show an error message or take appropriate action

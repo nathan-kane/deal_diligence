@@ -140,9 +140,9 @@ class _CompanyDashboardScreenState
                                       ),
                                       subtitle: Text.rich(
                                         TextSpan(
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                              //fontSize: tileBodyFontSize),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: constants.kListBodyFontSize),
                                           text:
                                               '${snapshot.data?.docs[index]['propertyAddress'] ?? 'n/a'}, '
                                               '${snapshot.data?.docs[index]['propertyCity'] ?? 'n/a'}, '
@@ -151,9 +151,9 @@ class _CompanyDashboardScreenState
                                             TextSpan(
                                               text:
                                                   '\nPrice: ${_formatCurrency(snapshot.data?.docs[index]['contractPrice']) ?? 'n/a'}\nStatus: ${snapshot.data?.docs[index]['trxnStatus'] ?? 'n/a'}',
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   fontWeight: FontWeight.bold,
-                                                  //fontSize: tileBodyFontSize,
+                                                  fontSize: constants.kListBodyFontSize,
                                                   color: Colors.black),
                                             )
                                           ],
@@ -161,9 +161,9 @@ class _CompanyDashboardScreenState
                                       ),
                                       trailing: Text(
                                         'MLS#: ${snapshot.data?.docs[index]['mlsNumber'] ?? 'n/a'}\n${snapshot.data?.docs[index]['clientType']}',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold), 
-                                            //fontSize: tileBodyFontSize),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold, 
+                                            fontSize: constants.kListBodyFontSize),
                                       ),
                                       onTap: () {
                                         setGlobals(snapshot.data?.docs[index].id);

@@ -281,7 +281,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               false, // This fixes the keyboard white space
           body: SafeArea(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 50.0.r),
+              padding: EdgeInsets.symmetric(horizontal: 50.w),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -300,7 +300,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     height: 50.h,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 30.h),
+                    padding: EdgeInsets.symmetric(horizontal: 30.w),
                     color: Colors.white,
                     child: TextField(
                       style:
@@ -326,7 +326,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     height: 8.r,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 30.r),
+                    padding: EdgeInsets.symmetric(horizontal: 30.w),
                     color: Colors.white,
                     child: TextField(
                       style:
@@ -363,7 +363,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     height: 50.h,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 30.h),
+                    padding: EdgeInsets.symmetric(horizontal: 30.w),
                     child: ElevatedButton(
                       onPressed: () async {
                         setState(() {
@@ -497,10 +497,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 50.r,
+                    height: 50.h,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 30.r),
+                    padding: EdgeInsets.symmetric(horizontal: 30.w),
                     child: TextButton(
                       child: Text(
                         'Forgot Password',
@@ -518,7 +518,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     height: 20.h,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 30.r),
+                    padding: EdgeInsets.symmetric(horizontal: 30.w ),
                     child: TextButton(
                       child: Text(
                         'New User?  Create Account',

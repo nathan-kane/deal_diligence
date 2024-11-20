@@ -15,10 +15,10 @@ const kWarninngColor = Color(0xFFF3BB1C);
 const kErrorColor = Color(0xFFF03738);
 
 /// Responsive UI constants
-double kTitleTextFontSize = 10.sp;
-double kTextFieldTextFontSize = 6.sp;
+double kTitleTextFontSize = 14.sp;
+double kTextFieldTextFontSize = 8.sp;
 double kTextFieldHintFontSize = 6.sp;
-double kTextButtonFontSize = 5.sp;
+double kTextButtonFontSize = 8.sp;
 double kListHeaderFontSize = 6.sp;
 double kListBodyFontSize = 4.sp;
 
