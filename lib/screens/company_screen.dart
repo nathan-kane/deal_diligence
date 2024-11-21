@@ -14,7 +14,7 @@ import 'package:deal_diligence/Providers/user_provider.dart';
 import 'package:deal_diligence/components/rounded_button.dart';
 import 'package:deal_diligence/constants.dart' as constants;
 import 'package:deal_diligence/screens/main_screen.dart';
-import 'package:flutter/foundation.dart';
+//import 'package:flutter/foundation.dart';
 //import 'package:deal_diligence/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

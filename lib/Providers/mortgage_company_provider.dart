@@ -4,7 +4,7 @@
 //  copyright 2023                            *
 //*********************************************
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deal_diligence/Providers/global_provider.dart';
 import 'package:deal_diligence/Services/firestore_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -70,7 +70,7 @@ class MortgageCompany {
 
 class MortgageCompanyNotifier extends Notifier<MortgageCompany> {
   final firestoreService = FirestoreService();
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  //final FirebaseFirestore _db = FirebaseFirestore.instance;
   MortgageCompanyNotifier(); // un-named constructor
 
   @override

@@ -39,7 +39,7 @@ class UserProfileScreen extends ConsumerStatefulWidget {
 
 class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   final _db = FirebaseFirestore.instance;
-  final _auth = FirebaseAuth.instance;
+  //final _auth = FirebaseAuth.instance;
   bool isChecked = false;
   Users newUser = Users();
   late String email;

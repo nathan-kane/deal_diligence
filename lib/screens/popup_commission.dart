@@ -44,7 +44,7 @@ class _CommissionCalculatorDialogState
     if (numericCurrency.isNotEmpty) {
       double value = double.parse(numericCurrency);
       String formattedText = currencyFormatter.format(value);
-      if (formattedText != null) {
+      if (formattedText.isNotEmpty) {
         return formattedText;
       } else {
         return "\$0.00";
